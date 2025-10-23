@@ -1,0 +1,44 @@
+flowchart LR
+    %% SDLC with UI/UX Designer integrated
+    A[Brainstorm Idea\nideas/IDEA_TEMPLATE.yaml] --> B[Initial Plan\nresearch/plans & briefs]
+    B --> C[Application Design\nPRD + Blueprint + OpenAPI + Diagrams]
+    C --> C1[UI/UX Design\nUI specs + wireframes + style guide]
+    C1 --> D[Development Plan\nchange_requests/CR-XXXX_*.yaml]
+    D --> E[Development (Code)\nhost project ../src + ../tests]
+    E --> F[Debugging\nai/logs/test_runs + qa/reports/defects.md]
+    F --> G[Deployment\ndevops/runbooks/deploy.md]
+    G --> H[CI/CD\n.github/workflows + devops/devops.yaml]
+    H --> I[Testing\nqa/tests.md + logs]
+    I --> J[Recycle\nai/reports/retrospective_*.md]
+    J -->|Next slice| D
+
+    %% Context & guardrails living in AutoForge
+    subgraph AutoForge (planning, blueprints, logs)
+      direction TB
+      C
+      C1
+      D
+      F
+      G
+      H
+      I
+      J
+    end
+
+    %% Inputs/outputs of the UI/UX stage
+    subgraph UIUX_Artifacts [UI/UX Artifacts (docs/uiux)]
+      direction TB
+      X1[[wireframes/*]]
+      X2[[mockups/*]]
+      X3[[user_flows/*.mmd]]
+      X4[[style_guide.md]]
+    end
+
+    C1 --- X1
+    C1 --- X2
+    C1 --- X3
+    C1 --- X4
+
+    %% Role callouts
+    classDef role fill:#eef,stroke:#88f,stroke-width:1px;
+    class C1 role

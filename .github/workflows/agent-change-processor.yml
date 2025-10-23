@@ -1,0 +1,52 @@
+name: Agent Change Processor
+
+on:
+  push:
+    paths:
+      - "change_requests/**"
+      - "ai/prompts/change_request.yaml"
+      - "ai/prompts/impact_analysis.yaml"
+      - "ai/prompts/monitor_changes.yaml"
+  workflow_dispatch:
+
+jobs:
+  process-change-requests:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Validate context
+        run: node ./scripts/validate_context.js
+
+      - name: Collect change request files
+        id: changes
+        run: |
+          if [[ ! -d change_requests ]]; then
+            echo "files=" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+
+          files=$(ls change_requests)
+          if [[ -z "$files" ]]; then
+            echo "files=" >> "$GITHUB_OUTPUT"
+            echo "No change requests detected."
+          else
+            {
+              echo "files<<EOF"
+              echo "$files"
+              echo "EOF"
+            } >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: AutoForge – manual Chat Mode required
+        if: steps.changes.outputs.files != ''
+        run: |
+          {
+            echo "### AutoForge Manual Action Required"
+            echo "Detected change request files:"
+            echo '${{ steps.changes.outputs.files }}' | sed 's/^/- /'
+            echo ""
+            echo "Switch to Chat Mode and process each file using the instructions in README.md."
+            echo "Set the assistant's working directory to ./autoforge (if embedded) and execute autoforge/ai/prompts/change_request.yaml → impact_analysis.yaml → downstream prompts."
+          } >> "$GITHUB_STEP_SUMMARY"

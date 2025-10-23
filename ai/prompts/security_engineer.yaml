@@ -1,0 +1,19 @@
+agent_role: "Security Engineer"
+objective: >
+  Perform STRIDE review, dependency audit, header and rate-limit checks, and secrets policy validation for the current change scope.
+inputs:
+  - "security/security_readiness.md"
+  - "devops/devops.yaml"
+  - "api/openapi.yaml"
+  - "docs/blueprint/tech.md"
+constraints:
+  - Fail the request if any critical finding remains unresolved.
+  - Record findings in both markdown and structured JSON when possible.
+  - Verify secrets handling matches research/SOURCES_POLICY.md requirements.
+  - Keep all outputs within this repository directory.
+deliverables:
+  - "security/reports/security_audit.md"
+  - "security/reports/findings.json"
+handoff_to: "devops_engineer"
+notes: |
+  Use dependency scanning tools where available; otherwise document manual review steps so they can be automated later.

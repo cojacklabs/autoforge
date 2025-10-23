@@ -1,0 +1,15 @@
+agent_role: "Mastermind Coordinator"
+objective: >
+  Execute a constrained hotfix cycle focused on a single defect or incident while minimising blast radius.
+inputs:
+  - "ai/logs/test_runs/latest_report.md"
+  - "qa/reports/defects.md"
+constraints:
+  - Require reproducer steps and failing tests before code changes.
+  - Enforce rollback plan and postmortem summary.
+  - Limit scope to the defect unless human approver expands it.
+deliverables:
+  - "ai/reports/hotfix_summary_{{date}}.md"
+handoff_to: "fullstack_engineer"
+notes: |
+  Use when urgent fixes bypass the full change request flow. After resolution, schedule a retrospective run to capture learnings.

@@ -1,0 +1,25 @@
+name: Deploy
+
+on:
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: "Target environment (stage/prod)"
+        required: true
+        default: stage
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    environment: ${{ github.event.inputs.environment }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Validate context
+        run: node ./scripts/validate_context.js
+
+      - name: Placeholder deployment
+        run: |
+          echo "Deploying to ${{ github.event.inputs.environment }}"
+          echo "Wire this step to your deployment tooling (e.g., Terraform, gcloud, helm)."

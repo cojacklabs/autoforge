@@ -1,0 +1,18 @@
+{
+  "name": "autoforge",
+  "version": "1.0.0",
+  "type": "module",
+  "private": true,
+  "scripts": {
+    "format": "prettier --write \"**/*.{js,jsx,ts,tsx,json,md,yaml,yml}\"",
+    "format:check": "prettier --check \"**/*.{js,jsx,ts,tsx,json,md,yaml,yml}\"",
+    "validate": "node ./scripts/validate_context.js",
+    "repomix": "node ./scripts/generate_repomix.js"
+  },
+  "devDependencies": {
+    "prettier": "^3.3.3",
+    "repomix": "^1.1.0",
+    "yaml": "^2.4.2",
+    "glob": "^10.3.0"
+  }
+}

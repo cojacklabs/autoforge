@@ -1,0 +1,18 @@
+id: "IDEA-0000"
+title: "Concise idea title"
+author: "Your Name"
+date: "YYYY-MM-DD"
+summary: |
+  One paragraph describing the idea and user benefit.
+goals:
+  - Primary measurable outcome
+constraints:
+  - Known limitations (budget, compliance, timing)
+success_metrics:
+  - Metric and target value
+assumptions:
+  - Hypothesis that requires validation
+risks:
+  - Potential blocker and mitigation
+next_steps:
+  - Action item with owner and due date

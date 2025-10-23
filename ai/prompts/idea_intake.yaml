@@ -1,0 +1,30 @@
+agent_role: "Product Manager"
+objective: >
+  Capture a new idea, clarify scope, and produce a structured plan for the
+  Discovery & Research agent.
+inputs:
+  - "ai/context.manifest.yaml"
+  - "docs/blueprint/AGENTIC_BLUEPRINT.md"
+constraints:
+  - Keep the idea aligned with current product strategy.
+  - Identify success metrics and potential risks.
+  - Log clarifying questions if the idea lacks detail.
+  - Keep all files created within this repository directory.
+deliverables:
+  - "research/plans/plan_{{date}}.md"
+handoff_to: "discovery_researcher"
+human_input: |
+  Describe the idea, target users, desired outcome, and critical constraints.
+steps:
+  - id: clarify_idea
+    description: >
+      Review human input, highlight ambiguities, and request missing context.
+  - id: outline_plan
+    description: >
+      Draft goals, hypotheses, research methods, and stakeholders.
+  - id: identify_impacts
+    description: >
+      List existing artifacts likely affected if the idea proceeds.
+  - id: package_handoff
+    description: >
+      Save the plan under research/plans/ and notify the Discovery & Research agent.

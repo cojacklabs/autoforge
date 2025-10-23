@@ -1,0 +1,43 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Demo TODO</title>
+    <style>
+      body { font-family: sans-serif; margin: 2rem; }
+      li { margin: .25rem 0; }
+    </style>
+  </head>
+  <body>
+    <h1>Demo TODO</h1>
+    <form id="form">
+      <input id="title" placeholder="Task title" required />
+      <button>Add</button>
+    </form>
+    <ul id="list"></ul>
+    <script>
+      async function load() {
+        const res = await fetch('/tasks');
+        const data = await res.json();
+        const list = document.getElementById('list');
+        list.innerHTML = '';
+        data.tasks.forEach(t => {
+          const li = document.createElement('li');
+          li.textContent = (t.completed ? '✅ ' : '⬜️ ') + t.title;
+          list.appendChild(li);
+        });
+      }
+      document.getElementById('form').addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const title = document.getElementById('title').value.trim();
+        if (!title) return;
+        await fetch('/tasks', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ title }) });
+        document.getElementById('title').value='';
+        load();
+      });
+      load();
+    </script>
+  </body>
+  </html>
+

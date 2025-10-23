@@ -1,0 +1,21 @@
+id: IDEA-1000
+title: "Team Todo Application"
+author: "Example User"
+date: "2025-01-01"
+summary: |
+  Build a collaborative todo list app for small teams with task assignments, due dates, and completion tracking.
+goals:
+  - Improve task visibility for small teams
+  - Provide lightweight collaboration compared to heavy project management suites
+constraints:
+  - Mobile friendly (responsive design)
+  - Support up to 50 concurrent users (MVP)
+  - Authentication via email/password
+success_metrics:
+  - 70% of beta users complete onboarding within 5 minutes
+  - Daily active users > 30 within first month
+assumptions:
+  - Teams use email for coordination
+  - Users want simple kanban-like workflow
+notes: |
+  Seed data and mocks acceptable for MVP; integrate real email later.

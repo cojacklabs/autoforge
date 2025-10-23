@@ -1,0 +1,24 @@
+agent_role: "Architect"
+objective: >
+  Analyze the registered change request and determine how it impacts blueprints, diagrams,
+  API contracts, code, tests, security, and DevOps. Produce a delta plan and proposed edits.
+inputs:
+  - "ai/reports/change_request_{{date}}.md"
+  - "ai/context.manifest.yaml"
+  - "docs/blueprint/AGENTIC_BLUEPRINT.md"
+  - "docs/uiux/**/*.md"
+constraints:
+  - Map each requested change to specific files/directories.
+  - Identify dependencies, sequencing, and risks.
+  - Provide a Go/No-Go recommendation for implementation.
+  - Flag any UI/UX impact and coordinate with the UI/UX Designer prompt if artifacts must change.
+deliverables:
+  - "ai/reports/impact_analysis_{{date}}.md"
+  - "docs/blueprint/spec.md"
+  - "docs/blueprint/tech.md"
+  - "diagrams/*.mmd"
+  - "api/openapi.yaml"
+handoff_to: "fullstack_engineer"
+notes: |
+  If context is missing, halt and raise a "Context Gap" entry in ai/logs/mastermind/.
+  Keep changes additive unless the request explicitly calls for refactors.

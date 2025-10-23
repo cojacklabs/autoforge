@@ -1,0 +1,35 @@
+openapi: 3.1.0
+info:
+  title: Team Todo API
+  version: 0.1.0
+servers:
+  - url: https://api.todo.example.com
+    description: Production (example)
+paths:
+  /tasks:
+    get:
+      summary: List tasks
+      responses:
+        "200":
+          description: Task list
+    post:
+      summary: Create task
+      responses:
+        "201":
+          description: Task created
+  /tasks/{taskId}:
+    get:
+      summary: Get task
+      responses:
+        "200":
+          description: Task details
+    patch:
+      summary: Update task
+      responses:
+        "200":
+          description: Task updated
+    delete:
+      summary: Delete task
+      responses:
+        "204":
+          description: Task deleted

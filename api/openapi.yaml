@@ -1,0 +1,48 @@
+openapi: 3.1.0
+info:
+  title: ROS AI API
+  version: 0.1.0
+  description: |
+    Minimal contract placeholder. Agents will extend this specification as features evolve.
+servers:
+  - url: https://api-dev.example.com
+    description: Development
+  - url: https://api-stg.example.com
+    description: Staging
+  - url: https://api.example.com
+    description: Production
+paths:
+  /health:
+    get:
+      summary: Liveness check
+      responses:
+        "200":
+          description: OK
+  /ideas:
+    get:
+      summary: List ideas captured by the autonomous system
+      responses:
+        "200":
+          description: Successful response containing ideas
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  ideas:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: string
+                        title:
+                          type: string
+                        summary:
+                          type: string
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT

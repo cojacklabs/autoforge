@@ -1,0 +1,144 @@
+description: Agent roles, permissions, and communication boundaries for the ROS AI autonomous workflow.
+note:
+  All paths are relative to the repository root. When AutoForge is located inside
+  another project (e.g., `custom-project/autoforge`), treat that subdirectory as the
+  working directory and do not modify files outside it.
+
+roles:
+  - id: discovery_researcher
+    description: Ingest human ideas, perform external research, and draft feasibility briefs.
+    reads:
+      - "ai/context.manifest.yaml"
+      - "docs/blueprint/**/*.md"
+      - "ideas/**/*.{yaml,yml,md}"
+      - "research/**/*.md"
+    writes:
+      - "research/plans/**"
+      - "research/briefs/**"
+      - "ai/reports/feasibility_*.md"
+
+  - id: product_manager
+    reads:
+      - "docs/blueprint/**/*.md"
+      - "docs/prd/**/*.md"
+      - "research/**/*.md"
+    writes:
+      - "docs/blueprint/vision.md"
+      - "docs/blueprint/spec.md"
+      - "docs/prd/PRODUCT_REQUIREMENTS.md"
+
+  - id: architect
+    reads:
+      - "docs/blueprint/**/*.md"
+      - "diagrams/**/*.mmd"
+      - "api/openapi.yaml"
+      - "devops/devops.yaml"
+    writes:
+      - "docs/blueprint/tech.md"
+      - "diagrams/**/*.mmd"
+      - "api/openapi.yaml"
+
+  - id: fullstack_engineer
+    reads:
+      - "api/openapi.yaml"
+      - "docs/blueprint/spec.md"
+      - "docs/blueprint/tech.md"
+      - "security/security_readiness.md"
+    writes:
+      - "src/**"
+      - "tests/**"
+      - "qa/tests.md"
+
+  - id: qa_engineer
+    reads:
+      - "qa/tests.md"
+      - "tests/**"
+      - "api/openapi.yaml"
+      - "docs/prd/**/*.md"
+    writes:
+      - "qa/reports/**"
+      - "ai/logs/test_runs/**"
+
+  - id: security_engineer
+    reads:
+      - "security/**/*.md"
+      - "devops/devops.yaml"
+      - "api/openapi.yaml"
+    writes:
+      - "security/reports/**"
+      - "ai/logs/security/**"
+
+  - id: devops_engineer
+    reads:
+      - "devops/**/*.{md,yml,yaml}"
+      - "security/**/*.md"
+    writes:
+      - "devops/**"
+      - "devops/runbooks/**"
+      - "ai/logs/deployments/**"
+
+  - id: mastermind_coordinator
+    reads:
+      - "ai/context.manifest.yaml"
+      - "ai/agents.yaml"
+      - "ai/prompts/**/*.yaml"
+      - "ai/logs/**"
+      - "docs/**/*.md"
+    writes:
+      - "ai/logs/mastermind/**"
+      - "ai/reports/**"
+
+  - id: uiux_designer
+    description: >
+      Translate PRD requirements into UI/UX artifacts (wireframes, user flows, style guide)
+      that align with the technical blueprint and API contract.
+    reads:
+      - "docs/prd/PRODUCT_REQUIREMENTS.md"
+      - "docs/blueprint/spec.md"
+      - "docs/blueprint/tech.md"
+      - "docs/uiux/**/*.md"
+      - "ai/code_targets.yaml"
+    writes:
+      - "docs/uiux/**/*.md"
+      - "ai/reports/uiux/**"
+      - "ai/logs/uiux/**"
+
+  - id: performance_engineer
+    description: >
+      Plan and execute performance testing, define SLIs/SLOs with DevOps/SRE, and
+      provide tuning recommendations across backend/frontend.
+    reads:
+      - "devops/devops.yaml"
+      - "ai/code_targets.yaml"
+      - "docs/blueprint/tech.md"
+      - "docs/observability/**/*.md"
+    writes:
+      - "docs/perf/**/*.md"
+      - "docs/perf/scripts/**"
+      - "ai/logs/perf/**"
+      - "ai/reports/perf/**"
+
+  - id: sre_engineer
+    description: >
+      Define observability standards (logs/metrics/traces), dashboards, and alerts;
+      collaborate with DevOps to operationalize and with Performance for SLOs.
+    reads:
+      - "devops/devops.yaml"
+      - "docs/observability/**/*.md"
+      - "docs/blueprint/tech.md"
+    writes:
+      - "docs/observability/**/*.md"
+      - "ai/reports/observability/**"
+      - "ai/logs/observability/**"
+
+rules:
+  write_protect:
+    - "ai/context.manifest.yaml"
+    - "ai/agents.yaml"
+    - "docs/blueprint/AGENTIC_BLUEPRINT.md"
+  fallback_behaviors:
+    - condition: "missing_context"
+      action: "Escalate to mastermind_coordinator with context gap report."
+    - condition: "conflict_detected"
+      action: "Pause and request clarification from previous agent or human."
+  communication_protocol: "Follow docs/MASTERMIND_PROMPTING_GUIDE.md for structured inter-agent messaging."

@@ -1,0 +1,31 @@
+# AutoForge code-target configuration.
+#
+# Paths are relative to the AutoForge directory (the folder that contains this file).
+# Update these values to match your host project’s structure. Agents must respect
+# these targets when generating application code, tests, and other non-AutoForge
+# artifacts.
+#
+# Example (default):
+#   app_sources: ../src
+#   tests: ../tests
+#   libs: ../packages
+#
+# If your project uses a monorepo layout, point to the relevant packages
+# (e.g., ../apps/web, ../services/api, ../packages/shared, etc.).
+
+code_targets:
+  backend:
+    path: ../src/backend
+    description: "Default backend location; update to match your project."
+  frontend:
+    path: ../src/frontend
+    description: "Default frontend/UI location; update to match your project."
+  tests:
+    path: ../tests
+    description: "Default tests directory; update if you store tests elsewhere."
+  extra: []
+
+notes: |
+  - Keep planning/orchestration documents inside the AutoForge folder (docs/, diagrams/, devops/, qa/, security/, ai/logs/, ai/reports/, etc.).
+  - Only application code, tests, or other runtime artifacts should live outside AutoForge, and they must follow the paths declared above.
+  - Update this file before running prompts so agents know where to place generated code.
