@@ -95,8 +95,6 @@ When new framework updates land upstream, run:
 npm run update
 ```
 
-The updater fetches from `origin`, fast-forwards your current branch, reinstalls dependencies, and runs `npm run validate`. Ensure both directories are clean before executing it:
-- `autoforge/` itself (the nested repo)
-- your host project repo (the parent directory where AutoForge lives)
+The updater fetches from `origin`, fast-forwards your current branch, reinstalls dependencies, and runs `npm run validate`. Any local edits in `autoforge/` are automatically stashed and restored after the update (resolve conflicts if Git warns). Your host project repo is not touched.
 
-Commit or stash changes in both locations so local edits are not overwritten.
+Afterwards, log the update in `ai/memory/` and tell your coding assistant to reload the core manifests (`ai/context.manifest.yaml`, `ai/agents.yaml`, `docs/ai/COMMIT_PLAYBOOK.md`) the next time you kick off a session.

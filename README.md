@@ -168,7 +168,11 @@ Keep your embedded toolkit current with:
 npm run update
 ```
 
-This command fetches the latest changes from `origin`, fast-forwards your current branch, reinstalls dependencies, and runs `npm run validate`. Make sure both the AutoForge folder **and** your host project repo (the parent directory) are clean—commit or stash changes—before running it so no local work is overwritten.
+This command fetches the latest changes from `origin`, fast-forwards your current branch, reinstalls dependencies, and runs `npm run validate`. Any local changes inside `autoforge/` are stashed automatically and re-applied afterward; if conflicts arise, Git will prompt you to resolve them before continuing. Changes in your host project stay untouched.
+
+After a successful update:
+- Add a short note to your active memory file in `ai/memory/` describing the new framework commit or key changes.
+- In the next agent session, instruct your assistant to re-read `ai/context.manifest.yaml`, `ai/agents.yaml`, and `docs/ai/COMMIT_PLAYBOOK.md` so it operates with the updated guidance.
 
 ---
 
