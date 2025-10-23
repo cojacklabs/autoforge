@@ -52,6 +52,24 @@ This enforces everything in `ai/context.manifest.yaml` (PRD present, diagrams ex
 
 ---
 
+### Workspace boundaries & approvals
+
+- Planning/logging: keep your assistant in `./autoforge` so ideas, research, and reports stay contained.
+- Implementation: agents may only touch the host project through the paths declared in `ai/code_targets.yaml` (update them first to match your repo).
+- Elevated actions (package installs, long-running scripts, migrations) should be called out explicitly so the human reviewer can approve before execution.
+
+---
+
+### Guiding your AI teammate
+
+- Kick off every session by pointing the agent at the latest `ideas/IDEA_*.yaml` entry and clarifying the goal in your own words.
+- If the agent drifts or makes wrong assumptions, edit the relevant docs (idea, PRD, tech blueprint) or reply with corrections—AutoForge treats those files as the single source of truth.
+- Remind the agent to log discoveries under `ai/logs/**` and summaries under `ai/reports/**` so you can audit each step.
+- Use change requests when the scope shifts; the prompts walk the agent through impact analysis and give you checkpoints to accept or redirect work.
+- Expect the agent to ask before running package installs, migrations, or touching files outside the declared targets—approve or deny explicitly to keep control of your repo.
+
+---
+
 ## 5. Kick off with your coding AI
 
 Paste the snippet below into your coding assistant (Codex, Claude Code, Gemini Code, Cursor, etc.). This sets the stage for multi-agent handoffs.
@@ -62,7 +80,8 @@ Read and follow:
 - autoforge/ai/agents.yaml
 - autoforge/ai/prompts/kickoff.yaml
 
-Set working dir to ./autoforge.
+While planning: stay inside ./autoforge for docs/logs.
+When writing code/tests: use paths from autoforge/ai/code_targets.yaml.
 Confirm the latest idea in ideas/.
 Run the kickoff sequence (Product Manager → UI/UX → Architect → Engineer → QA → Security → Performance → SRE → DevOps → Retrospective).
 Log outputs to autoforge/ai/logs/** and autoforge/ai/reports/**.

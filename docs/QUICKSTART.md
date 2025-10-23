@@ -43,7 +43,8 @@ Read and follow:
 - autoforge/ai/agents.yaml
 - autoforge/ai/prompts/kickoff.yaml
 
-Set working dir to ./autoforge.
+While planning, stay inside ./autoforge for docs/logs.
+When writing code/tests, use paths from autoforge/ai/code_targets.yaml.
 Confirm the latest idea in ideas/.
 Run the kickoff sequence (PM → UI/UX → Architect → Engineer → QA → Security → Performance → SRE → DevOps → Retrospective).
 Log outputs to autoforge/ai/logs/** and autoforge/ai/reports/**.
@@ -55,9 +56,15 @@ When you have a new feature/bugfix:
 
 ```bash
 cp change_requests/CR-0000_example.yaml change_requests/CR-0001_myfeature.yaml
-``` 
+```
 
 Fill in summary, acceptance criteria, rollback plan. Commit/push and follow the Chat Mode instructions posted by the GitHub Action.
+
+> Guidance for humans & agents
+>
+> - Capturing ideas, refining change requests, and logging updates all happen inside `./autoforge`.
+> - Engineering prompts step out only through the directories listed in `ai/code_targets.yaml`—update that file before coding.
+> - Agents should announce package installs, migrations, or debugging commands in advance so you can approve or redirect them.
 
 ## 7. Snapshot the Project (Optional)
 

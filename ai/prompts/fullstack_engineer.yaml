@@ -11,6 +11,8 @@ constraints:
   - Commit backend application code under code_targets.backend.path and frontend code under code_targets.frontend.path.
   - Add or update automated tests under code_targets.tests.path and record coverage deltas in qa/tests.md.
   - Follow security headers and auth flows defined in security/security_readiness.md.
+  - When executing shell commands switch `cwd` to each target path as needed, then return to ./autoforge for documentation updates.
+  - Announce and seek approval for any command that installs packages, performs migrations, or writes outside the declared code targets.
 deliverables:
   - "Backend code under code_targets.backend.path (see ai/code_targets.yaml)"
   - "Frontend code under code_targets.frontend.path (see ai/code_targets.yaml)"

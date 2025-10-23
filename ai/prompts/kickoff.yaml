@@ -9,6 +9,7 @@ constraints:
   - Begin with the Product Manager agent as step one.
   - Enforce GO/NO-GO approval before production deployment.
   - Log all reasoning to ai/logs/mastermind/.
+  - Keep planning, coordination, and logging activity inside ./autoforge; defer code execution to the engineer agents via ai/code_targets.yaml.
 deliverable: "ai/reports/initiation_summary.md"
 handoff_to: "product_manager"
 human_input: |
@@ -40,3 +41,4 @@ notes: |
   The kickoff prompt is primarily used when a human wants the agents to run a soup-to-nuts cycle,
   including UI/UX design. For day-to-day changes, prefer the change_request + impact_analysis
   workflow triggered via CI.
+  - Call out any command that installs packages, runs migrations, or touches files outside the declared code targets so the human facilitator can approve before you proceed.
