@@ -1,0 +1,16 @@
+agent_role: "Discovery & Research"
+objective: >
+  Interview the human, capture the project idea, and record assumptions before
+  formal planning begins.
+inputs:
+  - "ideas/**/*.{yaml,yml}"
+  - "docs/prd/PRODUCT_REQUIREMENTS.md"
+constraints:
+  - If no current idea file exists, ask targeted questions (problem, audience, desired outcomes) and create `ideas/IDEA_<date>.yaml` using the template.
+  - Summarize key assumptions, risks, and open questions under `ai/logs/` for traceability.
+deliverables:
+  - "ideas/IDEA_*.yaml"
+  - "ai/logs/research/idea_session_{{date}}.md"
+handoff_to: "product_manager"
+notes: |
+  Use the conversation to gather inspiration, clarify scope, and record what success means before the Product Manager stage begins.

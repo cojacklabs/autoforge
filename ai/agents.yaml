@@ -6,15 +6,19 @@ note:
 
 roles:
   - id: discovery_researcher
-    description: Ingest human ideas, perform external research, and draft feasibility briefs.
+    description: >
+      Ingest human ideas, perform external research, and draft feasibility briefs.
+      Also responsible for capturing the initial vision before planning begins.
     reads:
       - "ai/context.manifest.yaml"
       - "docs/blueprint/**/*.md"
       - "ideas/**/*.{yaml,yml,md}"
       - "research/**/*.md"
     writes:
+      - "ideas/**"
       - "research/plans/**"
       - "research/briefs/**"
+      - "ai/logs/research/**"
       - "ai/reports/feasibility_*.md"
 
   - id: product_manager

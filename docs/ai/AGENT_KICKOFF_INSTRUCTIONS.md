@@ -35,7 +35,7 @@ so all outputs remain inside the AutoForge folder.
 
 ## Repository Checklist
 
-Ensure these paths exist before running a kickoff:
+Ensure an idea exists before running kickoff (fill ideas/IDEA_*.yaml or run the discovery_researcher prompt). Then confirm these paths exist:
 
 - `docs/blueprint/AGENTIC_BLUEPRINT.md`
 - `docs/prd/PRODUCT_REQUIREMENTS.md`

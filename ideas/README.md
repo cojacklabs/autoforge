@@ -10,4 +10,5 @@ This folder anchors the starting point (Brainstorm) of the AutoForge SDLC pipeli
 
 ## Prompt
 
+- `autoforge/ai/prompts/discovery_researcher.yaml`
 - `autoforge/ai/prompts/idea_intake.yaml`
