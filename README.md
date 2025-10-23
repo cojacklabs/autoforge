@@ -70,6 +70,7 @@ This enforces everything in `ai/context.manifest.yaml` (PRD present, diagrams ex
 - Expect the agent to ask before running package installs, migrations, or touching files outside the declared targets—approve or deny explicitly to keep control of your repo.
 - Keep an active memory file under `ai/memory/` up to date after each session; direct new assistants to review it before continuing work.
 - Before staging commits or running stateful commands, have the agent review `docs/ai/COMMIT_PLAYBOOK.md` so history stays clean and reproducible.
+- Confirm semantic version bumps (package.json, etc.) follow the playbook—major for breaking changes, minor for new features, patch for fixes.
 
 ---
 
@@ -131,6 +132,7 @@ Tick these items before shipping a slice:
 - ✔ Observability: `autoforge/docs/observability/dashboards.md`, `alerts.md`, `slo.md`, `autoforge/ai/reports/observability/*.md`
 - ✔ DevOps: `autoforge/devops/runbooks/deploy.md`, `autoforge/ai/logs/deployments/*_deploy.md`
 - ✔ Retrospective: `autoforge/ai/reports/retrospective_*.md`
+- ✔ Versioning: package manifests bumped per docs/ai/COMMIT_PLAYBOOK.md and rationale captured in commits/memory.
 
 ---
 

@@ -10,6 +10,7 @@ constraints:
   - Enforce rollback plan and postmortem summary.
   - Limit scope to the defect unless human approver expands it.
   - Follow docs/ai/COMMIT_PLAYBOOK.md for command declarations and commit messages; flag fixes with the incident id.
+  - Bump the patch version in the relevant manifest (e.g., package.json) unless the human explicitly defers it, and note the increment in the commit body.
 deliverables:
   - "ai/reports/hotfix_summary_{{date}}.md"
 handoff_to: "fullstack_engineer"

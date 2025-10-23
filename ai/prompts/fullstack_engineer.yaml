@@ -17,6 +17,7 @@ constraints:
   - Announce and seek approval for any command that installs packages, performs migrations, or writes outside the declared code targets.
   - Check ai/memory/ for engineering follow-ups and append a summary of completed work and new risks before handing off.
   - Follow docs/ai/COMMIT_PLAYBOOK.md for staging, commit messages, and command declarations; include the relevant request or defect id in each commit body.
+  - Evaluate semantic version impact and update package manifests (e.g., package.json + lockfiles) before committing, documenting the rationale in the commit body.
 deliverables:
   - "Backend code under code_targets.backend.path (see ai/code_targets.yaml)"
   - "Frontend code under code_targets.frontend.path (see ai/code_targets.yaml)"

@@ -29,6 +29,18 @@ Use this checklist whenever an agent is about to commit code, run automated tool
 3. **Capture results** – Summarise command output in the log; save large logs under `ai/logs/**` rather than pasting into chat.
 4. **Rollback plan** – If the command fails or produces unexpected artifacts, describe how to undo the change or request human guidance.
 
+## Versioning diligence
+
+Before the first commit in a change sequence:
+
+1. Inspect `package.json` (or the relevant manifest) and determine whether the work warrants a **major**, **minor**, or **patch** bump:
+   - **major** – breaking API change, incompatible configuration, or migration that requires manual action.
+   - **minor** – backwards-compatible feature, new endpoint, or UX addition.
+   - **patch** – bug fix, dependency upgrade with no feature change, copy tweak.
+2. Update the version number following semantic versioning and stage the manifest alongside any generated lockfiles.
+3. Record the reasoning for the bump in the commit body (e.g., “Minor bump to 1.4.0 for dashboard filter feature”).
+4. If no bump is required (documentation-only change), explicitly state that rationale in the memory file and commit message.
+
 ## Bug fixes vs. change requests
 
 - **Change requests** – Follow `change_requests/README.md` and link commits to the request id (`CR-####`). Use the main kickoff or role-specific prompts.

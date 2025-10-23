@@ -14,3 +14,4 @@ Once committed, the change-request workflow validates context and instructs you 
 - Correct misunderstandings by editing the request file or replying with clarifications—the approval flow treats the YAML as the source of truth.
 - Update the project memory file (`ai/memory/*.yaml`) with approved decisions, blocked items, and next actions before closing the request.
 - Require commits to follow `docs/ai/COMMIT_PLAYBOOK.md`, including referencing the change request id in the message body.
+- Decide on the semantic version bump (major/minor/patch) and update manifests accordingly before the final commit.
