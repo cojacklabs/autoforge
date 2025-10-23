@@ -86,3 +86,13 @@ npm run repomix -- ..  # run from ./autoforge
 ```
 
 This generates a flattened context summary in the parent directory so AI tools see the whole repository.
+
+## 8. Update AutoForge
+
+When new framework updates land upstream, run:
+
+```bash
+npm run update
+```
+
+The updater fetches from `origin`, fast-forwards your current branch, reinstalls dependencies, and runs `npm run validate`. Ensure your working tree is clean before executing it so local edits are not overwritten.

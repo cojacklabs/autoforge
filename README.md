@@ -160,10 +160,23 @@ This creates `../REPOMIX.md` so AI tools can ingest the entire host project.
 
 ---
 
-## 10. Helpful npm scripts
+## 10. Update AutoForge
+
+Keep your embedded toolkit current with:
+
+```bash
+npm run update
+```
+
+This command fetches the latest changes from `origin`, fast-forwards your current branch, reinstalls dependencies, and runs `npm run validate`. Make sure your working tree is clean (commit or stash changes) before running it.
+
+---
+
+## 11. Helpful npm scripts
 
 - `npm run validate` — ensures required docs/gates exist (`ai/context_targets.yaml` overrides respected).
 - `npm run repomix -- [path]` — generates `REPOMIX.md` using the devDependency `repomix`.
+- `npm run update` — fetches and applies the latest AutoForge updates, reinstalls dependencies, and runs validation.
 
 ---
 
