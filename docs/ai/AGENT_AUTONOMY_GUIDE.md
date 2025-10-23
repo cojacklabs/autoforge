@@ -25,6 +25,7 @@ This guide explains how the ROS AI agent network navigates and operates inside t
 - Mention any package install, migration, or long-running command before you execute it, including which directories it will modify.
 - If you must touch a path that is not listed in `ai/code_targets.yaml` or under the planning zone, pause and request human approval.
 - Keep debugging commands scoped (e.g., `npm test -- some-pattern`), describe expected side effects, and revert back to the planning zone after they finish.
+- Consult `docs/ai/COMMIT_PLAYBOOK.md` before staging commits or running stateful commands so outputs stay auditable.
 
 ## Handoffs
 
@@ -39,6 +40,7 @@ This guide explains how the ROS AI agent network navigates and operates inside t
 - Approve GO/NO-GO decisions, especially for production deployments or security findings.
 - Review retrospectives in `ai/reports/` and schedule follow-up actions.
 - Keep the active memory file in `ai/memory/` current so future sessions inherit the latest state.
+- Enforce the commit/command rules documented in `docs/ai/COMMIT_PLAYBOOK.md` during reviews.
 - Maintain `ai/context_targets.yaml` so documentation references stay accurate.
 - Maintain `ai/code_targets.yaml` so engineering agents place code and tests in the correct host-project locations.
 - Use `ai/logs/uiux/` and `ai/reports/uiux/` to audit UI/UX decisions before engineering begins.

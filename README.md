@@ -69,6 +69,7 @@ This enforces everything in `ai/context.manifest.yaml` (PRD present, diagrams ex
 - Use change requests when the scope shifts; the prompts walk the agent through impact analysis and give you checkpoints to accept or redirect work.
 - Expect the agent to ask before running package installs, migrations, or touching files outside the declared targets—approve or deny explicitly to keep control of your repo.
 - Keep an active memory file under `ai/memory/` up to date after each session; direct new assistants to review it before continuing work.
+- Before staging commits or running stateful commands, have the agent review `docs/ai/COMMIT_PLAYBOOK.md` so history stays clean and reproducible.
 
 ---
 
@@ -111,6 +112,8 @@ Refer to [docs/prompt_handbook.md](docs/prompt_handbook.md) for ready-made snipp
    - `Execute autoforge/ai/prompts/impact_analysis.yaml`
    - Follow the chain (Fullstack → QA → Security → Performance → SRE → DevOps → Retrospective)
 4. Record outputs to the paths defined in each prompt (`ai/logs/**`, `ai/reports/**`, etc.).
+
+> Urgent defect? Run `Execute autoforge/ai/prompts/hotfix.yaml` instead. It keeps the scope to a single bug, enforces reproducibility, and still requires you to follow the commit rules in `docs/ai/COMMIT_PLAYBOOK.md`.
 
 ---
 

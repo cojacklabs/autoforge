@@ -72,6 +72,9 @@ Fill in summary, acceptance criteria, rollback plan. Commit/push and follow the 
 > - Keep the shared memory file in `ai/memory/` up to date; new agents should review it before acting.
 > - Engineering prompts step out only through the directories listed in `ai/code_targets.yaml`—update that file before coding.
 > - Agents should announce package installs, migrations, or debugging commands in advance so you can approve or redirect them.
+> - Follow `docs/ai/COMMIT_PLAYBOOK.md` when staging commits or running impactful commands.
+
+For single-issue bug fixes that cannot wait for the full change-request workflow, run `Execute autoforge/ai/prompts/hotfix.yaml` and follow the same memory/commit rules.
 
 ## 7. Snapshot the Project (Optional)
 

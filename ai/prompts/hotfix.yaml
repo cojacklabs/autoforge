@@ -4,10 +4,12 @@ objective: >
 inputs:
   - "ai/logs/test_runs/latest_report.md"
   - "qa/reports/defects.md"
+  - "docs/ai/COMMIT_PLAYBOOK.md"
 constraints:
   - Require reproducer steps and failing tests before code changes.
   - Enforce rollback plan and postmortem summary.
   - Limit scope to the defect unless human approver expands it.
+  - Follow docs/ai/COMMIT_PLAYBOOK.md for command declarations and commit messages; flag fixes with the incident id.
 deliverables:
   - "ai/reports/hotfix_summary_{{date}}.md"
 handoff_to: "fullstack_engineer"

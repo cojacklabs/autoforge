@@ -7,6 +7,7 @@ inputs: []
 constraints:
   - Load ai/context.manifest.yaml and ai/agents.yaml before doing anything else.
   - Review the latest memory entries under ai/memory/ to understand prior sessions.
+  - Ensure all downstream agents have access to docs/ai/COMMIT_PLAYBOOK.md and follow its rules for commits and commands.
   - Begin with the Product Manager agent as step one.
   - Enforce GO/NO-GO approval before production deployment.
   - Log all reasoning to ai/logs/mastermind/.

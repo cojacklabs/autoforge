@@ -35,6 +35,7 @@ Review the latest memory file in autoforge/ai/memory/ before proceeding.
 After the assistant acknowledges, instruct it to set the working directory to `./autoforge`
 so all outputs remain inside the AutoForge folder.
 Then confirm it has absorbed the active project memory so it continues from the latest state.
+Before any staging or commits, direct the assistant to follow `docs/ai/COMMIT_PLAYBOOK.md`.
 
 ## Repository Checklist
 
