@@ -3,7 +3,9 @@
 **AutoForge** is a fully autonomous, prompt-driven software development system.
 It turns ideas, change requests, or design prompts into working, tested, and deployable software — with minimal or no manual coding.
 
-This repository provides everything you need to **clone, fork, and operate your own autonomous software factory**.
+This repository is designed to live as `./autoforge/` inside your existing project so you can orchestrate the SDLC via Chat Mode.
+
+> 📘 Want the TL;DR? See [docs/QUICKSTART.md](docs/QUICKSTART.md) for a copy-paste walkthrough.
 
 ---
 
@@ -23,7 +25,7 @@ AutoForge connects your GitHub workflows, LLM agents, and CI/CD pipelines into o
 ## 🧱 Repository Structure
 
 ```
-AutoForge/
+autoforge/
 ├── ai/
 │   ├── agents.yaml              # Defines agent roles, permissions, read/write scopes
 │   ├── context.manifest.yaml    # Declares repo quality gates and governance rules
@@ -36,8 +38,7 @@ AutoForge/
 ├── change_requests/             # Drop a YAML here to trigger the autonomous pipeline
 ├── docs/                        # Product blueprint, PRD, UI/UX artifacts, etc.
 │   └── uiux/                    # Wireframes, style guide, accessibility notes
-├── src/                         # (Optional) project source code (host repo)
-├── tests/                       # (Optional) project tests (host repo)
+├── (host project files stay outside this folder)
 ├── .github/workflows/           # CI/CD and agent processing workflows
 └── scripts/                     # Context validation & helper scripts
 ```
@@ -51,8 +52,8 @@ AutoForge/
      - `ideas/IDEA_TEMPLATE.yaml`
      - `change_requests/CR-0000_example.yaml`
 
-2. **GitHub Action triggers**
-   - The `agent-change-processor.yml` workflow detects your input and launches the **Agent Runtime**.
+2. **GitHub Action triggers (manual by default)**
+   - The `agent-change-processor.yml` workflow validates context and gives you Chat Mode instructions. (You remain in control of when agents run.)
 
 3. **Agents collaborate**
    - Prompts under `ai/prompts/**` execute in sequence: Product Manager → UI/UX Designer → Architect → Engineer → QA → Security → Performance → SRE → DevOps → Retrospective.
@@ -71,63 +72,63 @@ AutoForge/
 
 ## ⚙️ Getting Started
 
-### 1. Clone or Fork
+### 1. Clone / Embed AutoForge
 
 ```bash
-git clone https://github.com/<your-org>/AutoForge.git
-cd AutoForge
+# from your existing project root
+git clone https://github.com/cojacklabs/autoforge.git
+cd autoforge
 ```
 
-### 2. (Optional) Integrate an Automated Runtime
-
-By default, `.github/workflows/agent-change-processor.yml` validates context and posts
-Chat Mode instructions. If you want AutoForge to drive agents automatically, add a
-step that invokes your runtime (Python, Node, etc.) and passes the relevant prompt
-and change-request path.
-
-### 3. Install Dependencies
+### 2. Install Dependencies
 
 ```bash
 npm install
 ```
 
-### 4. Install Python Helpers (optional but recommended)
+> Optional: `pip install pyyaml` if you intend to customise `ai/context_targets.yaml` using Python tooling.
 
-```bash
-pip install pyyaml
-```
+### 3. Configure Paths
 
-> Required if you plan to customise `ai/context_targets.yaml`; otherwise the script
-> will fall back to defaults.
+- Edit `ai/code_targets.yaml` so backend, frontend, and tests point to the directories in your host project (defaults assume `../src/backend`, `../src/frontend`, `../tests`).
+- (Optional) Edit `ai/context_targets.yaml` if your documentation (PRD, blueprint, UI/UX, etc.) lives outside the defaults.
 
-### 5. Point to Your Code Directories
-
-Update `ai/code_targets.yaml` so the engineering prompts know where to place application code, tests, and shared libraries in your host project.
-
-### 6. Validate Context
-
-Before first run:
+### 4. Validate Context
 
 ```bash
 npm run validate
 ```
 
-### 7. Submit an Idea or Change Request
+This enforces every quality gate declared in `ai/context.manifest.yaml`.
 
-Add your YAML prompt file under `change_requests/` or `ideas/`:
+### 5. Kick Off (Chat Mode)
 
-```yaml
-# change_requests/CR-0001_add_user_api.yaml
-title: Add user API endpoint
-description: >
-  Implement CRUD operations for user management.
-acceptance_criteria:
-  - API spec updated in openapi.yaml
-  - Code written to the configured backend/frontend targets (see ai/code_targets.yaml)
-  - Tests cover 90%+ lines
+Paste the snippet below into your coding assistant (Codex, Claude Code, Gemini Code, Cursor, etc.):
+
+```
+Read and follow:
+- autoforge/ai/context.manifest.yaml
+- autoforge/ai/agents.yaml
+- autoforge/ai/prompts/kickoff.yaml
+
+Set working dir to ./autoforge.
+List manifest entrypoints, confirm quality gates, and run the kickoff sequence:
+Product Manager → UI/UX Designer → Architect → Engineer → QA → Security → Performance → SRE → DevOps → Retrospective.
+Log outputs to autoforge/ai/logs/** and autoforge/ai/reports/**.
 ```
 
-Commit and push — the workflow does the rest.
+Continue prompting agent-by-agent as needed (e.g., `Execute autoforge/ai/prompts/fullstack_engineer.yaml`).
+
+## 🔁 Change Request Workflow
+
+1. Copy `change_requests/CR-0000_example.yaml` and fill in the summary, acceptance criteria, rollback plan, and affected areas.
+2. Commit/push the file. GitHub Actions will validate context and post a summary in the job log.
+3. Back in Chat Mode, run the chain:
+   - `Execute autoforge/ai/prompts/change_request.yaml`
+   - If UX is affected: `Execute autoforge/ai/prompts/uiux_designer.yaml`
+   - `Execute autoforge/ai/prompts/impact_analysis.yaml`
+   - Follow with Engineer → QA → Security → Performance → SRE → DevOps → Retrospective prompts
+4. Record results under the paths defined in each prompt (logs under `ai/logs/**`, reports under `ai/reports/**`).
 
 ---
 
@@ -151,7 +152,7 @@ You don’t need to fork this repo. Clone it into your project as a subfolder na
 
 ```bash
 cd /path/to/your-project
-git clone https://github.com/<your-org>/autoforge.git autoforge
+git clone https://github.com/cojacklabs/autoforge.git
 ```
 
 > Optional but recommended: update `autoforge/ai/code_targets.yaml` so the agents know where your project keeps application code, tests, and shared packages.
@@ -233,6 +234,7 @@ AutoForge enforces:
 - ✅ Architecture diagram available
 - ✅ PRD & research policy defined
 - ✅ Security checklist complete
+- ✅ Observability dashboards documented
 - ✅ Context validated before generation
 
 If any are missing, the system halts and raises a “Context Gap” report in `ai/logs/mastermind/`.
@@ -321,6 +323,7 @@ If you’d like to add new agent types, extend the runtime interface, or contrib
 ## 🌐 Links & Resources
 
 - 📘 Documentation: [`docs/`](docs/)
+- ⚡ Quickstart: [`docs/QUICKSTART.md`](docs/QUICKSTART.md)
 - 🧩 Prompts Library: [`ai/prompts/`](ai/prompts/)
 - 🧪 Change Requests: [`change_requests/`](change_requests/)
 - 🧠 Blueprint: [`docs/blueprint/`](docs/blueprint/)
