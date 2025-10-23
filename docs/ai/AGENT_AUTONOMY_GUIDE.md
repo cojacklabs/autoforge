@@ -42,7 +42,7 @@ This guide explains how the ROS AI agent network navigates and operates inside t
 - Keep the active memory file in `ai/memory/` current so future sessions inherit the latest state.
 - Enforce the commit/command rules documented in `docs/ai/COMMIT_PLAYBOOK.md` during reviews.
 - Verify semantic version changes are applied (or explicitly waived) per the playbook before approving merges.
-- Run `npm run update` periodically to pull upstream framework changes, reinstall dependencies, and rerun guardrails.
+- Run `npm run update` periodically to pull upstream framework changes, reinstall dependencies, and rerun guardrails (ensure both AutoForge and the host repo are clean first).
 - Maintain `ai/context_targets.yaml` so documentation references stay accurate.
 - Maintain `ai/code_targets.yaml` so engineering agents place code and tests in the correct host-project locations.
 - Use `ai/logs/uiux/` and `ai/reports/uiux/` to audit UI/UX decisions before engineering begins.

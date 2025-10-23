@@ -95,4 +95,8 @@ When new framework updates land upstream, run:
 npm run update
 ```
 
-The updater fetches from `origin`, fast-forwards your current branch, reinstalls dependencies, and runs `npm run validate`. Ensure your working tree is clean before executing it so local edits are not overwritten.
+The updater fetches from `origin`, fast-forwards your current branch, reinstalls dependencies, and runs `npm run validate`. Ensure both directories are clean before executing it:
+- `autoforge/` itself (the nested repo)
+- your host project repo (the parent directory where AutoForge lives)
+
+Commit or stash changes in both locations so local edits are not overwritten.

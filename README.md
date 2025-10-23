@@ -168,7 +168,7 @@ Keep your embedded toolkit current with:
 npm run update
 ```
 
-This command fetches the latest changes from `origin`, fast-forwards your current branch, reinstalls dependencies, and runs `npm run validate`. Make sure your working tree is clean (commit or stash changes) before running it.
+This command fetches the latest changes from `origin`, fast-forwards your current branch, reinstalls dependencies, and runs `npm run validate`. Make sure both the AutoForge folder **and** your host project repo (the parent directory) are clean—commit or stash changes—before running it so no local work is overwritten.
 
 ---
 

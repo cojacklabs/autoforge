@@ -10,6 +10,7 @@
 
 import { spawnSync } from "node:child_process";
 import { existsSync } from "node:fs";
+import { dirname, resolve, sep } from "node:path";
 import process from "node:process";
 
 const EXIT_ERROR = 1;
@@ -43,9 +44,37 @@ if (!existsSync(".git")) {
   fail("No .git directory found. Run this command from the root of the AutoForge repository.");
 }
 
+function findParentGitDir(startDir) {
+  let current = dirname(startDir);
+  const root = resolve(startDir.split(sep)[0] || sep);
+  while (current && current !== root) {
+    if (existsSync(resolve(current, ".git"))) {
+      return current;
+    }
+    const next = dirname(current);
+    if (next === current) {
+      break;
+    }
+    current = next;
+  }
+  return null;
+}
+
+const autoforgeRoot = process.cwd();
+const hostRepoRoot = findParentGitDir(autoforgeRoot);
+
 const statusOutput = runCommandCapture("git", ["status", "--porcelain"]);
 if (statusOutput.length > 0) {
   fail("Working tree is dirty. Please commit or stash your changes before running the updater.");
+}
+
+if (hostRepoRoot && hostRepoRoot !== autoforgeRoot) {
+  const hostStatus = runCommandCapture("git", ["-C", hostRepoRoot, "status", "--porcelain"]);
+  if (hostStatus.length > 0) {
+    fail(
+      `Host project at ${hostRepoRoot} has uncommitted changes. Commit or stash them before updating AutoForge to avoid overwriting your work.`
+    );
+  }
 }
 
 const currentBranch = runCommandCapture("git", ["rev-parse", "--abbrev-ref", "HEAD"]) || "main";
