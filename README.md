@@ -39,6 +39,7 @@ AutoForge expects at least one idea file before kickoff.
   The agent writes the filled template plus notes under `ai/logs/research/`.
 
 Continue iterating with the assistant until the idea reflects what you want built.
+Record the most important decisions or clarifications in `ai/memory/` so future sessions inherit the same story.
 
 ---
 
@@ -67,6 +68,7 @@ This enforces everything in `ai/context.manifest.yaml` (PRD present, diagrams ex
 - Remind the agent to log discoveries under `ai/logs/**` and summaries under `ai/reports/**` so you can audit each step.
 - Use change requests when the scope shifts; the prompts walk the agent through impact analysis and give you checkpoints to accept or redirect work.
 - Expect the agent to ask before running package installs, migrations, or touching files outside the declared targets—approve or deny explicitly to keep control of your repo.
+- Keep an active memory file under `ai/memory/` up to date after each session; direct new assistants to review it before continuing work.
 
 ---
 

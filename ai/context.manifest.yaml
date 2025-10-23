@@ -13,6 +13,7 @@ context_roots:
   requests: "change_requests"
   ideas: "ideas"
   research: "research"
+  memory: "ai/memory"
   uiux: "docs/uiux"
   observability: "docs/observability"
   perf: "docs/perf"
@@ -42,6 +43,7 @@ include_globs:
   - "docs/uiux/**/*.md"
   - "docs/observability/**/*.md"
   - "docs/perf/**/*.md"
+  - "ai/memory/**/*.{md,yml,yaml}"
 
 exclusions:
   - "ai/logs/**"
@@ -81,4 +83,4 @@ notes: |
   Update include_globs or entrypoints whenever documentation moves; otherwise agents
   will raise context gap alerts. Keep governance assets under /docs, operational
   policies under /devops and /security, and leave /ai for manifests, prompts, logs,
-  and agent-generated reports.
+  agent-generated reports, and shared memory snapshots.

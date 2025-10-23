@@ -6,6 +6,7 @@ inputs:
   - "docs/blueprint/spec.md"
   - "docs/blueprint/tech.md"
   - "ai/code_targets.yaml"
+  - "ai/memory/*.yaml"
 constraints:
   - Consult ai/code_targets.yaml to determine where application code and tests belong (defaults point to ../src/backend, ../src/frontend, and ../tests).
   - Commit backend application code under code_targets.backend.path and frontend code under code_targets.frontend.path.
@@ -13,6 +14,7 @@ constraints:
   - Follow security headers and auth flows defined in security/security_readiness.md.
   - When executing shell commands switch `cwd` to each target path as needed, then return to ./autoforge for documentation updates.
   - Announce and seek approval for any command that installs packages, performs migrations, or writes outside the declared code targets.
+  - Check ai/memory/ for engineering follow-ups and append a summary of completed work and new risks before handing off.
 deliverables:
   - "Backend code under code_targets.backend.path (see ai/code_targets.yaml)"
   - "Frontend code under code_targets.frontend.path (see ai/code_targets.yaml)"

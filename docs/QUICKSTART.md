@@ -27,6 +27,12 @@ Help me capture the vision for this project.
 
 The agent will interview you and save the idea under `ideas/` plus a summary in `ai/logs/`.
 
+### Seed shared memory
+
+- Copy `ai/memory/MEMORY_TEMPLATE.yaml` to `ai/memory/MEMORY_active.yaml` (or another descriptive name).
+- Capture the latest decisions, corrections, and open questions after each working session.
+- When you start a new Chat Mode run—or swap to a different coding agent—tell it to review the active memory file before continuing the work.
+
 ## 4. Validate Quality Gates
 
 ```bash
@@ -63,6 +69,7 @@ Fill in summary, acceptance criteria, rollback plan. Commit/push and follow the 
 > Guidance for humans & agents
 >
 > - Capturing ideas, refining change requests, and logging updates all happen inside `./autoforge`.
+> - Keep the shared memory file in `ai/memory/` up to date; new agents should review it before acting.
 > - Engineering prompts step out only through the directories listed in `ai/code_targets.yaml`—update that file before coding.
 > - Agents should announce package installs, migrations, or debugging commands in advance so you can approve or redirect them.
 

@@ -12,3 +12,4 @@ Once committed, the change-request workflow validates context and instructs you 
 - Keep the assistant in `./autoforge` while you draft and review the YAML so planning artifacts stay scoped.
 - When the engineer agent picks up the change, it should use the paths in `ai/code_targets.yaml` for code/test edits and return here to log outcomes.
 - Correct misunderstandings by editing the request file or replying with clarifications—the approval flow treats the YAML as the source of truth.
+- Update the project memory file (`ai/memory/*.yaml`) with approved decisions, blocked items, and next actions before closing the request.

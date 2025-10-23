@@ -16,6 +16,7 @@ Read and follow:
 Confirm when you have loaded all files, list the available entrypoints from the manifest,
 and acknowledge readiness to run the kickoff sequence (Product Manager → Architect →
 Full-Stack Engineer → QA → Security → DevOps → Retrospective). Do not code yet.
+Review the latest memory file in ai/memory/ before proceeding.
 ```
 
 ```
@@ -28,10 +29,12 @@ Read and follow:
 Confirm when you have loaded all files, list the available entrypoints from the manifest,
 and acknowledge readiness to run the kickoff sequence (Product Manager → Architect →
 Full-Stack Engineer → QA → Security → DevOps → Retrospective). Do not code yet.
+Review the latest memory file in autoforge/ai/memory/ before proceeding.
 ```
 
 After the assistant acknowledges, instruct it to set the working directory to `./autoforge`
 so all outputs remain inside the AutoForge folder.
+Then confirm it has absorbed the active project memory so it continues from the latest state.
 
 ## Repository Checklist
 
@@ -45,6 +48,7 @@ Ensure an idea exists before running kickoff (fill ideas/IDEA\_\*.yaml or run th
 - `security/security_readiness.md`
 - `devops/devops.yaml`
 - `ideas/`, `research/`, and `change_requests/` for intake workflows
+- `ai/memory/` with an active memory file tracking recent decisions and follow-ups
 - `scripts/validate_context.sh` for quality gate verification
 
 > When AutoForge is embedded in another project, these paths reside under `./autoforge/`.
@@ -58,5 +62,6 @@ engineering prompts know where to place application code and tests in your proje
 1. Share the product vision and success metrics with the Product Manager agent (execute the kickoff prompt via your coding AI, using either `ai/prompts/kickoff.yaml` or `autoforge/ai/prompts/kickoff.yaml`).
 2. Allow the chain to progress through each role (Product Manager → UI/UX Designer → Architect → Full-Stack Engineer → QA → Security → DevOps → Retrospective). Each agent leaves artifacts in its designated directory.
 3. Review the retrospective in `ai/reports/` and issue GO/NO-GO.
+4. Append major decisions, corrections, and outstanding actions to the shared memory file (`ai/memory/*.yaml`) before ending the session.
 
 For incremental work, use the change request workflow described in `docs/ai/CHANGE_MANAGEMENT_GUIDE.md`.

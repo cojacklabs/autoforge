@@ -6,6 +6,7 @@ objective: >
 inputs: []
 constraints:
   - Load ai/context.manifest.yaml and ai/agents.yaml before doing anything else.
+  - Review the latest memory entries under ai/memory/ to understand prior sessions.
   - Begin with the Product Manager agent as step one.
   - Enforce GO/NO-GO approval before production deployment.
   - Log all reasoning to ai/logs/mastermind/.
@@ -42,3 +43,4 @@ notes: |
   including UI/UX design. For day-to-day changes, prefer the change_request + impact_analysis
   workflow triggered via CI.
   - Call out any command that installs packages, runs migrations, or touches files outside the declared code targets so the human facilitator can approve before you proceed.
+  - Update the active memory file with decisions, corrections, and follow-ups before handing off to the next agent.
