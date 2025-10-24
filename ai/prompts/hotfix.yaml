@@ -9,6 +9,7 @@ constraints:
   - Require reproducer steps and failing tests before code changes.
   - Enforce rollback plan and postmortem summary.
   - Limit scope to the defect unless human approver expands it.
+  - Review the Progress & Next Steps section in ai/AGENTS.md to stay aligned with active work.
   - Follow docs/ai/COMMIT_PLAYBOOK.md for command declarations and commit messages; flag fixes with the incident id.
   - Bump the patch version in the relevant manifest (e.g., package.json) unless the human explicitly defers it, and note the increment in the commit body.
 deliverables:

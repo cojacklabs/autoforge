@@ -20,3 +20,13 @@ This document summarizes the autonomous roles that collaborate on the ROS AI pla
 - If an agent cannot satisfy its constraints, it halts and escalates to the previous agent or human operator.
 
 Refer to the prompts for detailed instructions, constraints, and deliverable formats.
+
+## Progress & Next Steps
+
+**Current Progress**
+- 2025-10-24: Published AutoForge v1.1.0 to npm (`npm install --save-dev autoforge`), shipped CLI (`autoforge init|upgrade|validate|doctor|version`), and updated docs to reflect the npm workflow.
+
+**Upcoming / To Do**
+1. Announce the npm release across CoJack Labs channels and gather feedback.
+2. Monitor early adopters, capture issues/feature requests, and plan the v1.1.1 patch.
+3. Expand automated smoke tests to install from the published tarball in CI.

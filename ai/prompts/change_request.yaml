@@ -11,6 +11,7 @@ constraints:
   - Maintain backward compatibility when feasible.
   - Enforce QA and Security quality gates before merge.
   - Log every step to ai/logs/mastermind/.
+  - Review current progress and upcoming actions in ai/AGENTS.md before orchestrating follow-up work.
   - Keep change-request artifacts (logs/reports) inside this repository; later engineering prompts may write code outside according to ai/code_targets.yaml.
 deliverables:
   - "ai/reports/change_request_{{date}}.md"

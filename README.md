@@ -1,5 +1,7 @@
 # 🧠 AutoForge — Embedded Multi-Agent SDLC
 
+[![npm version](https://img.shields.io/npm/v/autoforge?color=0f9d58&label=autoforge)](https://www.npmjs.com/package/autoforge)
+
 AutoForge lives as `./autoforge/` inside your existing project so coding assistants can plan, design, and ship software autonomously. Planning artifacts stay inside `autoforge/`, while application code and tests write to your project paths (configured via `ai/code_targets.yaml`).
 
 > 📘 Short on time? See [docs/QUICKSTART.md](docs/QUICKSTART.md). Need prompt examples? See [docs/prompt_handbook.md](docs/prompt_handbook.md).

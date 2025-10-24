@@ -5,6 +5,8 @@
 **/logs/uiux/*
 !**/logs/.gitkeep
 !**/logs/**/.gitkeep
+ai/memory/*
+!ai/memory/MEMORY_TEMPLATE.yaml
 *.log
 temp/
 *.tmp
@@ -17,6 +19,9 @@ build/
 .idea/
 *.lock
 package-lock.json
+*.zip
+*.tgz
+*.tar
 *.swp
 *.bak
 *.old
