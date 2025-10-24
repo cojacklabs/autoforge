@@ -2,19 +2,20 @@
 
 Follow these steps to run AutoForge inside an existing project using Chat Mode.
 
-## 1. Clone & Install
+## 1. Install & Initialize
 
 ```bash
-cd /path/to/your-project
-git clone https://github.com/<your-org>/autoforge.git autoforge
-cd autoforge
-npm install
+npm install --save-dev autoforge
+npx autoforge init
 ```
+
+This scaffolds `autoforge/` in your repo, writes `autoforge.config.json`, and installs dependencies so the framework is ready for your coding assistant.
 
 ## 2. Configure Paths
 
 - Edit `ai/code_targets.yaml` to point at your backend, frontend, and tests directories.
 - (Optional) edit `ai/context_targets.yaml` if your PRD/blueprint/UI/UX docs live outside the defaults.
+- Update `autoforge.config.json` if you want to override defaults or enable optional modules.
 
 ## 3. Capture the Idea
 
@@ -36,7 +37,7 @@ The agent will interview you and save the idea under `ideas/` plus a summary in 
 ## 4. Validate Quality Gates
 
 ```bash
-npm run validate
+npx autoforge validate
 ```
 
 ## 5. Kick Off (Chat Mode)
@@ -82,7 +83,8 @@ For single-issue bug fixes that cannot wait for the full change-request workflow
 To create `REPOMIX.md` for the host project:
 
 ```bash
-npm run repomix -- ..  # run from ./autoforge
+cd autoforge
+npm run repomix -- ..
 ```
 
 This generates a flattened context summary in the parent directory so AI tools see the whole repository.
@@ -92,9 +94,8 @@ This generates a flattened context summary in the parent directory so AI tools s
 When new framework updates land upstream, run:
 
 ```bash
-npm run update
+npm update autoforge
+npx autoforge upgrade
 ```
 
-The updater fetches from `origin`, fast-forwards your current branch, reinstalls dependencies, and runs `npm run validate`. Any local edits in `autoforge/` are automatically stashed and restored after the update (resolve conflicts if Git warns). Your host project repo is not touched.
-
-Afterwards, log the update in `ai/memory/` and tell your coding assistant to reload the core manifests (`ai/context.manifest.yaml`, `ai/agents.yaml`, `docs/ai/COMMIT_PLAYBOOK.md`) the next time you kick off a session.
+The CLI auto-stashes your `autoforge/` edits, applies the latest framework, reinstalls dependencies, and restores data directories (logs, memory, change requests). Resolve conflicts if Git raises any, rerun `npx autoforge validate`, log the upgrade in memory, and ask your coding assistant to reload the manifests/playbook.

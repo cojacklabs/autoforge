@@ -140,10 +140,9 @@ Every major folder (ideas, research, docs, qa, devops, ai) now includes a `READM
 2. **Add a root-level README** with a clear “Getting Started” section and Kickoff command snippet:
 
    ```
-   git clone https://github.com/juntosgroup/autoforge.git
-   cd autoforge
-   npm run validate
-   autoforge run kickoff
+   npm install --save-dev autoforge
+   npx autoforge init
+   npx autoforge validate
    ```
 
 3. **Publish a quick-start guide** (`/docs/QUICKSTART.md`) for external devs.

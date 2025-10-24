@@ -1,0 +1,12 @@
+{
+  "codeTargets": {
+    "backend": "../src/backend",
+    "frontend": "../src/frontend",
+    "tests": "../tests"
+  },
+  "overridesDir": "autoforge_overrides",
+  "features": {
+    "exampleApp": false,
+    "securityChecklists": true
+  }
+}

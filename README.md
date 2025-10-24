@@ -6,27 +6,35 @@ AutoForge lives as `./autoforge/` inside your existing project so coding assista
 
 ---
 
-## 1. Clone AutoForge into your project
+## 1. Install AutoForge via npm
 
 ```bash
-cd /path/to/your-project
-git clone https://github.com/cojacklabs/autoforge.git autoforge
-cd autoforge
-npm install
+npm install --save-dev autoforge
 ```
 
 ---
 
-## 2. Configure paths once
+## 2. Initialize the framework
+
+```bash
+npx autoforge init
+```
+
+This copies the framework into `./autoforge/`, generates `autoforge.config.json`, installs dependencies, and keeps the structure your agents expect.
+
+---
+
+## 3. Configure paths once
 
 - Edit `ai/code_targets.yaml` so `backend`, `frontend`, and `tests` point to real directories in your project (defaults assume `../src/backend`, `../src/frontend`, `../tests`).
 - (Optional) Edit `ai/context_targets.yaml` if your documentation (PRD/blueprint/UI/UX) lives outside the defaults.
+- Adjust `autoforge.config.json` to set additional overrides (custom feature flags, optional modules, etc.).
 
 You’ve now told the agents where planning docs live and where to generate code.
 
 ---
 
-## 3. Capture the idea (human ↔️ AI conversation)
+## 4. Capture the idea (human ↔️ AI conversation)
 
 AutoForge expects at least one idea file before kickoff.
 
@@ -43,10 +51,10 @@ Record the most important decisions or clarifications in `ai/memory/` so future 
 
 ---
 
-## 4. Validate quality gates
+## 5. Validate quality gates
 
 ```bash
-npm run validate
+npx autoforge validate
 ```
 
 This enforces everything in `ai/context.manifest.yaml` (PRD present, diagrams exist, security checklist ready, observability docs, etc.). If something is missing, fix it before moving on.
@@ -74,7 +82,7 @@ This enforces everything in `ai/context.manifest.yaml` (PRD present, diagrams ex
 
 ---
 
-## 5. Kick off with your coding AI
+## 6. Kick off with your coding AI
 
 Paste the snippet below into your coding assistant (Codex, Claude Code, Gemini Code, Cursor, etc.). This sets the stage for multi-agent handoffs.
 
@@ -103,7 +111,7 @@ Refer to [docs/prompt_handbook.md](docs/prompt_handbook.md) for ready-made snipp
 
 ---
 
-## 6. Change request workflow (human ↔️ AI loop)
+## 7. Change request workflow (human ↔️ AI loop)
 
 1. Copy `change_requests/CR-0000_example.yaml`, fill out summary, acceptance criteria, rollback plan, etc.
 2. Commit/push the file. The GitHub Action validates and posts instructions in the run summary.
@@ -118,7 +126,7 @@ Refer to [docs/prompt_handbook.md](docs/prompt_handbook.md) for ready-made snipp
 
 ---
 
-## 7. Stage gate checklist
+## 8. Stage gate checklist
 
 Tick these items before shipping a slice:
 
@@ -136,7 +144,7 @@ Tick these items before shipping a slice:
 
 ---
 
-## 8. Demo slice (optional)
+## 9. Demo slice (optional)
 
 Need a sample to test? Point `ai/code_targets.yaml` to the demo directories and try:
 
@@ -148,7 +156,7 @@ CI already runs this example as part of `.github/workflows/ci.yml`.
 
 ---
 
-## 9. Generate REPOMIX snapshot (optional)
+## 10. Generate REPOMIX snapshot (optional)
 
 From `./autoforge`:
 
@@ -160,27 +168,30 @@ This creates `../REPOMIX.md` so AI tools can ingest the entire host project.
 
 ---
 
-## 10. Update AutoForge
-
-Keep your embedded toolkit current with:
+## 11. Update AutoForge
 
 ```bash
-npm run update
+npm update autoforge
+npx autoforge upgrade
 ```
 
-This command fetches the latest changes from `origin`, fast-forwards your current branch, reinstalls dependencies, and runs `npm run validate`. Any local changes inside `autoforge/` are stashed automatically and re-applied afterward; if conflicts arise, Git will prompt you to resolve them before continuing. Changes in your host project stay untouched.
+The CLI auto-stashes any local changes inside `autoforge/`, applies the latest framework snapshot, reinstalls dependencies, and restores your data directories (`ai/memory`, `ai/logs`, `change_requests`, etc.). If Git reports conflicts, resolve them, then rerun `npx autoforge validate`.
 
-After a successful update:
-- Add a short note to your active memory file in `ai/memory/` describing the new framework commit or key changes.
-- In the next agent session, instruct your assistant to re-read `ai/context.manifest.yaml`, `ai/agents.yaml`, and `docs/ai/COMMIT_PLAYBOOK.md` so it operates with the updated guidance.
+After upgrading:
+- Note the change in your active memory file so the next session knows which rules changed.
+- Tell your assistant to reload `autoforge/ai/context.manifest.yaml`, `autoforge/ai/agents.yaml`, and `docs/ai/COMMIT_PLAYBOOK.md`.
 
 ---
 
-## 11. Helpful npm scripts
+## 12. CLI reference
 
-- `npm run validate` — ensures required docs/gates exist (`ai/context_targets.yaml` overrides respected).
-- `npm run repomix -- [path]` — generates `REPOMIX.md` using the devDependency `repomix`.
-- `npm run update` — fetches and applies the latest AutoForge updates, reinstalls dependencies, and runs validation.
+- `autoforge init [--force]` — scaffold or refresh `./autoforge/` and create `autoforge.config.json`.
+- `autoforge upgrade` — replace framework-managed files while preserving logs, memory, ideas, and change requests.
+- `autoforge validate` — runs the quality gate checks.
+- `autoforge doctor` — verifies required files and config are present.
+- `autoforge version` — prints the installed package version.
+
+Need framework commands from inside CI or scripts? Prefix with `npx` (e.g., `npx autoforge validate`).
 
 ---
 
