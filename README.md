@@ -1,6 +1,6 @@
 # 🧠 AutoForge — Embedded Multi-Agent SDLC
 
-[![npm version](https://img.shields.io/npm/v/autoforge?color=0f9d58&label=autoforge)](https://www.npmjs.com/package/autoforge)
+[![npm version](https://img.shields.io/npm/v/autoforge?color=0f9d58&label=autoforge)](https://www.npmjs.com/package/@cojacklabs/autoforge)
 
 AutoForge lives as `autoforge/` inside your existing project so coding assistants can plan, design, and ship software autonomously. Planning artifacts stay inside `autoforge/`, while application code and tests write to your project paths.
 
@@ -255,3 +255,9 @@ Need framework commands from inside CI or scripts? Prefix with `npx` (e.g., `npx
 - 📦 Example project: [`examples/fullstack_todo_app/`](examples/fullstack_todo_app/)
 
 > “AutoForge lets you build software at the speed of thought — ideas in, deployments out.”
+
+---
+
+## License
+
+Released under the [MIT License](LICENSE). © 2025 CoJack Labs.

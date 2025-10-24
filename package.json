@@ -1,8 +1,9 @@
 {
   "name": "@cojacklabs/autoforge",
-  "version": "1.1.1",
+  "version": "1.1.2",
   "type": "module",
   "private": false,
+  "license": "MIT",
   "scripts": {
     "format": "prettier --write \"**/*.{js,jsx,ts,tsx,json,md,yaml,yml}\"",
     "format:check": "prettier --check \"**/*.{js,jsx,ts,tsx,json,md,yaml,yml}\"",
@@ -18,7 +19,8 @@
   "files": [
     "dist",
     "bin/autoforge.js",
-    "scripts"
+    "scripts",
+    "LICENSE"
   ],
   "dependencies": {
     "glob": "^10.3.0",
