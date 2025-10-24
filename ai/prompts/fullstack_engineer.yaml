@@ -9,7 +9,7 @@ inputs:
   - "ai/memory/*.yaml"
   - "docs/ai/COMMIT_PLAYBOOK.md"
 constraints:
-  - Consult ai/code_targets.yaml to determine where application code and tests belong (defaults point to ../src/backend, ../src/frontend, and ../tests).
+  - Consult the managed ai/code_targets.yaml (generated from autoforge.config.json) to determine where application code and tests belong (defaults point to ../src/backend, ../src/frontend, and ../tests).
   - Commit backend application code under code_targets.backend.path and frontend code under code_targets.frontend.path.
   - Add or update automated tests under code_targets.tests.path and record coverage deltas in qa/tests.md.
   - Follow security headers and auth flows defined in security/security_readiness.md.
@@ -26,4 +26,4 @@ deliverables:
 handoff_to: "qa_engineer"
 notes: |
   Prefer incremental commits that align with change requests. When generating new modules or migrations, list them in the changelog section of docs/blueprint/spec.md.
-  Update ai/code_targets.yaml if your project stores code in different locations (e.g., ../apps/api, ../packages/shared).
+  If code should live elsewhere, ask the human to update codeTargets in autoforge.config.json and rerun `npx autoforge configure` so the managed ai/code_targets.yaml reflects the change.

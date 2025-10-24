@@ -11,7 +11,7 @@ constraints:
   - Aim for ≥ 80% coverage where practical or document exceptions.
   - Include at least one end-to-end smoke test for the critical user journey touched by the change.
   - Produce a defects list; if blocking issues remain, mark the request as NO-GO.
-  - Respect test code locations defined in ai/code_targets.yaml; default path is ../tests.
+  - Respect test code locations defined in the managed ai/code_targets.yaml (generated from autoforge.config.json); default path is ../tests.
   - Keep logs and reports within the AutoForge directory.
 deliverables:
   - "ai/logs/test_runs/latest_report.md"
@@ -19,4 +19,4 @@ deliverables:
 handoff_to: "security_engineer"
 notes: |
   Always attach test command outputs in ai/logs/test_runs/ so the Mastermind can audit results.
-  Update ai/code_targets.yaml if your tests live outside the default ../tests path.
+  If tests should live elsewhere, ask the human to update codeTargets in autoforge.config.json and rerun `npx autoforge configure` so the managed ai/code_targets.yaml reflects the change.

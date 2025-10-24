@@ -25,7 +25,7 @@ Use this checklist whenever an agent is about to commit code, run automated tool
 ## Command execution protocol
 
 1. **Declare intent** – State the command, why it is needed, and expected outputs before running anything that mutates state (installs, migrations, formatters).
-2. **Use explicit working directories** – Planning commands run from `./autoforge`; code/test commands run in the directory declared by `ai/code_targets.yaml`.
+2. **Use explicit working directories** – Planning commands run from `./autoforge`; code/test commands run in the directories defined in `autoforge.config.json` (mirrored to `ai/code_targets.yaml`).
 3. **Capture results** – Summarise command output in the log; save large logs under `ai/logs/**` rather than pasting into chat.
 4. **Rollback plan** – If the command fails or produces unexpected artifacts, describe how to undo the change or request human guidance.
 

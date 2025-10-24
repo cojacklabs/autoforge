@@ -36,4 +36,4 @@ steps:
       Ensure follow-on agents acknowledge the request and the human approver receives status.
 notes: |
   Invoked automatically by .github/workflows/agent-change-processor.yml when a file lands in change_requests/.
-  Consult ai/context_targets.yaml if documentation spans multiple locations.
+  Consult the managed ai/context_targets.yaml (generated from autoforge.config.json) and coordinate with the human if documentation spans multiple locations.

@@ -1,13 +1,13 @@
 {
-  "name": "autoforge",
-  "version": "1.1.0",
+  "name": "@cojacklabs/autoforge",
+  "version": "1.1.1",
   "type": "module",
   "private": false,
   "scripts": {
     "format": "prettier --write \"**/*.{js,jsx,ts,tsx,json,md,yaml,yml}\"",
     "format:check": "prettier --check \"**/*.{js,jsx,ts,tsx,json,md,yaml,yml}\"",
     "validate": "node ./scripts/validate_context.js",
-    "repomix": "node ./scripts/generate_repomix.js",
+    "snapshot": "node ./scripts/generate_snapshot.js",
     "update": "node ./scripts/update_autoforge.js",
     "build": "node ./scripts/build_dist.js",
     "prepack": "npm run build"
@@ -17,13 +17,19 @@
   },
   "files": [
     "dist",
-    "bin/autoforge.js"
+    "bin/autoforge.js",
+    "scripts"
   ],
-  "devDependencies": {
+  "dependencies": {
+    "glob": "^10.3.0",
     "ignore": "^5.3.1",
-    "prettier": "^3.3.3",
     "repomix": "^1.1.0",
-    "yaml": "^2.4.2",
-    "glob": "^10.3.0"
+    "yaml": "^2.4.2"
+  },
+  "devDependencies": {
+    "prettier": "^3.3.3"
+  },
+  "publishConfig": {
+    "access": "public"
   }
 }

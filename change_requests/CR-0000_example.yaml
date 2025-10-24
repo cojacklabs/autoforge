@@ -13,11 +13,11 @@ impact:
     - autoforge/tests
     - autoforge/docs/uiux
 acceptance_criteria:
-  - "Given the new feature, when the analyst submits data, then the system stores it in the new schema under the configured app_sources path (see ai/code_targets.yaml)."
+  - "Given the new feature, when the analyst submits data, then the system stores it in the new schema under the configured app_sources path (see codeTargets in autoforge.config.json / ai/code_targets.yaml)."
   - "All automated tests under the configured tests path pass in CI."
 rollback_plan: "Revert to previous release by redeploying tag vX.Y.Z."
 dependencies:
   - "Update autoforge/api/openapi.yaml"
 notes: |
   Reference any supporting research or decisions.
-  Adjust acceptance criteria paths if you customize ai/code_targets.yaml.
+  Adjust acceptance criteria paths if you customize `codeTargets` in autoforge.config.json (then rerun `npx autoforge configure`).

@@ -1,6 +1,6 @@
-# AutoForge context target overrides.
-# Update the paths below if your project stores documentation outside the default AutoForge folders.
-# All paths are evaluated relative to this file. Leave entries untouched to use the defaults.
+# AutoForge context target overrides (managed).
+# Edit autoforge.config.json instead of modifying this file directly.
+# Paths are relative to the AutoForge directory unless noted otherwise.
 
 context_targets:
   required_files:

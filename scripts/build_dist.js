@@ -26,7 +26,11 @@ async function createIgnoreMatcher() {
   const gitignorePath = path.join(repoRoot, ".gitignore");
   try {
     const gitignoreContents = await readFile(gitignorePath, "utf8");
-    ig.add(gitignoreContents.split(/\r?\n/).filter((line) => line && !line.startsWith("#")));
+    ig.add(
+      gitignoreContents
+        .split(/\r?\n/)
+        .filter((line) => line && !line.startsWith("#")),
+    );
   } catch (err) {
     if (err.code !== "ENOENT") {
       throw err;
@@ -62,7 +66,7 @@ async function build() {
       filter: (src) => {
         const rel = path.relative(repoRoot, src);
         return !isExcluded(rel);
-      }
+      },
     });
   }
   console.log(`✅ Built AutoForge distribution in ${distDir}`);

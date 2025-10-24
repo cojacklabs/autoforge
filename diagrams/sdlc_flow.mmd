@@ -18,7 +18,7 @@ flowchart LR
     C:::stage -- specs & diagrams --> C1[docs/blueprint/*.md, diagrams/*.mmd]
     C:::stage -- API contract --> C2[api/openapi.yaml]
     D:::stage -- scoped CR --> D1[change_requests/CR-*.yaml]
-    E:::stage -- code targets --> E1[ai/code_targets.yaml -> ../src, ../tests]
+    E:::stage -- code targets --> E1[autoforge.config.json (codeTargets) -> ../src, ../tests]
     F:::stage -- defect logs --> F1[ai/logs/test_runs/*, qa/reports/defects.md]
     G:::stage -- QA plan --> G1[qa/tests.md]
     H:::stage -- runbooks & logs --> H1[devops/runbooks/deploy.md, ai/logs/deployments/*]

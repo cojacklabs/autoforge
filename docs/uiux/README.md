@@ -34,7 +34,7 @@ When running the UI/UX Designer prompt, ensure:
 
 - Working directory is set to the AutoForge folder.
 - All generated artifacts remain within `docs/uiux/` or `ai/reports/uiux/`.
-- Front-end engineers consult `ai/code_targets.yaml` to implement the designs in
+- Front-end engineers consult the managed `ai/code_targets.yaml` (generated from autoforge.config.json) to implement the designs in
   the host project’s codebase.
 - Execute `ai/prompts/uiux_designer.yaml` (or `autoforge/ai/prompts/uiux_designer.yaml` when embedded) to populate and maintain these files.
 
@@ -49,4 +49,4 @@ Log a summary under ai/reports/uiux/.
 ## Prompts
 
 - `autoforge/ai/prompts/uiux_designer.yaml`
-- Reference `ai/context_targets.yaml` if assets live elsewhere.
+- Reference `autoforge.config.json` (contextTargets) / the managed `ai/context_targets.yaml` if assets live elsewhere.

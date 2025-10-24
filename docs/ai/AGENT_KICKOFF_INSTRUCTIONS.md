@@ -54,8 +54,8 @@ Ensure an idea exists before running kickoff (fill ideas/IDEA\_\*.yaml or run th
 
 > When AutoForge is embedded in another project, these paths reside under `./autoforge/`.
 
-Also review `ai/context_targets.yaml` (or `autoforge/ai/context_targets.yaml`) if your documentation lives outside the defaults, and update it accordingly.
-Also review `ai/code_targets.yaml` (or `autoforge/ai/code_targets.yaml`) so the
+Also review the managed `ai/context_targets.yaml` (or `autoforge/ai/context_targets.yaml`); if documentation lives outside the defaults, ask the human to update `contextTargets` in autoforge.config.json and rerun `npx autoforge configure`.
+Also review the managed `ai/code_targets.yaml` (or `autoforge/ai/code_targets.yaml`) so the
 engineering prompts know where to place application code and tests in your project.
 
 ## How To Trigger

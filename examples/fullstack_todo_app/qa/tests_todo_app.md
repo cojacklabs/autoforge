@@ -10,4 +10,4 @@
 ## Notes
 
 - Update this matrix as features land.
-- Tests should run in the directory configured via ai/code_targets.yaml.
+- Tests should run in the directory configured via `codeTargets` in autoforge.config.json (mirrored to ai/code_targets.yaml).

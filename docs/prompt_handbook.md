@@ -6,7 +6,7 @@ Use these patterns when working with coding assistants (Codex, Claude Code, Gemi
 
 ```
 The AutoForge folder is located at ./autoforge. Treat that directory as your working root.
-Code should be written to the paths defined in autoforge/ai/code_targets.yaml.
+Code should be written to the paths defined in autoforge.config.json (mirrored to autoforge/ai/code_targets.yaml).
 ```
 
 ## 2. Load mandatory context
@@ -19,31 +19,48 @@ Read the following files:
 - For kickoff: autoforge/ai/prompts/kickoff.yaml
 ```
 
-## 3. Capture the vision (idea stage)
+## 3. Explore the vision (high reasoning)
+
+```
+Execute autoforge/ai/prompts/idea_conversation.yaml
+Partner with me on the product vision. Ask layered questions about user goals,
+platform (web/mobile/desktop/framework), data, integrations, and delivery cadence.
+Summarise decisions under ideas/ and ai/logs/ideas/.
+```
+
+## 4. Capture the vision (idea stage template)
 
 ```
 Execute autoforge/ai/prompts/discovery_researcher.yaml
 Help me capture the project idea by asking targeted questions.
 ```
 
-## 4. Create structured plans
+## 5. Create structured plans
 
 ```
 Execute autoforge/ai/prompts/idea_intake.yaml
 Using ideas/IDEA-2025...yaml and the discovery note, produce the idea intake plan.
 ```
 
-## 5. Kickoff / Change flow
+## 6. Share repository context
+
+```
+Execute autoforge/ai/prompts/context_snapshot.yaml
+Run `npx autoforge snapshot` to regenerate REPO.md and brief me on the layout,
+tech stack, and hotspots the next agents should prioritise.
+```
+
+## 7. Kickoff / Change flow
 
 Refer to kickoff snippet in README or Quickstart. After kickoff, target prompts role-by-role (`Execute autoforge/ai/prompts/architect.yaml`, etc.).
 
-## 6. Record decisions
+## 8. Record decisions
 
 ```
 Write a summary of this discussion to autoforge/ai/logs/research/...
 ```
 
-## 7. Give go/no-go
+## 9. Give go/no-go
 
 ```
 The idea is approved. Please begin the full kickoff sequence.

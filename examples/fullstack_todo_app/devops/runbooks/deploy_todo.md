@@ -1,6 +1,6 @@
 # Deployment Runbook – Team Todo App
 
-1. Ensure `ai/code_targets.yaml` paths are configured for backend/frontend.
+1. Ensure `codeTargets` in `autoforge.config.json` are configured for backend/frontend (then run `npx autoforge configure`).
 2. Validate context:
    ```bash
    cd autoforge

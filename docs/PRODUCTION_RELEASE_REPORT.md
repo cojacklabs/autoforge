@@ -38,8 +38,8 @@ It confirms that AutoForge now satisfies **every requirement for full autonomy**
 | **1. Planning & Requirements**      | `ideas/`, `research/`, `docs/prd/`, `docs/blueprint/` | ✅     |
 | **2. Architecture & Tech Stack**    | `api/openapi.yaml`, `diagrams/*.mmd`                  | ✅     |
 | **3. UI/UX Design**                 | `docs/uiux/*`, `ai/prompts/uiux_designer.yaml`        | ✅     |
-| **4. Backend Dev**                  | `ai/code_targets.yaml` → backend path                 | ✅     |
-| **5. Frontend Dev**                 | `ai/code_targets.yaml` → frontend path                | ✅     |
+| **4. Backend Dev**                  | `autoforge.config.json` (codeTargets) → backend path  | ✅     |
+| **5. Frontend Dev**                 | `autoforge.config.json` (codeTargets) → frontend path | ✅     |
 | **6. Testing & QA**                 | `qa/tests.md`, `ai/logs/test_runs/**`                 | ✅     |
 | **7. Deployment & Release**         | `.github/workflows/deploy.yml`, `devops/`             | ✅     |
 | **8. Monitoring & Maintenance**     | `devops/devops.yaml`, `docs/observability/`           | ✅     |
@@ -76,17 +76,18 @@ Added `docs/uiux/` containing:
 
 These provide the visual and experiential foundation for all front-end generation tasks.
 
-### 2. Expanded `ai/code_targets.yaml`
+### 2. Expanded `autoforge.config.json` (codeTargets)
 
-Defines explicit directories for backend, frontend, and tests to ensure deterministic agent output.
+Defines explicit directories for backend, frontend, and tests to ensure deterministic agent output. Regenerate the managed YAML with `npx autoforge configure` after editing.
 
-```yaml
-backend:
-  path: "../src/backend"
-frontend:
-  path: "../src/frontend"
-tests:
-  path: "../tests"
+```json
+{
+  "codeTargets": {
+    "backend": { "path": "../src/backend" },
+    "frontend": { "path": "../src/frontend" },
+    "tests": { "path": "../tests" }
+  }
+}
 ```
 
 ### 3. Folder-Level Prompt Guides
@@ -140,7 +141,7 @@ Every major folder (ideas, research, docs, qa, devops, ai) now includes a `READM
 2. **Add a root-level README** with a clear “Getting Started” section and Kickoff command snippet:
 
    ```
-   npm install --save-dev autoforge
+   npm install --save-dev @cojacklabs/autoforge
    npx autoforge init
    npx autoforge validate
    ```

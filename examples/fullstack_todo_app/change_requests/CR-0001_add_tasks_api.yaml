@@ -18,6 +18,6 @@ acceptance_criteria:
   - Tests cover CRUD operations and assignment scenarios.
 rollback_plan: "Disable task endpoints and revert to previous data schema."
 dependencies:
-  - "ai/code_targets.yaml (ensure backend/frontend paths configured)"
+  - "autoforge.config.json (codeTargets) / ai/code_targets.yaml"
 notes: |
   Coordinate with UI/UX designer for task cards and detail modal design.

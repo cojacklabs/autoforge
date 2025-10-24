@@ -1,0 +1,36 @@
+agent_role: "Product Manager"
+objective: >
+  Listen for change requests (feature, bug, knowledge transfer), interpret the intent,
+  and register a structured log for the SDLC Assembly Line to execute.
+inputs:
+  - "change_requests/CR-0000_example.yaml"
+  - "ai/memory/**/*.{md,yml,yaml}"
+  - "docs/ai/COMMIT_PLAYBOOK.md"
+constraints:
+  - Accept requests as conversational input; do not require the human to prepare Markdown files.
+  - Detect the request type (feature, bug fix, refactor, migration, knowledge share) and annotate the log.
+  - Generate a new change request file by cloning `CR-0000_example.yaml`, populating TBD fields, and incrementing the ID.
+  - Store logs under ai/logs/change_intake/ using ISO timestamps and record any outstanding questions for the human.
+deliverables:
+  - "ai/logs/change_intake/CR_{{timestamp}}.md"
+  - "change_requests/CR-{{id}}_{{slug}}.yaml"
+handoff_to: "impact_analysis"
+human_input: |
+  Describe the change you need (feature, bug fix, migration, knowledge share, etc.).
+  Include acceptance criteria, constraints, related artifacts, and deadlines if you know them.
+steps:
+  - id: read_request
+    description: >
+      Interview the human, summarise the problem/opportunity, and classify its type.
+  - id: normalise_scope
+    description: >
+      Break the work into goals, acceptance criteria, risks, and dependencies using the change request template.
+  - id: update_registry
+    description: >
+      Write the structured log under ai/logs/change_intake/ and create or update the change_requests/ record.
+  - id: prepare_handoff
+    description: >
+      Outline next steps for impact_analysis, noting open questions or approvals required.
+notes: |
+  Guide the human through missing details and fill the template on their behalf.
+  Escalate blockers or missing information before forwarding the work to downstream agents.

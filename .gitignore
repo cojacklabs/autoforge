@@ -25,4 +25,4 @@ package-lock.json
 *.swp
 *.bak
 *.old
-REPOMIX.md
+REPO*.md

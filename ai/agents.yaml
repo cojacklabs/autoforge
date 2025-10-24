@@ -14,22 +14,26 @@ roles:
       - "docs/blueprint/**/*.md"
       - "ideas/**/*.{yaml,yml,md}"
       - "research/**/*.md"
+      - "ai/memory/**/*.{yaml,yml}"
     writes:
       - "ideas/**"
       - "research/plans/**"
       - "research/briefs/**"
       - "ai/logs/research/**"
       - "ai/reports/feasibility_*.md"
+      - "ai/memory/**"
 
   - id: product_manager
     reads:
       - "docs/blueprint/**/*.md"
       - "docs/prd/**/*.md"
       - "research/**/*.md"
+      - "ai/memory/**/*.{yaml,yml}"
     writes:
       - "docs/blueprint/vision.md"
       - "docs/blueprint/spec.md"
       - "docs/prd/PRODUCT_REQUIREMENTS.md"
+      - "ai/memory/**"
 
   - id: architect
     reads:
@@ -37,21 +41,25 @@ roles:
       - "diagrams/**/*.mmd"
       - "api/openapi.yaml"
       - "devops/devops.yaml"
+      - "ai/memory/**/*.{yaml,yml}"
     writes:
       - "docs/blueprint/tech.md"
       - "diagrams/**/*.mmd"
       - "api/openapi.yaml"
+      - "ai/memory/**"
 
   - id: fullstack_engineer
     reads:
       - "api/openapi.yaml"
       - "docs/blueprint/spec.md"
       - "docs/blueprint/tech.md"
-      - "security/security_readiness.md"
+      - "security/SECURITY_READINESS.md"
+      - "ai/memory/**/*.{yaml,yml}"
     writes:
       - "src/**"
       - "tests/**"
       - "qa/tests.md"
+      - "ai/memory/**"
 
   - id: qa_engineer
     reads:
@@ -59,27 +67,33 @@ roles:
       - "tests/**"
       - "api/openapi.yaml"
       - "docs/prd/**/*.md"
+      - "ai/memory/**/*.{yaml,yml}"
     writes:
       - "qa/reports/**"
       - "ai/logs/test_runs/**"
+      - "ai/memory/**"
 
   - id: security_engineer
     reads:
       - "security/**/*.md"
       - "devops/devops.yaml"
       - "api/openapi.yaml"
+      - "ai/memory/**/*.{yaml,yml}"
     writes:
       - "security/reports/**"
       - "ai/logs/security/**"
+      - "ai/memory/**"
 
   - id: devops_engineer
     reads:
       - "devops/**/*.{md,yml,yaml}"
       - "security/**/*.md"
+      - "ai/memory/**/*.{yaml,yml}"
     writes:
       - "devops/**"
       - "devops/runbooks/**"
       - "ai/logs/deployments/**"
+      - "ai/memory/**"
 
   - id: mastermind_coordinator
     reads:
@@ -88,9 +102,11 @@ roles:
       - "ai/prompts/**/*.yaml"
       - "ai/logs/**"
       - "docs/**/*.md"
+      - "ai/memory/**/*.{yaml,yml}"
     writes:
       - "ai/logs/mastermind/**"
       - "ai/reports/**"
+      - "ai/memory/**"
 
   - id: uiux_designer
     description: >
@@ -102,10 +118,12 @@ roles:
       - "docs/blueprint/tech.md"
       - "docs/uiux/**/*.md"
       - "ai/code_targets.yaml"
+      - "ai/memory/**/*.{yaml,yml}"
     writes:
       - "docs/uiux/**/*.md"
       - "ai/reports/uiux/**"
       - "ai/logs/uiux/**"
+      - "ai/memory/**"
 
   - id: performance_engineer
     description: >
@@ -116,11 +134,13 @@ roles:
       - "ai/code_targets.yaml"
       - "docs/blueprint/tech.md"
       - "docs/observability/**/*.md"
+      - "ai/memory/**/*.{yaml,yml}"
     writes:
       - "docs/perf/**/*.md"
       - "docs/perf/scripts/**"
       - "ai/logs/perf/**"
       - "ai/reports/perf/**"
+      - "ai/memory/**"
 
   - id: sre_engineer
     description: >
@@ -130,10 +150,12 @@ roles:
       - "devops/devops.yaml"
       - "docs/observability/**/*.md"
       - "docs/blueprint/tech.md"
+      - "ai/memory/**/*.{yaml,yml}"
     writes:
       - "docs/observability/**/*.md"
       - "ai/reports/observability/**"
       - "ai/logs/observability/**"
+      - "ai/memory/**"
 
 rules:
   write_protect:

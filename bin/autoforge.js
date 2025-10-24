@@ -2,8 +2,15 @@
 
 import { fileURLToPath } from "node:url";
 import path from "node:path";
-import { cp, mkdir, mkdtemp, readFile, rm, stat, writeFile } from "node:fs/promises";
-import { existsSync } from "node:fs";
+import {
+  cp,
+  mkdir,
+  mkdtemp,
+  readFile,
+  rm,
+  stat,
+  writeFile,
+} from "node:fs/promises";
 import { spawn } from "node:child_process";
 import os from "node:os";
 
@@ -20,14 +27,14 @@ const USER_PRESERVE_PATHS = [
   "ideas",
   "research",
   "scripts/custom",
-  "docs/custom"
+  "docs/custom",
 ];
 
 const color = {
   blue: (text) => `\x1b[34m${text}\x1b[0m`,
   green: (text) => `\x1b[32m${text}\x1b[0m`,
   yellow: (text) => `\x1b[33m${text}\x1b[0m`,
-  red: (text) => `\x1b[31m${text}\x1b[0m`
+  red: (text) => `\x1b[31m${text}\x1b[0m`,
 };
 
 function printUsage() {
@@ -36,6 +43,8 @@ function printUsage() {
 Usage:
   autoforge init [--force]
   autoforge upgrade
+  autoforge configure
+  autoforge snapshot [targetDir]
   autoforge validate
   autoforge doctor
   autoforge version
@@ -55,7 +64,7 @@ async function pathExists(p) {
 async function copyDir(src, dest, filter) {
   await cp(src, dest, {
     recursive: true,
-    filter
+    filter,
   });
 }
 
@@ -63,13 +72,15 @@ async function runCommand(command, args, options = {}) {
   return new Promise((resolve, reject) => {
     const child = spawn(command, args, {
       stdio: "inherit",
-      ...options
+      ...options,
     });
     child.on("exit", (code) => {
       if (code === 0) {
         resolve();
       } else {
-        reject(new Error(`${command} ${args.join(" ")} exited with code ${code}`));
+        reject(
+          new Error(`${command} ${args.join(" ")} exited with code ${code}`),
+        );
       }
     });
   });
@@ -85,7 +96,11 @@ async function ensureConfig(projectRoot) {
   try {
     contents = await readFile(templatePath, "utf8");
   } catch {
-    console.warn(color.yellow(`Warning: default config template missing at ${templatePath}, writing empty config.`));
+    console.warn(
+      color.yellow(
+        `Warning: default config template missing at ${templatePath}, writing empty config.`,
+      ),
+    );
   }
   await writeFile(targetConfig, contents, "utf8");
   console.log(color.green(`✔ Created ${CONFIG_FILE}`));
@@ -95,7 +110,9 @@ async function prepareAutoforgeFolder(projectRoot, { force = false } = {}) {
   const targetDir = path.join(projectRoot, "autoforge");
   const exists = await pathExists(targetDir);
   if (exists && !force) {
-    throw new Error(`autoforge/ already exists. Re-run with --force to overwrite.`);
+    throw new Error(
+      `autoforge/ already exists. Re-run with --force to overwrite.`,
+    );
   }
   if (exists && force) {
     console.log(color.yellow(`⚠ Removing existing autoforge/ (force mode)`));
@@ -125,17 +142,9 @@ async function copyFramework(targetDir) {
   }
 }
 
-async function installDependencies(targetDir) {
-  if (!existsSync(path.join(targetDir, "package.json"))) {
-    return;
-  }
-  console.log(color.blue("→ Installing npm dependencies inside autoforge/"));
-  try {
-    await runCommand("npm", ["install"], { cwd: targetDir });
-  } catch (err) {
-    console.warn(color.yellow(`⚠ npm install failed: ${err.message}`));
-    console.warn(color.yellow("  Run `npm install` inside autoforge/ manually when connectivity is available."));
-  }
+async function applyConfiguration(projectRoot) {
+  const scriptPath = path.join(packageRoot, "scripts", "apply_config.js");
+  await runCommand(process.execPath, [scriptPath, projectRoot]);
 }
 
 async function commandInit(args) {
@@ -144,7 +153,7 @@ async function commandInit(args) {
   const targetDir = await prepareAutoforgeFolder(projectRoot, { force });
   await copyFramework(targetDir);
   await ensureConfig(projectRoot);
-  await installDependencies(targetDir);
+  await applyConfiguration(projectRoot);
   console.log(color.green("✔ AutoForge initialized"));
 }
 
@@ -178,7 +187,9 @@ async function commandUpgrade() {
   const projectRoot = process.cwd();
   const autoforgeDir = path.join(projectRoot, "autoforge");
   if (!(await pathExists(autoforgeDir))) {
-    console.log(color.yellow("No autoforge/ directory found. Running init instead."));
+    console.log(
+      color.yellow("No autoforge/ directory found. Running init instead."),
+    );
     await commandInit([]);
     return;
   }
@@ -189,7 +200,7 @@ async function commandUpgrade() {
   await mkdir(autoforgeDir, { recursive: true });
   await copyFramework(autoforgeDir);
   await restoreUserData(autoforgeDir, backupBundle);
-  await installDependencies(autoforgeDir);
+  await applyConfiguration(projectRoot);
   console.log(color.green("✔ AutoForge upgraded"));
 }
 
@@ -197,10 +208,28 @@ async function commandValidate() {
   const projectRoot = process.cwd();
   const autoforgeDir = path.join(projectRoot, "autoforge");
   if (!(await pathExists(autoforgeDir))) {
-    throw new Error("autoforge/ directory not found. Run `autoforge init` first.");
+    throw new Error(
+      "autoforge/ directory not found. Run `autoforge init` first.",
+    );
   }
   console.log(color.blue("→ Running validation"));
-  await runCommand("npm", ["run", "validate"], { cwd: autoforgeDir });
+  const scriptPath = path.join(packageRoot, "scripts", "validate_context.js");
+  await runCommand(process.execPath, [scriptPath, autoforgeDir]);
+}
+
+async function commandConfigure(args) {
+  const projectRoot = process.cwd();
+  if (args.length && args[0] !== "--force") {
+    console.warn(
+      color.yellow("configure command ignores additional arguments."),
+    );
+  }
+  await applyConfiguration(projectRoot);
+}
+
+async function commandSnapshot(args) {
+  const scriptPath = path.join(packageRoot, "scripts", "generate_snapshot.js");
+  await runCommand(process.execPath, [scriptPath, ...args]);
 }
 
 async function commandDoctor() {
@@ -213,12 +242,16 @@ async function commandDoctor() {
     issues.push("autoforge/ directory is missing. Run `autoforge init`.");
   }
   if (!(await pathExists(configPath))) {
-    issues.push(`${CONFIG_FILE} is missing. Run \`autoforge init\` to regenerate or restore it.`);
+    issues.push(
+      `${CONFIG_FILE} is missing. Run \`autoforge init\` to regenerate or restore it.`,
+    );
   }
   for (const required of ["ai/context.manifest.yaml", "ai/agents.yaml"]) {
     const filePath = path.join(autoforgeDir, required);
     if (!(await pathExists(filePath))) {
-      issues.push(`Missing required file: ${path.relative(projectRoot, filePath)}`);
+      issues.push(
+        `Missing required file: ${path.relative(projectRoot, filePath)}`,
+      );
     }
   }
 
@@ -248,6 +281,12 @@ async function run() {
         break;
       case "upgrade":
         await commandUpgrade();
+        break;
+      case "configure":
+        await commandConfigure(rest);
+        break;
+      case "snapshot":
+        await commandSnapshot(rest);
         break;
       case "validate":
         await commandValidate();

@@ -10,7 +10,7 @@ This folder contains playbooks and guides for running AutoForge via AI coding to
 Agents and developers should reference this folder before running any prompts to
 understand expectations, quality gates, and handoffs.
 
-- Update `ai/context_targets.yaml` if documentation lives outside the defaults.
+- Use `autoforge.config.json` for all customization. After editing, run `npx autoforge configure` so the managed `ai/code_targets.yaml` and `ai/context_targets.yaml` reflect the current settings. Avoid hand-editing files under `autoforge/ai/`.
 
 ## Prompts
 

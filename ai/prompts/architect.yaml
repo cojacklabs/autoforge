@@ -22,3 +22,4 @@ deliverables:
 handoff_to: "fullstack_engineer"
 notes: |
   If diagrams already exist, update them in place. Always record trade-offs and risks in docs/blueprint/tech.md before handing off.
+  Coordinate with the human to adjust contextTargets in autoforge.config.json (then rerun `npx autoforge configure`) instead of editing ai/context_targets.yaml directly.

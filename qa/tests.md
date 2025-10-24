@@ -9,4 +9,4 @@
 ## Notes
 
 - Expand this matrix as features are implemented.
-- Link automated test files from the location defined in `ai/code_targets.yaml` (defaults to `../tests`) and include run commands in QA reports.
+- Link automated test files from the location defined in `autoforge.config.json` (mirrored to `ai/code_targets.yaml`, defaults to `../tests`) and include run commands in QA reports.

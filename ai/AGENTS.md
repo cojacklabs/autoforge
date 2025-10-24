@@ -24,9 +24,11 @@ Refer to the prompts for detailed instructions, constraints, and deliverable for
 ## Progress & Next Steps
 
 **Current Progress**
-- 2025-10-24: Published AutoForge v1.1.0 to npm (`npm install --save-dev autoforge`), shipped CLI (`autoforge init|upgrade|validate|doctor|version`), and updated docs to reflect the npm workflow.
+
+- 2025-10-24: Published AutoForge v1.1.1 to npm (`npm install --save-dev @cojacklabs/autoforge`), shipped CLI (`autoforge init|upgrade|validate|doctor|configure|version`), and updated docs to reflect the npm workflow.
 
 **Upcoming / To Do**
+
 1. Announce the npm release across CoJack Labs channels and gather feedback.
-2. Monitor early adopters, capture issues/feature requests, and plan the v1.1.1 patch.
+2. Monitor early adopters, capture issues/feature requests, and plan the v1.1.2 patch.
 3. Expand automated smoke tests to install from the published tarball in CI.

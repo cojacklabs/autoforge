@@ -21,4 +21,4 @@ deliverables:
   - "docs/prd/PRODUCT_REQUIREMENTS.md"
 handoff_to: "architect"
 notes: |
-  The Product Manager sets the stage for all downstream agents. Keep changelog entries in docs/blueprint/spec.md for auditing. Consult ai/context_targets.yaml if documentation lives outside the default folders.
+  The Product Manager sets the stage for all downstream agents. Keep changelog entries in docs/blueprint/spec.md for auditing. Consult the managed ai/context_targets.yaml (generated from autoforge.config.json) and coordinate with the human if documentation lives outside the default folders.
