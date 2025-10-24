@@ -44,6 +44,11 @@ include_globs:
   - "docs/observability/**/*.md"
   - "docs/perf/**/*.md"
   - "ai/memory/**/*.{md,yml,yaml}"
+  # Include planning artifacts produced inside ./autoforge for planning-first workflows
+  - "autoforge/ai/reports/**/*.md"
+  - "autoforge/ai/reports/**/*.yaml"
+  - "autoforge/ai/reports/**/*.yml"
+  - "autoforge/ai/reports/diagrams/**/*.mmd"
 
 exclusions:
   - "ai/logs/**"
@@ -53,26 +58,32 @@ exclusions:
 governance:
   quality_gates:
     - name: "openapi_contract_present"
-      requires:
+      requires_glob:
         - "api/openapi.yaml"
+        - "autoforge/ai/reports/openapi_stub.yaml"
     - name: "architecture_diagram_present"
       requires_glob:
         - "diagrams/*.mmd"
+        - "autoforge/ai/reports/diagrams/*.mmd"
     - name: "security_checklist_present"
-      requires:
+      requires_glob:
         - "security/security_readiness.md"
+        - "autoforge/ai/reports/security_readiness.md"
     - name: "research_policy_present"
       requires:
         - "research/SOURCES_POLICY.md"
     - name: "prd_present"
-      requires:
+      requires_glob:
         - "docs/prd/PRODUCT_REQUIREMENTS.md"
+        - "autoforge/ai/reports/prd_stub.md"
     - name: "uiux_style_guide_present"
-      requires:
+      requires_glob:
         - "docs/uiux/style_guide.md"
+        - "autoforge/ai/reports/uiux/style_guide.md"
     - name: "observability_docs_present"
-      requires:
+      requires_glob:
         - "docs/observability/dashboards.md"
+        - "autoforge/ai/reports/observability/dashboards.md"
 
 notes: |
   Operate relative to the repository root that contains this manifest. When AutoForge
