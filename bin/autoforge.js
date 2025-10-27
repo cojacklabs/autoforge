@@ -273,7 +273,7 @@ async function listMemoryFiles(autoforgeDir) {
       .map((o) => o.name)
       .filter((n) => /\.(md|ya?ml)$/.test(n));
     if (memFiles.length === 0) return [];
-    const active = memFiles.filter((n) => /MEMORY_active\./i.test(n));
+    const active = memFiles.filter((n) => /ACTIVE_MEMORY\./i.test(n));
     if (active.length) return [active[0]];
     // Pick the most recently modified memory file
     const latest = files

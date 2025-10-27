@@ -14,13 +14,13 @@ This guide explains how the ROS AI agent network navigates and operates inside t
 
 1. Begin in the planning zone: set `cwd` to the folder that contains this guide (for embedded installs that is `./autoforge`).
 2. Read `ai/context.manifest.yaml` to discover context roots and quality gates.
-3. Review the active memory file(s) in `ai/memory/` to absorb the latest decisions, corrections, and outstanding tasks.
+3. Review `ai/memory/ACTIVE_MEMORY.yaml` to absorb the latest decisions, corrections, and outstanding tasks. Always append new updates before ending a session.
 4. Consult and maintain `ai/AGENTS.md` (Progress & Next Steps, Lessons Learned, and Rules). Update it at each major handoff so humans and future tools have the same context.
 5. Load entrypoint files (`docs/blueprint/AGENTIC_BLUEPRINT.md`, `api/openapi.yaml`, etc.).
 6. Expand using `include_globs` while honouring `exclusions`.
 7. Validate quality gates via `scripts/validate_context.sh` when available.
 8. Switch to a build zone only when writing code/tests: consult the managed `ai/code_targets.yaml` (generated from `autoforge.config.json`), operate inside each declared `code_targets.*.path`, then return to the planning zone to update docs and logs.
-9. Record outputs to `ai/logs/` or the designated deliverable path and log every movement between planning and build zones in the activity notes. Update the memory file with new outcomes and sync changes back to `ai/AGENTS.md` if the high-level progress shifts.
+9. Record outputs to `ai/logs/` or the designated deliverable path and log every movement between planning and build zones in the activity notes. Update the memory file (`ai/memory/ACTIVE_MEMORY.yaml`) with new outcomes before handing off or ending the session; sync changes back to `ai/AGENTS.md` if the high-level progress shifts.
 
 ### Approval cadence
 

@@ -45,7 +45,7 @@ The agents write drafts under `ideas/` plus summaries under `ai/logs/`.
 
 ### Seed shared memory
 
-- Copy `ai/memory/MEMORY_TEMPLATE.yaml` to `ai/memory/MEMORY_active.yaml` (or another descriptive name).
+- Copy `ai/memory/MEMORY_TEMPLATE.yaml` to `ai/memory/ACTIVE_MEMORY.yaml` (or another descriptive name).
 - Capture the latest decisions, corrections, and open questions after each working session.
 - When you start a new Chat Mode run—or swap to a different coding agent—tell it to review the active memory file before continuing the work.
 
