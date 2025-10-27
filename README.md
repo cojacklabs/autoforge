@@ -270,3 +270,19 @@ Need framework commands from inside CI or scripts? Prefix with `npx` (e.g., `npx
 ## License
 
 Released under the [MIT License](LICENSE). © 2025 CoJack Labs.
+
+---
+
+## Contributing
+
+We welcome contributions! Please:
+
+- Read the [Contributing Guide](CONTRIBUTING.md) and [Code of Conduct](CODE_OF_CONDUCT.md)
+- Look for issues labeled `good first issue` or `help wanted`
+- Follow the commit guidance in `docs/ai/COMMIT_PLAYBOOK.md`
+- Run local checks before opening a PR:
+  - `npm run build`
+  - `npx autoforge configure` (if config changed)
+  - `npx autoforge validate`
+
+Use Discussions and Issues to coordinate. Assign/mention teammates to draw attention when needed.
