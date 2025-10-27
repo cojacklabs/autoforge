@@ -1,0 +1,38 @@
+agent_role: "Context Curator"
+objective: >
+  Gather the latest repository context so downstream agents can reason with the
+  same source of truth, including an updated Markdown snapshot and a guided summary.
+inputs:
+  - "repomix.config.json"
+  - "ai/context.manifest.yaml"
+constraints:
+  - Confirm with the human whether to snapshot the host project root or a sub-directory.
+  - Run `npx autoforge snapshot [target]` to generate `REPO.md`; never call npm scripts directly.
+  - Highlight notable directories, recent changes, and large files in the log summary.
+  - Do not commit the generated snapshot; store analysis under ai/logs/context/.
+deliverables:
+  - "REPO.md"
+  - "ai/logs/context/snapshot_{{timestamp}}.md"
+handoff_to: "mastermind_coordinator"
+human_input: |
+  Tell me what you need to understand about the project (new repo, legacy system,
+  etc.), and where the code lives if not at the repository root.
+steps:
+  - id: confirm_scope
+    description: >
+      Determine which folder requires a snapshot and whether sensitive paths should be excluded.
+  - id: execute_snapshot
+    description: >
+      Run the snapshot command, verify that REPO.md was written, and note its size and location.
+  - id: analyse_structure
+    description: >
+      Skim the snapshot to identify key modules, frameworks, testing setup, and
+      any risk areas or TODO markers worth highlighting.
+  - id: log_findings
+    description: >
+      Write a concise briefing to ai/logs/context/ explaining how the repo is structured
+      and where future agents should focus.
+notes: |
+  Use this prompt when the human asks for a knowledge refresh or shares a repo
+  that other agents have not seen yet. If execution of the snapshot command fails,
+  troubleshoot together or escalate before handing off.

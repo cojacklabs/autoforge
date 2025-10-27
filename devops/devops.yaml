@@ -1,0 +1,48 @@
+version: 1
+description: CI/CD and infrastructure baseline for ROS AI autonomous workflows.
+
+environments:
+  - name: dev
+    url: https://api-dev.example.com
+  - name: stage
+    url: https://api-stage.example.com
+  - name: prod
+    url: https://api.example.com
+
+ci_cd:
+  stages:
+    - validate-context
+    - lint
+    - test
+    - security-scan
+    - build
+    - deploy
+  workflows:
+    - path: .github/workflows/ci.yml
+      description: Validate context, lint, and run tests on pull requests.
+    - path: .github/workflows/agent-change-processor.yml
+      description: Monitor change requests and trigger agent workflows.
+    - path: .github/workflows/deploy.yml
+      description: Promote builds to staging/production after approvals.
+
+observability:
+  logs: structured-json
+  metrics:
+    - request_rate
+    - error_rate
+    - latency_p95
+  alerts:
+    - condition: error_rate > 1%
+      severity: critical
+      channel: pager
+
+infrastructure:
+  provider: gcp
+  services:
+    - cloud_run
+    - cloud_sql
+    - secret_manager
+  deployment_strategy: blue_green
+  backup_policy:
+    frequency: daily
+    retention_days: 30

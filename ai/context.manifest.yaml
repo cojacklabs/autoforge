@@ -1,0 +1,98 @@
+description: Canonical manifest for ROS AI autonomous agents. Declares the context roots, entrypoints, and quality gates required before any automated work begins.
+
+version: 1.0.0
+
+context_roots:
+  blueprint: "docs/blueprint"
+  prd: "docs/prd"
+  diagrams: "diagrams"
+  api: "api"
+  security: "security"
+  devops: "devops"
+  qa: "qa"
+  requests: "change_requests"
+  ideas: "ideas"
+  research: "research"
+  memory: "ai/memory"
+  uiux: "docs/uiux"
+  observability: "docs/observability"
+  perf: "docs/perf"
+
+entrypoints:
+  blueprint_master: "docs/blueprint/AGENTIC_BLUEPRINT.md"
+  product_requirements: "docs/prd/PRODUCT_REQUIREMENTS.md"
+  api_contract: "api/openapi.yaml"
+  qa_plan: "qa/tests.md"
+  security_readiness: "security/security_readiness.md"
+  devops_plan: "devops/devops.yaml"
+  research_policy: "research/SOURCES_POLICY.md"
+  autonomy_guide: "docs/ai/AGENT_AUTONOMY_GUIDE.md"
+  uiux_guide: "docs/uiux/README.md"
+
+include_globs:
+  - "docs/**/*.md"
+  - "diagrams/**/*.{mmd,md}"
+  - "api/**/*.{yaml,yml,json}"
+  - "security/**/*.md"
+  - "devops/**/*.{md,yml,yaml}"
+  - "qa/**/*.md"
+  - "change_requests/**/*.{md,yml,yaml}"
+  - "ideas/**/*.{md,yml,yaml}"
+  - "research/**/*.md"
+  - "ai/code_targets.yaml"
+  - "docs/uiux/**/*.md"
+  - "docs/observability/**/*.md"
+  - "docs/perf/**/*.md"
+  - "ai/memory/**/*.{md,yml,yaml}"
+  - "ai/AGENTS.md"
+  # Include planning artifacts produced inside ./autoforge for planning-first workflows
+  - "autoforge/ai/reports/**/*.md"
+  - "autoforge/ai/reports/**/*.yaml"
+  - "autoforge/ai/reports/**/*.yml"
+  - "autoforge/ai/reports/diagrams/**/*.mmd"
+
+exclusions:
+  - "ai/logs/**"
+  - "**/*.png"
+  - "**/*.svg"
+
+governance:
+  quality_gates:
+    - name: "openapi_contract_present"
+      requires_glob:
+        - "api/openapi.yaml"
+        - "autoforge/ai/reports/openapi_stub.yaml"
+    - name: "architecture_diagram_present"
+      requires_glob:
+        - "diagrams/*.mmd"
+        - "autoforge/ai/reports/diagrams/*.mmd"
+    - name: "security_checklist_present"
+      requires_glob:
+        - "security/security_readiness.md"
+        - "autoforge/ai/reports/security_readiness.md"
+    - name: "research_policy_present"
+      requires:
+        - "research/SOURCES_POLICY.md"
+    - name: "prd_present"
+      requires_glob:
+        - "docs/prd/PRODUCT_REQUIREMENTS.md"
+        - "autoforge/ai/reports/prd_stub.md"
+    - name: "uiux_style_guide_present"
+      requires_glob:
+        - "docs/uiux/style_guide.md"
+        - "autoforge/ai/reports/uiux/style_guide.md"
+    - name: "observability_docs_present"
+      requires_glob:
+        - "docs/observability/dashboards.md"
+        - "autoforge/ai/reports/observability/dashboards.md"
+
+notes: |
+  Operate relative to the repository root that contains this manifest. When AutoForge
+  is cloned as a subdirectory (e.g., `custom-project/autoforge`), assistants must
+  treat that folder as their working directory and avoid touching parent folders.
+
+  The Mastermind Coordinator validates quality gates with scripts/validate_context.sh.
+  Update include_globs or entrypoints whenever documentation moves; otherwise agents
+  will raise context gap alerts. Keep governance assets under /docs, operational
+  policies under /devops and /security, and leave /ai for manifests, prompts, logs,
+  agent-generated reports, and shared memory snapshots.

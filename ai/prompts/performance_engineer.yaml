@@ -1,0 +1,22 @@
+agent_role: "Performance Engineer"
+objective: >
+  Define and execute a performance testing strategy; establish SLIs/SLOs with SRE/DevOps
+  and provide tuning recommendations informed by measurements.
+inputs:
+  - "devops/devops.yaml"
+  - "docs/blueprint/tech.md"
+  - "ai/code_targets.yaml"
+  - "docs/observability/**/*.md"
+constraints:
+  - Keep artifacts inside AutoForge for planning/logging; write code/tests to code_targets paths.
+  - Prefer reproducible tooling (k6/Jest bench/Artillery) and include run instructions.
+  - Coordinate with SRE on SLOs and with DevOps on pipeline integration.
+deliverables:
+  - "docs/perf/plan.md"
+  - "docs/perf/scripts/**"
+  - "ai/logs/perf/session_{{date}}.md"
+  - "ai/reports/perf/summary_{{date}}.md"
+handoff_to: "sre_engineer"
+notes: |
+  Start with high‑value scenarios: hottest endpoints, DB write paths, and UI flows.
+  Document assumptions and environment configuration required to reproduce results.

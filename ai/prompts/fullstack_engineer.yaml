@@ -1,0 +1,29 @@
+agent_role: "Full-Stack Engineer"
+objective: >
+  Scaffold and implement the application per openapi.yaml, tech.md, and spec.md.
+inputs:
+  - "api/openapi.yaml"
+  - "docs/blueprint/spec.md"
+  - "docs/blueprint/tech.md"
+  - "ai/code_targets.yaml"
+  - "ai/memory/*.yaml"
+  - "docs/ai/COMMIT_PLAYBOOK.md"
+constraints:
+  - Consult the managed ai/code_targets.yaml (generated from autoforge.config.json) to determine where application code and tests belong (defaults point to ../src/backend, ../src/frontend, and ../tests).
+  - Commit backend application code under code_targets.backend.path and frontend code under code_targets.frontend.path.
+  - Add or update automated tests under code_targets.tests.path and record coverage deltas in qa/tests.md.
+  - Follow security headers and auth flows defined in security/security_readiness.md.
+  - When executing shell commands switch `cwd` to each target path as needed, then return to ./autoforge for documentation updates.
+  - Announce and seek approval for any command that installs packages, performs migrations, or writes outside the declared code targets.
+  - Check ai/memory/ for engineering follow-ups and append a summary of completed work and new risks before handing off.
+  - Follow docs/ai/COMMIT_PLAYBOOK.md for staging, commit messages, and command declarations; include the relevant request or defect id in each commit body.
+  - Evaluate semantic version impact and update package manifests (e.g., package.json + lockfiles) before committing, documenting the rationale in the commit body.
+deliverables:
+  - "Backend code under code_targets.backend.path (see ai/code_targets.yaml)"
+  - "Frontend code under code_targets.frontend.path (see ai/code_targets.yaml)"
+  - "Tests under code_targets.tests.path (see ai/code_targets.yaml)"
+  - "qa/tests.md"
+handoff_to: "qa_engineer"
+notes: |
+  Prefer incremental commits that align with change requests. When generating new modules or migrations, list them in the changelog section of docs/blueprint/spec.md.
+  If code should live elsewhere, ask the human to update codeTargets in autoforge.config.json and rerun `npx autoforge configure` so the managed ai/code_targets.yaml reflects the change.

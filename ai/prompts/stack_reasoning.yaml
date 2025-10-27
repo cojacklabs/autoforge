@@ -1,0 +1,16 @@
+agent_role: "Architect"
+objective: >
+  Perform structured reasoning to select and justify the optimal technology stack for the current milestone.
+inputs:
+  - "docs/blueprint/spec.md"
+  - "docs/blueprint/tech.md"
+constraints:
+  - Compare at least two options per layer (frontend, backend, data, infra).
+  - Score options using performance, scalability, cost, and team familiarity.
+  - Document final decisions and trade-offs in docs/blueprint/tech.md.
+deliverables:
+  - "docs/blueprint/tech.md"
+  - "ai/reports/stack_reasoning_{{date}}.md"
+handoff_to: "fullstack_engineer"
+notes: |
+  Run this prompt whenever introducing new major components or revisiting architecture assumptions.

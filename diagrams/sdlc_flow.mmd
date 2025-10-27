@@ -1,0 +1,31 @@
+flowchart LR
+    A[Brainstorm Idea] --> B[Initial Plan]
+    B --> C[Application Design]
+    C --> D[Development Plan]
+    D --> E[Development]
+    E --> F[Debugging]
+    F --> G[Testing]
+    G --> H[Deployment]
+    H --> I[CI/CD]
+    I --> J[Monitoring]
+    J --> K[Optimization]
+    K --> L[Recycle / Retrospective]
+    L --> D
+
+    %% Annotations (AutoForge subfolder artifacts)
+    A:::stage -- ideas --> |YAML intake| A1[ideas/IDEA_TEMPLATE.yaml]
+    B:::stage -- research plan/brief --> B1[research/plans/*, research/briefs/*]
+    C:::stage -- specs & diagrams --> C1[docs/blueprint/*.md, diagrams/*.mmd]
+    C:::stage -- API contract --> C2[api/openapi.yaml]
+    D:::stage -- scoped CR --> D1[change_requests/CR-*.yaml]
+    E:::stage -- code targets --> E1[autoforge.config.json (codeTargets) -> ../src, ../tests]
+    F:::stage -- defect logs --> F1[ai/logs/test_runs/*, qa/reports/defects.md]
+    G:::stage -- QA plan --> G1[qa/tests.md]
+    H:::stage -- runbooks & logs --> H1[devops/runbooks/deploy.md, ai/logs/deployments/*]
+    I:::stage -- pipelines --> I1[.github/workflows/ci.yml, deploy.yml, devops/devops.yaml]
+    J:::stage -- observability --> J1[devops/devops.yaml (observability)]
+    K:::stage -- improvements --> K1[docs/MASTERMIND_PROMPTING_GUIDE.md]
+    L:::stage -- retrospective --> L1[ai/reports/retrospective_*.md]
+
+    classDef stage fill:#f6f7ff,stroke:#667,stroke-width:1px;
+    class A,B,C,D,E,F,G,H,I,J,K,L stage;

@@ -1,0 +1,32 @@
+agent_role: "Mastermind Coordinator"
+objective: >
+  Watch change_requests/ for new or modified files. For each detected item, parse the
+  request, create a change request report, and trigger the impact analysis workflow.
+inputs:
+  - "change_requests/*.yaml"
+  - "change_requests/*.yml"
+  - "change_requests/*.md"
+constraints:
+  - For each new file, create ai/reports/change_request_{{date}}.md.
+  - Then trigger impact_analysis.yaml with the same {{date}}.
+  - Record activity in ai/logs/mastermind/monitor_changes_{{date}}.md.
+deliverables:
+  - "ai/logs/mastermind/monitor_changes_{{date}}.md"
+handoff_to: null
+notes: |
+  This prompt represents the automation executed by CI when change request files arrive.
+  Humans should only use it indirectly by committing a new file into change_requests/.
+steps:
+  - id: monitor_directory
+    description: >
+      Continuously watch the change_requests/ directory for new or modified files.
+  - id: parse_requests
+    description: >
+      For each detected file, parse metadata (title, summary, owners, deadlines).
+  - id: generate_reports
+    description: >
+      Create ai/reports/change_request_{{date}}.md capturing parsed metadata and next steps.
+  - id: trigger_followup
+    description: >
+      Invoke ai/prompts/impact_analysis.yaml and enqueue downstream agent prompts.
+human_input: |

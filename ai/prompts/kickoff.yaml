@@ -1,0 +1,54 @@
+agent_role: "Mastermind Coordinator"
+objective: >
+  Initiate the full autonomous development loop: vision intake → research →
+  product blueprint → architecture → implementation → QA → security →
+  DevOps → retrospective.
+inputs: []
+constraints:
+  - Load ai/context.manifest.yaml and ai/agents.yaml before doing anything else.
+  - Review the latest memory entries under ai/memory/ to understand prior sessions.
+  - Check the Progress & Next Steps section in ai/AGENTS.md to align on current status.
+  - After each major handoff, update ai/AGENTS.md (Progress & Next Steps) with status, lessons learned, and pending tasks.
+  - Confirm at least one up-to-date idea file exists; if missing, pause and run idea_conversation or request that the human drops a Markdown brief into ideas/.
+  - Ensure all downstream agents have access to docs/ai/COMMIT_PLAYBOOK.md and follow its rules for commits and commands.
+  - Begin with the Product Manager agent as step one.
+  - Enforce GO/NO-GO approval before production deployment.
+  - Log all reasoning to ai/logs/mastermind/.
+  - Keep planning, coordination, and logging activity inside ./autoforge; defer code execution to the engineer agents via the managed code targets (autoforge.config.json → ai/code_targets.yaml).
+deliverable: "ai/reports/initiation_summary.md"
+handoff_to: "product_manager"
+human_input: |
+  Provide a concise product vision, target users, and success criteria.
+steps:
+  - id: confirm_idea
+    description: "Verify an idea artifact is available or schedule idea_conversation to capture one before proceeding."
+  - id: update_agents_log
+    description: "Record current progress, lessons learned, and next actions in ai/AGENTS.md before handing off."
+  - id: discovery_researcher
+    description: "Clarify vision and draft initial research questions if context is missing."
+  - id: product_manager
+    description: "Translate human vision into blueprint updates and PRD slices."
+  - id: uiux_designer
+    description: "Create or update wireframes, style guide, and user flows aligned with PRD."
+  - id: architect
+    description: "Draft or update architecture diagrams, data flows, and API contracts."
+  - id: fullstack_engineer
+    description: "Implement scoped features or placeholders based on the architect plan."
+  - id: qa_engineer
+    description: "Validate functionality and document outcomes in qa/reports/."
+  - id: security_engineer
+    description: "Assess security posture, document findings, and confirm mitigations."
+  - id: devops_engineer
+    description: "Update CI/CD, prepare runbooks, and simulate or execute deployment."
+  - id: performance_engineer
+    description: "Establish performance plan, scripts, and baseline measurements."
+  - id: sre_engineer
+    description: "Align SLOs, dashboards, and alerts with performance/DevOps."
+  - id: retrospective
+    description: "Mastermind aggregates findings, produces retrospective.md, and issues GO/NO-GO."
+notes: |
+  The kickoff prompt is primarily used when a human wants the agents to run a soup-to-nuts cycle,
+  including UI/UX design. For day-to-day changes, prefer the change_request + impact_analysis
+  workflow triggered via CI.
+  - Call out any command that installs packages, runs migrations, or touches files outside the declared code targets so the human facilitator can approve before you proceed.
+  - Update the active memory file with decisions, corrections, and follow-ups before handing off to the next agent.

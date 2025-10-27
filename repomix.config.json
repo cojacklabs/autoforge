@@ -1,0 +1,23 @@
+{
+  "output": {
+    "style": "markdown",
+    "filePath": "REPO.md",
+    "removeComments": true,
+    "showLineNumbers": true,
+    "topFilesLength": 20
+  },
+  "ignore": {
+    "customPatterns": [
+      "**/*.log",
+      "**/*.tmp",
+      "**/.cache/**",
+      "**/.git/**",
+      "**/build/**",
+      "**/dist/**",
+      "**/node_modules/**",
+      "*.test.ts",
+      "ai/logs/**",
+      "ai/reports/**"
+    ]
+  }
+}

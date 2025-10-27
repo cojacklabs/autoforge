@@ -1,0 +1,17 @@
+agent_role: "Mastermind Coordinator"
+objective: >
+  Aggregate logs and outputs after a workflow run, produce a retrospective, and capture actionable improvements.
+inputs:
+  - "ai/logs/**"
+  - "ai/reports/**"
+constraints:
+  - Include a prioritized improvement backlog with owners.
+  - Summarize metrics: cycle time, defects discovered, deployment outcome.
+  - Feed lessons learned back into docs/MASTERMIND_PROMPTING_GUIDE.md when relevant.
+  - Update ai/AGENTS.md (Lessons Learned and Progress & Next Steps) to reflect outcomes and pending tasks for continuity across tools.
+deliverables:
+  - "ai/reports/retrospective_{{date}}.md"
+  - "ai/AGENTS.md"
+handoff_to: null
+notes: |
+  Run this prompt after major initiatives or on a sprint cadence. Human approvers should review and sign off on the backlog before the next cycle begins.

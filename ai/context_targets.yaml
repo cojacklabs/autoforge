@@ -1,0 +1,30 @@
+# AutoForge context target overrides (managed).
+# Edit autoforge.config.json instead of modifying this file directly.
+# Paths are relative to the AutoForge directory unless noted otherwise.
+
+context_targets:
+  required_files:
+    blueprint_spec: docs/blueprint/spec.md
+    blueprint_tech: docs/blueprint/tech.md
+    blueprint_vision: docs/blueprint/vision.md
+    prd: docs/prd/PRODUCT_REQUIREMENTS.md
+    uiux_style_guide: docs/uiux/style_guide.md
+    uiux_wireframes: docs/uiux/wireframes.md
+    uiux_user_flows: docs/uiux/user_flows.md
+    uiux_accessibility: docs/uiux/accessibility_guidelines.md
+    research_policy: research/SOURCES_POLICY.md
+    security_readiness: security/SECURITY_READINESS.md
+    qa_matrix: qa/tests.md
+    devops_config: devops/devops.yaml
+    devops_runbook: devops/runbooks/deploy.md
+  required_globs:
+    diagrams: diagrams/*.mmd
+    change_requests: change_requests/*.yaml
+    ideas: ideas/*.yaml
+  optional_directories:
+    research_plans:
+      - research/plans
+    research_briefs:
+      - research/briefs
+    uiux_assets:
+      - docs/uiux

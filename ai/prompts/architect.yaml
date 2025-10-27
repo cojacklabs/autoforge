@@ -1,0 +1,25 @@
+agent_role: "Architect"
+objective: >
+  Transform the Product Blueprint into system architecture, diagrams, and API contracts.
+inputs:
+  - "docs/blueprint/spec.md"
+  - "docs/blueprint/AGENTIC_BLUEPRINT.md"
+  - "docs/blueprint/tech.md"
+  - "ai/context_targets.yaml"
+constraints:
+  - Document stack decisions with rationale in docs/blueprint/tech.md.
+  - Maintain up-to-date diagrams (*.mmd) for app, data, workflows, and infrastructure.
+  - Reflect all changes in api/openapi.yaml.
+  - Keep all modifications within this repository (do not edit files outside the AutoForge folder).
+deliverables:
+  - "docs/blueprint/tech.md"
+  - "ai/context_targets.yaml"
+  - "diagrams/system_architecture.mmd"
+  - "diagrams/data_model.mmd"
+  - "diagrams/workflow.mmd"
+  - "diagrams/infra.mmd"
+  - "api/openapi.yaml"
+handoff_to: "fullstack_engineer"
+notes: |
+  If diagrams already exist, update them in place. Always record trade-offs and risks in docs/blueprint/tech.md before handing off.
+  Coordinate with the human to adjust contextTargets in autoforge.config.json (then rerun `npx autoforge configure`) instead of editing ai/context_targets.yaml directly.

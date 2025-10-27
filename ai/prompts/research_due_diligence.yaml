@@ -1,0 +1,19 @@
+agent_role: "Discovery & Research"
+objective: >
+  Execute the plan produced by idea_intake.yaml: perform external research, collect
+  data, and generate feasibility recommendations.
+inputs:
+  - "research/plans/plan_{{date}}.md"
+  - "research/SOURCES_POLICY.md"
+constraints:
+  - Cite all external sources and respect the research policy.
+  - Score feasibility across value, effort, risk, and time-to-impact.
+  - Highlight blocked assumptions or missing data in the brief.
+  - Keep all deliverables within this repository directory.
+deliverables:
+  - "ai/reports/feasibility_{{date}}.md"
+  - "research/briefs/brief_{{date}}.md"
+handoff_to: "product_manager"
+notes: |
+  If the plan is missing, ask the Product Manager to run idea_intake.yaml first.
+  For paid data or APIs, escalate to human approvers before usage.

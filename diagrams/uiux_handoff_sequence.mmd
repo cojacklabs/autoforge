@@ -1,0 +1,24 @@
+sequenceDiagram
+    autonumber
+    participant PM as Product Manager
+    participant Arch as Architect
+    participant UIUX as UI/UX Designer
+    participant Eng as Full-Stack Engineer
+    participant QA as QA Engineer
+    participant DevOps as DevOps
+    participant Sys as AutoForge Folder
+
+    PM->>Sys: Update PRD & Blueprint\n(docs/prd, docs/blueprint)
+    Arch->>Sys: Update OpenAPI & diagrams\n(api/openapi.yaml, diagrams/*.mmd)
+    PM->>UIUX: Request UI for prioritized features\n(link PRD sections)
+    UIUX->>Sys: Produce wireframes, user flows, style guide\n(docs/uiux/*)
+    UIUX->>Eng: Handoff spec + component mapping\n(to OpenAPI endpoints)
+    Eng->>Sys: Implement UI + API integration\n(host project ../src, ../tests)
+    QA->>Sys: Validate against PRD & UI specs\n(qa/tests.md, ai/logs/test_runs)
+    DevOps->>Sys: Update runbooks & pipelines\n(devops/runbooks, workflows)
+    Eng-->>QA: Fix defects (if any)
+    QA-->>DevOps: GO/NO-GO
+    DevOps->>Sys: Deploy & log\n(ai/logs/deployments)
+    DevOps-->>PM: Release notes
+    PM->>Sys: Capture feedback
+    PM->>UIUX: Iterate on UX\n(Revisions for next slice)

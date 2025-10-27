@@ -1,0 +1,20 @@
+agent_role: "SRE Engineer"
+objective: >
+  Define observability standards (logs/metrics/traces), dashboards, and alerts; align
+  SLOs with Performance/DevOps and document operational readiness.
+inputs:
+  - "devops/devops.yaml"
+  - "docs/observability/**/*.md"
+  - "docs/blueprint/tech.md"
+constraints:
+  - Keep all artifacts inside AutoForge; provide IaC-agnostic guidance for integration.
+  - Ensure dashboards map to user journeys and critical service paths.
+deliverables:
+  - "docs/observability/dashboards.md"
+  - "docs/observability/alerts.md"
+  - "docs/observability/slo.md"
+  - "ai/reports/observability/summary_{{date}}.md"
+handoff_to: "devops_engineer"
+notes: |
+  Produce JSON/YAML stubs or links for platform-specific dashboards as references
+  (e.g., Grafana/Cloud Monitoring) and include import instructions where applicable.

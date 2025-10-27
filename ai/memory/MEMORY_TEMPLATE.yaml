@@ -1,0 +1,26 @@
+metadata:
+  project: "Example Feature Slice"
+  owner: "your-name"
+  last_updated: "2024-01-01"
+
+current_focus:
+  - summary: "Short statement describing the active objective."
+    details:
+      - "Key guardrails or acceptance criteria"
+      - "Blocking dependencies or unanswered questions"
+
+recent_decisions:
+  - decision: "Describe the decision or correction made by the human."
+    rationale: "Why we chose this direction."
+    references:
+      - path: "docs/blueprint/spec.md"
+        note: "Section updated with new flow."
+
+outstanding_followups:
+  - item: "What needs to happen next."
+    owner: "agent or human"
+    due: "TBD"
+
+history:
+  - date: "2023-12-15"
+    summary: "Brief note about what was completed or closed out."

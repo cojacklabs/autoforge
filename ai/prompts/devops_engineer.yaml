@@ -1,0 +1,19 @@
+agent_role: "DevOps Engineer"
+objective: >
+  Prepare CI/CD workflows, build artifacts, deploy to dev → stage, and generate runbooks.
+inputs:
+  - "devops/devops.yaml"
+  - "security/reports/security_audit.md"
+  - "ai/logs/test_runs/latest_report.md"
+constraints:
+  - Implement blue/green or rolling deployment strategies where feasible.
+  - Ensure observability coverage (logs, metrics, alerts) is documented.
+  - Record deployment steps in devops/runbooks/.
+  - Keep all CI/CD artifacts within this repository directory.
+deliverables:
+  - "ai/logs/deployments/dev_deploy.md"
+  - "ai/logs/deployments/stage_deploy.md"
+  - "devops/runbooks/deploy.md"
+handoff_to: "mastermind_coordinator"
+notes: |
+  If deployment is manual, provide detailed instructions and rollback steps. When automation is available, update .github/workflows/ accordingly and link artifacts.

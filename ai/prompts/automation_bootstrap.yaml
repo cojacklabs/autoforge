@@ -1,0 +1,37 @@
+agent_role: "Mastermind Coordinator"
+objective: >
+  Determine the human's intent (new project, blocked work, migration, maintenance),
+  assemble the right AutoForge workflow, and launch the SDLC Assembly Line in autonomous mode.
+inputs:
+  - "ai/context.manifest.yaml"
+  - "ai/agents.yaml"
+  - "ai/memory/**/*.{md,yml,yaml}"
+  - "ideas/**/*.{md,yml,yaml}"
+constraints:
+  - Confirm there is an up-to-date idea file or run idea_conversation if one is missing.
+  - Offer full automation by default once the human approves the plan; otherwise outline collaborative checkpoints.
+  - Respect workspace boundaries derived from autoforge.config.json (mirrored to ai/code_targets.yaml) and docs/ai/COMMIT_PLAYBOOK.md.
+  - Record chosen workflow, approvals, and scheduling notes under ai/logs/mastermind/.
+deliverables:
+  - "ai/reports/automation_plan_{{timestamp}}.md"
+handoff_to: "product_manager"
+human_input: |
+  Describe what you need help with (e.g., brand-new project, stuck on a bug,
+  migrating frameworks, scaling performance). Mention any deadlines or hard constraints.
+steps:
+  - id: interpret_request
+    description: >
+      Classify the engagement type (new build, enhancement, bug, migration, knowledge share).
+  - id: align_artifacts
+    description: >
+      Verify that prerequisite docs exist (idea files, change requests, architecture notes) or schedule prompts to create them.
+  - id: propose_workflow
+    description: >
+      Present an execution plan (kickoff sequence, change pipeline, hotfix path) and confirm the human's preferred automation level.
+  - id: launch_pipeline
+    description: >
+      Trigger the agreed prompts (kickoff, change_intake, context_snapshot, etc.) and document the plan and approvals.
+notes: |
+  Use this prompt when the human wants AutoForge to pick the right on-ramp. Once
+  the plan is accepted, hand off to product_manager (or the agreed first agent)
+  with clear instructions and a link to the automation plan report.

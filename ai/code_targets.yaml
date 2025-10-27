@@ -1,0 +1,16 @@
+# AutoForge code-target configuration (managed).
+# Edit autoforge.config.json instead of modifying this file directly.
+# Paths are relative to the AutoForge directory unless noted otherwise.
+
+code_targets:
+  backend:
+    path: ../src/backend
+    description: Default backend location; update via autoforge.config.json.
+  frontend:
+    path: ../src/frontend
+    description: Default frontend/UI location; update via autoforge.config.json.
+  tests:
+    path: ../tests
+    description: Default tests directory; update via autoforge.config.json.
+  extra: []
+notes: "- The agents consult these paths when generating application code or tests.\n- Update autoforge.config.json and rerun `npx autoforge configure` to change them.\n- Keep planning artifacts inside the AutoForge directory."

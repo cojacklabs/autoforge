@@ -1,0 +1,40 @@
+name: CI
+
+on:
+  pull_request:
+  push:
+    branches:
+      - main
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js 18
+        uses: actions/setup-node@v4
+        with:
+          node-version: 18
+
+      - name: Validate agent context
+        run: node ./scripts/validate_context.js
+
+      - name: Install dependencies
+        run: npm install --ignore-scripts
+
+      - name: Lint formatting
+        run: npm run format:check
+
+      - name: Run unit tests
+        run: npm test
+
+      - name: Run demo slice tests (Todo)
+        run: |
+          node examples/fullstack_todo_app/demo_src/backend/server.js &
+          SERVER_PID=$!
+          # wait for server
+          sleep 1
+          node --test examples/fullstack_todo_app/demo_src/tests/todo.test.js || (kill $SERVER_PID; exit 1)
+          kill $SERVER_PID || true
