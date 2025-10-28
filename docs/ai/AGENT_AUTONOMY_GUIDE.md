@@ -4,7 +4,7 @@ This guide explains how the ROS AI agent network navigates and operates inside t
 
 ## Two-World Model
 
-- **Human Realm** – Source-of-truth docs live under `docs/`, operational configs under `devops/`, security policies under `security/`, and product artifacts under `api/`, `diagrams/`, and `qa/`. When AutoForge is embedded in another project, these folders reside under `./autoforge/`.
+- **Human Realm** – Source-of-truth docs live under `docs/`, operational configs under `devops/`, security policies under `security/`, and product artifacts under `api/`, `diagrams/`, and `qa/`. When AutoForge is embedded in another project, these folders reside under `./.autoforge/` (legacy: `./autoforge/`).
 - **AI Realm** – Manifests, prompts, and logs live under `ai/`. Agents never guess where context lives; they read `ai/context.manifest.yaml` for the canonical map.
 
 > Application code/output paths are defined in `autoforge.config.json` and mirrored to the managed `ai/code_targets.yaml`. Ask the human to update the config and rerun `npx autoforge configure` before running engineering prompts.
@@ -12,7 +12,7 @@ This guide explains how the ROS AI agent network navigates and operates inside t
 
 ## Entry Sequence
 
-1. Begin in the planning zone: set `cwd` to the folder that contains this guide (for embedded installs that is `./autoforge`).
+1. Begin in the planning zone: set `cwd` to the folder that contains this guide (for embedded installs that is `./.autoforge`).
 2. Read `ai/context.manifest.yaml` to discover context roots and quality gates.
 3. Review `ai/memory/ACTIVE_MEMORY.yaml` to absorb the latest decisions, corrections, and outstanding tasks. Always append new updates before ending a session.
 4. Consult and maintain `ai/AGENTS.md` (Progress & Next Steps, Lessons Learned, and Rules). Update it at each major handoff so humans and future tools have the same context.
@@ -54,6 +54,6 @@ By maintaining clear boundaries and accurate context, we allow autonomous agents
 
 ## Context Snapshots
 
-- Use `npx autoforge snapshot [path]` (run from the repo root, or from `./autoforge` and pass `..`) to produce `REPO.md` when sharing context with LLMs. Prefer the `context_snapshot` prompt when humans request help refreshing repository knowledge.
+- Use `npx autoforge snapshot [path]` (run from the repo root, or from `./.autoforge` and pass `..`) to produce `REPO.md` when sharing context with LLMs. Prefer the `context_snapshot` prompt when humans request help refreshing repository knowledge.
 
 - Update `repomix.config.json` if you need to include/exclude additional folders when generating snapshots.

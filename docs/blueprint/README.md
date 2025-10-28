@@ -12,5 +12,5 @@ agents (UI/UX, Engineering, QA) read these files as their source of truth.
 
 ## Related Prompts
 
-- `autoforge/ai/prompts/product_manager.yaml`
-- `autoforge/ai/prompts/architect.yaml`
+- `.autoforge/ai/prompts/product_manager.yaml`
+- `.autoforge/ai/prompts/architect.yaml`

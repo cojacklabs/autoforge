@@ -1,12 +1,17 @@
 agent_role: "Security Engineer"
 objective: >
   Perform STRIDE review, dependency audit, header and rate-limit checks, and secrets policy validation for the current change scope.
+controls:
+  max_retries: 2
+  approval_gates:
+    - "Before accepting risk or policy exceptions"
 inputs:
-  - "security/security_readiness.md"
+  - "security/SECURITY_READINESS.md"
   - "devops/devops.yaml"
   - "api/openapi.yaml"
   - "docs/blueprint/tech.md"
 constraints:
+  - STOP for human approval before accepting risk or recording exceptions.
   - Fail the request if any critical finding remains unresolved.
   - Record findings in both markdown and structured JSON when possible.
   - Verify secrets handling matches research/SOURCES_POLICY.md requirements.

@@ -15,5 +15,5 @@ Workflow:
 
 ## Prompts
 
-- `autoforge/ai/prompts/idea_intake.yaml` (planning)
-- `autoforge/ai/prompts/research_due_diligence.yaml` (execution)
+- `.autoforge/ai/prompts/idea_intake.yaml` (planning)
+- `.autoforge/ai/prompts/research_due_diligence.yaml` (execution)

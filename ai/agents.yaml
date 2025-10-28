@@ -1,8 +1,8 @@
 description: Agent roles, permissions, and communication boundaries for the ROS AI autonomous workflow.
 note:
   All paths are relative to the repository root. When AutoForge is located inside
-  another project (e.g., `custom-project/autoforge`), treat that subdirectory as the
-  working directory and do not modify files outside it.
+  another project (e.g., `custom-project/.autoforge`, legacy: `custom-project/autoforge`),
+  treat that subdirectory as the working directory and do not modify files outside it.
 
 roles:
   - id: discovery_researcher
@@ -176,6 +176,80 @@ roles:
       - "docs/observability/**/*.md"
       - "ai/reports/observability/**"
       - "ai/logs/observability/**"
+      - "ai/memory/**"
+      - "ai/AGENTS.md"
+
+  - id: integration_engineer
+    description: >
+      Design and maintain third-party API connectors (data providers, analytics,
+      payments, internal services) with schema validation, retries, and mocks.
+    reads:
+      - "ai/integrations.yaml"
+      - "api/openapi.yaml"
+      - "docs/blueprint/tech.md"
+      - "ai/code_targets.yaml"
+      - "ai/memory/**/*.{yaml,yml}"
+      - "ai/AGENTS.md"
+    writes:
+      - "integrations/**"
+      - "src/server/integrations/**"
+      - "tests/integrations/**"
+      - "ai/reports/integrations/**"
+      - "ai/logs/integrations/**"
+      - "ai/memory/**"
+      - "ai/AGENTS.md"
+
+  - id: payments_engineer
+    description: >
+      Implement and operate payment flows (e.g., Stripe) including subscriptions,
+      invoicing, webhooks, and reconciliation with audit logging.
+    reads:
+      - "ai/integrations.yaml"
+      - "api/openapi.yaml"
+      - "docs/security/**/*.md"
+      - "ai/code_targets.yaml"
+      - "ai/memory/**/*.{yaml,yml}"
+      - "ai/AGENTS.md"
+    writes:
+      - "src/server/payments/**"
+      - "tests/payments/**"
+      - "docs/security/stripe.md"
+      - "ai/logs/security/**"
+      - "ai/reports/integrations/payments/**"
+      - "ai/memory/**"
+      - "ai/AGENTS.md"
+
+  - id: data_analyst
+    description: >
+      Define KPIs, metrics glossary, and dashboards; build data views for role-based
+      analytics and reporting.
+    reads:
+      - "docs/observability/**/*.md"
+      - "docs/blueprint/tech.md"
+      - "ai/code_targets.yaml"
+      - "ai/memory/**/*.{yaml,yml}"
+      - "ai/AGENTS.md"
+    writes:
+      - "src/**"
+      - "ai/reports/analytics/**"
+      - "ai/logs/analytics/**"
+      - "ai/memory/**"
+      - "ai/AGENTS.md"
+
+  - id: compliance_officer
+    description: >
+      Ensure compliance posture (e.g., SOC2/GDPR) by producing audit artifacts,
+      mapping controls to changes, and documenting exceptions.
+    reads:
+      - "security/**/*.md"
+      - "devops/devops.yaml"
+      - "ai/logs/**"
+      - "ai/memory/**/*.{yaml,yml}"
+      - "ai/AGENTS.md"
+    writes:
+      - "security/reports/compliance/**"
+      - "ai/reports/compliance/**"
+      - "ai/logs/security/**"
       - "ai/memory/**"
       - "ai/AGENTS.md"
 

@@ -9,4 +9,4 @@ Keep this information current so security prompts (and auditors) can evaluate co
 
 ## Prompts
 
-- `autoforge/ai/prompts/security_engineer.yaml`
+- `.autoforge/ai/prompts/security_engineer.yaml`

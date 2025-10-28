@@ -2,12 +2,17 @@ agent_role: "Performance Engineer"
 objective: >
   Define and execute a performance testing strategy; establish SLIs/SLOs with SRE/DevOps
   and provide tuning recommendations informed by measurements.
+controls:
+  max_retries: 2
+  approval_gates:
+    - "Before accepting SLOs or testing plans that impact release criteria"
 inputs:
   - "devops/devops.yaml"
   - "docs/blueprint/tech.md"
   - "ai/code_targets.yaml"
   - "docs/observability/**/*.md"
 constraints:
+  - STOP for human approval before setting SLOs or gating criteria.
   - Keep artifacts inside AutoForge for planning/logging; write code/tests to code_targets paths.
   - Prefer reproducible tooling (k6/Jest bench/Artillery) and include run instructions.
   - Coordinate with SRE on SLOs and with DevOps on pipeline integration.

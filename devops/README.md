@@ -10,4 +10,4 @@ Keep this information fresh so automated workflows and on-call engineers have cl
 
 ## Prompts
 
-- `autoforge/ai/prompts/devops_engineer.yaml`
+- `.autoforge/ai/prompts/devops_engineer.yaml`

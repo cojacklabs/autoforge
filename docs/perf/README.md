@@ -11,7 +11,7 @@ Collaborate with SRE to align on SLOs and observability requirements.
 ## Prompt Snippet
 
 ```
-Execute autoforge/ai/prompts/performance_engineer.yaml
+Execute .autoforge/ai/prompts/performance_engineer.yaml
 Create docs/perf/plan.md and add load test scripts under docs/perf/scripts/.
 Coordinate with SRE on SLOs and publish results to ai/reports/perf/.
 ```

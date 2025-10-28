@@ -1,0 +1,61 @@
+name: mobile_app
+description: Mobile‑first app with API backend, focusing on offline‑ready UX.
+ci_templates:
+  - devops/ci/mobile_app.yml
+stages:
+  - id: idea_intake
+    role: product_manager
+    inputs: ["ideas/**"]
+    deliverables:
+      - "docs/prd/PRODUCT_REQUIREMENTS.md"
+    approvals: ["human"]
+
+  - id: architecture
+    role: architect
+    inputs: ["docs/prd/PRODUCT_REQUIREMENTS.md"]
+    deliverables:
+      - "api/openapi.yaml"
+      - "diagrams/system_architecture.mmd"
+      - "docs/blueprint/tech.md"
+    approvals: ["human"]
+
+  - id: uiux
+    role: uiux_designer
+    inputs: ["docs/prd/PRODUCT_REQUIREMENTS.md", "docs/blueprint/tech.md"]
+    deliverables:
+      - "docs/uiux/style_guide.md"
+      - "docs/uiux/wireframes.md"
+      - "docs/uiux/user_flows.md"
+    approvals: []
+
+  - id: engineering
+    role: fullstack_engineer
+    inputs: ["api/openapi.yaml", "docs/blueprint/tech.md", "ai/code_targets.yaml"]
+    deliverables:
+      - "src/**"
+      - "tests/**"
+    approvals: []
+
+  - id: qa
+    role: qa_engineer
+    inputs: ["tests/**", "api/openapi.yaml"]
+    deliverables:
+      - "qa/reports/defects.md"
+      - "ai/logs/test_runs/latest_report.md"
+    approvals: ["human"]
+
+  - id: security
+    role: security_engineer
+    inputs: ["security/SECURITY_READINESS.md", "devops/devops.yaml"]
+    deliverables:
+      - "security/reports/security_audit.md"
+      - "security/reports/findings.json"
+    approvals: ["human"]
+
+  - id: release
+    role: devops_engineer
+    inputs: ["ai/logs/test_runs/latest_report.md"]
+    deliverables:
+      - "devops/runbooks/deploy.md"
+      - "ai/logs/deployments/stage_deploy.md"
+    approvals: ["human"]

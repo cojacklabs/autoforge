@@ -1,0 +1,71 @@
+name: analytics_app
+description: Analytics‑first app with dashboards, metrics, and data contracts.
+ci_templates:
+  - devops/ci/analytics_app.yml
+stages:
+  - id: idea_intake
+    role: product_manager
+    inputs: ["ideas/**"]
+    deliverables:
+      - "docs/prd/PRODUCT_REQUIREMENTS.md"
+      - "docs/blueprint/spec.md"
+    approvals: ["human"]
+
+  - id: architecture
+    role: architect
+    inputs: ["docs/prd/PRODUCT_REQUIREMENTS.md"]
+    deliverables:
+      - "api/openapi.yaml"
+      - "diagrams/data_model.mmd"
+      - "docs/blueprint/tech.md"
+    approvals: ["human"]
+
+  - id: uiux
+    role: uiux_designer
+    inputs: ["docs/prd/PRODUCT_REQUIREMENTS.md"]
+    deliverables:
+      - "docs/uiux/style_guide.md"
+      - "docs/uiux/wireframes.md"
+      - "docs/uiux/user_flows.md"
+    approvals: []
+
+  - id: engineering
+    role: fullstack_engineer
+    inputs: ["api/openapi.yaml", "docs/blueprint/tech.md", "ai/code_targets.yaml"]
+    deliverables:
+      - "src/**"
+      - "tests/**"
+    approvals: []
+
+  - id: data_analytics
+    role: data_analyst
+    inputs: ["docs/observability/**", "docs/blueprint/tech.md"]
+    deliverables:
+      - "src/** (dashboards/analytics modules per code targets)"
+      - "ai/reports/analytics/metrics_glossary.md"
+    approvals: []
+
+  - id: qa
+    role: qa_engineer
+    inputs: ["tests/**", "api/openapi.yaml"]
+    deliverables:
+      - "qa/reports/defects.md"
+      - "ai/logs/test_runs/latest_report.md"
+    approvals: ["human"]
+
+  - id: sre
+    role: sre_engineer
+    inputs: ["docs/observability/**", "devops/devops.yaml"]
+    deliverables:
+      - "docs/observability/dashboards.md"
+      - "docs/observability/alerts.md"
+      - "docs/observability/slo.md"
+    approvals: []
+
+  - id: release
+    role: devops_engineer
+    inputs: ["ai/logs/test_runs/latest_report.md", "security/reports/security_audit.md"]
+    deliverables:
+      - "devops/runbooks/deploy.md"
+      - "ai/logs/deployments/stage_deploy.md"
+    approvals: ["human"]

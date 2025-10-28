@@ -1,0 +1,33 @@
+providers:
+  stripe:
+    env:
+      - STRIPE_SECRET
+      - STRIPE_WEBHOOK_SECRET
+    sdks:
+      - "stripe"
+      - "@stripe/stripe-js"
+    deliverables:
+      - "src/server/payments/**"
+      - "tests/payments/**"
+      - "docs/security/stripe.md"
+    notes: "Subscriptions, invoicing, webhooks, receipts; enforce audit logging."
+
+  analytics_provider:
+    env:
+      - ANALYTICS_API_KEY
+    sdks:
+      - "analytics-sdk"
+    deliverables:
+      - "src/services/analytics/**"
+      - "tests/analytics/**"
+    notes: "Dashboards, KPIs, and event pipelines with sampling guidance."
+
+  example_data_api:
+    env:
+      - DATA_API_KEY
+    sdks: []
+    deliverables:
+      - "integrations/data_api/**"
+      - "tests/integrations/data_api/**"
+    notes: "Schema validation, retries/backoff, error taxonomy, and mocks."
+

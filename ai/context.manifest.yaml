@@ -23,7 +23,7 @@ entrypoints:
   product_requirements: "docs/prd/PRODUCT_REQUIREMENTS.md"
   api_contract: "api/openapi.yaml"
   qa_plan: "qa/tests.md"
-  security_readiness: "security/security_readiness.md"
+  security_readiness: "security/SECURITY_READINESS.md"
   devops_plan: "devops/devops.yaml"
   research_policy: "research/SOURCES_POLICY.md"
   autonomy_guide: "docs/ai/AGENT_AUTONOMY_GUIDE.md"
@@ -31,6 +31,7 @@ entrypoints:
 
 include_globs:
   - "docs/**/*.md"
+  - "docs/blueprint/recipes/**/*.yaml"
   - "diagrams/**/*.{mmd,md}"
   - "api/**/*.{yaml,yml,json}"
   - "security/**/*.md"
@@ -46,6 +47,11 @@ include_globs:
   - "ai/memory/**/*.{md,yml,yaml}"
   - "ai/AGENTS.md"
   # Include planning artifacts produced inside ./autoforge for planning-first workflows
+  - ".autoforge/ai/reports/**/*.md"
+  - ".autoforge/ai/reports/**/*.yaml"
+  - ".autoforge/ai/reports/**/*.yml"
+  - ".autoforge/ai/reports/diagrams/**/*.mmd"
+  # Legacy folder name support
   - "autoforge/ai/reports/**/*.md"
   - "autoforge/ai/reports/**/*.yaml"
   - "autoforge/ai/reports/**/*.yml"
@@ -68,7 +74,7 @@ governance:
         - "autoforge/ai/reports/diagrams/*.mmd"
     - name: "security_checklist_present"
       requires_glob:
-        - "security/security_readiness.md"
+        - "security/SECURITY_READINESS.md"
         - "autoforge/ai/reports/security_readiness.md"
     - name: "research_policy_present"
       requires:
@@ -85,10 +91,28 @@ governance:
       requires_glob:
         - "docs/observability/dashboards.md"
         - "autoforge/ai/reports/observability/dashboards.md"
+    - name: "tests_present"
+      requires_glob:
+        - "tests/**/*.js"
+        - "tests/**/*.ts"
+        - ".autoforge/ai/reports/tests_stub.md"
+        - "autoforge/ai/reports/tests_stub.md"
+    - name: "ci_config_present"
+      requires_glob:
+        - ".github/workflows/*.yml"
+        - ".github/workflows/*.yaml"
+        - "devops/ci/*.yml"
+        - "devops/ci/*.yaml"
+        - ".autoforge/ai/reports/ci_stub.md"
+        - "autoforge/ai/reports/ci_stub.md"
+    - name: "learning_feedback_present"
+      requires_glob:
+        - ".autoforge/ai/reports/learning/*.md"
+        - "autoforge/ai/reports/learning/*.md"
 
 notes: |
   Operate relative to the repository root that contains this manifest. When AutoForge
-  is cloned as a subdirectory (e.g., `custom-project/autoforge`), assistants must
+  is cloned as a subdirectory (e.g., `custom-project/.autoforge`), assistants must
   treat that folder as their working directory and avoid touching parent folders.
 
   The Mastermind Coordinator validates quality gates with scripts/validate_context.sh.

@@ -153,11 +153,13 @@ function main() {
   const projectRoot = projectRootArg
     ? path.resolve(projectRootArg)
     : process.cwd();
-  const autoforgeDir = path.join(projectRoot, "autoforge");
+  const hiddenDir = path.join(projectRoot, ".autoforge");
+  const legacyDir = path.join(projectRoot, "autoforge");
+  const autoforgeDir = existsSync(hiddenDir) ? hiddenDir : legacyDir;
 
   if (!existsSync(autoforgeDir)) {
     throw new Error(
-      `autoforge/ directory not found at ${autoforgeDir}. Run this command from your project root.`,
+      `.autoforge/ directory not found at ${hiddenDir}. Run this command from your project root.`,
     );
   }
 

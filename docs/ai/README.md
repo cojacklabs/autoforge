@@ -10,10 +10,10 @@ This folder contains playbooks and guides for running AutoForge via AI coding to
 Agents and developers should reference this folder before running any prompts to
 understand expectations, quality gates, and handoffs. For first‑time use or after upgrades, run `npx autoforge load` to generate a prompt that instructs your coding AI to reload rules, roles, `ai/AGENTS.md`, and the most recent memory file.
 
-- Use `autoforge.config.json` for all customization. After editing, run `npx autoforge configure` so the managed `ai/code_targets.yaml` and `ai/context_targets.yaml` reflect the current settings. Avoid hand-editing files under `autoforge/ai/`.
+- Use `autoforge.config.json` for all customization. After editing, run `npx autoforge configure` so the managed `ai/code_targets.yaml` and `ai/context_targets.yaml` reflect the current settings. Avoid hand-editing files under `.autoforge/ai/`.
 
 ## Prompts
 
-- `autoforge/ai/prompts/kickoff.yaml`
-- `autoforge/ai/prompts/change_request.yaml`
-- `autoforge/ai/prompts/retrospective.yaml`
+- `.autoforge/ai/prompts/kickoff.yaml`
+- `.autoforge/ai/prompts/change_request.yaml`
+- `.autoforge/ai/prompts/retrospective.yaml`

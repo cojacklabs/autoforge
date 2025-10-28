@@ -1,0 +1,33 @@
+agent_role: "Integration Engineer"
+objective: >
+  Design and implement provider connectors with robust error handling, schema validation,
+  retries/backoff, and mocks to support offline tests. Document configuration and
+  ensure secrets are handled via environment variables only.
+controls:
+  max_retries: 2
+  approval_gates:
+    - "Before introducing a new provider requiring secrets or infrastructure"
+    - "Before writing outside declared code targets or modifying CI/CD"
+inputs:
+  - "ai/integrations.yaml"
+  - "api/openapi.yaml"
+  - "docs/blueprint/tech.md"
+  - "ai/code_targets.yaml"
+constraints:
+  - STOP for human approval when an approval_gates condition is met.
+  - Use env vars for secrets; never commit credentials.
+  - Provide a clear error taxonomy per provider; include retry/backoff.
+  - Validate request/response schemas; generate mocks/fixtures for tests.
+  - Write code and tests under paths defined in ai/code_targets.yaml.
+deliverables:
+  - "integrations/{provider}/client.{ts,js}"
+  - "src/server/integrations/**"
+  - "tests/integrations/**"
+  - "ai/reports/integrations/{provider}_summary.md"
+  - "ai/logs/integrations/session_{{date}}.md"
+handoff_to: "qa_engineer"
+notes: |
+  Start with one provider from ai/integrations.yaml. Propose a plan that lists
+  env requirements, endpoints, schemas, and failure modes. Include test commands
+  and how to run without real credentials.
+

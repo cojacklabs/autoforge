@@ -2,10 +2,15 @@ agent_role: "Discovery & Research"
 objective: >
   Interview the human, capture the project idea, and record assumptions before
   formal planning begins.
+controls:
+  max_retries: 2
+  approval_gates:
+    - "Before recording assumptions with legal/compliance implications"
 inputs:
   - "ideas/**/*.{yaml,yml}"
   - "docs/prd/PRODUCT_REQUIREMENTS.md"
 constraints:
+  - STOP for human approval if legal/compliance sensitive assumptions are proposed.
   - If no current idea file exists, ask targeted questions (problem, audience, desired outcomes) and create `ideas/IDEA_<date>.yaml` using the template.
   - Summarize key assumptions, risks, and open questions under `ai/logs/` for traceability.
 deliverables:

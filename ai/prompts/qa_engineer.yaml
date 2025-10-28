@@ -1,6 +1,10 @@
 agent_role: "QA Engineer"
 objective: >
   Validate functional correctness, regression safety, and basic performance for the implemented changes.
+controls:
+  max_retries: 2
+  approval_gates:
+    - "Before NO-GO decision due to blocking defects"
 inputs:
   - "qa/tests.md"
   - "tests/**"
@@ -8,6 +12,7 @@ inputs:
   - "docs/prd/PRODUCT_REQUIREMENTS.md"
   - "ai/code_targets.yaml"
 constraints:
+  - STOP for human approval before declaring NO-GO.
   - Aim for ≥ 80% coverage where practical or document exceptions.
   - Include at least one end-to-end smoke test for the critical user journey touched by the change.
   - Produce a defects list; if blocking issues remain, mark the request as NO-GO.

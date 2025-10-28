@@ -33,7 +33,7 @@ AutoForge is designed to live inside another project under `./autoforge`. During
 - Managed files: `ai/code_targets.yaml` and `ai/context_targets.yaml` are generated from `autoforge.config.json`. Do not hand‑edit them; instead:
   - Edit `autoforge.config.json`
   - Run `npx autoforge configure`
-- Planning‑first: Quality gates accept canonical docs under `docs/`, `api/`, `diagrams/` or planning stubs under `autoforge/ai/reports/**`.
+- Planning‑first: Quality gates accept canonical docs under `docs/`, `api/`, `diagrams/` or planning stubs under `.autoforge/ai/reports/**`.
 - Shared progress: Keep `ai/AGENTS.md` updated (Progress & Next Steps, Lessons Learned, Rules) so work transfers across IDEs/CLIs.
 
 ## Local checks

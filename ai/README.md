@@ -15,7 +15,7 @@ Before running prompts:
 1. Update `autoforge.config.json` (codeTargets/contextTargets) to match your project layout.
 2. Run `npx autoforge configure` so the managed `ai/code_targets.yaml` and `ai/context_targets.yaml` stay in sync.
 3. (First time or after upgrade) Run `npx autoforge load` and paste the generated prompt into your coding AI to reload rules, roles, `ai/AGENTS.md`, and memory.
-4. Operate from this directory when executing prompts (e.g., set working dir to `autoforge/`).
+4. Operate from this directory when executing prompts (e.g., set working dir to `.autoforge/`).
 
 ## Applying configuration
 
@@ -25,4 +25,4 @@ Whenever you change `autoforge.config.json`, reapply it:
 npx autoforge configure
 ```
 
-This regenerates the managed YAML files and ensures every agent sees the latest project directories and documentation paths. Avoid editing files under `autoforge/ai/` directly—those are overwritten by the configure command.
+This regenerates the managed YAML files and ensures every agent sees the latest project directories and documentation paths. Avoid editing files under `.autoforge/ai/` directly—those are overwritten by the configure command.

@@ -1,7 +1,7 @@
 # Change Requests
 
 Drop structured YAML files into this folder to trigger the change-management workflow.
-Most of the time you can run `Execute autoforge/ai/prompts/change_intake.yaml` and let the Product Manager agent create the file for you.
+Most of the time you can run `Execute .autoforge/ai/prompts/change_intake.yaml` and let the Product Manager agent create the file for you.
 
 - The agent clones `CR-0000_example.yaml`, increments the ID, and fills in the details from your conversation.
 - If you prefer to work offline, copy `CR-0000_example.yaml` manually and update the metadata yourself.

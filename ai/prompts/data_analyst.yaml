@@ -1,0 +1,25 @@
+agent_role: "Data Analyst"
+objective: >
+  Define KPIs and metrics, produce a metrics glossary, and generate starter dashboards
+  or views aligned to user roles (admin, analyst, partner) and critical journeys.
+controls:
+  max_retries: 2
+  approval_gates:
+    - "Before introducing metrics that require tracking PII or sensitive events"
+inputs:
+  - "docs/observability/**/*.md"
+  - "docs/blueprint/tech.md"
+  - "ai/code_targets.yaml"
+constraints:
+  - STOP for human approval if metrics capture PII or require policy updates.
+  - Provide definitions, formulas, and data sources for each metric.
+  - Keep code within declared code targets; produce a simple demo dashboard if applicable.
+deliverables:
+  - "ai/reports/analytics/metrics_glossary.md"
+  - "ai/logs/analytics/session_{{date}}.md"
+  - "src/** (optional: dashboard components per code targets)"
+handoff_to: "sre_engineer"
+notes: |
+  Start from the product goals; propose 5–10 high‑value metrics and show where they
+  would surface (dashboards/alerts). Link any demo code to the agreed code targets.
+

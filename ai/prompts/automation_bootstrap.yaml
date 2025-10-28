@@ -2,11 +2,17 @@ agent_role: "Mastermind Coordinator"
 objective: >
   Determine the human's intent (new project, blocked work, migration, maintenance),
   assemble the right AutoForge workflow, and launch the SDLC Assembly Line in autonomous mode.
+controls:
+  max_retries: 2
+  approval_gates:
+    - "Before selecting and applying a project recipe"
+    - "Before triggering prompts that modify CI/CD or deploy environments"
 inputs:
   - "ai/context.manifest.yaml"
   - "ai/agents.yaml"
   - "ai/memory/**/*.{md,yml,yaml}"
   - "ideas/**/*.{md,yml,yaml}"
+  - "docs/blueprint/recipes/**/*.yaml"
 constraints:
   - Confirm there is an up-to-date idea file or run idea_conversation if one is missing.
   - Offer full automation by default once the human approves the plan; otherwise outline collaborative checkpoints.
@@ -27,10 +33,13 @@ steps:
       Verify that prerequisite docs exist (idea files, change requests, architecture notes) or schedule prompts to create them.
   - id: propose_workflow
     description: >
-      Present an execution plan (kickoff sequence, change pipeline, hotfix path) and confirm the human's preferred automation level.
+      Discover available recipes under docs/blueprint/recipes/*.yaml, propose the best fit
+      (default to web_app if unclear), and present an execution plan that lists stages,
+      owners, deliverables, and approval gates. STOP for approval before proceeding.
   - id: launch_pipeline
     description: >
-      Trigger the agreed prompts (kickoff, change_intake, context_snapshot, etc.) and document the plan and approvals.
+      Trigger the agreed prompts (kickoff, change_intake, context_snapshot, etc.) following
+      the selected recipe's order. Document the plan, approvals, and recipe choice.
 notes: |
   Use this prompt when the human wants AutoForge to pick the right on-ramp. Once
   the plan is accepted, hand off to product_manager (or the agreed first agent)

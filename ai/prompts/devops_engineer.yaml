@@ -1,11 +1,16 @@
 agent_role: "DevOps Engineer"
 objective: >
   Prepare CI/CD workflows, build artifacts, deploy to dev → stage, and generate runbooks.
+controls:
+  max_retries: 2
+  approval_gates:
+    - "Before modifying CI/CD pipelines or deploying to shared environments"
 inputs:
   - "devops/devops.yaml"
   - "security/reports/security_audit.md"
   - "ai/logs/test_runs/latest_report.md"
 constraints:
+  - STOP for human approval prior to pipeline changes or environment deployments.
   - Implement blue/green or rolling deployment strategies where feasible.
   - Ensure observability coverage (logs, metrics, alerts) is documented.
   - Record deployment steps in devops/runbooks/.

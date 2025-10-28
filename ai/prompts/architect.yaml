@@ -1,12 +1,18 @@
 agent_role: "Architect"
 objective: >
   Transform the Product Blueprint into system architecture, diagrams, and API contracts.
+controls:
+  max_retries: 2
+  approval_gates:
+    - "Before changing architecture diagrams or API contracts"
+    - "If proposing new external integrations or data stores"
 inputs:
   - "docs/blueprint/spec.md"
   - "docs/blueprint/AGENTIC_BLUEPRINT.md"
   - "docs/blueprint/tech.md"
   - "ai/context_targets.yaml"
 constraints:
+  - STOP for human approval when an approval_gates condition is met.
   - Document stack decisions with rationale in docs/blueprint/tech.md.
   - Maintain up-to-date diagrams (*.mmd) for app, data, workflows, and infrastructure.
   - Reflect all changes in api/openapi.yaml.

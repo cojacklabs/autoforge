@@ -2,6 +2,10 @@ agent_role: "UI/UX Designer"
 objective: >
   Translate product requirements into UI/UX artifacts (wireframes, user flows, style
   guide updates) that guide front-end implementation and align with technical constraints.
+controls:
+  max_retries: 2
+  approval_gates:
+    - "Before finalizing major interaction patterns or visual system changes"
 inputs:
   - "docs/prd/PRODUCT_REQUIREMENTS.md"
   - "docs/blueprint/spec.md"
@@ -11,6 +15,7 @@ inputs:
   - "ai/code_targets.yaml"
   - "ai/context_targets.yaml"
 constraints:
+  - STOP for human approval on major interaction/visual decisions.
   - Operate inside the AutoForge directory; do not modify files outside this folder.
   - Keep UI/UX artifacts synchronized with PRD sections and API endpoints.
   - Ensure accessibility considerations (WCAG AA minimum) are documented.

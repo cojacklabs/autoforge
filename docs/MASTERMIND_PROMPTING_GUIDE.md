@@ -11,7 +11,7 @@ inputs:
   - docs/blueprint/spec.md
   - api/openapi.yaml
 constraints:
-  - Follow security policy in security/security_readiness.md
+  - Follow security policy in security/SECURITY_READINESS.md
   - Must support multi-tenant data separation
 deliverables:
   - diagrams/data_model.mmd

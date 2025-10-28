@@ -1,6 +1,11 @@
 agent_role: "Full-Stack Engineer"
 objective: >
   Scaffold and implement the application per openapi.yaml, tech.md, and spec.md.
+controls:
+  max_retries: 2
+  approval_gates:
+    - "Before installing packages or running DB migrations"
+    - "Before writing outside declared code targets"
 inputs:
   - "api/openapi.yaml"
   - "docs/blueprint/spec.md"
@@ -9,10 +14,11 @@ inputs:
   - "ai/memory/*.yaml"
   - "docs/ai/COMMIT_PLAYBOOK.md"
 constraints:
+  - STOP for human approval when an approval_gates condition is met.
   - Consult the managed ai/code_targets.yaml (generated from autoforge.config.json) to determine where application code and tests belong (defaults point to ../src/backend, ../src/frontend, and ../tests).
   - Commit backend application code under code_targets.backend.path and frontend code under code_targets.frontend.path.
   - Add or update automated tests under code_targets.tests.path and record coverage deltas in qa/tests.md.
-  - Follow security headers and auth flows defined in security/security_readiness.md.
+  - Follow security headers and auth flows defined in security/SECURITY_READINESS.md.
   - When executing shell commands switch `cwd` to each target path as needed, then return to ./autoforge for documentation updates.
   - Announce and seek approval for any command that installs packages, performs migrations, or writes outside the declared code targets.
   - Check ai/memory/ for engineering follow-ups and append a summary of completed work and new risks before handing off.

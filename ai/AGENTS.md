@@ -26,12 +26,13 @@ Refer to the prompts for detailed instructions, constraints, and deliverable for
 **Current Progress**
 
 - 2025-10-24: Initial public release of @cojacklabs/autoforge v0.1.0. Scoped package, added config-driven workflow (`autoforge configure`), planning-first quality gates, project snapshot (`autoforge snapshot`), and onboarding prompt generator (`autoforge load` / `refresh`).
+- 2025-10-28: v0.2.0 updates in progress. Default folder renamed to `.autoforge/` (legacy `autoforge/` still supported), STOP/APPROVAL gates with `max_retries` added across prompts, recipe-based orchestration (`docs/blueprint/recipes/*` + `automation_bootstrap`), integration registry (`ai/integrations.yaml`), and new optional roles (integration_engineer, payments_engineer, data_analyst, compliance_officer). Agents should reload manifests and follow the updated approvals cadence.
 
 **Upcoming / To Do**
 
-1. Announce the npm release across CoJack Labs channels and gather feedback.
-2. Monitor early adopters, capture issues/feature requests, and plan incremental patches.
-3. Expand automated smoke tests to install from the published tarball in CI.
+1. Publish v0.2.0 notes, update `README`/`QUICKSTART` links, and collect adopter feedback.
+2. Wire recipes into automation flows end-to-end and add example CI configs per recipe.
+3. Expand validator to enforce new gates and optional role deliverables.
 
 ## Lessons Learned
 

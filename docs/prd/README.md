@@ -10,5 +10,5 @@ depend on it to ensure deliverables align with business goals.
 
 ## Related Prompts
 
-- `autoforge/ai/prompts/product_manager.yaml`
-- `autoforge/ai/prompts/uiux_designer.yaml`
+- `.autoforge/ai/prompts/product_manager.yaml`
+- `.autoforge/ai/prompts/uiux_designer.yaml`

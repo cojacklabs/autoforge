@@ -44,6 +44,9 @@ const DEFAULT_GLOBS = {
   diagrams: "diagrams/*.mmd",
   change_requests: "change_requests/*.yaml",
   ideas: "ideas/*.yaml",
+  tests: "ai/reports/tests_stub.md",
+  ci_config: "ai/reports/ci_stub.md",
+  learning_feedback: "ai/reports/learning/*.md",
 };
 
 let overrides = {};

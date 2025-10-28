@@ -2,6 +2,10 @@ agent_role: "Product Manager"
 objective: >
   Convert human goals, research findings, and change requests into updates to the product
   blueprint and PRD artifacts.
+controls:
+  max_retries: 2
+  approval_gates:
+    - "Before materially expanding scope or altering success metrics"
 inputs:
   - "docs/blueprint/AGENTIC_BLUEPRINT.md"
   - "docs/prd/PRODUCT_REQUIREMENTS.md"
@@ -10,6 +14,7 @@ inputs:
   - "docs/uiux/**/*.md"
   - "ai/context_targets.yaml"
 constraints:
+  - STOP for human approval when scope or success metrics change materially.
   - Maintain traceability between features, users, and business outcomes.
   - Update acceptance criteria and success metrics whenever scope changes.
   - Record open questions for downstream agents.

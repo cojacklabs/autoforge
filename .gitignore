@@ -12,6 +12,7 @@ temp/
 *.tmp
 .DS_Store
 node_modules/
+ref/
 dist/
 build/
 .env

@@ -13,12 +13,17 @@ import {
 } from "node:fs/promises";
 import { spawn } from "node:child_process";
 import os from "node:os";
+import yaml from "yaml";
+import { globSync } from "glob";
+import { readFileSync } from "node:fs";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 const packageRoot = path.resolve(__dirname, "..");
 const distRoot = path.join(packageRoot, "dist");
 const CONFIG_FILE = "autoforge.config.json";
+const DEFAULT_DIRNAME = ".autoforge";
+const LEGACY_DIRNAME = "autoforge";
 const USER_PRESERVE_PATHS = [
   "ai/logs",
   "ai/reports",
@@ -51,6 +56,7 @@ Usage:
   autoforge doctor
   autoforge version
   autoforge help
+  autoforge dryrun [recipeName]
 `);
 }
 
@@ -108,16 +114,23 @@ async function ensureConfig(projectRoot) {
   console.log(color.green(`✔ Created ${CONFIG_FILE}`));
 }
 
+function resolveAutoforgeDir(projectRoot, { forInit = false } = {}) {
+  if (forInit) return path.join(projectRoot, DEFAULT_DIRNAME);
+  const hidden = path.join(projectRoot, DEFAULT_DIRNAME);
+  const legacy = path.join(projectRoot, LEGACY_DIRNAME);
+  return pathExists(hidden).then((h) => (h ? hidden : legacy));
+}
+
 async function prepareAutoforgeFolder(projectRoot, { force = false } = {}) {
-  const targetDir = path.join(projectRoot, "autoforge");
+  const targetDir = path.join(projectRoot, DEFAULT_DIRNAME);
   const exists = await pathExists(targetDir);
   if (exists && !force) {
     throw new Error(
-      `autoforge/ already exists. Re-run with --force to overwrite.`,
+      `${DEFAULT_DIRNAME}/ already exists. Re-run with --force to overwrite.`,
     );
   }
   if (exists && force) {
-    console.log(color.yellow(`⚠ Removing existing autoforge/ (force mode)`));
+    console.log(color.yellow(`⚠ Removing existing ${DEFAULT_DIRNAME}/ (force mode)`));
     await rm(targetDir, { recursive: true, force: true });
   }
   await mkdir(targetDir, { recursive: true });
@@ -187,11 +200,9 @@ async function restoreUserData(autoforgeDir, backupBundle) {
 
 async function commandUpgrade() {
   const projectRoot = process.cwd();
-  const autoforgeDir = path.join(projectRoot, "autoforge");
+  const autoforgeDir = await resolveAutoforgeDir(projectRoot);
   if (!(await pathExists(autoforgeDir))) {
-    console.log(
-      color.yellow("No autoforge/ directory found. Running init instead."),
-    );
+    console.log(color.yellow(`No ${DEFAULT_DIRNAME}/ directory found. Running init instead.`));
     await commandInit([]);
     return;
   }
@@ -208,11 +219,9 @@ async function commandUpgrade() {
 
 async function commandValidate() {
   const projectRoot = process.cwd();
-  const autoforgeDir = path.join(projectRoot, "autoforge");
+  const autoforgeDir = await resolveAutoforgeDir(projectRoot);
   if (!(await pathExists(autoforgeDir))) {
-    throw new Error(
-      "autoforge/ directory not found. Run `autoforge init` first.",
-    );
+    throw new Error(`${DEFAULT_DIRNAME}/ directory not found. Run \`autoforge init\` first.`);
   }
   console.log(color.blue("→ Running validation"));
   const scriptPath = path.join(packageRoot, "scripts", "validate_context.js");
@@ -232,6 +241,90 @@ async function commandConfigure(args) {
 async function commandSnapshot(args) {
   const scriptPath = path.join(packageRoot, "scripts", "generate_snapshot.js");
   await runCommand(process.execPath, [scriptPath, ...args]);
+}
+
+function findRecipes(projectRoot) {
+  const recipesDir = path.join(projectRoot, "docs", "blueprint", "recipes");
+  const patterns = [path.join(recipesDir, "*.yaml"), path.join(recipesDir, "*.yml")];
+  const files = patterns.flatMap((p) => globSync(p, { nodir: true }));
+  return files;
+}
+
+function loadRecipeByName(projectRoot, name) {
+  const files = findRecipes(projectRoot);
+  if (name) {
+    for (const f of files) {
+      if (path.basename(f).replace(/\.(ya?ml)$/i, "") === name) {
+        const doc = yaml.parse(readFileSync(f, "utf8"));
+        return { file: f, recipe: doc };
+      }
+    }
+  }
+  // Prefer web_app if available, else first available
+  let candidate = files.find((f) => /web_app\.ya?ml$/i.test(f)) || files[0];
+  if (!candidate) return null;
+  const doc = yaml.parse(readFileSync(candidate, "utf8"));
+  return { file: candidate, recipe: doc };
+}
+
+async function commandDryrun(args) {
+  const projectRoot = process.cwd();
+  const name = args[0];
+  const loaded = loadRecipeByName(projectRoot, name);
+  if (!loaded) {
+    console.log(color.yellow("No recipes found under docs/blueprint/recipes/."));
+    console.log("Create one (e.g., docs/blueprint/recipes/web_app.yaml) and retry.");
+    return;
+  }
+  const { file, recipe } = loaded;
+  console.log(color.blue(`→ Dry run for recipe: ${recipe.name || path.basename(file)}`));
+  console.log(color.yellow("(No files will be written.)\n"));
+
+  // Preflight checks
+  const checks = [
+    { label: "ideas present", pattern: path.join(projectRoot, "ideas", "*.yaml") },
+    { label: "PRD present", path: path.join(projectRoot, "docs", "prd", "PRODUCT_REQUIREMENTS.md") },
+    { label: "API contract present", path: path.join(projectRoot, "api", "openapi.yaml") },
+  ];
+  console.log(color.blue("Preflight checks:"));
+  for (const c of checks) {
+    let ok = false;
+    if (c.path) ok = await pathExists(c.path);
+    else if (c.pattern) ok = globSync(c.pattern, { nodir: true }).length > 0;
+    console.log(`- ${c.label}: ${ok ? color.green("OK") : color.red("MISSING")}`);
+  }
+  console.log("");
+
+  // Plan outline
+  console.log(color.blue("Execution plan:"));
+  const stages = Array.isArray(recipe.stages) ? recipe.stages : [];
+  if (stages.length === 0) {
+    console.log(color.red("No stages defined in recipe."));
+  } else {
+    stages.forEach((s, i) => {
+      const approvals = Array.isArray(s.approvals) ? s.approvals.join(", ") : "";
+      console.log(`${i + 1}. ${s.id} — role: ${s.role}${approvals ? ` (approvals: ${approvals})` : ""}`);
+      if (Array.isArray(s.deliverables) && s.deliverables.length) {
+        console.log(`   deliverables: ${s.deliverables.join(", ")}`);
+      }
+    });
+  }
+  console.log("");
+
+  // CI templates
+  if (Array.isArray(recipe.ci_templates) && recipe.ci_templates.length) {
+    console.log(color.blue("Suggested CI templates:"));
+    for (const t of recipe.ci_templates) {
+      console.log(`- ${t}`);
+    }
+    console.log("");
+  }
+
+  // Next steps
+  console.log(color.blue("Next steps:"));
+  console.log("- Review the plan above and suggest edits.");
+  console.log("- Approve the recipe selection.");
+  console.log("- In Chat Mode: run 'Execute .autoforge/ai/prompts/automation_bootstrap.yaml' to proceed with approvals.");
 }
 
 function formatTimestampISO() {
@@ -287,19 +380,21 @@ async function listMemoryFiles(autoforgeDir) {
 
 async function commandRefresh() {
   const projectRoot = process.cwd();
-  const autoforgeDir = path.join(projectRoot, "autoforge");
+  const autoforgeDir = await resolveAutoforgeDir(projectRoot);
   if (!(await pathExists(autoforgeDir))) {
-    throw new Error("autoforge/ directory not found. Run `autoforge init` first.");
+    throw new Error(`${DEFAULT_DIRNAME}/ directory not found. Run \`autoforge init\` first.`);
   }
   const timestamp = formatTimestampISO();
+  const dirBase = path.basename(autoforgeDir);
   const filesToLoad = [
-    "autoforge/ai/context.manifest.yaml",
-    "autoforge/ai/agents.yaml",
-    "autoforge/ai/AGENTS.md",
-    "autoforge/docs/ai/COMMIT_PLAYBOOK.md",
+    `${dirBase}/ai/context.manifest.yaml`,
+    `${dirBase}/ai/agents.yaml`,
+    `${dirBase}/ai/AGENTS.md`,
+    `${dirBase}/docs/ai/COMMIT_PLAYBOOK.md`,
+    `docs/AUTOFORGE_MULTI_PROJECT_GUIDE.md`,
   ];
   const memoryFiles = await listMemoryFiles(autoforgeDir);
-  const memoryPaths = memoryFiles.map((f) => `autoforge/ai/memory/${f}`);
+  const memoryPaths = memoryFiles.map((f) => `${dirBase}/ai/memory/${f}`);
   const all = [...filesToLoad, ...memoryPaths];
 
   const prompt = [
@@ -342,12 +437,12 @@ async function commandLoad() {
 
 async function commandDoctor() {
   const projectRoot = process.cwd();
-  const autoforgeDir = path.join(projectRoot, "autoforge");
+  const autoforgeDir = await resolveAutoforgeDir(projectRoot);
   const configPath = path.join(projectRoot, CONFIG_FILE);
   const issues = [];
 
   if (!(await pathExists(autoforgeDir))) {
-    issues.push("autoforge/ directory is missing. Run `autoforge init`.");
+    issues.push(`${DEFAULT_DIRNAME}/ directory is missing. Run \`autoforge init\`.`);
   }
   if (!(await pathExists(configPath))) {
     issues.push(
@@ -386,6 +481,9 @@ async function run() {
     switch (cmd) {
       case "init":
         await commandInit(rest);
+        break;
+      case "dryrun":
+        await commandDryrun(rest);
         break;
       case "upgrade":
         await commandUpgrade();

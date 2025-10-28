@@ -16,8 +16,8 @@ Load ai/context.manifest.yaml and ai/agents.yaml.
 Execute ai/prompts/change_intake.yaml with the details below.
 ```
 
-> If AutoForge lives under `./autoforge`, use `autoforge/ai/context.manifest.yaml`,
-> `autoforge/ai/agents.yaml`, and `autoforge/ai/prompts/change_intake.yaml` instead.
+> If AutoForge lives under `./.autoforge`, use `.autoforge/ai/context.manifest.yaml`,
+> `.autoforge/ai/agents.yaml`, and `.autoforge/ai/prompts/change_intake.yaml` instead.
 
 Provide:
 
@@ -31,7 +31,7 @@ and write a log under `ai/logs/change_intake/`.
 Review the generated request, make edits if needed, then continue the workflow:
 
 - Standalone: run `ai/prompts/change_request.yaml` → `ai/prompts/impact_analysis.yaml` → downstream prompts.
-- Embedded: run `autoforge/ai/prompts/change_request.yaml` → `autoforge/ai/prompts/impact_analysis.yaml` → downstream prompts.
+- Embedded: run `.autoforge/ai/prompts/change_request.yaml` → `.autoforge/ai/prompts/impact_analysis.yaml` → downstream prompts.
 
 Remind the assistant to keep all modifications inside the AutoForge directory (set working directory to `./autoforge` for embedded usage).
 
@@ -48,7 +48,7 @@ in `autoforge.config.json` and rerun `npx autoforge configure` before running th
 If the change introduces or modifies UI, include the UI/UX designer step:
 
 - Standalone: add `ai/prompts/uiux_designer.yaml` after the Product Manager handoff.
-- Embedded: `autoforge/ai/prompts/uiux_designer.yaml` prior to architectural analysis.
+- Embedded: `.autoforge/ai/prompts/uiux_designer.yaml` prior to architectural analysis.
 
 ## Workflow Overview
 

@@ -14,7 +14,8 @@ constraints:
   - Begin with the Product Manager agent as step one.
   - Enforce GO/NO-GO approval before production deployment.
   - Log all reasoning to ai/logs/mastermind/.
-  - Keep planning, coordination, and logging activity inside ./autoforge; defer code execution to the engineer agents via the managed code targets (autoforge.config.json → ai/code_targets.yaml).
+  - Keep planning, coordination, and logging activity inside ./.autoforge; defer code execution to the engineer agents via the managed code targets (autoforge.config.json → ai/code_targets.yaml).
+  - If a project recipe exists under docs/blueprint/recipes/, align your sequence to it or ask the human to run automation_bootstrap to select one.
 deliverable: "ai/reports/initiation_summary.md"
 handoff_to: "product_manager"
 human_input: |

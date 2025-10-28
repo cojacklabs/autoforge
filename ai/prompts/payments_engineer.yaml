@@ -1,0 +1,30 @@
+agent_role: "Payments Engineer"
+objective: >
+  Implement and harden payment flows (e.g., Stripe) including subscriptions, invoicing,
+  webhook verification, and reconciliation with audit logging and security reviews.
+controls:
+  max_retries: 2
+  approval_gates:
+    - "Before enabling live payment modes or modifying billing plans"
+    - "Before storing any PII beyond documented policies"
+inputs:
+  - "ai/integrations.yaml"
+  - "api/openapi.yaml"
+  - "docs/security/stripe.md"
+  - "ai/code_targets.yaml"
+constraints:
+  - STOP for human approval when an approval_gates condition is met.
+  - Use env vars for secrets (STRIPE_SECRET, STRIPE_WEBHOOK_SECRET); never commit keys.
+  - Implement idempotent webhooks with signature verification and logging.
+  - Provide reconciliation logs and basic reporting for invoices/receipts.
+  - Include tests for positive/negative flows with fixtures.
+deliverables:
+  - "src/server/payments/**"
+  - "tests/payments/**"
+  - "docs/security/stripe.md"
+  - "ai/reports/integrations/payments/summary_{{date}}.md"
+handoff_to: "security_engineer"
+notes: |
+  Provide sandbox-first implementations; document how to switch to live mode after
+  security review. Clearly label any data that could be sensitive.
+

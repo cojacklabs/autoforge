@@ -8,7 +8,7 @@ import { fileURLToPath } from "node:url";
 
 const SNAPSHOT_FILENAME = "REPO.md";
 const CONFIG_FILENAME = "repomix.config.json";
-const AUTOFORGE_DIR_NAME = "autoforge";
+const AUTOFORGE_DIR_NAMES = [".autoforge", "autoforge"]; // prefer hidden name
 
 const args = process.argv.slice(2).filter((arg) => arg !== "--");
 const cwd = process.cwd();
@@ -36,10 +36,9 @@ function findPackageRoot(startDir) {
   return null;
 }
 
-const defaultTarget =
-  path.basename(cwd).toLowerCase() === AUTOFORGE_DIR_NAME
-    ? path.resolve(cwd, "..")
-    : cwd;
+const defaultTarget = AUTOFORGE_DIR_NAMES.includes(path.basename(cwd))
+  ? path.resolve(cwd, "..")
+  : cwd;
 const targetDir = args[0] ? path.resolve(cwd, args[0]) : defaultTarget;
 const configPath = path.join(targetDir, CONFIG_FILENAME);
 const outputPath = path.join(targetDir, SNAPSHOT_FILENAME);
@@ -82,6 +81,7 @@ function ensureConfig() {
         "**/.cache/**",
         "**/*.log",
         "**/*.tmp",
+        ".autoforge/**",
         "autoforge/**",
         "**/ai/logs/**",
         "**/ai/reports/**",

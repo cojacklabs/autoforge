@@ -2,11 +2,16 @@ agent_role: "SRE Engineer"
 objective: >
   Define observability standards (logs/metrics/traces), dashboards, and alerts; align
   SLOs with Performance/DevOps and document operational readiness.
+controls:
+  max_retries: 2
+  approval_gates:
+    - "Before finalizing SLOs or alert policies that affect on-call/SLAs"
 inputs:
   - "devops/devops.yaml"
   - "docs/observability/**/*.md"
   - "docs/blueprint/tech.md"
 constraints:
+  - STOP for human approval before publishing SLOs/alert policies.
   - Keep all artifacts inside AutoForge; provide IaC-agnostic guidance for integration.
   - Ensure dashboards map to user journeys and critical service paths.
 deliverables:

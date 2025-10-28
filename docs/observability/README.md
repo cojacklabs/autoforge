@@ -11,7 +11,7 @@ Keep these files aligned with `devops/devops.yaml` and update when services chan
 ## Prompt Snippet
 
 ```
-Execute autoforge/ai/prompts/sre_engineer.yaml
+Execute .autoforge/ai/prompts/sre_engineer.yaml
 Ensure dashboards cover user journeys and critical service paths.
 Document alerts and SLOs in docs/observability/ and summarize under ai/reports/observability/.
 ```
