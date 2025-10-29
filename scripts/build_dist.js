@@ -3,73 +3,205 @@
 /**
  * Build script for packaging AutoForge.
  *
- * Copies the entire repository (minus excluded paths) into dist/ so the
- * npm package can ship the full framework snapshot without forcing callers to
- * clone the git repository.
+ * Uses a whitelist approach to copy only essential framework files and directories
+ * into dist/ so the npm package ships only what end users need.
+ *
+ * Included:
+ * - ai/ (prompts, configurations, templates)
+ * - bin/ (CLI commands)
+ * - examples/ (example projects for users)
+ * - scripts/ (build and utility scripts)
+ * - api/ (API specifications)
+ * - change_requests/, devops/, diagrams/, ideas/, qa/, research/, security/, shared/, tests/ (optional supportive dirs)
+ * - docs/ (only user-facing documentation - excludes release prep docs)
+ * - Root files: config templates, README, LICENSE, community guidelines, CHANGELOG
+ *
+ * Excluded (internal/framework-only):
+ * - .claude/ (Claude Code configuration)
+ * - .github/ (GitHub workflows)
+ * - ref/ (internal reference materials)
+ * - Build artifacts: .git, dist, node_modules
+ * - Framework release docs: RELEASE_*.md, AUTOFORGE.md, CHANGES_COMPLETE.md, V030_RELEASE_INDEX.md
  */
 
-import { cp, mkdir, readdir, readFile, rm } from "node:fs/promises";
+import { cp, mkdir, readdir, readFile, rm, stat } from "node:fs/promises";
 import { fileURLToPath } from "node:url";
 import path from "node:path";
-import ignore from "ignore";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 const repoRoot = path.resolve(__dirname, "..");
 const distDir = path.join(repoRoot, "dist");
 
-async function createIgnoreMatcher() {
-  const ig = ignore();
-  // Always ignore a few build-time paths regardless of gitignore content.
-  ig.add([".git", "dist", "node_modules", "ai/logs", "ai/reports"]);
+/**
+ * Directories to include in the distribution
+ */
+const INCLUDE_DIRS = new Set([
+  "ai",
+  "bin",
+  "examples",
+  "scripts",
+  "api",
+  "change_requests",
+  "devops",
+  "diagrams",
+  "ideas",
+  "qa",
+  "research",
+  "security",
+  "shared",
+  "tests",
+  "docs",
+]);
 
-  const gitignorePath = path.join(repoRoot, ".gitignore");
+/**
+ * Directories to always exclude (internal/build artifacts)
+ */
+const EXCLUDE_DIRS = new Set([
+  ".claude",
+  ".github",
+  ".git",
+  "dist",
+  "node_modules",
+  "ref",
+]);
+
+/**
+ * Root-level files to include
+ */
+const INCLUDE_ROOT_FILES = new Set([
+  "autoforge.config.json",
+  "repomix.config.json",
+  "package.json",
+  "README.md",
+  "LICENSE",
+  "CODE_OF_CONDUCT.md",
+  "CONTRIBUTING.md",
+  "CHANGELOG.md",
+  ".gitignore",
+]);
+
+/**
+ * Root-level files to exclude (framework-specific, not for users)
+ */
+const EXCLUDE_ROOT_FILES = new Set([
+  "RELEASE_PREP_COMPLETE.md",
+  "RELEASE_SUMMARY.txt",
+  "V030_RELEASE_INDEX.md",
+  "AUTOFORGE.md",
+  "CHANGES_COMPLETE.md",
+  "REPO.md",
+  "bun.lock",
+  "package-lock.json",
+  ".DS_Store",
+]);
+
+/**
+ * Files within docs/ to exclude (internal framework docs, not user-facing)
+ */
+const EXCLUDE_DOCS_FILES = new Set([
+  "DOCUMENTATION_STANDARDIZATION.md",
+  "V030_RELEASE_CHECKLIST.md",
+  "README_UPDATES.txt",
+  "AUTOFORGE_META_PROMPTS.md",
+  "AUTOFORGE_RECIPES.md",
+  "AUTOFORGE_VISION.md",
+]);
+
+/**
+ * Paths to always skip (build-time artifacts, logs, caches)
+ */
+const ALWAYS_SKIP_PATHS = new Set([
+  "ai/logs",
+  "ai/reports",
+  ".cache",
+]);
+
+async function pathExists(p) {
   try {
-    const gitignoreContents = await readFile(gitignorePath, "utf8");
-    ig.add(
-      gitignoreContents
-        .split(/\r?\n/)
-        .filter((line) => line && !line.startsWith("#")),
-    );
-  } catch (err) {
-    if (err.code !== "ENOENT") {
-      throw err;
-    }
+    await stat(p);
+    return true;
+  } catch {
+    return false;
   }
-  return (relativePath) => {
-    if (!relativePath) {
+}
+
+function shouldIncludeRootEntry(entry) {
+  // Skip hidden files/dirs except .gitignore
+  if (entry.startsWith(".") && entry !== ".gitignore") {
+    return false;
+  }
+
+  // Check exclusion lists
+  if (EXCLUDE_DIRS.has(entry) || EXCLUDE_ROOT_FILES.has(entry)) {
+    return false;
+  }
+
+  // Check inclusion list
+  return INCLUDE_DIRS.has(entry) || INCLUDE_ROOT_FILES.has(entry);
+}
+
+function shouldIncludeFilePath(src, repoRoot) {
+  const rel = path.relative(repoRoot, src);
+
+  // Always skip certain paths
+  for (const skip of ALWAYS_SKIP_PATHS) {
+    if (rel.includes(skip)) {
       return false;
     }
-    const normalised = relativePath.split(path.sep).join("/");
-    return ig.ignores(normalised);
-  };
+  }
+
+  // Special handling for docs/ files
+  if (rel.startsWith("docs/")) {
+    const filename = path.basename(rel);
+    if (EXCLUDE_DOCS_FILES.has(filename)) {
+      return false;
+    }
+  }
+
+  return true;
 }
 
 async function build() {
   await rm(distDir, { recursive: true, force: true });
   await mkdir(distDir, { recursive: true });
 
-  const isExcluded = await createIgnoreMatcher();
+  console.log("📦 Building AutoForge distribution with whitelist approach...");
 
   const entries = await readdir(repoRoot);
+  let copiedCount = 0;
+  let skippedCount = 0;
+
   for (const entry of entries) {
-    if (entry === "" || entry === null) {
+    if (!shouldIncludeRootEntry(entry)) {
+      skippedCount++;
       continue;
     }
-    if (isExcluded(entry)) {
-      continue;
-    }
+
     const srcPath = path.join(repoRoot, entry);
     const destPath = path.join(distDir, entry);
-    await cp(srcPath, destPath, {
-      recursive: true,
-      filter: (src) => {
-        const rel = path.relative(repoRoot, src);
-        return !isExcluded(rel);
-      },
-    });
+
+    try {
+      const stats = await stat(srcPath);
+      if (stats.isDirectory()) {
+        await cp(srcPath, destPath, {
+          recursive: true,
+          filter: (src) => shouldIncludeFilePath(src, repoRoot),
+        });
+        copiedCount++;
+      } else {
+        await cp(srcPath, destPath);
+        copiedCount++;
+      }
+    } catch (err) {
+      console.warn(`⚠️  Failed to copy ${entry}: ${err.message}`);
+      skippedCount++;
+    }
   }
+
   console.log(`✅ Built AutoForge distribution in ${distDir}`);
+  console.log(`   - Included: ${copiedCount} entries`);
+  console.log(`   - Skipped: ${skippedCount} entries`);
 }
 
 build().catch((err) => {
