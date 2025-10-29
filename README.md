@@ -1,51 +1,106 @@
-# 🧠 AutoForge — Embedded Multi-Agent SDLC
+# 🧠 AutoForge — Multi-Agent SDLC with Autopilot & Continuous Learning
 
 [![npm version](https://img.shields.io/npm/v/autoforge?color=0f9d58&label=autoforge)](https://www.npmjs.com/package/@cojacklabs/autoforge)
 
-AutoForge lives as `.autoforge/` inside your existing project so coding assistants can plan, design, and ship software autonomously. Planning artifacts stay inside `.autoforge/`, while application code and tests write to your project paths. (Legacy installs used `autoforge/`; the CLI recognises both.)
+AutoForge is a multi-agent orchestration framework that lives as `.autoforge/` inside your project. AI agents collaboratively plan, design, code, test, and deploy—while improving autonomously with every project through continuous feedback loops.
 
-> 📘 Short on time? See [docs/QUICKSTART.md](docs/QUICKSTART.md). Need prompt examples? See [docs/PROMPT_HANDBOOK.md](docs/PROMPT_HANDBOOK.md). For multi‑project best practices and automation features, read [docs/AUTOFORGE_MULTI_PROJECT_GUIDE.md](docs/AUTOFORGE_MULTI_PROJECT_GUIDE.md).
+**What's new in this release:**
+- ✨ **Autopilot orchestration** – Agents run 24/7 without manual blocking; choose autonomy level (0=manual → 3=adaptive)
+- 🎓 **Continuous learning** – Every execution trains models; prompts/recipes improve automatically
+- 🚀 **Faster initialization** – 2-step setup for new projects; 1-step resume for existing ones
+- 📊 **Real-time observability** – Track agent performance and system improvements quarterly
+
+Planning artifacts stay inside `.autoforge/`, while application code and tests write to your project paths. (Legacy installs used `autoforge/`; the CLI recognises both.)
+
+> 📘 **Quick start:** [docs/QUICKSTART.md](docs/QUICKSTART.md)
+> 📚 **Expansion guide:** [docs/AUTOFORGE_EXPANSION_QUICK_START.md](docs/AUTOFORGE_EXPANSION_QUICK_START.md)
+> 🎯 **Autopilot architecture:** [docs/AUTOFORGE_AUTOPILOT_ENGINE.md](docs/AUTOFORGE_AUTOPILOT_ENGINE.md)
+> 🧠 **Model training:** [docs/AUTOFORGE_AI_MODEL_TRAINING.md](docs/AUTOFORGE_AI_MODEL_TRAINING.md)
+> 📖 **Handbook:** [docs/PROMPT_HANDBOOK.md](docs/PROMPT_HANDBOOK.md)
 
 ---
 
-## 1. Install AutoForge via npm
+## Quick Start: New Project (2 Steps)
 
 ```bash
+# Step 1: Install and initialize
 npm install --save-dev @cojacklabs/autoforge
-```
-
----
-
-## 2. Initialize the framework
-
-```bash
 npx autoforge init
+
+# Step 2: Load context into your AI
+npx autoforge load --copy
 ```
 
-This copies the framework into `.autoforge/`, generates `autoforge.config.json`, and keeps the structure your agents expect. Runtime dependencies are already installed alongside the npm package, and the default configuration is applied automatically—rerun `npx autoforge configure` whenever you change the config.
+Done! The framework is ready. The `--copy` flag outputs a ready-to-paste prompt for your coding AI. Paste it and you're set to start building.
 
-### Load context for your AI (first run)
+---
+
+## Quick Resume: Existing Project (1 Step)
+
+Already have a `.autoforge/` directory? Resume with:
 
 ```bash
-npx autoforge load
+npx autoforge load --resume
 ```
 
-This emits a copy/paste prompt (also saved under `.autoforge/ai/logs/mastermind/`) to help your coding AI reload the rules, roles, progress log (`ai/AGENTS.md`), and the most recent memory file if present.
+This reloads all context, memory, and agent state from your last session. Your AI picks up where you left off.
 
 ---
 
-## 3. Configure once via autoforge.config.json
+## Configure Code & Documentation Paths
 
-- Update `"codeTargets"` so backend/frontend/tests (and any extras) point to real directories in your project. After editing, run `npx autoforge configure` to regenerate the managed YAML files.
-- (Optional) Adjust `"contextTargets"` if your documentation (PRD/blueprint/UI/UX) lives outside the defaults.
-- (Optional) Override validation globs by setting `contextTargets.requiredGlobs` (e.g., custom test or CI file patterns). The validator merges your overrides with sensible defaults; set a pattern to `""` or `null` to disable a gate.
-- Tweak feature flags or other overrides in `autoforge.config.json` as needed. Avoid editing files inside `.autoforge/` directly—those folders are managed by the framework.
+Update `autoforge.config.json` once to tell agents where your code lives:
 
-You’ve now told the agents where planning docs live and where to generate code.
+```json
+{
+  "codeTargets": {
+    "backend": "src/server",
+    "frontend": "src/client",
+    "tests": "tests"
+  },
+  "contextTargets": {
+    "ideas": "ideas",
+    "prd": "docs/prd",
+    "blueprints": "docs/blueprint"
+  },
+  "autopilot": {
+    "defaultAutonomyLevel": 1
+  }
+}
+```
+
+Then regenerate managed files:
+
+```bash
+npx autoforge configure
+```
+
+See the [autonomy levels guide](docs/AUTOFORGE_EXPANSION_QUICK_START.md) to choose the right level (0=manual, 1=supervised, 2=full, 3=adaptive).
 
 ---
 
-## 4. Capture the idea (human ↔️ AI conversation)
+## Start Your Project with Autopilot
+
+Once initialized and configured, choose your autopilot level and start building:
+
+```bash
+# Supervised autopilot (recommended for first time)
+npx autoforge autopilot --level 1 --recipe web_app
+
+# Full autopilot (for proven recipes)
+npx autoforge autopilot --level 2 --recipe web_app
+
+# Full autopilot with continuous learning
+npx autoforge autopilot --level 3 --recipe web_app
+```
+
+Agents will orchestrate the full SDLC: idea → design → architecture → code → test → security → deploy.
+
+See [AUTOFORGE_AUTOPILOT_ENGINE.md](docs/AUTOFORGE_AUTOPILOT_ENGINE.md) for detailed autonomy levels and configurations.
+
+---
+
+## Capture the Idea (Optional Manual Step)
 
 AutoForge expects at least one idea file before kickoff.
 
@@ -69,17 +124,36 @@ Record the most important decisions or clarifications in `ai/memory/` so future 
 
 ---
 
-## 5. Validate quality gates
+## Validate Quality Gates
 
 ```bash
 npx autoforge validate
 ```
 
-This enforces everything in `ai/context.manifest.yaml` (PRD present, diagrams exist, security checklist ready, observability docs, etc.). Quality gates now accept either the canonical docs under `docs/`, `api/`, `diagrams/` or planning-first copies under `./.autoforge/ai/reports/**` (e.g., `.autoforge/ai/reports/openapi_stub.yaml`, `.autoforge/ai/reports/diagrams/*.mmd`). If something is missing, add the canonical file or a planning stub before moving on.
+This enforces quality standards: PRD, architecture diagrams, API contracts, security checklists, observability. Quality gates accept either canonical docs or planning stubs under `.autoforge/ai/reports/`. If something is missing, add the file or stub before moving on.
 
 ---
 
-### Workspace boundaries & approvals
+## Monitor Agent Performance (Autopilot Only)
+
+Once agents are running autonomously, track their performance:
+
+```bash
+# View real-time autopilot status
+npx autoforge status
+
+# Generate training metrics (after 10+ projects)
+npx autoforge train --from-last-N-projects 10 --output-report
+
+# View agent success rates and improvements
+npx autoforge metrics show --metric agent_success_rate
+```
+
+The system learns from every execution. After each project, prompts and recipes improve automatically. See [AUTOFORGE_AI_MODEL_TRAINING.md](docs/AUTOFORGE_AI_MODEL_TRAINING.md) for how the training loop works.
+
+---
+
+## Workspace Boundaries & Approvals
 
 - Planning/logging: keep your assistant in `./.autoforge` so ideas, research, and reports stay contained. (Legacy: `./autoforge`)
 - Implementation: agents may only touch the host project through the code targets defined in `autoforge.config.json` (mirrored to the managed `ai/code_targets.yaml`). Update the config and rerun `npx autoforge configure` before coding.
@@ -100,13 +174,9 @@ This enforces everything in `ai/context.manifest.yaml` (PRD present, diagrams ex
 
 ---
 
-## 6. Kick off with your coding AI
+## Manual Orchestration (If Not Using Autopilot)
 
-The kickoff prompt now confirms there is a current idea file before orchestrating
-the Assembly Line. If none exists, it will instruct you to run `idea_conversation`
-or drop a Markdown brief into `ideas/` so the agents can work autonomously.
-
-Paste the snippet below into your coding assistant (Codex, Claude Code, Gemini Code, Cursor, etc.). This sets the stage for multi-agent handoffs.
+If you prefer manual control, paste this into your coding assistant:
 
 ```
 Read and follow:
@@ -114,26 +184,18 @@ Read and follow:
 - .autoforge/ai/agents.yaml
 - .autoforge/ai/prompts/kickoff.yaml
 
-While planning: stay inside ./autoforge for docs/logs.
-When writing code/tests: use the paths defined in autoforge.config.json (mirrored to .autoforge/ai/code_targets.yaml).
+While planning, stay inside ./autoforge for docs/logs.
+When writing code/tests, use the paths in autoforge.config.json (mirrored to .autoforge/ai/code_targets.yaml).
 Confirm the latest idea in ideas/.
-Run the kickoff sequence (Product Manager → UI/UX → Architect → Engineer → QA → Security → Performance → SRE → DevOps → Retrospective).
+Run the kickoff sequence: Product Manager → UI/UX → Architect → Engineer → QA → Security → Performance → SRE → DevOps → Retrospective.
 Log outputs to .autoforge/ai/logs/** and .autoforge/ai/reports/**.
 ```
 
-### Follow-up prompts
-
-After kickoff completes you can continue agent-by-agent:
-
-- `Execute .autoforge/ai/prompts/architect.yaml`
-- `Execute .autoforge/ai/prompts/fullstack_engineer.yaml`
-- … and so on down the chain.
-
-Refer to [docs/prompt_handbook.md](docs/prompt_handbook.md) for ready-made snippet patterns.
+Continue agent-by-agent as needed. See [docs/PROMPT_HANDBOOK.md](docs/PROMPT_HANDBOOK.md) for ready-made prompts.
 
 ---
 
-## 7. Prompt jumpstarts (copy/paste ready)
+## Prompt Jumpstarts (Copy/Paste Ready)
 
 - **Idea workshop (AI agent interview)**
   ```
@@ -171,7 +233,7 @@ Refer to [docs/prompt_handbook.md](docs/prompt_handbook.md) for ready-made snipp
 
 ---
 
-## 8. Change request workflow (human ↔️ AI loop)
+## Change Request Workflow
 
 1. Tell the assistant what needs to change:
    ```
@@ -192,7 +254,7 @@ Refer to [docs/prompt_handbook.md](docs/prompt_handbook.md) for ready-made snipp
 
 ---
 
-## 9. Stage gate checklist
+## Stage Gate Checklist
 
 Tick these items before shipping a slice:
 
@@ -212,7 +274,26 @@ Tip: Recipe-driven CI templates live under `devops/ci/` (e.g., `devops/ci/web_ap
 
 ---
 
-## 10. Demo slice (optional)
+## CLI Reference
+
+Essential commands for the new autopilot/training features:
+
+- `autoforge init [--force]` — scaffold `.autoforge/` and `autoforge.config.json`
+- `autoforge load [--copy|--resume]` — emit copy/paste prompt (--copy) or resume from memory (--resume)
+- `autoforge configure` — regenerate managed YAML files from config
+- `autoforge validate` — run quality gate checks
+- `autoforge autopilot --level [0-3] --recipe [name]` — start orchestration
+- `autoforge status` — view real-time autopilot progress
+- `autoforge train --from-last-N-projects [N]` — extract patterns and suggest improvements
+- `autoforge metrics show --metric [name]` — view agent performance trends
+- `autoforge snapshot [path]` — generate REPO.md for context sharing
+- `autoforge dryrun [recipe]` — preview execution plan (no writes)
+- `autoforge upgrade` — update to latest framework version
+- `autoforge doctor` — verify required files and config
+
+---
+
+## Demo Slice (Optional)
 
 Need a sample to test? Update `codeTargets` in `autoforge.config.json` (then run `npx autoforge configure`) to point at the demo directories and try:
 
@@ -224,56 +305,30 @@ CI already runs this example as part of `.github/workflows/ci.yml`.
 
 ---
 
-## 11. Generate repository snapshot (optional)
-
-From your project root (or to targeted `<path`> for safe keeping):
-
-```bash
-npx autoforge snapshot <path>        # writes REPO.md next to the folder you target
-```
-
-The generated `REPO.md` makes it easy to share the entire codebase with an AI model.
-
----
-
-## 12. Update AutoForge
+## Update AutoForge
 
 ```bash
 npx autoforge upgrade
 ```
 
-The CLI auto-stashes any local changes inside `.autoforge/`, applies the latest framework snapshot, and restores your data directories (`ai/memory`, `ai/logs`, `change_requests`, etc.). If Git reports conflicts, resolve them, then rerun `npx autoforge validate`.
+The CLI auto-stashes local changes, applies the latest framework, and restores your data (logs, memory, change requests). If conflicts occur, resolve them and rerun `npx autoforge validate`.
 
-After upgrading:
-
-- Note the change in your active memory file so the next session knows which rules changed.
-- Tell your assistant to reload `.autoforge/ai/context.manifest.yaml`, `.autoforge/ai/agents.yaml`, and `docs/ai/COMMIT_PLAYBOOK.md`.
+After upgrading, note the change in your active memory file and have your AI reload the context manifests.
 
 ---
 
-## 13. CLI reference
+## Documentation & Resources
 
-- `autoforge init [--force]` — scaffold or refresh `./.autoforge/` (legacy `./autoforge/`) and create `autoforge.config.json`.
-- `autoforge upgrade` — replace framework-managed files while preserving logs, memory, ideas, and change requests.
-- `autoforge configure` — regenerate managed files (ai/code_targets.yaml, ai/context_targets.yaml) from `autoforge.config.json`.
-- `autoforge load` — emit a copy/paste prompt (and log to ai/logs/mastermind/) that instructs your AI tool to reload rules, roles, progress, and memory from the latest context and most recent memory. Alias: `autoforge refresh`.
-- `autoforge validate` — runs the quality gate checks.
-- `autoforge doctor` — verifies required files and config are present.
-- `autoforge version` — prints the installed package version.
-- `autoforge dryrun [recipeName]` — print a step-by-step execution checklist from a recipe (no writes).
-
-Need framework commands from inside CI or scripts? Prefix with `npx` (e.g., `npx autoforge validate`).
-
----
-
-## Links & resources
-
-- 📘 General docs: [`docs/`](docs/)
-- ⚡ Quickstart: [`docs/QUICKSTART.md`](docs/QUICKSTART.md)
-- 🧪 Change requests: [`change_requests/`](change_requests/)
-- 🧩 Prompts: [`ai/prompts/`](ai/prompts/)
-- 🧠 Prompt patterns: [`docs/PROMPT_HANDBOOK.md`](docs/PROMPT_HANDBOOK.md)
-- 📦 Example project: [`examples/fullstack_todo_app/`](examples/fullstack_todo_app/)
+| Resource | What it covers |
+|----------|---------------|
+| [docs/QUICKSTART.md](docs/QUICKSTART.md) | Fast setup for new and existing projects |
+| [docs/AUTOFORGE_EXPANSION_QUICK_START.md](docs/AUTOFORGE_EXPANSION_QUICK_START.md) | One-page guide to autopilot & training |
+| [docs/AUTOFORGE_AUTOPILOT_ENGINE.md](docs/AUTOFORGE_AUTOPILOT_ENGINE.md) | Full orchestration spec, autonomy levels, state machine |
+| [docs/AUTOFORGE_AI_MODEL_TRAINING.md](docs/AUTOFORGE_AI_MODEL_TRAINING.md) | Training data collection, feedback loops, continuous improvement |
+| [docs/AUTOFORGE_EXPANSION_SYNTHESIS.md](docs/AUTOFORGE_EXPANSION_SYNTHESIS.md) | How it all fits together + implementation roadmap |
+| [docs/AUTOFORGE_MULTI_PROJECT_GUIDE.md](docs/AUTOFORGE_MULTI_PROJECT_GUIDE.md) | Multi-project workflows and recipes |
+| [docs/PROMPT_HANDBOOK.md](docs/PROMPT_HANDBOOK.md) | Ready-made prompts for all agent roles |
+| [examples/fullstack_todo_app/](examples/fullstack_todo_app/) | Working example: idea → code → tests |
 
 > “AutoForge lets you build software at the speed of thought — ideas in, deployments out.”
 

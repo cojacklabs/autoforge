@@ -1,68 +1,126 @@
-# AutoForge Quickstart (Embedded Mode)
+# AutoForge Quickstart
 
-Follow these steps to run AutoForge inside an existing project using Chat Mode.
+Get up and running with AutoForge in 5 minutes. Choose your path: **New Project** or **Existing Project**.
 
-Tip: For a broader, multi‑project overview (roles, approvals, automation features, and recipes), see `docs/AUTOFORGE_MULTI_PROJECT_GUIDE.md`.
+---
 
-## 1. Install & Initialize
+## Path A: New Project (2 Steps)
+
+Perfect for starting from scratch with full autopilot support.
+
+### Step 1: Install & Initialize
 
 ```bash
 npm install --save-dev @cojacklabs/autoforge
 npx autoforge init
-npx autoforge load   # emits a copy/paste prompt to train your AI on context + memory
 ```
 
-This scaffolds `.autoforge/` in your repo and writes `autoforge.config.json`; runtime dependencies arrive with the npm package and the default configuration is applied so everything is ready for your coding assistant.
+This scaffolds `.autoforge/` and creates `autoforge.config.json`.
 
-## 2. Configure Paths
-
-- Update `codeTargets` inside `autoforge.config.json` so backend/frontend/tests (and any extras) point at your project.
-- (Optional) adjust `contextTargets` if PRD/blueprint/UI/UX docs live outside the defaults.
-- After editing, run `npx autoforge configure` to regenerate the managed `ai/code_targets.yaml` and `ai/context_targets.yaml` files. Avoid hand-editing files under `./.autoforge` unless directed by the framework.
-
-## 3. Capture the Idea
-
-Start with a high-reasoning conversation when you want the agent to brainstorm options:
-
-```
-Execute .autoforge/ai/prompts/idea_conversation.yaml
-Let's explore the product vision, platforms, tech stack choices, integrations, and risks.
-```
-
-When you have the basics, either fill `ideas/IDEA_TEMPLATE.yaml` manually **or** run:
-
-```
-Execute .autoforge/ai/prompts/discovery_researcher.yaml
-Help me capture the vision for this project.
-```
-
-Follow up with:
-
-```
-Execute .autoforge/ai/prompts/idea_intake.yaml
-Translate our notes into the structured idea plan for downstream agents.
-```
-
-The agents write drafts under `ideas/` plus summaries under `ai/logs/`.
-
-### Seed shared memory
-
-- Copy `ai/memory/MEMORY_TEMPLATE.yaml` to `ai/memory/ACTIVE_MEMORY.yaml` (or another descriptive name).
-- Capture the latest decisions, corrections, and open questions after each working session.
-- When you start a new Chat Mode run—or swap to a different coding agent—tell it to review the active memory file before continuing the work.
-
-## 4. Validate Quality Gates
+### Step 2: Load Context & Start Building
 
 ```bash
-npx autoforge validate
+npx autoforge load --copy
 ```
 
-Quality gates accept either canonical docs under `docs/`, `api/`, `diagrams/` or planning copies under `./.autoforge/ai/reports/**` (e.g., `.autoforge/ai/reports/prd_stub.md`, `.autoforge/ai/reports/openapi_stub.yaml`, `.autoforge/ai/reports/diagrams/*.mmd`).
-You can override validation patterns via `contextTargets.requiredGlobs` in `autoforge.config.json`.
+Copy the output prompt into your coding AI, then run:
 
-## 5. Kick Off (Chat Mode)
+```bash
+# Start with supervised autopilot (recommended for first projects)
+npx autoforge autopilot --level 1 --recipe web_app
+```
 
-Paste the block below into your coding assistant:
+**Done!** Agents will automatically handle idea → design → code → test → deploy.
+
+---
+
+## Path B: Existing Project (1 Step)
+
+Already have `.autoforge/`? Resume instantly:
+
+```bash
+npx autoforge load --resume
+```
+
+Paste the prompt into your AI. Your previous session's memory and context automatically load. No reconfiguration needed.
+
+---
+
+## Configure Code Paths (One-Time Setup)
+
+Update `autoforge.config.json` to tell agents where your code lives:
+
+```json
+{
+  "codeTargets": {
+    "backend": "src/server",
+    "frontend": "src/client",
+    "tests": "tests"
+  },
+  "contextTargets": {
+    "ideas": "ideas",
+    "prd": "docs/prd",
+    "blueprints": "docs/blueprint"
+  },
+  "autopilot": {
+    "defaultAutonomyLevel": 1
+  }
+}
+```
+
+Then regenerate managed files:
+
+```bash
+npx autoforge configure
+```
+
+See [Autonomy Levels](#autonomy-levels) below to choose the right level for your team.
+
+---
+
+## Autonomy Levels
+
+Choose the right level for your project and team comfort:
+
+| Level | Description | Human Gates | Best For | Time to Setup |
+|-------|-------------|-------------|----------|---------------|
+| **0** | Manual (every step approved) | 100% | Complex, high-risk, learning | 5 min |
+| **1** | Supervised (agents run; pause on critical) | Deployments, security, integrations | Standard projects, proven recipes | 5 min |
+| **2** | Full autopilot (autonomous decisions) | Post-deploy monitoring only | Proven recipes, confident teams | 5 min |
+| **3** | Adaptive (agents learn & improve) | Model training changes only | Continuous deployment, feedback-driven | 5 min |
+
+Start with **Level 1**. As confidence grows, move to Level 2 or 3.
+
+---
+
+## Running on Autopilot
+
+Once initialized, start your project:
+
+```bash
+# Supervised autopilot (recommended for first projects)
+npx autoforge autopilot --level 1 --recipe web_app
+
+# Full autopilot (for proven recipes)
+npx autoforge autopilot --level 2 --recipe web_app
+
+# Adaptive autopilot (with continuous learning)
+npx autoforge autopilot --level 3 --recipe web_app
+```
+
+Agents will automatically orchestrate: **Idea → Design → Architecture → Code → Test → Security → Deploy**
+
+Monitor progress with:
+
+```bash
+npx autoforge status
+```
+
+---
+
+## Manual Orchestration (Optional)
+
+If you prefer to guide agents step-by-step, use the manual orchestration prompt:
 
 ```
 Read and follow:
@@ -71,64 +129,131 @@ Read and follow:
 - .autoforge/ai/prompts/kickoff.yaml
 
 While planning, stay inside ./.autoforge for docs/logs.
-When writing code/tests, use the paths defined in autoforge.config.json (mirrored to .autoforge/ai/code_targets.yaml).
+When writing code/tests, use paths from autoforge.config.json (mirrored to .autoforge/ai/code_targets.yaml).
 Confirm the latest idea in ideas/.
-Run the kickoff sequence (PM → UI/UX → Architect → Engineer → QA → Security → Performance → SRE → DevOps → Retrospective).
+Run the kickoff sequence: PM → UI/UX → Architect → Engineer → QA → Security → Performance → SRE → DevOps → Retrospective.
 Log outputs to .autoforge/ai/logs/** and .autoforge/ai/reports/**.
 ```
 
-## 6. Change Requests
+---
 
-When you have a new feature, bug, migration, or knowledge share, run:
+## Capture the Idea (Optional, Only Needed for Manual Mode)
+
+If not using autopilot, start with a conversation:
+
+```
+Execute .autoforge/ai/prompts/idea_conversation.yaml
+Let's explore the product vision, platforms, tech stack, integrations, and risks.
+```
+
+Or let the agent interview you:
+
+```
+Execute .autoforge/ai/prompts/discovery_researcher.yaml
+Help me capture the vision for this project.
+```
+
+Then formalize it:
+
+```
+Execute .autoforge/ai/prompts/idea_intake.yaml
+Translate our notes into the structured plan for downstream agents.
+```
+
+---
+
+## Validate Quality Gates
+
+```bash
+npx autoforge validate
+```
+
+This enforces standards: PRD present, architecture diagrams exist, security checklist ready, observability docs. Gates accept canonical docs or planning stubs. Add missing files or stubs before proceeding.
+
+---
+
+## Shared Memory
+
+After each session, update your memory file so future sessions pick up where you left off:
+
+```bash
+# Create memory file (first time)
+cp .autoforge/ai/memory/MEMORY_TEMPLATE.yaml .autoforge/ai/memory/ACTIVE_MEMORY.yaml
+
+# Update with latest decisions, blockers, and learnings
+# Agents will read this automatically on next session
+```
+
+---
+
+## Change Requests
+
+For new features, bugs, or migrations mid-project:
 
 ```
 Execute .autoforge/ai/prompts/change_intake.yaml
-Work with me to capture the request, fill in acceptance criteria, and create the change request file.
+Help me capture this change request with acceptance criteria.
 ```
 
-The agent interviews you, clones `CR-0000_example.yaml`, and saves the populated request under `change_requests/`. Review/edit the generated file, commit, and follow the Chat Mode instructions posted by the GitHub Action.
+The agent interviews you and creates a `change_requests/CR-*.yaml` file. Review, commit, and follow the instructions.
 
-> Guidance for humans & agents
->
-> - Capturing ideas, refining change requests, and logging updates all happen inside `./.autoforge`.
-> - Keep the shared memory file in `ai/memory/` up to date; new agents should review it before acting.
-> - Engineering prompts step out only through the code targets defined in `autoforge.config.json` (mirrored to `ai/code_targets.yaml`). Update the config and run `npx autoforge configure` before coding.
-> - Agents should announce package installs, migrations, or debugging commands in advance so you can approve or redirect them.
-> - Follow `docs/ai/COMMIT_PLAYBOOK.md` when staging commits or running impactful commands.
-> - Confirm semantic version bumps in package manifests before the final commit; document the rationale in the commit body.
+For urgent bug fixes:
 
-For single-issue bug fixes that cannot wait for the full change-request workflow, run `Execute .autoforge/ai/prompts/hotfix.yaml` and follow the same memory/commit rules.
+```
+Execute .autoforge/ai/prompts/hotfix.yaml
+Help me fix this single issue reproducibly.
+```
 
-## 7. Prompt Jumpstarts
+---
 
-- **Idea workshop** — `Execute .autoforge/ai/prompts/idea_conversation.yaml`
-- **Share repo context** — `Execute .autoforge/ai/prompts/context_snapshot.yaml`
-- **Normalise change requests** — `Execute .autoforge/ai/prompts/change_intake.yaml`
-- **Route any request into automation** — `Execute .autoforge/ai/prompts/automation_bootstrap.yaml`
+## Continuous Improvement (Autopilot Only)
 
-- **Preview the plan without writing files (dry run)**
-  ```
-  npx autoforge dryrun web_app   # or analytics_app/mobile_app
-  ```
-
-Each prompt includes detailed instructions for the agent and where to record outputs.
-
-## 8. Snapshot the Project (Optional)
-
-To create `REPO.md` for the host project:
+Once your system has completed 10+ projects, generate training metrics:
 
 ```bash
-npx autoforge snapshot
+# Extract patterns and suggest improvements
+npx autoforge train --from-last-N-projects 10 --output-report
+
+# View agent performance trends
+npx autoforge metrics show --metric agent_success_rate
+
+# View quarterly improvement summary
+npx autoforge metrics show --metric recipe_evolution
 ```
 
-Run the command from the repo root to capture the current project, or append a path (for example, `npx autoforge snapshot ..`) to target another directory. The snapshot is a flattened context summary so AI tools can ingest the whole repository.
+The system learns from failures and successes automatically. Prompts improve, recipes evolve, agents get smarter.
 
-## 9. Update AutoForge
+See [AUTOFORGE_AI_MODEL_TRAINING.md](AUTOFORGE_AI_MODEL_TRAINING.md) for how the training loop works.
 
-When new framework updates land upstream, run:
+---
 
-```bash
-npx autoforge upgrade
-```
+## Helpful Commands
 
-The CLI auto-stashes your `.autoforge/` edits, applies the latest framework, and restores data directories (logs, memory, change requests). Resolve conflicts if Git raises any, rerun `npx autoforge validate`, log the upgrade in memory, and ask your coding assistant to reload the manifests/playbook.
+| Command | What It Does |
+|---------|-------------|
+| `npx autoforge snapshot [path]` | Generate REPO.md for context sharing |
+| `npx autoforge dryrun web_app` | Preview execution plan without writing files |
+| `npx autoforge doctor` | Verify setup is complete |
+| `npx autoforge validate` | Run quality gate checks |
+| `npx autoforge upgrade` | Update to latest framework |
+
+---
+
+## Next Steps
+
+1. **Choose your path** (New Project or Existing Project above)
+2. **Run the initialization** (2 steps for new; 1 for existing)
+3. **Pick your autonomy level** (start with Level 1)
+4. **Start building** with `npx autoforge autopilot --level 1 --recipe web_app`
+5. **Monitor progress** with `npx autoforge status`
+6. **Review results** after completion
+
+---
+
+## Learn More
+
+- **Expansion Guide:** [AUTOFORGE_EXPANSION_QUICK_START.md](AUTOFORGE_EXPANSION_QUICK_START.md) — 1-page overview of autopilot & training
+- **Autopilot Details:** [AUTOFORGE_AUTOPILOT_ENGINE.md](AUTOFORGE_AUTOPILOT_ENGINE.md) — Full orchestration spec, state machine, decision trees
+- **Training Loop:** [AUTOFORGE_AI_MODEL_TRAINING.md](AUTOFORGE_AI_MODEL_TRAINING.md) — How models improve continuously
+- **Multi-Project:** [AUTOFORGE_MULTI_PROJECT_GUIDE.md](AUTOFORGE_MULTI_PROJECT_GUIDE.md) — Scaling across teams and domains
+- **Prompts:** [PROMPT_HANDBOOK.md](PROMPT_HANDBOOK.md) — Ready-made snippets for all agent roles
