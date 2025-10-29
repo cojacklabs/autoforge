@@ -114,6 +114,22 @@ async function ensureConfig(projectRoot) {
   console.log(color.green(`✔ Created ${CONFIG_FILE}`));
 }
 
+async function ensureRepomixConfig(projectRoot) {
+  const targetConfig = path.join(projectRoot, "repomix.config.json");
+  const templatePath = path.join(distRoot, "repomix.config.json");
+  try {
+    const contents = await readFile(templatePath, "utf8");
+    await writeFile(targetConfig, contents, "utf8");
+    console.log(color.green(`✔ Created repomix.config.json`));
+  } catch {
+    console.warn(
+      color.yellow(
+        `Warning: repomix.config.json template missing at ${templatePath}. Skipping repomix config setup.`,
+      ),
+    );
+  }
+}
+
 function resolveAutoforgeDir(projectRoot, { forInit = false } = {}) {
   if (forInit) return path.join(projectRoot, DEFAULT_DIRNAME);
   const hidden = path.join(projectRoot, DEFAULT_DIRNAME);
@@ -145,7 +161,7 @@ async function copyFramework(targetDir) {
       return true;
     }
     const parts = relative.split(path.sep);
-    if (parts[0] === "bin" || parts[0] === CONFIG_FILE) {
+    if (parts[0] === "bin" || parts[0] === CONFIG_FILE || parts[0] === "repomix.config.json") {
       return false;
     }
     return true;
@@ -168,6 +184,7 @@ async function commandInit(args) {
   const targetDir = await prepareAutoforgeFolder(projectRoot, { force });
   await copyFramework(targetDir);
   await ensureConfig(projectRoot);
+  await ensureRepomixConfig(projectRoot);
   await applyConfiguration(projectRoot);
   console.log(color.green("✔ AutoForge initialized"));
 }
@@ -213,6 +230,7 @@ async function commandUpgrade() {
   await mkdir(autoforgeDir, { recursive: true });
   await copyFramework(autoforgeDir);
   await restoreUserData(autoforgeDir, backupBundle);
+  await ensureRepomixConfig(projectRoot);
   await applyConfiguration(projectRoot);
   console.log(color.green("✔ AutoForge upgraded"));
 }
