@@ -39,7 +39,6 @@ const distDir = path.join(repoRoot, "dist");
 const INCLUDE_DIRS = new Set([
   "ai",
   "bin",
-  "examples",
   "scripts",
   "api",
   "change_requests",
@@ -143,6 +142,10 @@ function shouldIncludeRootEntry(entry) {
 
 function shouldIncludeFilePath(src, repoRoot) {
   const rel = path.relative(repoRoot, src);
+  const base = path.basename(rel);
+  if (base === '.DS_Store' || base === '.gitignore') {
+    return false;
+  }
 
   // Always skip certain paths
   for (const skip of ALWAYS_SKIP_PATHS) {
@@ -153,6 +156,10 @@ function shouldIncludeFilePath(src, repoRoot) {
 
   // Special handling for docs/ files
   if (rel.startsWith("docs/")) {
+    // Exclude development-only docs directory from distribution
+    if (rel.startsWith("docs/dev/")) {
+      return false;
+    }
     const filename = path.basename(rel);
     if (EXCLUDE_DOCS_FILES.has(filename)) {
       return false;
@@ -198,6 +205,17 @@ async function build() {
       skippedCount++;
     }
   }
+
+  // Cleanup: ensure docs/dev is not included in dist, even as an empty directory
+  try {
+    const devDocs = path.join(distDir, "docs", "dev");
+    await rm(devDocs, { recursive: true, force: true });
+  } catch {}
+
+  // Cleanup: remove root .gitignore if present
+  try {
+    await rm(path.join(distDir, '.gitignore'), { force: true });
+  } catch {}
 
   console.log(`✅ Built AutoForge distribution in ${distDir}`);
   console.log(`   - Included: ${copiedCount} entries`);

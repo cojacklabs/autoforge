@@ -12,11 +12,8 @@ AutoForge is a multi-agent orchestration framework that lives as `.autoforge/` i
 
 Planning artifacts stay inside `.autoforge/`, while application code and tests write to your project paths. (Legacy installs used `autoforge/`; the CLI recognises both.)
 
-> 📘 **Quick start:** [docs/QUICKSTART.md](docs/QUICKSTART.md)
-> 📚 **Expansion guide:** [docs/AUTOFORGE_EXPANSION_QUICK_START.md](docs/AUTOFORGE_EXPANSION_QUICK_START.md)
-> 🎯 **Autopilot architecture:** [docs/AUTOFORGE_AUTOPILOT_ENGINE.md](docs/AUTOFORGE_AUTOPILOT_ENGINE.md)
-> 🧠 **Model training:** [docs/AUTOFORGE_AI_MODEL_TRAINING.md](docs/AUTOFORGE_AI_MODEL_TRAINING.md)
-> 📖 **Handbook:** [docs/PROMPT_HANDBOOK.md](docs/PROMPT_HANDBOOK.md)
+> 🧩 **Quality policies:** [docs/QUALITY_POLICIES.md](docs/QUALITY_POLICIES.md)
+> 🔐 **Governance & memory:** [docs/GOVERNANCE_AND_MEMORY.md](docs/GOVERNANCE_AND_MEMORY.md)
 
 ---
 
@@ -28,22 +25,27 @@ npm install --save-dev @cojacklabs/autoforge
 npx autoforge init
 
 # Step 2: Load context into your AI
-npx autoforge load --copy
+npx autoforge load   # prints the full orchestrator context for a single paste
 ```
 
 Done! The framework is ready. The `--copy` flag outputs a ready-to-paste prompt for your coding AI. Paste it and you're set to start building.
 
 ---
 
-## Quick Resume: Existing Project (1 Step)
+## Quick Resume: Existing Project
 
-Already have a `.autoforge/` directory? Resume with:
+Already have a `.autoforge/` directory?
 
 ```bash
-npx autoforge load --resume
-```
+# Re-apply config if codeTargets changed (safe)
+npx autoforge configure
 
-This reloads all context, memory, and agent state from your last session. Your AI picks up where you left off.
+# Reload policies/context into your AI
+npx autoforge refresh
+
+# Or use the strict orchestrator context entry again
+npx autoforge load
+```
 
 ---
 
@@ -79,24 +81,25 @@ See the [autonomy levels guide](docs/AUTOFORGE_EXPANSION_QUICK_START.md) to choo
 
 ---
 
-## Start Your Project with Autopilot
+## Load Orchestrator Context
 
-Once initialized and configured, choose your autopilot level and start building:
+After `init`, run `npx autoforge load` and copy/paste the printed orchestrator context into your AI IDE (Claude Code, Codex, Gemini). This single paste loads strict policies for single-session multi-agent orchestration, memory enforcement, and hard quality gates. If your tool truncates long messages, paste in multiple chunks.
 
-```bash
-# Supervised autopilot (recommended for first time)
-npx autoforge autopilot --level 1 --recipe web_app
+---
 
-# Full autopilot (for proven recipes)
-npx autoforge autopilot --level 2 --recipe web_app
+## Documentation Index
 
-# Full autopilot with continuous learning
-npx autoforge autopilot --level 3 --recipe web_app
-```
-
-Agents will orchestrate the full SDLC: idea → design → architecture → code → test → security → deploy.
-
-See [AUTOFORGE_AUTOPILOT_ENGINE.md](docs/AUTOFORGE_AUTOPILOT_ENGINE.md) for detailed autonomy levels and configurations.
+- Quickstart: docs/QUICKSTART.md
+- Prompt Handbook: docs/PROMPT_HANDBOOK.md
+- Autopilot Engine (reference): docs/AUTOFORGE_AUTOPILOT_ENGINE.md
+- Expansion Guide (vision): docs/AUTOFORGE_EXPANSION_QUICK_START.md
+- Quality Policies (TS/ESLint/Prettier/artifacts): docs/QUALITY_POLICIES.md
+- Governance & Memory: docs/GOVERNANCE_AND_MEMORY.md
+- AI Coding Mastermind: docs/AI_CODING_MASTERMIND.md
+- Observability: docs/observability/README.md
+- Performance: docs/perf/README.md
+- UI/UX: docs/uiux/README.md
+- PRD: docs/prd/README.md
 
 ---
 
@@ -124,32 +127,15 @@ Record the most important decisions or clarifications in `ai/memory/` so future 
 
 ---
 
-## Validate Quality Gates
+## Quality Policies
 
-```bash
-npx autoforge validate
-```
-
-This enforces quality standards: PRD, architecture diagrams, API contracts, security checklists, observability. Quality gates accept either canonical docs or planning stubs under `.autoforge/ai/reports/`. If something is missing, add the file or stub before moving on.
+AutoForge v0.4 enforces strict policies during orchestration: TypeScript typecheck, ESLint (no warnings), Prettier, and artifact (JSON/YAML/MD/OpenAPI) validation. See docs/QUALITY_POLICIES.md for details.
 
 ---
 
-## Monitor Agent Performance (Autopilot Only)
+## Learning & Evaluation
 
-Once agents are running autonomously, track their performance:
-
-```bash
-# View real-time autopilot status
-npx autoforge status
-
-# Generate training metrics (after 10+ projects)
-npx autoforge train --from-last-N-projects 10 --output-report
-
-# View agent success rates and improvements
-npx autoforge metrics show --metric agent_success_rate
-```
-
-The system learns from every execution. After each project, prompts and recipes improve automatically. See [AUTOFORGE_AI_MODEL_TRAINING.md](docs/AUTOFORGE_AI_MODEL_TRAINING.md) for how the training loop works.
+AutoForge captures telemetry for continuous improvement and supports exportable datasets and golden-task evaluation. See docs/AUTOFORGE_AI_MODEL_TRAINING.md for how the training loop works.
 
 ---
 
@@ -224,12 +210,7 @@ Continue agent-by-agent as needed. See [docs/PROMPT_HANDBOOK.md](docs/PROMPT_HAN
   STOP for approval, then trigger the right prompts (kickoff, change intake, context snapshot, etc.).
   ```
 
-- **Preview the plan without writing files (dry run)**
-  ```
-  npx autoforge dryrun web_app   # or analytics_app/mobile_app
-  # Prints a step-by-step checklist from the selected recipe, preflight checks,
-  # and approval gates — no files are written.
-  ```
+  
 
 ---
 
@@ -276,44 +257,31 @@ Tip: Recipe-driven CI templates live under `devops/ci/` (e.g., `devops/ci/web_ap
 
 ## CLI Reference
 
-Essential commands for the new autopilot/training features:
+Essential commands:
 
 - `autoforge init [--force]` — scaffold `.autoforge/` and `autoforge.config.json`
-- `autoforge load [--copy|--resume]` — emit copy/paste prompt (--copy) or resume from memory (--resume)
-- `autoforge configure` — regenerate managed YAML files from config
-- `autoforge validate` — run quality gate checks
-- `autoforge autopilot --level [0-3] --recipe [name]` — start orchestration
-- `autoforge status` — view real-time autopilot progress
-- `autoforge train --from-last-N-projects [N]` — extract patterns and suggest improvements
-- `autoforge metrics show --metric [name]` — view agent performance trends
-- `autoforge snapshot [path]` — generate REPO.md for context sharing
-- `autoforge dryrun [recipe]` — preview execution plan (no writes)
-- `autoforge upgrade` — update to latest framework version
-- `autoforge doctor` — verify required files and config
+- `autoforge load` — print copy/paste stub, then paste `.autoforge/ai/prompts/orchestrator_context.md`
+- `autoforge snapshot [path]` — generate `REPO.md` for audits/handover
+- `autoforge configure` — regenerate managed YAML files from config (safe)
+- `autoforge refresh` — emit a context-reload prompt to re-read policies + latest memory
+- `autoforge version` — print CLI version
 
 ---
 
-## Demo Slice (Optional)
-
-Need a sample to test? Update `codeTargets` in `autoforge.config.json` (then run `npx autoforge configure`) to point at the demo directories and try:
-
-- `examples/fullstack_todo_app/demo_src/backend/server.js`
-- `examples/fullstack_todo_app/demo_src/frontend/index.html`
-- `node --test examples/fullstack_todo_app/demo_src/tests/todo.test.js`
-
-CI already runs this example as part of `.github/workflows/ci.yml`.
-
----
-
-## Update AutoForge
+## Update AutoForge (Non-Destructive)
 
 ```bash
-npx autoforge upgrade
+# Upgrade the package
+npm install --save-dev @cojacklabs/autoforge@latest
+
+# Re-apply managed config (safe)
+npx autoforge configure
+
+# Reload policies and the latest memory into your AI
+npx autoforge refresh
 ```
 
-The CLI auto-stashes local changes, applies the latest framework, and restores your data (logs, memory, change requests). If conflicts occur, resolve them and rerun `npx autoforge validate`.
-
-After upgrading, note the change in your active memory file and have your AI reload the context manifests.
+This flow preserves existing `.autoforge/` data (logs, memory, reports) and keeps your policies in your repo. Use `autoforge load` to re-enter the strict orchestrator context when you start a new session.
 
 ---
 
@@ -328,7 +296,7 @@ After upgrading, note the change in your active memory file and have your AI rel
 | [docs/AUTOFORGE_EXPANSION_SYNTHESIS.md](docs/AUTOFORGE_EXPANSION_SYNTHESIS.md) | How it all fits together + implementation roadmap |
 | [docs/AUTOFORGE_MULTI_PROJECT_GUIDE.md](docs/AUTOFORGE_MULTI_PROJECT_GUIDE.md) | Multi-project workflows and recipes |
 | [docs/PROMPT_HANDBOOK.md](docs/PROMPT_HANDBOOK.md) | Ready-made prompts for all agent roles |
-| [examples/fullstack_todo_app/](examples/fullstack_todo_app/) | Working example: idea → code → tests |
+
 
 > “AutoForge lets you build software at the speed of thought — ideas in, deployments out.”
 

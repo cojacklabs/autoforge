@@ -1,0 +1,42 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "ai/schemas/StyleGuideDiff.v1.json",
+  "title": "StyleGuideDiff.v1",
+  "description": "Delta between current UI style and desired DesignSpec. Guides minimal token/component changes.",
+  "type": "object",
+  "properties": {
+    "id": { "type": "string" },
+    "related_design_spec": { "type": "string" },
+    "tokenChanges": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "token": { "type": "string" },
+          "from": { "type": "string" },
+          "to": { "type": "string" },
+          "rationale": { "type": "string" }
+        },
+        "required": ["token", "to"]
+      }
+    },
+    "componentChanges": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "component": { "type": "string" },
+          "property": { "type": "string" },
+          "from": { "type": "string" },
+          "to": { "type": "string" },
+          "rationale": { "type": "string" }
+        },
+        "required": ["component", "property", "to"]
+      }
+    },
+    "notes": { "type": "string" }
+  },
+  "required": ["tokenChanges", "componentChanges"],
+  "additionalProperties": false
+}
+

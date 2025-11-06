@@ -1,3 +1,4 @@
+.autoforge/
 **/logs/deployments/*
 **/logs/mastermind/*
 **/logs/security/*

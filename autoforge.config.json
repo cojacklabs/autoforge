@@ -45,5 +45,12 @@
   "features": {
     "exampleApp": false,
     "securityChecklists": true
+  },
+  "qualityPolicies": {
+    "typecheck": { "cmd": "npm run typecheck", "required": true },
+    "lint": { "cmd": "npm run lint", "maxWarnings": 0, "required": true },
+    "format": { "cmdCheck": "npm run format:check", "cmdWrite": "npm run format", "allowWrite": true },
+    "docs": { "jsonSchema": true, "yamlLint": true, "markdownLint": true, "openapiLint": true },
+    "tests": { "cmd": "npm test -s", "runOnChanged": true }
   }
 }

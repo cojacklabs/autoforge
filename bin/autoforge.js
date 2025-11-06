@@ -13,9 +13,7 @@ import {
 } from "node:fs/promises";
 import { spawn } from "node:child_process";
 import os from "node:os";
-import yaml from "yaml";
-import { globSync } from "glob";
-import { readFileSync } from "node:fs";
+// Note: CLI trimmed to init, load, snapshot. Extra imports removed.
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -47,16 +45,12 @@ function printUsage() {
 
 Usage:
   autoforge init [--force]
-  autoforge upgrade
-  autoforge configure
   autoforge load
-  autoforge refresh
   autoforge snapshot [targetDir]
-  autoforge validate
-  autoforge doctor
+  autoforge configure
   autoforge version
+  autoforge refresh
   autoforge help
-  autoforge dryrun [recipeName]
 `);
 }
 
@@ -449,7 +443,21 @@ async function commandRefresh() {
 }
 
 async function commandLoad() {
-  // Alias for refresh to support first-run onboarding
+  // Prefer the lightweight load stub if present; fall back to refresh
+  const projectRoot = process.cwd();
+  const autoforgeDir = await resolveAutoforgeDir(projectRoot);
+  if (!(await pathExists(autoforgeDir))) {
+    throw new Error(`${DEFAULT_DIRNAME}/ directory not found. Run \`autoforge init\` first.`);
+  }
+
+  const contextPath = path.join(autoforgeDir, "ai", "prompts", "orchestrator_context.md");
+  if (await pathExists(contextPath)) {
+    const context = await readFile(contextPath, "utf8");
+    console.log(color.green("✔ AutoForge orchestrator context (copy/paste this into your AI tool):\n"));
+    console.log(context);
+    return;
+  }
+  // Fallback: generate broader context refresh prompt
   await commandRefresh();
 }
 
@@ -500,12 +508,6 @@ async function run() {
       case "init":
         await commandInit(rest);
         break;
-      case "dryrun":
-        await commandDryrun(rest);
-        break;
-      case "upgrade":
-        await commandUpgrade();
-        break;
       case "configure":
         await commandConfigure(rest);
         break;
@@ -517,12 +519,6 @@ async function run() {
         break;
       case "refresh":
         await commandRefresh();
-        break;
-      case "validate":
-        await commandValidate();
-        break;
-      case "doctor":
-        await commandDoctor();
         break;
       case "version":
       case "--version":

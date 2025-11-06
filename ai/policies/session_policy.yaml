@@ -1,0 +1,29 @@
+version: 1
+name: default_session_policy
+description: |
+  Session rules for single-context orchestration. Applies to pm, uiux, engineer, qa.
+roles:
+  - pm
+  - uiux
+  - engineer
+  - qa
+artifacts:
+  allowed:
+    - UserAsk.v1
+    - IssueReport.v1
+    - CodePlan.v1
+    - TestPlan.v1
+preStepRules:
+  - readMemory
+  - loadRelevantArtifacts
+outputRules:
+  - validateSchemas
+  - qualityGates
+repair:
+  maxAttempts: 2
+permissions:
+  allowApply: true
+  allowResearchEgress: false
+notes: |
+  - Never bypass governance. Egress requires explicit approval and logging.
+  - Serialize code writes via a change gate; allow artifact drafting in parallel.

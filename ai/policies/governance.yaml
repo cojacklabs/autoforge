@@ -1,0 +1,14 @@
+version: 1
+mode: strict  # strict|supervised|flexible
+redaction:
+  pii: true
+  secrets: true
+egress:
+  allow: []
+  requireApproval:
+    - uiux_inspiration
+dataResidency: local
+notes: |
+  - All network or tool egress must be approved and logged.
+  - Summaries and reports should avoid sensitive client data; redact if unsure.
+

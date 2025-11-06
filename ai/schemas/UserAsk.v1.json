@@ -1,0 +1,80 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "ai/schemas/UserAsk.v1.json",
+  "title": "UserAsk.v1",
+  "description": "Normalized representation of a user's prompt/complaint/request for prompt-to-code orchestration.",
+  "type": "object",
+  "properties": {
+    "id": { "type": "string", "description": "Stable identifier for this ask." },
+    "timestamp": { "type": "string", "format": "date-time" },
+    "source": { "type": "string", "description": "Where the ask came from (cli, chat, issue, etc.)." },
+    "raw_text": { "type": "string", "description": "Verbatim user input." },
+    "intent": {
+      "type": "string",
+      "description": "Primary intent classification.",
+      "enum": ["bug", "feature", "ux", "performance", "security", "docs", "refactor", "other"]
+    },
+    "severity": {
+      "type": "string",
+      "enum": ["blocker", "critical", "major", "minor", "trivial"],
+      "default": "major"
+    },
+    "confidence": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 1,
+      "description": "Classifier confidence for the selected intent."
+    },
+    "clarifying_questions": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "High-signal questions if confidence is low."
+    },
+    "assumptions": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "assumption": { "type": "string" },
+          "confidence": { "type": "number", "minimum": 0, "maximum": 1 }
+        },
+        "required": ["assumption"]
+      }
+    },
+    "constraints": {
+      "type": "object",
+      "description": "Explicit user constraints (tech, timeline, budgets, style).",
+      "additionalProperties": true
+    },
+    "target_surfaces": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "Named app surfaces/components the ask touches (e.g., Button, Nav)."
+    },
+    "acceptance_criteria": { "type": "array", "items": { "type": "string" } },
+    "references": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "type": { "type": "string", "enum": ["url", "image", "file", "snippet", "doc"] },
+          "value": { "type": "string" },
+          "note": { "type": "string" }
+        },
+        "required": ["type", "value"]
+      }
+    }
+  },
+  "required": ["raw_text", "intent"],
+  "additionalProperties": false,
+  "examples": [
+    {
+      "raw_text": "Buttons don’t match the inspiration and feel sluggish.",
+      "intent": "ux",
+      "severity": "major",
+      "target_surfaces": ["Button", "Theme/Tokens"],
+      "acceptance_criteria": ["Buttons match reference style", "Focus states pass WCAG AA"]
+    }
+  ]
+}
+

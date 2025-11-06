@@ -1,0 +1,34 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "ai/schemas/TestPlan.v1.json",
+  "title": "TestPlan.v1",
+  "description": "Acceptance test plan aligned to CodePlan with coverage across levels.",
+  "type": "object",
+  "properties": {
+    "id": { "type": "string" },
+    "related_artifacts": { "type": "array", "items": { "type": "string" } },
+    "objectives": { "type": "array", "items": { "type": "string" } },
+    "coverage_summary": { "type": "string" },
+    "cases": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": { "type": "string" },
+          "description": { "type": "string" },
+          "type": { "type": "string", "enum": ["unit", "integration", "e2e", "visual", "accessibility", "contract"] },
+          "priority": { "type": "string", "enum": ["P0", "P1", "P2", "P3"], "default": "P1" },
+          "target_paths": { "type": "array", "items": { "type": "string" } },
+          "inputs": { "type": "object", "additionalProperties": true },
+          "steps": { "type": "array", "items": { "type": "string" } },
+          "assertions": { "type": "array", "items": { "type": "string" } },
+          "oracle": { "type": "string", "enum": ["snapshot", "rule", "golden", "contract", "a11y"] }
+        },
+        "required": ["id", "description", "type", "assertions"]
+      }
+    }
+  },
+  "required": ["cases"],
+  "additionalProperties": false
+}
+

@@ -1,0 +1,37 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "ai/schemas/IssueReport.v1.json",
+  "title": "IssueReport.v1",
+  "description": "Structured issue snapshot derived from a UserAsk plus repo context and repro details.",
+  "type": "object",
+  "properties": {
+    "id": { "type": "string" },
+    "user_ask_id": { "type": "string" },
+    "category": { "type": "string", "enum": ["ux", "bug", "performance", "security", "docs", "other"] },
+    "priority": { "type": "string", "enum": ["P0", "P1", "P2", "P3"], "default": "P1" },
+    "status": { "type": "string", "enum": ["triaged", "in_progress", "blocked", "resolved", "won't_fix"] },
+    "components": { "type": "array", "items": { "type": "string" } },
+    "affected_versions": { "type": "array", "items": { "type": "string" } },
+    "environment": {
+      "type": "object",
+      "properties": {
+        "platform": { "type": "string" },
+        "browser": { "type": "string" },
+        "os": { "type": "string" }
+      },
+      "additionalProperties": true
+    },
+    "repro_steps": { "type": "array", "items": { "type": "string" } },
+    "observed_behavior": { "type": "string" },
+    "expected_behavior": { "type": "string" },
+    "related_artifacts": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "Artifact IDs this issue references (UserAsk, DesignSpec, CodePlan, TestPlan)."
+    },
+    "notes": { "type": "string" }
+  },
+  "required": ["category", "status"],
+  "additionalProperties": false
+}
+
