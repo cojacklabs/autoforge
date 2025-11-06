@@ -1,5 +1,5 @@
 description: Agent roles, permissions, and communication boundaries for the ROS AI autonomous workflow.
-note:
+note: |
   All paths are relative to the repository root. When AutoForge is located inside
   another project (e.g., `custom-project/.autoforge`, legacy: `custom-project/autoforge`),
   treat that subdirectory as the working directory and do not modify files outside it.

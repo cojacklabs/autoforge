@@ -30,7 +30,8 @@ stages:
 
   - id: engineering
     role: fullstack_engineer
-    inputs: ["api/openapi.yaml", "docs/blueprint/tech.md", "ai/code_targets.yaml"]
+    inputs:
+      ["api/openapi.yaml", "docs/blueprint/tech.md", "ai/code_targets.yaml"]
     deliverables:
       - "src/**"
       - "tests/**"

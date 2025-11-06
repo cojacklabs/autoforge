@@ -1,37 +1,37 @@
 {
-	"name": "@cojacklabs/autoforge",
-	"version": "0.4.0",
-	"type": "module",
-	"private": false,
-	"license": "MIT",
-	"scripts": {
-		"format": "prettier --write \"**/*.{js,jsx,ts,tsx,json,md,yaml,yml}\"",
-		"format:check": "prettier --check \"**/*.{js,jsx,ts,tsx,json,md,yaml,yml}\"",
-		"validate": "node ./scripts/validate_context.js",
-		"snapshot": "node ./scripts/generate_snapshot.js",
-		"update": "node ./scripts/update_autoforge.js",
-		"build": "node ./scripts/build_dist.js",
-		"prepack": "npm run build"
-	},
-	"bin": {
-		"autoforge": "./bin/autoforge.js"
-	},
-	"files": [
-		"dist",
-		"bin/autoforge.js",
-		"scripts",
-		"LICENSE"
-	],
-	"dependencies": {
-		"glob": "^10.3.0",
-		"ignore": "^5.3.1",
-		"yaml": "^2.4.2",
-		"repomix": "^1.8.0"
-	},
-	"devDependencies": {
-		"prettier": "^3.3.3"
-	},
-	"publishConfig": {
-		"access": "public"
-	}
+  "name": "@cojacklabs/autoforge",
+  "version": "0.4.1",
+  "type": "module",
+  "private": false,
+  "license": "MIT",
+  "scripts": {
+    "format": "prettier --write \"**/*.{js,jsx,ts,tsx,json,md,yaml,yml}\"",
+    "format:check": "prettier --check \"**/*.{js,jsx,ts,tsx,json,md,yaml,yml}\"",
+    "validate": "node ./scripts/validate_context.js",
+    "snapshot": "node ./scripts/generate_snapshot.js",
+    "update": "node ./scripts/update_autoforge.js",
+    "build": "node ./scripts/build_dist.js",
+    "prepack": "npm run build"
+  },
+  "bin": {
+    "autoforge": "./bin/autoforge.js"
+  },
+  "files": [
+    "dist",
+    "bin/autoforge.js",
+    "scripts",
+    "LICENSE"
+  ],
+  "dependencies": {
+    "glob": "^10.3.0",
+    "ignore": "^5.3.1",
+    "yaml": "^2.4.2",
+    "repomix": "^1.8.0"
+  },
+  "devDependencies": {
+    "prettier": "^3.3.3"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
 }

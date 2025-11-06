@@ -7,7 +7,11 @@ import fs from "node:fs";
 
 function run(cmd, args, options = {}) {
   return new Promise((resolve) => {
-    const child = spawn(cmd, args, { stdio: "inherit", shell: process.platform === "win32", ...options });
+    const child = spawn(cmd, args, {
+      stdio: "inherit",
+      shell: process.platform === "win32",
+      ...options,
+    });
     child.on("exit", (code) => resolve(code === 0));
   });
 }
@@ -63,7 +67,9 @@ export async function validateJsonWithSchema(schemaPath, jsonFiles = []) {
     const mod = await import("ajv");
     ajv = new mod.default({ allErrors: true, strict: false });
   } catch {
-    throw new Error("Ajv not installed. Please add it to your devDependencies.");
+    throw new Error(
+      "Ajv not installed. Please add it to your devDependencies.",
+    );
   }
   const schema = JSON.parse(fs.readFileSync(schemaPath, "utf8"));
   const validate = ajv.compile(schema);
@@ -76,10 +82,13 @@ export async function validateJsonWithSchema(schemaPath, jsonFiles = []) {
       results.push({ file: f, valid, errors: valid ? [] : validate.errors });
       if (!valid) ok = false;
     } catch (err) {
-      results.push({ file: f, valid: false, errors: [{ message: err.message }] });
+      results.push({
+        file: f,
+        valid: false,
+        errors: [{ message: err.message }],
+      });
       ok = false;
     }
   }
   return { ok, results };
 }
-

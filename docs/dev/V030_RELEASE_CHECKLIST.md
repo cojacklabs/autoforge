@@ -9,6 +9,7 @@
 ## Release Overview
 
 AutoForge v0.3.0 introduces:
+
 - ✨ Autopilot orchestration (agents run 24/7 without manual blocking)
 - 🎓 Continuous learning (models improve from every execution)
 - 🚀 Faster initialization (2 steps for new projects, 1 step for existing)
@@ -23,6 +24,7 @@ This release is **100% backwards compatible.** New features are opt-in.
 ### Documentation Completeness
 
 #### Core Files (Updated)
+
 - [ ] **README.md**
   - [ ] Features overview clear
   - [ ] New "What's new in this release" section
@@ -42,6 +44,7 @@ This release is **100% backwards compatible.** New features are opt-in.
   - [ ] Line count: ~259 lines
 
 #### Feature Documentation (New)
+
 - [ ] **docs/AUTOFORGE_EXPANSION_QUICK_START.md**
   - [ ] 1-page reference format
   - [ ] Autonomy levels explained
@@ -78,6 +81,7 @@ This release is **100% backwards compatible.** New features are opt-in.
   - [ ] Line count: ~100 KB
 
 #### Migration & Understanding (New)
+
 - [ ] **docs/UPDATE_SUMMARY.md**
   - [ ] v0.2 → v0.3 changes listed
   - [ ] Impact metrics provided
@@ -96,6 +100,7 @@ This release is **100% backwards compatible.** New features are opt-in.
   - [ ] Line count: ~18 KB
 
 #### Navigation & Standards (New)
+
 - [ ] **docs/DOCUMENTATION_ROADMAP.md**
   - [ ] Decision tree clear
   - [ ] 7+ use-case paths included
@@ -115,6 +120,7 @@ This release is **100% backwards compatible.** New features are opt-in.
 ### Copy/Paste Prompt Verification
 
 For each prompt in PROMPT_HANDBOOK.md and docs:
+
 - [ ] Full path included (`.autoforge/ai/prompts/ROLE.yaml`)
 - [ ] Context provided before prompt
 - [ ] Instructions are specific and clear
@@ -123,6 +129,7 @@ For each prompt in PROMPT_HANDBOOK.md and docs:
 - [ ] References provided to related docs
 
 #### Prompts Verified
+
 - [ ] idea_conversation.yaml
 - [ ] idea_intake.yaml
 - [ ] product_manager.yaml
@@ -211,6 +218,7 @@ For each prompt in PROMPT_HANDBOOK.md and docs:
 ## User Experience Testing
 
 ### New User Path
+
 - [ ] User can read README intro in < 2 minutes
 - [ ] User can complete setup in < 5 minutes
 - [ ] User can run first command without confusion
@@ -218,18 +226,21 @@ For each prompt in PROMPT_HANDBOOK.md and docs:
 - [ ] User knows what to do after first execution
 
 ### Existing User Path
+
 - [ ] User can resume project quickly
 - [ ] Memory/context automatically loaded
 - [ ] User knows what to do next
 - [ ] Navigation is clear from where they left off
 
 ### Developer Path
+
 - [ ] Developer can find implementation roadmap
 - [ ] Developer understands 4-phase timeline
 - [ ] Developer knows effort estimates
 - [ ] Developer can access detailed specs
 
 ### Team Lead Path
+
 - [ ] Team lead can understand features quickly
 - [ ] Team lead can see before/after improvements
 - [ ] Team lead can roll out to team
@@ -240,6 +251,7 @@ For each prompt in PROMPT_HANDBOOK.md and docs:
 ## Content Consistency
 
 ### Terminology
+
 - [ ] "Autonomy level" (not "automation level")
 - [ ] "Copy/paste prompt" (not "paste prompt" or "prompt")
 - [ ] "Execute .autoforge/ai/prompts/ROLE.yaml" (full path always)
@@ -247,6 +259,7 @@ For each prompt in PROMPT_HANDBOOK.md and docs:
 - [ ] "Training loop" (not "training system")
 
 ### Formatting
+
 - [ ] Code blocks use triple backticks with language tag
 - [ ] Command examples use `bash` tag
 - [ ] YAML examples use `yaml` tag
@@ -255,6 +268,7 @@ For each prompt in PROMPT_HANDBOOK.md and docs:
 - [ ] Bullet lists use consistent symbols
 
 ### Structure
+
 - [ ] H2 headers for main sections
 - [ ] H3 headers for subsections
 - [ ] H4 headers for details (sparingly)
@@ -274,7 +288,9 @@ For each prompt in PROMPT_HANDBOOK.md and docs:
 - [ ] Users can opt-in to new features (not forced)
 
 ### Compatibility Statement
+
 Explicitly state in README and UPDATE_SUMMARY:
+
 - [ ] "100% backwards compatible with v0.2"
 - [ ] "No breaking changes"
 - [ ] "New features are opt-in"
@@ -285,6 +301,7 @@ Explicitly state in README and UPDATE_SUMMARY:
 ## Quality Gates
 
 ### Documentation Quality
+
 - [ ] All docs proofread for typos
 - [ ] All examples tested and working
 - [ ] All links verified
@@ -292,6 +309,7 @@ Explicitly state in README and UPDATE_SUMMARY:
 - [ ] Consistent voice and tone throughout
 
 ### Completeness
+
 - [ ] Every feature documented
 - [ ] Every prompt explained
 - [ ] Every command documented
@@ -299,6 +317,7 @@ Explicitly state in README and UPDATE_SUMMARY:
 - [ ] Every user type has clear entry point
 
 ### Clarity
+
 - [ ] No jargon without explanation
 - [ ] Clear for non-technical users
 - [ ] Clear for developers
@@ -306,6 +325,7 @@ Explicitly state in README and UPDATE_SUMMARY:
 - [ ] Clear for team leads
 
 ### Accessibility
+
 - [ ] Multiple entry points (new, existing, developer, leader)
 - [ ] Decision tree helps users find what they need
 - [ ] Complex topics broken into digestible pieces
@@ -317,6 +337,7 @@ Explicitly state in README and UPDATE_SUMMARY:
 ## Release Artifacts
 
 ### Core Release
+
 - [ ] Updated README.md
 - [ ] Updated docs/QUICKSTART.md
 - [ ] 7 new documentation files (~500 KB)
@@ -324,12 +345,14 @@ Explicitly state in README and UPDATE_SUMMARY:
 - [ ] Updated package.json (version bumped)
 
 ### Supporting Materials
+
 - [ ] REPO.md (codebase snapshot via `npx repomix`)
 - [ ] docs/DOCUMENTATION_STANDARDIZATION.md
 - [ ] docs/V030_RELEASE_CHECKLIST.md (this file)
 - [ ] Summary document for GitHub release notes
 
 ### Version Bumps
+
 - [ ] package.json: version → "0.3.0"
 - [ ] All docs have version headers: "v0.3.0"
 - [ ] CHANGELOG.md has [0.3.0] section
@@ -340,6 +363,7 @@ Explicitly state in README and UPDATE_SUMMARY:
 ## Pre-Release Testing
 
 ### Link Testing
+
 ```bash
 # Verify all internal links work
 grep -r "\[.*\](docs/" README.md docs/*.md | verify each link
@@ -347,6 +371,7 @@ grep -r "\[.*\](examples/" README.md docs/*.md | verify each link
 ```
 
 ### Copy/Paste Testing
+
 - [ ] Take each copy/paste block from docs
 - [ ] Paste into text file
 - [ ] Verify no edits needed before pasting into AI
@@ -354,12 +379,14 @@ grep -r "\[.*\](examples/" README.md docs/*.md | verify each link
 - [ ] Verify expected output matches documentation
 
 ### Navigation Testing
+
 - [ ] Start from README → can reach any doc in 2 clicks
 - [ ] Start from QUICKSTART → can reach PROMPT_HANDBOOK in 1 click
 - [ ] Decision tree in DOCUMENTATION_ROADMAP works
 - [ ] Role-based paths lead to correct docs
 
 ### Example Testing
+
 - [ ] Run `cd examples/fullstack_todo_app`
 - [ ] Follow README instructions
 - [ ] All copy/paste prompts work
@@ -370,11 +397,13 @@ grep -r "\[.*\](examples/" README.md docs/*.md | verify each link
 ## Release Timeline
 
 ### Phase 1: Final Review (Today - 2025-10-29)
+
 - [ ] Review this checklist
 - [ ] Verify all boxes above
 - [ ] Get sign-off from team
 
 ### Phase 2: Final Commits (2025-10-29)
+
 - [ ] Commit all documentation changes
 - [ ] Update CHANGELOG.md
 - [ ] Bump version in package.json
@@ -382,6 +411,7 @@ grep -r "\[.*\](examples/" README.md docs/*.md | verify each link
 - [ ] Create git tag: `v0.3.0`
 
 ### Phase 3: GitHub Release (2025-10-29 or later)
+
 - [ ] Create GitHub Release with tag v0.3.0
 - [ ] Write release notes (use UPDATE_SUMMARY.md as base)
 - [ ] Include before/after metrics
@@ -389,6 +419,7 @@ grep -r "\[.*\](examples/" README.md docs/*.md | verify each link
 - [ ] Highlight backwards compatibility
 
 ### Phase 4: Announce (After GitHub Release)
+
 - [ ] Update project homepage
 - [ ] Announce on relevant channels
 - [ ] Notify existing users
@@ -399,18 +430,21 @@ grep -r "\[.*\](examples/" README.md docs/*.md | verify each link
 ## Sign-Off
 
 ### Documentation Lead
-- [ ] Name: _________________
-- [ ] Date: _________________
+
+- [ ] Name: **\*\*\*\***\_**\*\*\*\***
+- [ ] Date: **\*\*\*\***\_**\*\*\*\***
 - [ ] Status: ☐ Approved ☐ Needs Changes
 
 ### Technical Lead
-- [ ] Name: _________________
-- [ ] Date: _________________
+
+- [ ] Name: **\*\*\*\***\_**\*\*\*\***
+- [ ] Date: **\*\*\*\***\_**\*\*\*\***
 - [ ] Status: ☐ Approved ☐ Needs Changes
 
 ### Product Owner
-- [ ] Name: _________________
-- [ ] Date: _________________
+
+- [ ] Name: **\*\*\*\***\_**\*\*\*\***
+- [ ] Date: **\*\*\*\***\_**\*\*\*\***
 - [ ] Status: ☐ Approved ☐ Needs Changes
 
 ---
@@ -418,6 +452,7 @@ grep -r "\[.*\](examples/" README.md docs/*.md | verify each link
 ## Post-Release Tasks
 
 After release:
+
 - [ ] Monitor for documentation issues/feedback
 - [ ] Update docs based on user feedback
 - [ ] Create tutorial videos (optional)
@@ -429,6 +464,7 @@ After release:
 ## Notes
 
 **Key Points for v0.3.0:**
+
 1. This is the first major release after foundational work
 2. Focus is on ease-of-use (2-step setup, 1-step resume)
 3. Heavy emphasis on copy/paste prompts
@@ -436,6 +472,7 @@ After release:
 5. Optional adoption of new features
 
 **Success Metrics:**
+
 - New users can set up in 5 minutes
 - Existing users can resume in 2 minutes
 - All copy/paste blocks work without editing

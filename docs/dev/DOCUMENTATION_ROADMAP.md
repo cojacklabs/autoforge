@@ -7,18 +7,22 @@
 ## Quick Decision Tree
 
 **Question 1: Are you new to AutoForge?**
+
 - **Yes** → Read [README.md](../README.md) (top 1/3) → [QUICKSTART.md](QUICKSTART.md) (Path A)
 - **No** → Go to Question 2
 
 **Question 2: Do you have an existing `.autoforge/` directory?**
+
 - **Yes** → Read [QUICKSTART.md](QUICKSTART.md) (Path B) → You're done!
 - **No** → Go to Question 1
 
 **Question 3: Want to understand autopilot in detail?**
+
 - **Yes** → Read [AUTOFORGE_EXPANSION_QUICK_START.md](AUTOFORGE_EXPANSION_QUICK_START.md) → [AUTOFORGE_AUTOPILOT_ENGINE.md](AUTOFORGE_AUTOPILOT_ENGINE.md)
 - **No** → You're all set; start building!
 
 **Question 4: Want to understand how the training loop works?**
+
 - **Yes** → Read [AUTOFORGE_AI_MODEL_TRAINING.md](AUTOFORGE_AI_MODEL_TRAINING.md)
 - **No** → You're all set; start building!
 
@@ -203,18 +207,18 @@ npx autoforge autopilot --level 1
 
 ## Document Reference Table
 
-| Document | Best For | Length | Read If | Skip If |
-|----------|----------|--------|---------|---------|
-| [README.md](../README.md) | Feature overview | 12 min | New user, want full picture | Returning user, already familiar |
-| [QUICKSTART.md](QUICKSTART.md) | Getting started | 10 min | First time using AutoForge | Already running projects |
-| [UPDATE_SUMMARY.md](UPDATE_SUMMARY.md) | What changed in v0.3 | 8 min | Migrating from v0.2 | New user, not relevant |
-| [BEFORE_AFTER_COMPARISON.md](BEFORE_AFTER_COMPARISON.md) | Visual improvements | 8 min | Want to see impact clearly | Just want to build |
-| [AUTOFORGE_EXPANSION_QUICK_START.md](AUTOFORGE_EXPANSION_QUICK_START.md) | Autopilot 101 | 5 min | Want 1-page overview | Skip if just getting started |
-| [AUTOFORGE_AUTOPILOT_ENGINE.md](AUTOFORGE_AUTOPILOT_ENGINE.md) | Autopilot deep-dive | 45 min | Implementing or troubleshooting | Just want to use it |
-| [AUTOFORGE_AI_MODEL_TRAINING.md](AUTOFORGE_AI_MODEL_TRAINING.md) | Training loop details | 40 min | Implementing or tuning | Using L1 autopilot |
-| [AUTOFORGE_EXPANSION_SYNTHESIS.md](AUTOFORGE_EXPANSION_SYNTHESIS.md) | Big picture + roadmap | 30 min | Framework developers or architects | End users |
-| [AUTOFORGE_MULTI_PROJECT_GUIDE.md](AUTOFORGE_MULTI_PROJECT_GUIDE.md) | Multi-project workflows (existing doc) | 25 min | Managing teams/domains | Single project user |
-| [PROMPT_HANDBOOK.md](PROMPT_HANDBOOK.md) | Ready-made prompts (existing doc) | 10 min | Need prompt examples | Using autopilot |
+| Document                                                                 | Best For                               | Length | Read If                            | Skip If                          |
+| ------------------------------------------------------------------------ | -------------------------------------- | ------ | ---------------------------------- | -------------------------------- |
+| [README.md](../README.md)                                                | Feature overview                       | 12 min | New user, want full picture        | Returning user, already familiar |
+| [QUICKSTART.md](QUICKSTART.md)                                           | Getting started                        | 10 min | First time using AutoForge         | Already running projects         |
+| [UPDATE_SUMMARY.md](UPDATE_SUMMARY.md)                                   | What changed in v0.3                   | 8 min  | Migrating from v0.2                | New user, not relevant           |
+| [BEFORE_AFTER_COMPARISON.md](BEFORE_AFTER_COMPARISON.md)                 | Visual improvements                    | 8 min  | Want to see impact clearly         | Just want to build               |
+| [AUTOFORGE_EXPANSION_QUICK_START.md](AUTOFORGE_EXPANSION_QUICK_START.md) | Autopilot 101                          | 5 min  | Want 1-page overview               | Skip if just getting started     |
+| [AUTOFORGE_AUTOPILOT_ENGINE.md](AUTOFORGE_AUTOPILOT_ENGINE.md)           | Autopilot deep-dive                    | 45 min | Implementing or troubleshooting    | Just want to use it              |
+| [AUTOFORGE_AI_MODEL_TRAINING.md](AUTOFORGE_AI_MODEL_TRAINING.md)         | Training loop details                  | 40 min | Implementing or tuning             | Using L1 autopilot               |
+| [AUTOFORGE_EXPANSION_SYNTHESIS.md](AUTOFORGE_EXPANSION_SYNTHESIS.md)     | Big picture + roadmap                  | 30 min | Framework developers or architects | End users                        |
+| [AUTOFORGE_MULTI_PROJECT_GUIDE.md](AUTOFORGE_MULTI_PROJECT_GUIDE.md)     | Multi-project workflows (existing doc) | 25 min | Managing teams/domains             | Single project user              |
+| [PROMPT_HANDBOOK.md](PROMPT_HANDBOOK.md)                                 | Ready-made prompts (existing doc)      | 10 min | Need prompt examples               | Using autopilot                  |
 
 ---
 
@@ -225,6 +229,7 @@ npx autoforge autopilot --level 1
 **Goal:** Understand what AutoForge does and how to use it
 
 **Read:** (15 min)
+
 1. [README.md](../README.md) — top 1/3
 2. [QUICKSTART.md](QUICKSTART.md) — Path A or B
 3. [AUTOFORGE_EXPANSION_QUICK_START.md](AUTOFORGE_EXPANSION_QUICK_START.md) — Section 2 (autonomy levels)
@@ -238,6 +243,7 @@ npx autoforge autopilot --level 1
 **Goal:** Get up and running quickly; understand how it works
 
 **Read:** (30 min)
+
 1. [README.md](../README.md) — full
 2. [QUICKSTART.md](QUICKSTART.md) — Your path (A or B)
 3. [AUTOFORGE_EXPANSION_QUICK_START.md](AUTOFORGE_EXPANSION_QUICK_START.md) — Full document
@@ -252,6 +258,7 @@ npx autoforge autopilot --level 1
 **Goal:** Understand deployment orchestration and observability
 
 **Read:** (45 min)
+
 1. [QUICKSTART.md](QUICKSTART.md) — Your path
 2. [AUTOFORGE_EXPANSION_QUICK_START.md](AUTOFORGE_EXPANSION_QUICK_START.md) — Full
 3. [AUTOFORGE_AUTOPILOT_ENGINE.md](AUTOFORGE_AUTOPILOT_ENGINE.md) — Section 8 (Observability)
@@ -265,6 +272,7 @@ npx autoforge autopilot --level 1
 **Goal:** Understand the full system and implementation roadmap
 
 **Read:** (2 hours)
+
 1. All expansion docs in order (see Framework Developer path above)
 2. [AUTOFORGE_MULTI_PROJECT_GUIDE.md](AUTOFORGE_MULTI_PROJECT_GUIDE.md)
 3. [PROMPT_HANDBOOK.md](../docs/PROMPT_HANDBOOK.md) for architecture patterns
@@ -278,6 +286,7 @@ npx autoforge autopilot --level 1
 **Goal:** Implement autopilot and training features
 
 **Read:** (4 hours)
+
 1. All 3 expansion docs (SYNTHESIS, ENGINE, TRAINING)
 2. Existing codebase and test examples
 3. CI/CD workflows and deployment
@@ -289,23 +298,28 @@ npx autoforge autopilot --level 1
 ## Quick Links
 
 **Getting Started:**
+
 - New user → [README.md](../README.md) top 1/3 → [QUICKSTART.md](QUICKSTART.md) Path A
 - Existing user → [QUICKSTART.md](QUICKSTART.md) Path B
 - Just want code → Run `npx autoforge init && npx autoforge load --copy && npx autoforge autopilot --level 1`
 
 **Understanding Autopilot:**
+
 - Quick overview → [AUTOFORGE_EXPANSION_QUICK_START.md](AUTOFORGE_EXPANSION_QUICK_START.md)
 - Full details → [AUTOFORGE_AUTOPILOT_ENGINE.md](AUTOFORGE_AUTOPILOT_ENGINE.md)
 
 **Understanding Training:**
+
 - Quick overview → [AUTOFORGE_EXPANSION_QUICK_START.md](AUTOFORGE_EXPANSION_QUICK_START.md) Section 5
 - Full details → [AUTOFORGE_AI_MODEL_TRAINING.md](AUTOFORGE_AI_MODEL_TRAINING.md)
 
 **Implementation:**
+
 - Roadmap → [AUTOFORGE_EXPANSION_SYNTHESIS.md](AUTOFORGE_EXPANSION_SYNTHESIS.md) Section 6
 - Full spec → [AUTOFORGE_AUTOPILOT_ENGINE.md](AUTOFORGE_AUTOPILOT_ENGINE.md) + [AUTOFORGE_AI_MODEL_TRAINING.md](AUTOFORGE_AI_MODEL_TRAINING.md)
 
 **Comparing Versions:**
+
 - What changed → [UPDATE_SUMMARY.md](UPDATE_SUMMARY.md)
 - Before/after → [BEFORE_AFTER_COMPARISON.md](BEFORE_AFTER_COMPARISON.md)
 

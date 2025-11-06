@@ -27,4 +27,3 @@ handoff_to: "security_engineer"
 notes: |
   Provide sandbox-first implementations; document how to switch to live mode after
   security review. Clearly label any data that could be sensitive.
-

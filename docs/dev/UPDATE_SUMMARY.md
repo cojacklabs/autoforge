@@ -12,6 +12,7 @@ This release transforms AutoForge from a **prompt orchestration framework** into
 ### New Core Features
 
 ✨ **Autopilot Orchestration**
+
 - Agents run 24/7 without manual blocking
 - 4 autonomy levels (0=manual → 3=adaptive)
 - Automated state machine for deterministic workflows
@@ -19,6 +20,7 @@ This release transforms AutoForge from a **prompt orchestration framework** into
 - Quality gate auto-correction with retries
 
 🎓 **Continuous Learning**
+
 - Training data collected from every execution
 - Automatic pattern extraction (gate failures, retries, successful combinations)
 - Closed-loop feedback system (detect problem → suggest improvement → A/B test → deploy)
@@ -26,6 +28,7 @@ This release transforms AutoForge from a **prompt orchestration framework** into
 - Metrics dashboard to track quarterly improvements
 
 🚀 **Simplified Initialization**
+
 - New Project: 2 steps (install → init)
 - Existing Project: 1 step (resume)
 - `npx autoforge load --copy` outputs ready-to-paste prompt
@@ -33,6 +36,7 @@ This release transforms AutoForge from a **prompt orchestration framework** into
 - No manual memory re-entry needed
 
 📊 **Real-Time Observability**
+
 - `npx autoforge status` — view real-time autopilot progress
 - `npx autoforge train` — extract patterns and suggest improvements
 - `npx autoforge metrics show` — track agent performance trends
@@ -44,19 +48,19 @@ This release transforms AutoForge from a **prompt orchestration framework** into
 
 ### Updated Files
 
-| File | Changes |
-|------|---------|
-| **README.md** | Added autopilot quick-start; reorganized sections; added new docs references; expanded CLI reference |
+| File                   | Changes                                                                                                                                     |
+| ---------------------- | ------------------------------------------------------------------------------------------------------------------------------------------- |
+| **README.md**          | Added autopilot quick-start; reorganized sections; added new docs references; expanded CLI reference                                        |
 | **docs/QUICKSTART.md** | Path-based structure (New Project vs Existing); simplified to 2-5 min setup; added autonomy levels table; added continuous learning section |
 
 ### New Documentation Files (4 docs, ~500 KB total)
 
-| File | Purpose | Size |
-|------|---------|------|
-| **docs/AUTOFORGE_AUTOPILOT_ENGINE.md** | Full orchestration spec: state machine, autonomy matrix, auto-correction, multi-session memory | 130 KB |
-| **docs/AUTOFORGE_AI_MODEL_TRAINING.md** | Training pipeline: data collection, feedback loops, pattern extraction, recipe evolution | 120 KB |
-| **docs/AUTOFORGE_EXPANSION_SYNTHESIS.md** | Big picture: how it all fits together, implementation roadmap, real-world examples, success metrics | 100 KB |
-| **docs/AUTOFORGE_EXPANSION_QUICK_START.md** | One-page reference: autonomy levels, timeline, what gets better, decision tree | 25 KB |
+| File                                        | Purpose                                                                                             | Size   |
+| ------------------------------------------- | --------------------------------------------------------------------------------------------------- | ------ |
+| **docs/AUTOFORGE_AUTOPILOT_ENGINE.md**      | Full orchestration spec: state machine, autonomy matrix, auto-correction, multi-session memory      | 130 KB |
+| **docs/AUTOFORGE_AI_MODEL_TRAINING.md**     | Training pipeline: data collection, feedback loops, pattern extraction, recipe evolution            | 120 KB |
+| **docs/AUTOFORGE_EXPANSION_SYNTHESIS.md**   | Big picture: how it all fits together, implementation roadmap, real-world examples, success metrics | 100 KB |
+| **docs/AUTOFORGE_EXPANSION_QUICK_START.md** | One-page reference: autonomy levels, timeline, what gets better, decision tree                      | 25 KB  |
 
 ---
 
@@ -65,6 +69,7 @@ This release transforms AutoForge from a **prompt orchestration framework** into
 ### 1. Faster Initialization (2 Steps for New Project)
 
 **Before:**
+
 ```bash
 npx autoforge init
 npx autoforge load
@@ -74,6 +79,7 @@ npx autoforge load
 ```
 
 **After:**
+
 ```bash
 npx autoforge init
 npx autoforge load --copy
@@ -86,6 +92,7 @@ npx autoforge autopilot --level 1 --recipe web_app
 ### 2. Instant Resume for Existing Projects
 
 **Before:**
+
 ```bash
 npx autoforge load
 # Manually review memory file
@@ -95,6 +102,7 @@ npx autoforge load
 ```
 
 **After:**
+
 ```bash
 npx autoforge load --resume
 # Copy/paste prompt
@@ -172,14 +180,14 @@ Your `.autoforge/` directory, memory files, and all project artifacts are fully 
 
 ## New CLI Commands
 
-| Command | Purpose | Example |
-|---------|---------|---------|
-| `autopilot` | Start orchestration with chosen autonomy level | `npx autoforge autopilot --level 1 --recipe web_app` |
-| `load --copy` | Emit copy/paste prompt (new projects) | `npx autoforge load --copy` |
-| `load --resume` | Resume from previous session | `npx autoforge load --resume` |
-| `status` | View real-time autopilot progress | `npx autoforge status` |
-| `train` | Extract patterns, suggest improvements | `npx autoforge train --from-last-N-projects 10` |
-| `metrics show` | View agent performance trends | `npx autoforge metrics show --metric agent_success_rate` |
+| Command         | Purpose                                        | Example                                                  |
+| --------------- | ---------------------------------------------- | -------------------------------------------------------- |
+| `autopilot`     | Start orchestration with chosen autonomy level | `npx autoforge autopilot --level 1 --recipe web_app`     |
+| `load --copy`   | Emit copy/paste prompt (new projects)          | `npx autoforge load --copy`                              |
+| `load --resume` | Resume from previous session                   | `npx autoforge load --resume`                            |
+| `status`        | View real-time autopilot progress              | `npx autoforge status`                                   |
+| `train`         | Extract patterns, suggest improvements         | `npx autoforge train --from-last-N-projects 10`          |
+| `metrics show`  | View agent performance trends                  | `npx autoforge metrics show --metric agent_success_rate` |
 
 (All existing commands unchanged and backwards compatible)
 
@@ -188,16 +196,19 @@ Your `.autoforge/` directory, memory files, and all project artifacts are fully 
 ## Expected Impact
 
 ### Time Savings
+
 - **New projects:** 15-30 min setup → 5 min setup (3-6x faster)
 - **Resuming projects:** 10-15 min → 2 min (5-7x faster)
 - **Per project:** 3 hours human time → 45 min (L1) or 10 min (L2)
 
 ### Quality Improvements
+
 - **Gate success:** 75% → 95%+ (after 10-20 projects)
 - **Retry rate:** 1.2 avg/gate → 0.3 avg/gate
 - **Post-launch bugs:** 3-5 critical → 0-1 critical
 
 ### Cost Savings
+
 - **Token usage:** 40% reduction (better prompts, fewer retries)
 - **Human overhead:** 70-80% reduction (less manual management)
 - **Time to market:** 50% faster delivery
@@ -267,6 +278,7 @@ New features are **opt-in**. Existing users can continue using AutoForge exactly
 If implementing the autopilot + training systems:
 
 See implementation roadmap in **AUTOFORGE_EXPANSION_SYNTHESIS.md**:
+
 - **Phase 1 (Weeks 1-2):** Foundation (state machine, memory, gates) — 22 hours
 - **Phase 2 (Weeks 3-4):** Autopilot execution — 32 hours
 - **Phase 3 (Weeks 5-6):** Training pipeline — 42 hours

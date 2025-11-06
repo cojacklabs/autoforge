@@ -3,12 +3,14 @@
 AutoForge v0.4 introduces strict governance, session rules, and enforced memory to reduce user reminders and protect IP.
 
 ## GovernancePolicy
+
 - Mode: `strict` (local‑only), `supervised` (approval prompts), or `flexible`.
 - Redaction: scrub PII/secrets from logs/reports/exports.
 - Egress: allowed domains/tools; everything else requires approval and is logged.
 - Data residency: local datasets by default; opt‑in export.
 
 ## SessionPolicy
+
 - Roles: allowed adapters for the run.
 - Artifacts: permitted inputs/outputs (by schema id).
 - Pre‑step rules: read memory, load relevant artifacts.
@@ -17,11 +19,13 @@ AutoForge v0.4 introduces strict governance, session rules, and enforced memory 
 - Permissions: `allowApply`, `allowResearchEgress`.
 
 ## Memory Enforcement
+
 - Mandatory reads: session start, role switch, pre‑codegen, pre‑approval, milestone completion.
 - Delta writes: after each decision step, append decisions, assumptions, open questions to `ai/memory/{role}.md`; summarize to `ai/memory/global.md`.
 - Retrieval hygiene: summarize and link to history; prefer artifact references.
 
 ## Approvals and Auditing
+
 - Any egress or high‑risk changes prompt for approval (mode‑dependent).
 - IP ledger logs approvals, tool calls, gate results, and outcomes.
 
@@ -42,4 +46,3 @@ const res = await c.fromPrompt("Fix button UX", { approvals: { uiux_inspiration:
 ```
 
 If you don’t use Coordinator directly, include the decision in session notes and ensure it is captured in `.autoforge/ai/memory/`.
-

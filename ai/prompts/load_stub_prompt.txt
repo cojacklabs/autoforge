@@ -1,6 +1,0 @@
-Load AutoForge Orchestrator context (strict).
-
-I will now paste the contents of .autoforge/ai/prompts/orchestrator_context.md. Read it fully, adopt all policies, and confirm by replying:
-AutoForge context loaded (strict). Ready for your prompt.
-
-If the file is long, acknowledge receipt and wait for the full paste before acting. Do not proceed until you have confirmed loading the context.

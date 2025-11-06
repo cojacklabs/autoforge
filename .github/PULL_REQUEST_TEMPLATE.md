@@ -13,4 +13,3 @@ Describe the change and its motivation. Link related issues.
 ## Testing notes
 
 Include manual/automated verification steps.
-

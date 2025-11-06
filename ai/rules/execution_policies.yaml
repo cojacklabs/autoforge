@@ -1,0 +1,28 @@
+version: 1
+title: Execution Policies
+workflow:
+  loop:
+    - normalize_ask
+    - triage_issue
+    - propose_design_and_plans
+    - dryrun_gates
+    - (optional) apply_changes
+    - post_apply_gates
+    - qa_validate
+    - progress_and_memory
+concurrency:
+  serialize_writes: true
+  parallel_planning: true
+retries:
+  max_repairs: 2
+compliance:
+  required_fields:
+    - rules_checked
+    - artifacts_valid
+    - code_targets_ok
+    - parse_ok
+    - prettier_ok
+    - eslint_ok
+    - tsc_ok
+    - tests_ok
+    - changed_files

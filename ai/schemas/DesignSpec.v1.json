@@ -6,14 +6,29 @@
   "type": "object",
   "properties": {
     "id": { "type": "string" },
-    "source": { "type": "string", "description": "inspiration|research|fallback" },
+    "source": {
+      "type": "string",
+      "description": "inspiration|research|fallback"
+    },
     "tokens": {
       "type": "object",
       "properties": {
-        "colors": { "type": "object", "additionalProperties": { "type": "string" } },
-        "spacing": { "type": "object", "additionalProperties": { "type": "string" } },
-        "typography": { "type": "object", "additionalProperties": { "type": "string" } },
-        "radius": { "type": "object", "additionalProperties": { "type": "string" } }
+        "colors": {
+          "type": "object",
+          "additionalProperties": { "type": "string" }
+        },
+        "spacing": {
+          "type": "object",
+          "additionalProperties": { "type": "string" }
+        },
+        "typography": {
+          "type": "object",
+          "additionalProperties": { "type": "string" }
+        },
+        "radius": {
+          "type": "object",
+          "additionalProperties": { "type": "string" }
+        }
       },
       "additionalProperties": true
     },
@@ -36,4 +51,3 @@
   "required": ["tokens", "components"],
   "additionalProperties": false
 }
-

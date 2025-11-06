@@ -8,4 +8,3 @@ Create periodic summaries here (weekly/bi-weekly):
 - Follow-ups and owners
 
 This stub satisfies the `learning_feedback_present` gate until real summaries are produced.
-

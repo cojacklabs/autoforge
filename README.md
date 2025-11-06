@@ -5,6 +5,7 @@
 AutoForge is a multi-agent orchestration framework that lives as `.autoforge/` inside your project. AI agents collaboratively plan, design, code, test, and deploy—while improving autonomously with every project through continuous feedback loops.
 
 **What's new in this release:**
+
 - ✨ **Autopilot orchestration** – Agents run 24/7 without manual blocking; choose autonomy level (0=manual → 3=adaptive)
 - 🎓 **Continuous learning** – Every execution trains models; prompts/recipes improve automatically
 - 🚀 **Faster initialization** – 2-step setup for new projects; 1-step resume for existing ones
@@ -210,8 +211,6 @@ Continue agent-by-agent as needed. See [docs/PROMPT_HANDBOOK.md](docs/PROMPT_HAN
   STOP for approval, then trigger the right prompts (kickoff, change intake, context snapshot, etc.).
   ```
 
-  
-
 ---
 
 ## Change Request Workflow
@@ -287,16 +286,15 @@ This flow preserves existing `.autoforge/` data (logs, memory, reports) and keep
 
 ## Documentation & Resources
 
-| Resource | What it covers |
-|----------|---------------|
-| [docs/QUICKSTART.md](docs/QUICKSTART.md) | Fast setup for new and existing projects |
-| [docs/AUTOFORGE_EXPANSION_QUICK_START.md](docs/AUTOFORGE_EXPANSION_QUICK_START.md) | One-page guide to autopilot & training |
-| [docs/AUTOFORGE_AUTOPILOT_ENGINE.md](docs/AUTOFORGE_AUTOPILOT_ENGINE.md) | Full orchestration spec, autonomy levels, state machine |
-| [docs/AUTOFORGE_AI_MODEL_TRAINING.md](docs/AUTOFORGE_AI_MODEL_TRAINING.md) | Training data collection, feedback loops, continuous improvement |
-| [docs/AUTOFORGE_EXPANSION_SYNTHESIS.md](docs/AUTOFORGE_EXPANSION_SYNTHESIS.md) | How it all fits together + implementation roadmap |
-| [docs/AUTOFORGE_MULTI_PROJECT_GUIDE.md](docs/AUTOFORGE_MULTI_PROJECT_GUIDE.md) | Multi-project workflows and recipes |
-| [docs/PROMPT_HANDBOOK.md](docs/PROMPT_HANDBOOK.md) | Ready-made prompts for all agent roles |
-
+| Resource                                                                           | What it covers                                                   |
+| ---------------------------------------------------------------------------------- | ---------------------------------------------------------------- |
+| [docs/QUICKSTART.md](docs/QUICKSTART.md)                                           | Fast setup for new and existing projects                         |
+| [docs/AUTOFORGE_EXPANSION_QUICK_START.md](docs/AUTOFORGE_EXPANSION_QUICK_START.md) | One-page guide to autopilot & training                           |
+| [docs/AUTOFORGE_AUTOPILOT_ENGINE.md](docs/AUTOFORGE_AUTOPILOT_ENGINE.md)           | Full orchestration spec, autonomy levels, state machine          |
+| [docs/AUTOFORGE_AI_MODEL_TRAINING.md](docs/AUTOFORGE_AI_MODEL_TRAINING.md)         | Training data collection, feedback loops, continuous improvement |
+| [docs/AUTOFORGE_EXPANSION_SYNTHESIS.md](docs/AUTOFORGE_EXPANSION_SYNTHESIS.md)     | How it all fits together + implementation roadmap                |
+| [docs/AUTOFORGE_MULTI_PROJECT_GUIDE.md](docs/AUTOFORGE_MULTI_PROJECT_GUIDE.md)     | Multi-project workflows and recipes                              |
+| [docs/PROMPT_HANDBOOK.md](docs/PROMPT_HANDBOOK.md)                                 | Ready-made prompts for all agent roles                           |
 
 > “AutoForge lets you build software at the speed of thought — ideas in, deployments out.”
 

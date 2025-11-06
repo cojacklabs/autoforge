@@ -82,12 +82,12 @@ See [Autonomy Levels](#autonomy-levels) below to choose the right level for your
 
 Choose the right level for your project and team comfort:
 
-| Level | Description | Human Gates | Best For | Time to Setup |
-|-------|-------------|-------------|----------|---------------|
-| **0** | Manual (every step approved) | 100% | Complex, high-risk, learning | 5 min |
-| **1** | Supervised (agents run; pause on critical) | Deployments, security, integrations | Standard projects, proven recipes | 5 min |
-| **2** | Full autopilot (autonomous decisions) | Post-deploy monitoring only | Proven recipes, confident teams | 5 min |
-| **3** | Adaptive (agents learn & improve) | Model training changes only | Continuous deployment, feedback-driven | 5 min |
+| Level | Description                                | Human Gates                         | Best For                               | Time to Setup |
+| ----- | ------------------------------------------ | ----------------------------------- | -------------------------------------- | ------------- |
+| **0** | Manual (every step approved)               | 100%                                | Complex, high-risk, learning           | 5 min         |
+| **1** | Supervised (agents run; pause on critical) | Deployments, security, integrations | Standard projects, proven recipes      | 5 min         |
+| **2** | Full autopilot (autonomous decisions)      | Post-deploy monitoring only         | Proven recipes, confident teams        | 5 min         |
+| **3** | Adaptive (agents learn & improve)          | Model training changes only         | Continuous deployment, feedback-driven | 5 min         |
 
 Start with **Level 1**. As confidence grows, move to Level 2 or 3.
 
@@ -229,13 +229,13 @@ See [AUTOFORGE_AI_MODEL_TRAINING.md](AUTOFORGE_AI_MODEL_TRAINING.md) for how the
 
 ## Helpful Commands
 
-| Command | What It Does |
-|---------|-------------|
-| `npx autoforge snapshot [path]` | Generate REPO.md for context sharing |
-| `npx autoforge dryrun web_app` | Preview execution plan without writing files |
-| `npx autoforge doctor` | Verify setup is complete |
-| `npx autoforge validate` | Run quality gate checks |
-| `npx autoforge upgrade` | Update to latest framework |
+| Command                         | What It Does                                 |
+| ------------------------------- | -------------------------------------------- |
+| `npx autoforge snapshot [path]` | Generate REPO.md for context sharing         |
+| `npx autoforge dryrun web_app`  | Preview execution plan without writing files |
+| `npx autoforge doctor`          | Verify setup is complete                     |
+| `npx autoforge validate`        | Run quality gate checks                      |
+| `npx autoforge upgrade`         | Update to latest framework                   |
 
 ---
 

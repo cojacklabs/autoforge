@@ -91,7 +91,8 @@ agent_autonomy_levels:
   level_1_supervised_autopilot:
     description: Agents run autonomously; pause before critical actions
     use_case: Standard projects, known architectures
-    approval_gates: [deployments, schema_changes, external_integrations, security_exceptions]
+    approval_gates:
+      [deployments, schema_changes, external_integrations, security_exceptions]
     autonomous_actions:
       - refine_failed_outputs
       - select_from_multiple_options
@@ -108,7 +109,13 @@ agent_autonomy_levels:
       - approve_architectural_changes
       - make_trade_off_decisions
       - trigger_deployments
-    success_criteria: [all_gates_pass, test_coverage >= 80%, security_scan_clean, perf_within_budget]
+    success_criteria:
+      [
+        all_gates_pass,
+        test_coverage >= 80%,
+        security_scan_clean,
+        perf_within_budget,
+      ]
     feedback_loop: every_3_runs_review_decisions
 
   level_3_adaptive_autopilot:
@@ -431,7 +438,8 @@ memory_hierarchy:
       - what_worked: [decisions, patterns, agent_combinations]
       - what_failed: [mistakes, rework_reasons, time_lost]
       - metrics: [wall_clock_time, token_usage, gate_pass_rate, quality_score]
-      - agent_performance: {agent_role: {success_rate, avg_retry_count, decision_quality}}
+      - agent_performance:
+          { agent_role: { success_rate, avg_retry_count, decision_quality } }
     retention: permanent (for training)
     access: model_training_loop, retrospectives
 
@@ -521,9 +529,24 @@ training_loop_architecture:
 
   data_labeling:
     quality_of_output: [excellent, good, acceptable, poor, unusable]
-    reason: [correct_first_try, needed_1_retry, needed_3+_retries, escalated, required_major_rework]
-    feedback_source: [automatic_gate_validation, human_review, downstream_agent_opinion]
-    success_signal: [gate_passed, test_passed, security_clean, perf_acceptable, human_approved]
+    reason:
+      [
+        correct_first_try,
+        needed_1_retry,
+        needed_3+_retries,
+        escalated,
+        required_major_rework,
+      ]
+    feedback_source:
+      [automatic_gate_validation, human_review, downstream_agent_opinion]
+    success_signal:
+      [
+        gate_passed,
+        test_passed,
+        security_clean,
+        perf_acceptable,
+        human_approved,
+      ]
 
   pattern_extraction:
     what_to_learn:
@@ -554,7 +577,8 @@ training_loop_architecture:
       - prompt_version: which version of agent prompt was used
       - model_version: Claude 3.5 Sonnet vs Haiku, etc
       - recipe_version: which recipe version (with_which_improvements)
-      - baseline_metrics: [success_rate, avg_retries, time_to_completion, token_cost]
+      - baseline_metrics:
+          [success_rate, avg_retries, time_to_completion, token_cost]
       - experiment_result: did_change_improve_metrics
     continuous_improvement: always_deploy_winning_variant
 ```
@@ -597,7 +621,8 @@ feedback_mechanisms:
 
     performance_regression:
       trigger: page_load_time or endpoint_latency > SLO
-      action: [alert, performance_engineer_analyzes, retrain_if_code_generation_issue]
+      action:
+        [alert, performance_engineer_analyzes, retrain_if_code_generation_issue]
 
   learning_output:
     - improved_prompts: commit to .autoforge/ai/prompts_v{N}/
@@ -881,7 +906,8 @@ safety_constraints:
 
   require_human_approval:
     level_0: all_decisions
-    level_1: [deployments, schema_changes, external_integrations, security_exceptions]
+    level_1:
+      [deployments, schema_changes, external_integrations, security_exceptions]
     level_2: [post_deployment_monitoring]
     level_3: [model_training_changes, recipe_updates]
 

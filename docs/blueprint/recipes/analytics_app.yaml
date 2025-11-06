@@ -31,7 +31,8 @@ stages:
 
   - id: engineering
     role: fullstack_engineer
-    inputs: ["api/openapi.yaml", "docs/blueprint/tech.md", "ai/code_targets.yaml"]
+    inputs:
+      ["api/openapi.yaml", "docs/blueprint/tech.md", "ai/code_targets.yaml"]
     deliverables:
       - "src/**"
       - "tests/**"
@@ -64,7 +65,11 @@ stages:
 
   - id: release
     role: devops_engineer
-    inputs: ["ai/logs/test_runs/latest_report.md", "security/reports/security_audit.md"]
+    inputs:
+      [
+        "ai/logs/test_runs/latest_report.md",
+        "security/reports/security_audit.md",
+      ]
     deliverables:
       - "devops/runbooks/deploy.md"
       - "ai/logs/deployments/stage_deploy.md"

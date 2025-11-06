@@ -1,0 +1,26 @@
+version: 1
+title: Enforcement Rules
+notes: |
+  These rules are hard requirements. The orchestrator must halt and report if any rule cannot be satisfied after bounded retries.
+rules:
+  - id: artifacts.schema_validation
+    must: true
+    description: All artifacts (UserAsk, IssueReport, CodePlan, TestPlan, DesignSpec, StyleGuideDiff) validate against their JSON Schemas before proceeding.
+  - id: quality.gates.order
+    must: true
+    description: Run gates in order on proposed and changed files — parse → prettier → eslint → tsc → targeted tests.
+  - id: boundaries.code_targets
+    must: true
+    description: Only write inside allowed roots from .autoforge/ai/code_targets.yaml.
+  - id: approvals.strict
+    must: true
+    description: In strict governance mode, writes and egress require explicit approval; record decisions to events and memory.
+  - id: memory.read_write
+    must: true
+    description: Read global/role memory before each step; append concise deltas after each decision.
+  - id: retries.bounded
+    must: true
+    description: Attempt up to 2 repairs; then halt and request human review.
+  - id: compliance.self_audit
+    must: true
+    description: Every major step outputs a compliance summary with rules checked and pass/fail.

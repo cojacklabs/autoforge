@@ -344,18 +344,18 @@ Benefit: Project 5 is 20 points faster than Project 1
 
 ## New Features at a Glance
 
-| Feature | Before | After |
-|---------|--------|-------|
-| **Setup time** | 15-30 min | 5 min |
-| **Resume time** | 10-15 min | 2 min |
-| **Human involvement** | 3-5 hours/project | 30 min-2 hours/project |
-| **Autonomy level** | 0% (manual) | 80%+ (supervised to adaptive) |
-| **Gate success** | 75% | 95%+ |
-| **Retries/fixes** | Manual (3-5 per gate) | Automatic (retries built-in) |
-| **Parallelization** | 0% (serial) | 60%+ (parallel stages) |
-| **Learning** | None (static) | Continuous (improve/project) |
-| **Decision quality** | Human-driven | Agent-driven + human oversight |
-| **Time to market** | 10+ hours | 6-8 hours |
+| Feature               | Before                | After                          |
+| --------------------- | --------------------- | ------------------------------ |
+| **Setup time**        | 15-30 min             | 5 min                          |
+| **Resume time**       | 10-15 min             | 2 min                          |
+| **Human involvement** | 3-5 hours/project     | 30 min-2 hours/project         |
+| **Autonomy level**    | 0% (manual)           | 80%+ (supervised to adaptive)  |
+| **Gate success**      | 75%                   | 95%+                           |
+| **Retries/fixes**     | Manual (3-5 per gate) | Automatic (retries built-in)   |
+| **Parallelization**   | 0% (serial)           | 60%+ (parallel stages)         |
+| **Learning**          | None (static)         | Continuous (improve/project)   |
+| **Decision quality**  | Human-driven          | Agent-driven + human oversight |
+| **Time to market**    | 10+ hours             | 6-8 hours                      |
 
 ---
 
@@ -364,6 +364,7 @@ Benefit: Project 5 is 20 points faster than Project 1
 **Good news:** No migration needed!
 
 Old workflow still works:
+
 ```bash
 # v0.2 way still works
 npx autoforge load
@@ -371,6 +372,7 @@ Execute .autoforge/ai/prompts/kickoff.yaml
 ```
 
 New workflow available:
+
 ```bash
 # v0.3 way (recommended)
 npx autoforge load --resume

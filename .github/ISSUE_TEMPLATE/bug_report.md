@@ -11,9 +11,9 @@ labels: bug, help wanted
 ### Expected behavior
 
 ### Environment
+
 - OS:
 - Node.js:
 - Package version:
 
 ### Additional context
-

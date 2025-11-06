@@ -15,7 +15,12 @@ function discoverTokenFiles(roots = []) {
   const files = [];
   for (const root of roots) {
     for (const pat of patterns) {
-      const matches = globSync(pat, { cwd: root, absolute: true, nodir: true, dot: true });
+      const matches = globSync(pat, {
+        cwd: root,
+        absolute: true,
+        nodir: true,
+        dot: true,
+      });
       for (const m of matches) files.push(m);
     }
   }
@@ -34,7 +39,9 @@ function extractTokens(filePath) {
       // naive: attempt to parse JSON-like export default { ... }
       const match = data.match(/export\s+default\s+(\{[\s\S]*\});?/);
       if (match) {
-        try { flattenObject(eval("(" + match[1] + ")"), out); } catch {}
+        try {
+          flattenObject(eval("(" + match[1] + ")"), out);
+        } catch {}
       }
     } else if (/\.s?css$/i.test(filePath)) {
       const varRe = /--([a-z0-9-_]+)\s*:\s*([^;]+);/gi;
@@ -65,7 +72,10 @@ function findClosestTokenKey(extracted, hints = []) {
   return null;
 }
 
-export function researchAndPropose(issueReport, { approvalGranted = false, repoRoot = process.cwd(), allowedRoots = [] } = {}) {
+export function researchAndPropose(
+  issueReport,
+  { approvalGranted = false, repoRoot = process.cwd(), allowedRoots = [] } = {},
+) {
   const idBase = Date.now();
   // If research approval is granted, simulate inspiration-derived tokens; else fallback generic tokens
   const designSpec = {
@@ -77,39 +87,86 @@ export function researchAndPropose(issueReport, { approvalGranted = false, repoR
         : { primary: "#2563EB", primaryHover: "#1D4ED8", focusRing: "#2563EB" },
       spacing: { sm: "4px", md: "8px", lg: "12px" },
       typography: { base: "Inter, system-ui, sans-serif" },
-      radius: { sm: "4px", md: "8px" }
+      radius: { sm: "4px", md: "8px" },
     },
     components: [
-      { name: "Button", states: ["default", "hover", "focus"], a11y: ["focus-visible", "contrast AA"] },
+      {
+        name: "Button",
+        states: ["default", "hover", "focus"],
+        a11y: ["focus-visible", "contrast AA"],
+      },
     ],
     a11yGoals: ["WCAG AA"],
-    notes: approvalGranted ? "Derived from approved inspiration sources." : "Generic fallback without external research.",
+    notes: approvalGranted
+      ? "Derived from approved inspiration sources."
+      : "Generic fallback without external research.",
   };
   // Attempt to compute a diff against current repo tokens if any discovered
   const tokenRoots = allowedRoots.length ? allowedRoots : [repoRoot];
   const tokenFiles = discoverTokenFiles(tokenRoots);
-  const extracted = tokenFiles.reduce((acc, f) => Object.assign(acc, extractTokens(f)), {});
-  const primaryKey = findClosestTokenKey(extracted, ["color.*primary", "primary", "css\\.color-?primary", "css\\.primary"]);
-  const focusKey = findClosestTokenKey(extracted, ["focus.*ring", "focusRing", "css\\.focus-?ring"]);
+  const extracted = tokenFiles.reduce(
+    (acc, f) => Object.assign(acc, extractTokens(f)),
+    {},
+  );
+  const primaryKey = findClosestTokenKey(extracted, [
+    "color.*primary",
+    "primary",
+    "css\\.color-?primary",
+    "css\\.primary",
+  ]);
+  const focusKey = findClosestTokenKey(extracted, [
+    "focus.*ring",
+    "focusRing",
+    "css\\.focus-?ring",
+  ]);
   const styleGuideDiff = {
     id: `stylediff_${idBase}`,
     related_design_spec: designSpec.id,
     tokenChanges: [
-      { token: primaryKey || "colors.primary", from: primaryKey ? extracted[primaryKey] || "?" : "?", to: designSpec.tokens.colors.primary, rationale: "Align with spec" },
-      { token: focusKey || "colors.focusRing", from: focusKey ? extracted[focusKey] || "?" : "?", to: designSpec.tokens.colors.focusRing, rationale: "Visible focus" }
+      {
+        token: primaryKey || "colors.primary",
+        from: primaryKey ? extracted[primaryKey] || "?" : "?",
+        to: designSpec.tokens.colors.primary,
+        rationale: "Align with spec",
+      },
+      {
+        token: focusKey || "colors.focusRing",
+        from: focusKey ? extracted[focusKey] || "?" : "?",
+        to: designSpec.tokens.colors.focusRing,
+        rationale: "Visible focus",
+      },
     ],
     componentChanges: [
-      { component: "Button", property: ":focus-visible outline", from: "none", to: `2px solid ${designSpec.tokens.colors.focusRing}`, rationale: "Accessibility" },
-      { component: "Button", property: ":hover background", from: "?", to: designSpec.tokens.colors.primaryHover, rationale: "Hover affordance" }
+      {
+        component: "Button",
+        property: ":focus-visible outline",
+        from: "none",
+        to: `2px solid ${designSpec.tokens.colors.focusRing}`,
+        rationale: "Accessibility",
+      },
+      {
+        component: "Button",
+        property: ":hover background",
+        from: "?",
+        to: designSpec.tokens.colors.primaryHover,
+        rationale: "Hover affordance",
+      },
     ],
     notes: "Minimal deltas to achieve design goals",
   };
 
-  const plans = proposePlans(issueReport, designSpec, styleGuideDiff, { tokenFiles });
+  const plans = proposePlans(issueReport, designSpec, styleGuideDiff, {
+    tokenFiles,
+  });
   return { designSpec, styleGuideDiff, ...plans };
 }
 
-export function proposePlans(issueReport, designSpec, styleGuideDiff, { tokenFiles = [] } = {}) {
+export function proposePlans(
+  issueReport,
+  designSpec,
+  styleGuideDiff,
+  { tokenFiles = [] } = {},
+) {
   const idBase = Date.now();
   const codePlan = {
     id: `codeplan_${idBase}`,
@@ -118,7 +175,8 @@ export function proposePlans(issueReport, designSpec, styleGuideDiff, { tokenFil
       "Align UI elements with inspiration/design intent",
       "Improve focus/hover states and accessibility",
     ],
-    strategy: "Update design tokens and component styles with minimal diffs; add a11y states.",
+    strategy:
+      "Update design tokens and component styles with minimal diffs; add a11y states.",
     impacted_areas: issueReport.components || [],
     changes: [
       {
@@ -132,18 +190,20 @@ export function proposePlans(issueReport, designSpec, styleGuideDiff, { tokenFil
         risk_level: "medium",
       },
       // Example token update location; projects can map this differently
-      ...(tokenFiles.length ? [
-        {
-          type: "modify",
-          path: path.relative(process.cwd(), tokenFiles[0]),
-          symbol: null,
-          description: `Update tokens based on StyleGuideDiff (${styleGuideDiff.id})`,
-          rationale: "DesignSpec token alignment",
-          dependencies: [],
-          acceptance_tests: ["ux_button_visual"],
-          risk_level: "low"
-        }
-      ] : [])
+      ...(tokenFiles.length
+        ? [
+            {
+              type: "modify",
+              path: path.relative(process.cwd(), tokenFiles[0]),
+              symbol: null,
+              description: `Update tokens based on StyleGuideDiff (${styleGuideDiff.id})`,
+              rationale: "DesignSpec token alignment",
+              dependencies: [],
+              acceptance_tests: ["ux_button_visual"],
+              risk_level: "low",
+            },
+          ]
+        : []),
     ],
     non_goals: ["Rewrite entire design system"],
     rollback_plan: "Revert style/token changes and restore snapshots",
@@ -153,7 +213,9 @@ export function proposePlans(issueReport, designSpec, styleGuideDiff, { tokenFil
 
   const testPlan = {
     id: `testplan_${idBase}`,
-    related_artifacts: [codePlan.id, issueReport.id].concat(designSpec ? [designSpec.id] : []),
+    related_artifacts: [codePlan.id, issueReport.id].concat(
+      designSpec ? [designSpec.id] : [],
+    ),
     objectives: ["Ensure UX consistency and accessibility for Buttons"],
     coverage_summary: "Visual snapshots and a11y checks for updated components",
     cases: [

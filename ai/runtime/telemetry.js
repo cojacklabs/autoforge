@@ -15,10 +15,10 @@ export function appendEvent(repoRoot, event) {
     const logDir = path.join(af, "ai", "logs");
     fs.mkdirSync(logDir, { recursive: true });
     const file = path.join(logDir, "activity.jsonl");
-    const line = JSON.stringify({ ts: new Date().toISOString(), ...event }) + "\n";
+    const line =
+      JSON.stringify({ ts: new Date().toISOString(), ...event }) + "\n";
     fs.appendFileSync(file, line, "utf8");
   } catch {
     // best-effort only
   }
 }
-

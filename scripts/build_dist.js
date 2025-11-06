@@ -110,11 +110,7 @@ const EXCLUDE_DOCS_FILES = new Set([
 /**
  * Paths to always skip (build-time artifacts, logs, caches)
  */
-const ALWAYS_SKIP_PATHS = new Set([
-  "ai/logs",
-  "ai/reports",
-  ".cache",
-]);
+const ALWAYS_SKIP_PATHS = new Set(["ai/logs", "ai/reports", ".cache"]);
 
 async function pathExists(p) {
   try {
@@ -143,7 +139,7 @@ function shouldIncludeRootEntry(entry) {
 function shouldIncludeFilePath(src, repoRoot) {
   const rel = path.relative(repoRoot, src);
   const base = path.basename(rel);
-  if (base === '.DS_Store' || base === '.gitignore') {
+  if (base === ".DS_Store" || base === ".gitignore") {
     return false;
   }
 
@@ -214,7 +210,7 @@ async function build() {
 
   // Cleanup: remove root .gitignore if present
   try {
-    await rm(path.join(distDir, '.gitignore'), { force: true });
+    await rm(path.join(distDir, ".gitignore"), { force: true });
   } catch {}
 
   console.log(`✅ Built AutoForge distribution in ${distDir}`);

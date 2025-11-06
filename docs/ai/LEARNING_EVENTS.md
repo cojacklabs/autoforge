@@ -33,6 +33,7 @@ This document standardizes how agents log outcomes so AutoForge can learn from p
 ```
 
 Notes:
+
 - For privacy, do not include secrets or raw PII in events. Refer to artifacts instead.
 - Normalize `error_taxonomy` across agents (examples below) so analytics remain coherent.
 
@@ -64,4 +65,3 @@ Notes:
 
 - Export corpus for evaluations via scripts (train/eval datasets) and run dry-run evals to track improvements.
 - See `docs/ai/EVALS.md` (once added) for running evaluations.
-

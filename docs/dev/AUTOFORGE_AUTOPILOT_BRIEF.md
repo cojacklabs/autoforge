@@ -13,4 +13,3 @@
 4. Implement and Test: Hand off to coding AIs for implementation, then to testing AIs for quality assurance and code review.
 
 5. Iterate and Improve: Continuously allow the AI to refine AutoForge’s capabilities, making it better at running the entire process on its own.
-

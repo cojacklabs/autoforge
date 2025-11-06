@@ -1,4 +1,3 @@
-
 # Contributing to @cojacklabs/autoforge
 
 Thanks for your interest in contributing! AutoForge is an embedded, multi‑agent SDLC framework. This guide helps you get set up, make changes confidently, and submit high‑quality pull requests.

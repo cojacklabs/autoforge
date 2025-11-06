@@ -8,10 +8,12 @@ export function planDiffs(codePlan, { repoRoot, allowedRoots = [] } = {}) {
   const violations = [];
   for (const change of codePlan.changes || []) {
     const abs = path.resolve(repoRoot || process.cwd(), change.path);
-    const insideAny = allowedRoots.length === 0 || allowedRoots.some((root) => {
-      const rel = path.relative(root, abs);
-      return rel && !rel.startsWith("..") && !path.isAbsolute(rel);
-    });
+    const insideAny =
+      allowedRoots.length === 0 ||
+      allowedRoots.some((root) => {
+        const rel = path.relative(root, abs);
+        return rel && !rel.startsWith("..") && !path.isAbsolute(rel);
+      });
     if (!insideAny) {
       violations.push({ path: change.path });
       continue;
@@ -44,9 +46,13 @@ export function applyWrites(plan, { fs, dryRun = true } = {}) {
       }
       results.push({ path: w.relPath, action: "write", ok: true });
     } catch (err) {
-      results.push({ path: w.relPath, action: "write", ok: false, error: err.message });
+      results.push({
+        path: w.relPath,
+        action: "write",
+        ok: false,
+        error: err.message,
+      });
     }
   }
   return results;
 }
-

@@ -7,9 +7,19 @@
   "properties": {
     "id": { "type": "string" },
     "user_ask_id": { "type": "string" },
-    "category": { "type": "string", "enum": ["ux", "bug", "performance", "security", "docs", "other"] },
-    "priority": { "type": "string", "enum": ["P0", "P1", "P2", "P3"], "default": "P1" },
-    "status": { "type": "string", "enum": ["triaged", "in_progress", "blocked", "resolved", "won't_fix"] },
+    "category": {
+      "type": "string",
+      "enum": ["ux", "bug", "performance", "security", "docs", "other"]
+    },
+    "priority": {
+      "type": "string",
+      "enum": ["P0", "P1", "P2", "P3"],
+      "default": "P1"
+    },
+    "status": {
+      "type": "string",
+      "enum": ["triaged", "in_progress", "blocked", "resolved", "won't_fix"]
+    },
     "components": { "type": "array", "items": { "type": "string" } },
     "affected_versions": { "type": "array", "items": { "type": "string" } },
     "environment": {
@@ -34,4 +44,3 @@
   "required": ["category", "status"],
   "additionalProperties": false
 }
-

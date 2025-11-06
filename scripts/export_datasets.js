@@ -16,9 +16,18 @@ function ensureDir(p) {
 
 function readJSONL(file) {
   if (!fs.existsSync(file)) return [];
-  return fs.readFileSync(file, "utf8").split(/\n+/).filter(Boolean).map((l) => {
-    try { return JSON.parse(l); } catch { return null; }
-  }).filter(Boolean);
+  return fs
+    .readFileSync(file, "utf8")
+    .split(/\n+/)
+    .filter(Boolean)
+    .map((l) => {
+      try {
+        return JSON.parse(l);
+      } catch {
+        return null;
+      }
+    })
+    .filter(Boolean);
 }
 
 function main() {
@@ -33,24 +42,55 @@ function main() {
   const approvals = [];
   const repairs = [];
   for (const e of events) {
-    if (e.stage === "code_plan" || e.stage === "test_plan" || e.stage === "design_spec" || e.stage === "style_diff") {
+    if (
+      e.stage === "code_plan" ||
+      e.stage === "test_plan" ||
+      e.stage === "design_spec" ||
+      e.stage === "style_diff"
+    ) {
       supervised.push({
         input: { stage: e.stage },
         output: e.artifact || null,
       });
     }
     if (e.type === "approval_decision") {
-      approvals.push({ id: e.id, action: e.action, granted: e.granted, note: e.note || "", ts: e.ts });
+      approvals.push({
+        id: e.id,
+        action: e.action,
+        granted: e.granted,
+        note: e.note || "",
+        ts: e.ts,
+      });
     }
-    if (e.stage === "post_compliance" && e.postCompliance && e.postCompliance.summary && /failed/i.test(e.postCompliance.summary)) {
-      repairs.push({ when: e.ts, summary: e.postCompliance.summary, changed_files: e.postCompliance.changed_files || [] });
+    if (
+      e.stage === "post_compliance" &&
+      e.postCompliance &&
+      e.postCompliance.summary &&
+      /failed/i.test(e.postCompliance.summary)
+    ) {
+      repairs.push({
+        when: e.ts,
+        summary: e.postCompliance.summary,
+        changed_files: e.postCompliance.changed_files || [],
+      });
     }
   }
-  fs.writeFileSync(path.join(outDir, "supervised.jsonl"), supervised.map((o) => JSON.stringify(o)).join("\n") + "\n");
-  console.log(`Exported supervised dataset with ${supervised.length} records to ${path.relative(repoRoot, outDir)}`);
-  fs.writeFileSync(path.join(outDir, "approvals.jsonl"), approvals.map((o) => JSON.stringify(o)).join("\n") + "\n");
+  fs.writeFileSync(
+    path.join(outDir, "supervised.jsonl"),
+    supervised.map((o) => JSON.stringify(o)).join("\n") + "\n",
+  );
+  console.log(
+    `Exported supervised dataset with ${supervised.length} records to ${path.relative(repoRoot, outDir)}`,
+  );
+  fs.writeFileSync(
+    path.join(outDir, "approvals.jsonl"),
+    approvals.map((o) => JSON.stringify(o)).join("\n") + "\n",
+  );
   console.log(`Exported approvals dataset with ${approvals.length} records.`);
-  fs.writeFileSync(path.join(outDir, "repairs.jsonl"), repairs.map((o) => JSON.stringify(o)).join("\n") + "\n");
+  fs.writeFileSync(
+    path.join(outDir, "repairs.jsonl"),
+    repairs.map((o) => JSON.stringify(o)).join("\n") + "\n",
+  );
   console.log(`Exported repairs dataset with ${repairs.length} records.`);
 }
 

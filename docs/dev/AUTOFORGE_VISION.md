@@ -1,6 +1,7 @@
 # AutoForge: The Freelancer-Replacement Framework
 
 ## Vision
+
 A **zero-human SDLC seed**.  
 Any user (dev, client, non-technical) gives a natural-language goal:
 
@@ -8,15 +9,14 @@ Any user (dev, client, non-technical) gives a natural-language goal:
 Build a GIS-powered real-estate investment tracker for web + mobile, full-stack, secure.
 ```
 
-
 AutoForge spins up a **multi-agent team** that:
 
-1. **Plans** – PRD, user stories, edge cases.  
-2. **Designs** – Figma JSON → React/Tailwind **or** Flutter.  
-3. **Blueprints** – Prisma schema, OpenAPI, caching, mobile DB.  
-4. **Codes** – Front-end, back-end, live AI agent that answers user prompts.  
-5. **Tests** – Lint, unit, E2E, quality-gate validation.  
-6. **Deploys** – Dockerfile, CI, runbooks.  
+1. **Plans** – PRD, user stories, edge cases.
+2. **Designs** – Figma JSON → React/Tailwind **or** Flutter.
+3. **Blueprints** – Prisma schema, OpenAPI, caching, mobile DB.
+4. **Codes** – Front-end, back-end, live AI agent that answers user prompts.
+5. **Tests** – Lint, unit, E2E, quality-gate validation.
+6. **Deploys** – Dockerfile, CI, runbooks.
 7. **Stamps IP** – Watermarks code/docs with client ID, exports a clean zip.
 
 All **model-agnostic** – swap Claude ↔ Gemini ↔ Grok without rewriting prompts.
@@ -25,13 +25,13 @@ All **model-agnostic** – swap Claude ↔ Gemini ↔ Grok without rewriting pro
 
 ## Core Innovations
 
-| Feature | How it works |
-|---------|--------------|
-| **Universal Blueprinting** | Dynamic JSON/YAML schemas stored in a tiny vector DB (`.autoforge/db/`). Every run indexes new designs; next model re-uses them instantly. |
-| **Figma-to-Code Bridge** | UI/UX agent calls Figma REST API → structured JSON → maps to Shadcn, Tailwind, or Flutter widgets. No manual translation. |
-| **Live AI Tenant** | Generates an in-app agent that pulls external APIs, caches to metadata DB, replies in real time. |
-| **Model-Portability Engine** | `meta_bootstrap.yaml` wrapper adapts syntax (XML, function-calls, plain) for any LLM. |
-| **IP Safety** | Final “Ownership” agent injects client watermarks, LICENSE header, and export note. |
+| Feature                      | How it works                                                                                                                               |
+| ---------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------ |
+| **Universal Blueprinting**   | Dynamic JSON/YAML schemas stored in a tiny vector DB (`.autoforge/db/`). Every run indexes new designs; next model re-uses them instantly. |
+| **Figma-to-Code Bridge**     | UI/UX agent calls Figma REST API → structured JSON → maps to Shadcn, Tailwind, or Flutter widgets. No manual translation.                  |
+| **Live AI Tenant**           | Generates an in-app agent that pulls external APIs, caches to metadata DB, replies in real time.                                           |
+| **Model-Portability Engine** | `meta_bootstrap.yaml` wrapper adapts syntax (XML, function-calls, plain) for any LLM.                                                      |
+| **IP Safety**                | Final “Ownership” agent injects client watermarks, LICENSE header, and export note.                                                        |
 
 ---
 
@@ -67,6 +67,4 @@ flowchart TD
 - Never assume – ask the human if stuck.
 - All planning stays inside .autoforge/; code writes only to code_targets.yaml paths.
 
-
 ---
-

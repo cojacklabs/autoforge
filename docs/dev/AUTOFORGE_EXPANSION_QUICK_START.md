@@ -6,11 +6,11 @@
 
 ## What's New? (3 Document Summary)
 
-| Document | What It Does | Key Contribution |
-|----------|-------------|------------------|
-| **AUTOFORGE_AUTOPILOT_ENGINE.md** | Orchestrates agents autonomously with 4 autonomy levels (0=manual → 3=full_adaptive) | Enables 24/7 development without human blocking |
-| **AUTOFORGE_AI_MODEL_TRAINING.md** | Collects data from every execution and improves prompts/recipes continuously | System gets smarter with each project |
-| **AUTOFORGE_EXPANSION_SYNTHESIS.md** | Ties everything together; provides implementation roadmap and success metrics | Big-picture vision + quarterly goals |
+| Document                             | What It Does                                                                         | Key Contribution                                |
+| ------------------------------------ | ------------------------------------------------------------------------------------ | ----------------------------------------------- |
+| **AUTOFORGE_AUTOPILOT_ENGINE.md**    | Orchestrates agents autonomously with 4 autonomy levels (0=manual → 3=full_adaptive) | Enables 24/7 development without human blocking |
+| **AUTOFORGE_AI_MODEL_TRAINING.md**   | Collects data from every execution and improves prompts/recipes continuously         | System gets smarter with each project           |
+| **AUTOFORGE_EXPANSION_SYNTHESIS.md** | Ties everything together; provides implementation roadmap and success metrics        | Big-picture vision + quarterly goals            |
 
 ---
 
@@ -81,15 +81,15 @@ TOTAL: 114 hours (can be 1 engineer/4 months OR 3 engineers/4 weeks)
 
 ## What Gets Better (Evidence from Expansion)
 
-| Metric | Before | After (Q1) | After (Q2) | After (Q3) |
-|--------|--------|-----------|-----------|-----------|
-| **Gate Success Rate** | 75% | 80% | 90% | 95%+ |
-| **Avg Retries per Gate** | 1.2 | 0.9 | 0.6 | 0.3 |
-| **Project Time** | 8 hours | 7 hours | 6 hours | 4.5 hours |
-| **Human Involvement** | 3 hours | 45 min | 15 min | 5 min |
-| **Escalation Rate** | 25% | 15% | 8% | 3% |
-| **Token Cost/Project** | $45 | $42 | $38 | $28 |
-| **Security Issues Post-Launch** | 3-5 | 1-2 | 0-1 | 0 |
+| Metric                          | Before  | After (Q1) | After (Q2) | After (Q3) |
+| ------------------------------- | ------- | ---------- | ---------- | ---------- |
+| **Gate Success Rate**           | 75%     | 80%        | 90%        | 95%+       |
+| **Avg Retries per Gate**        | 1.2     | 0.9        | 0.6        | 0.3        |
+| **Project Time**                | 8 hours | 7 hours    | 6 hours    | 4.5 hours  |
+| **Human Involvement**           | 3 hours | 45 min     | 15 min     | 5 min      |
+| **Escalation Rate**             | 25%     | 15%        | 8%         | 3%         |
+| **Token Cost/Project**          | $45     | $42        | $38        | $28        |
+| **Security Issues Post-Launch** | 3-5     | 1-2        | 0-1        | 0          |
 
 **Why:** With each project, the system learns. Prompts get better. Recipes get faster. Agents become smarter.
 
@@ -328,23 +328,27 @@ A: Absolutely. Define in `ai/agents_autonomy.yaml` what YOUR organization needs.
 ## Get Started NOW
 
 ### Step 1: Read (30 min)
+
 - Read AUTOFORGE_EXPANSION_SYNTHESIS.md (executive summary)
 - Skim AUTOFORGE_AUTOPILOT_ENGINE.md sections 1-3 (understanding)
 - Skim AUTOFORGE_AI_MODEL_TRAINING.md section 1 (overview)
 
 ### Step 2: Plan (1 hour)
+
 - Schedule Phase 1 kickoff
 - Assign engineers
 - Draft autonomy policies for your org
 - Set quarterly success metrics
 
 ### Step 3: Build (8 weeks)
+
 - Phase 1: State machine + memory + gates (weeks 1-2)
 - Phase 2: Orchestration + autopilot (weeks 3-4)
 - Phase 3: Training pipeline (weeks 5-6)
 - Phase 4: Polish + docs + tests (weeks 7-8)
 
 ### Step 4: Deploy (Ongoing)
+
 - Run L1 autopilot on production projects
 - Collect feedback and training data
 - Deploy prompt improvements
@@ -356,6 +360,7 @@ A: Absolutely. Define in `ai/agents_autonomy.yaml` what YOUR organization needs.
 ## What Success Looks Like
 
 **Week 8 (End of Implementation):**
+
 ```
 You ask: "Build a GIS investment tracker for fintech"
 System: Starts automatically on L1_autopilot
@@ -366,6 +371,7 @@ Total your time: 30 minutes (the review)
 ```
 
 **Month 3 (After 10+ projects):**
+
 ```
 System has learned from all prior projects
 Prompts are 30% more efficient
@@ -377,6 +383,7 @@ Total your time: 5 minutes
 ```
 
 **Month 6 (After 25+ projects):**
+
 ```
 System is running on L2_autopilot (full autonomous)
 You sleep

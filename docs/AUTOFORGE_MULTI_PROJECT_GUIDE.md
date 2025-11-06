@@ -194,7 +194,7 @@ Use recipes to seed `automation_bootstrap` behavior (select the recipe, expand s
 
 Standardize integrations so agents can propose, implement, test, and maintain connectors.
 
-1) Register providers in `ai/integrations.yaml`:
+1. Register providers in `ai/integrations.yaml`:
 
 ```yaml
 providers:
@@ -213,9 +213,9 @@ providers:
       - tests/analytics/**
 ```
 
-2) Constrain write paths for new roles (e.g., `integration_engineer`, `payments_engineer`) in `ai/agents.yaml`.
+2. Constrain write paths for new roles (e.g., `integration_engineer`, `payments_engineer`) in `ai/agents.yaml`.
 
-3) Require:
+3. Require:
 
 - Secrets only via environment variables
 - Retries/backoff and error taxonomies
@@ -227,78 +227,90 @@ providers:
 
 Below are cross‑domain automation features that speed up SaaS development. Each item includes suggested AutoForge hooks and concrete actions.
 
-1) Multi‑Agent SDLC Orchestration
+1. Multi‑Agent SDLC Orchestration
+
 - Hooks: `ai/prompts/**`, `ai/AGENTS.md`, `ai/agents.yaml`, recipes under `docs/blueprint/recipes/**`
 - Actions:
   - Define a recipe per product type (web app, analytics, mobile) with stages, owners, deliverables, and gates.
   - Add explicit halt/exit conditions and max retries in role prompts.
   - Insert STOP/APPROVAL steps for risky operations (deployments, schema migrations, external integrations).
 
-2) AI‑Driven Requirements & Architecture
+2. AI‑Driven Requirements & Architecture
+
 - Hooks: `ai/prompts/idea_conversation.yaml`, `idea_intake.yaml`, `product_manager.yaml`, `architect.yaml`, `docs/blueprint/*.md`, `api/openapi.yaml`
 - Actions:
   - Use discovery + product prompts to capture PRD and acceptance criteria.
   - Auto‑draft architecture diagrams and API contracts from PRD; store under `diagrams/` and `api/`.
   - Require a lightweight review gate before engineering starts.
 
-3) Code Generation & Refactoring
+3. Code Generation & Refactoring
+
 - Hooks: `ai/prompts/fullstack_engineer.yaml`, `ai/code_targets.yaml`
 - Actions:
   - Generate CRUD scaffolds and API clients from `api/openapi.yaml`.
   - Propose dependency updates/refactors with impact analysis and rollbacks.
   - Always pair code generation with test generation (see #4).
 
-4) Automated Testing & QA
+4. Automated Testing & QA
+
 - Hooks: `qa/tests.md`, `ai/prompts/qa_engineer.yaml`, `docs/perf/**`
 - Actions:
   - Autogenerate unit/integration/regression tests alongside code.
   - Run a QA prompt to triage failures and produce reports under `qa/reports/**` and `ai/logs/test_runs/**`.
   - Add a gate to require minimum test presence before deploy.
 
-5) Continuous Integration & Delivery (CI/CD)
+5. Continuous Integration & Delivery (CI/CD)
+
 - Hooks: `ai/prompts/devops_engineer.yaml`, `devops/devops.yaml`, `devops/runbooks/**`, `ai/logs/deployments/**`
 - Actions:
   - Define per‑environment build/deploy templates and rollback procedures.
   - Trigger builds from agent decisions with human approval checkpoints.
   - Log deployment summaries and artifacts for auditability.
 
-6) API Integration Automation
+6. API Integration Automation
+
 - Hooks: `ai/integrations.yaml`, `integrations/**`, role: `integration_engineer`
 - Actions:
   - One‑click scaffolding for connectors including env var stubs, retries/backoff, schema validation, and mocks.
   - Validate provider schemas; record error taxonomies; generate fixtures for offline tests.
 
-7) Real‑Time Analytics & Reporting
+7. Real‑Time Analytics & Reporting
+
 - Hooks: role: `data_analyst`, `docs/observability/**`, dashboards under app code targets
 - Actions:
   - Autogenerate dashboards tied to KPIs with role‑based views (admin/analyst/partner).
   - Define data contracts and refresh cadences; surface a simple metrics glossary.
 
-8) Security & Compliance Automation
+8. Security & Compliance Automation
+
 - Hooks: `ai/prompts/security_engineer.yaml`, `security/**`, role: `compliance_officer`
 - Actions:
   - Automate RBAC scaffolds, secrets policy, encryption posture, and audit logging.
   - Produce compliance artifacts (e.g., SOC2/GDPR summaries) under `security/reports/**`.
 
-9) UI/UX Automation
+9. UI/UX Automation
+
 - Hooks: `ai/prompts/uiux_designer.yaml`, `docs/uiux/**`
 - Actions:
   - Generate accessible UI skeletons from approved wireframes/style guide.
   - Apply responsive themes and motion guidelines consistently across views.
 
-10) Knowledge Base, Documentation & Training
+10. Knowledge Base, Documentation & Training
+
 - Hooks: `npx autoforge snapshot`, `REPO.md`, `ai/reports/**`, `docs/**`
 - Actions:
   - Autogenerate API docs, architecture notes, and user guides as part of each change.
   - Maintain a living onboarding/training module for new users.
 
-11) Payment and Billing Flow Automation
+11. Payment and Billing Flow Automation
+
 - Hooks: provider config in `ai/integrations.yaml` (e.g., Stripe), role: `payments_engineer`
 - Actions:
   - Scaffold subscription, invoicing, webhooks, and receipts with audit logging.
   - Enforce secrets hygiene and reconciliation reports.
 
-12) Feedback, Optimization & Retraining
+12. Feedback, Optimization & Retraining
+
 - Hooks: `ai/logs/learning/**`, `ai/reports/learning/**`
 - Actions:
   - Capture user/agent feedback and outcome metrics; propose process/prompt improvements.

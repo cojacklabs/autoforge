@@ -56,7 +56,7 @@ Refer to kickoff snippet in README or Quickstart. After kickoff, target prompts 
 
 ## 8. Record decisions
 
-``` 
+```
 Write a summary of this discussion to .autoforge/ai/logs/research/...
 Update ai/AGENTS.md (Progress & Next Steps, Lessons Learned) with the current status so any IDE/CLI can resume.
 A: Save the session by appending the key updates to ai/memory/ACTIVE_MEMORY.yaml (follow the template). Confirm the file was written before ending the session.

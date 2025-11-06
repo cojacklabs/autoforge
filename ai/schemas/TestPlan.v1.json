@@ -16,13 +16,30 @@
         "properties": {
           "id": { "type": "string" },
           "description": { "type": "string" },
-          "type": { "type": "string", "enum": ["unit", "integration", "e2e", "visual", "accessibility", "contract"] },
-          "priority": { "type": "string", "enum": ["P0", "P1", "P2", "P3"], "default": "P1" },
+          "type": {
+            "type": "string",
+            "enum": [
+              "unit",
+              "integration",
+              "e2e",
+              "visual",
+              "accessibility",
+              "contract"
+            ]
+          },
+          "priority": {
+            "type": "string",
+            "enum": ["P0", "P1", "P2", "P3"],
+            "default": "P1"
+          },
           "target_paths": { "type": "array", "items": { "type": "string" } },
           "inputs": { "type": "object", "additionalProperties": true },
           "steps": { "type": "array", "items": { "type": "string" } },
           "assertions": { "type": "array", "items": { "type": "string" } },
-          "oracle": { "type": "string", "enum": ["snapshot", "rule", "golden", "contract", "a11y"] }
+          "oracle": {
+            "type": "string",
+            "enum": ["snapshot", "rule", "golden", "contract", "a11y"]
+          }
         },
         "required": ["id", "description", "type", "assertions"]
       }
@@ -31,4 +48,3 @@
   "required": ["cases"],
   "additionalProperties": false
 }
-

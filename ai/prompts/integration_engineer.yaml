@@ -30,4 +30,3 @@ notes: |
   Start with one provider from ai/integrations.yaml. Propose a plan that lists
   env requirements, endpoints, schemas, and failure modes. Include test commands
   and how to run without real credentials.
-

@@ -11,14 +11,14 @@ Traditional SDLC relies on static prompts. AutoForge inverts this: **every proje
 
 ### 1.1 What Gets Better?
 
-| What | Before Training | After 10 Projects | After 50 Projects |
-|------|-----------------|-------------------|--------------------|
-| Gate failure rate | 25% | 8% | 2% |
-| Avg retries per task | 1.8 | 0.6 | 0.3 |
-| Time to first working prototype | 4 hours | 2 hours | 45 minutes |
-| Token efficiency (tokens/LOC) | 450 | 350 | 200 |
-| Security issues found but missed | 8% | 2% | 0.5% |
-| Autonomous decision confidence | 60% | 78% | 88% |
+| What                             | Before Training | After 10 Projects | After 50 Projects |
+| -------------------------------- | --------------- | ----------------- | ----------------- |
+| Gate failure rate                | 25%             | 8%                | 2%                |
+| Avg retries per task             | 1.8             | 0.6               | 0.3               |
+| Time to first working prototype  | 4 hours         | 2 hours           | 45 minutes        |
+| Token efficiency (tokens/LOC)    | 450             | 350               | 200               |
+| Security issues found but missed | 8%              | 2%                | 0.5%              |
+| Autonomous decision confidence   | 60%             | 78%               | 88%               |
 
 ---
 
@@ -153,7 +153,8 @@ collection_triggers:
 
   on_agent_stage_completion:
     frequency: every_stage_completion
-    data: [stage_id, agent_model, prompt_version, duration, tokens, quality_signals]
+    data:
+      [stage_id, agent_model, prompt_version, duration, tokens, quality_signals]
     sample_size: 100%
 
   on_human_approval:
@@ -492,7 +493,8 @@ feedback_loop_system:
     trigger: output_quality_score drops > 10% vs prior_project
     feedback: "QA coverage dropped 15%; investigate agent change or prompt regression"
     action:
-      - identify_root_cause: [new_agent_model, updated_prompt, harder_domain, team_change]
+      - identify_root_cause:
+          [new_agent_model, updated_prompt, harder_domain, team_change]
       - if_caused_by_prompt_change: revert_or_improve
       - if_caused_by_agent_model: compare_model_performance
       - if_caused_by_domain: flag_domain_specific_gap and add_training_data
@@ -661,7 +663,8 @@ prompt_evolution:
        vs engineer.v3.1 (92% gate success for code generation)"
 
   deprecation_policy:
-    retire_when: [newer_version_has_higher_success_rate, no_active_projects_use_it]
+    retire_when:
+      [newer_version_has_higher_success_rate, no_active_projects_use_it]
     archive_location: ".autoforge/ai/prompts/deprecated/"
     retention_duration: "3 months after last_use"
 ```
@@ -769,7 +772,12 @@ phase_1_tasks:
     owner: engineer
     deliverable: "src/training/auto_labeler.ts (label data with success/failure, effectiveness)"
     effort: "6 hours"
-    test_cases: [gate_pass_labeled_excellent, gate_fail_with_successful_fix_labeled_good, etc]
+    test_cases:
+      [
+        gate_pass_labeled_excellent,
+        gate_fail_with_successful_fix_labeled_good,
+        etc,
+      ]
 
   phase_1_total_effort: "22 hours"
 ```

@@ -11,13 +11,13 @@ core_function: >
   Take any raw user goal and turn it into a model-agnostic, IP-safe change request.
   Load repo snapshot, active memory, vector-store history, then hand off to the next specialist.
 context_sources:
-  - .autoforge/ai/memory/ACTIVE_MEMORY.yaml   # progress, decisions
-  - .autoforge/ai/context.manifest.yaml      # file map
-  - .autoforge/db/index.json                 # vector store of past blueprints
+  - .autoforge/ai/memory/ACTIVE_MEMORY.yaml # progress, decisions
+  - .autoforge/ai/context.manifest.yaml # file map
+  - .autoforge/db/index.json # vector store of past blueprints
 inputs_required:
-  - "{{user_goal}}"        # e.g. "mobile GIS investment tracker with flood-risk"
-  - "{{target_model}}"     # optional – Claude, Gemini, Grok…
-  - "{{client_id}}"        # for watermarking
+  - "{{user_goal}}" # e.g. "mobile GIS investment tracker with flood-risk"
+  - "{{target_model}}" # optional – Claude, Gemini, Grok…
+  - "{{client_id}}" # for watermarking
 steps:
   - id: ingest_memory
     action: >
@@ -68,4 +68,3 @@ human_note: >
 1. Copy the YAML block into the LLM.
 2. Provide user_goal, target_model (optional), client_id.
 3. The agent will emit a change-request YAML ready for the rest of the pipeline.
-

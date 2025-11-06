@@ -39,4 +39,3 @@
   "required": ["tokenChanges", "componentChanges"],
   "additionalProperties": false
 }
-

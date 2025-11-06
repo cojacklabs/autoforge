@@ -66,10 +66,9 @@ stages:
 2. Run npx autoforge configure → updates ai/code_targets.yaml.
 3. Prompt the Meta Agent: Use recipe gis_investment for client ABC.
 
-
 ---
 
 **Copy each block into its own `.md` file** and you’re ready to hand them off to any AI model.  
-They now have the full vision, the universal bootstrap prompt, and reusable recipe starters.  
+They now have the full vision, the universal bootstrap prompt, and reusable recipe starters.
 
 Let the agents take over!

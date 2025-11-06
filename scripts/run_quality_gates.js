@@ -5,7 +5,11 @@ import fs from "node:fs";
 
 function run(cmd, args, options = {}) {
   return new Promise((resolve) => {
-    const child = spawn(cmd, args, { stdio: "inherit", shell: process.platform === "win32", ...options });
+    const child = spawn(cmd, args, {
+      stdio: "inherit",
+      shell: process.platform === "win32",
+      ...options,
+    });
     child.on("exit", (code) => resolve(code === 0));
   });
 }
@@ -22,7 +26,10 @@ function loadConfig(projectRoot) {
 
 function resolveFiles(cwd, filesArg) {
   if (!filesArg) return [];
-  const parts = filesArg.split(",").map((s) => s.trim()).filter(Boolean);
+  const parts = filesArg
+    .split(",")
+    .map((s) => s.trim())
+    .filter(Boolean);
   return parts.map((p) => (path.isAbsolute(p) ? p : path.resolve(cwd, p)));
 }
 
@@ -64,12 +71,24 @@ async function main() {
   if (cfg.format?.cmdCheck) {
     prettierOk = await run("sh", ["-c", cfg.format.cmdCheck]);
   } else {
-    const targets = scope.filter((f) => /\.(js|jsx|ts|tsx|json|md|css|scss|yaml|yml|html)$/i.test(f));
+    const targets = scope.filter((f) =>
+      /\.(js|jsx|ts|tsx|json|md|css|scss|yaml|yml|html)$/i.test(f),
+    );
     if (targets.length) {
-      prettierOk = await run("npx", ["--yes", "prettier", "--check", ...targets]);
+      prettierOk = await run("npx", [
+        "--yes",
+        "prettier",
+        "--check",
+        ...targets,
+      ]);
       if (!prettierOk && allowWrite) {
         await run("npx", ["--yes", "prettier", "--write", ...targets]);
-        prettierOk = await run("npx", ["--yes", "prettier", "--check", ...targets]);
+        prettierOk = await run("npx", [
+          "--yes",
+          "prettier",
+          "--check",
+          ...targets,
+        ]);
       }
     }
   }
@@ -79,7 +98,8 @@ async function main() {
   // 3) ESLint
   let eslintOk = true;
   if (cfg.lint?.cmd) {
-    const lintCmd = cfg.lint.cmd + (cfg.lint.maxWarnings === 0 ? " --max-warnings=0" : "");
+    const lintCmd =
+      cfg.lint.cmd + (cfg.lint.maxWarnings === 0 ? " --max-warnings=0" : "");
     eslintOk = await run("sh", ["-c", lintCmd]);
   } else {
     const targets = scope.filter((f) => /\.(js|jsx|ts|tsx)$/i.test(f));
@@ -119,4 +139,3 @@ async function main() {
 }
 
 main();
-

@@ -21,21 +21,25 @@ This document codifies the documentation standards to ensure consistency across 
 ## Core Principles
 
 ### 1. Copy/Paste First Design
+
 - Every prompt should be copy/paste ready
 - Code blocks use triple bacbackticks with language tag
 - No modifications needed before pasting into AI
 
 ### 2. Command Simplicity
+
 - Minimize number of steps
 - Use descriptive output messages
 - Provide clear feedback to user
 
 ### 3. Prompt-Driven Interaction
+
 - All agent actions triggered by pasting prompts
 - Prompts include context and instructions
 - Prompts are self-contained and explicit
 
 ### 4. Clear Navigation
+
 - Users should never be confused about what to do next
 - Each section leads naturally to the next
 - Multiple entry points for different skill levels
@@ -179,6 +183,7 @@ and all that. Log things in logs.
 ```
 
 Why it's bad:
+
 - Unclear what output is expected
 - Vague references to prior context
 - No structure or organization
@@ -191,6 +196,7 @@ Why it's bad:
 
 **Entry point:** README.md (top 1/3)
 **Flow:**
+
 1. Read feature overview (3 min)
 2. Run installation: `npm install --save-dev @cojacklabs/autoforge`
 3. Follow QUICKSTART.md Path A (New Project) (5 min)
@@ -198,6 +204,7 @@ Why it's bad:
 5. Done! Interact with AI agent via pasted prompts
 
 **Documentation provided:**
+
 - README.md — Overview + installation
 - QUICKSTART.md Path A — Step-by-step setup
 - PROMPT_HANDBOOK.md — Reference for available prompts
@@ -206,12 +213,14 @@ Why it's bad:
 
 **Entry point:** QUICKSTART.md Path B
 **Flow:**
+
 1. Run: `npx repomix snapshot` (to get fresh code snapshot)
 2. Copy/paste prompt from QUICKSTART.md Path B
 3. Continue where you left off
 4. Use PROMPT_HANDBOOK.md for additional prompts as needed
 
 **Documentation provided:**
+
 - QUICKSTART.md Path B — Resume instructions
 - DOCUMENTATION_ROADMAP.md — Find what you need
 - PROMPT_HANDBOOK.md — Reference for all prompts
@@ -220,6 +229,7 @@ Why it's bad:
 
 **Entry point:** DOCUMENTATION_ROADMAP.md (pick Framework Developer path)
 **Flow:**
+
 1. Read AUTOFORGE_EXPANSION_SYNTHESIS.md (big picture)
 2. Read AUTOFORGE_AUTOPILOT_ENGINE.md (detailed spec)
 3. Read AUTOFORGE_AI_MODEL_TRAINING.md (training spec)
@@ -227,6 +237,7 @@ Why it's bad:
 5. Reference REPO.md for codebase structure
 
 **Documentation provided:**
+
 - DOCUMENTATION_ROADMAP.md — Navigation guide
 - AUTOFORGE_EXPANSION_SYNTHESIS.md — Overview + roadmap
 - AUTOFORGE_AUTOPILOT_ENGINE.md — Architecture
@@ -237,6 +248,7 @@ Why it's bad:
 
 **Entry point:** README.md (full) + BEFORE_AFTER_COMPARISON.md
 **Flow:**
+
 1. Read README.md to understand features
 2. Review BEFORE_AFTER_COMPARISON.md to show team impact
 3. Share QUICKSTART.md with team (pick appropriate path)
@@ -244,6 +256,7 @@ Why it's bad:
 5. Reference AUTOFORGE_MULTI_PROJECT_GUIDE.md for multi-project setups
 
 **Documentation provided:**
+
 - README.md — Feature overview
 - BEFORE_AFTER_COMPARISON.md — Impact metrics
 - QUICKSTART.md — Setup for team members
@@ -255,9 +268,11 @@ Why it's bad:
 ## Prompt Organization in Framework
 
 ### Prompt Location
+
 All prompts live in: `.autoforge/ai/prompts/ROLE.yaml`
 
 ### Prompt Naming
+
 - `product_manager.yaml` — PRD generation
 - `architect.yaml` — Architecture design
 - `fullstack_engineer.yaml` — Code implementation
@@ -270,6 +285,7 @@ All prompts live in: `.autoforge/ai/prompts/ROLE.yaml`
 - And others...
 
 ### Prompt Reference in Documentation
+
 When referencing a prompt in documentation:
 
 ```
@@ -277,6 +293,7 @@ Execute .autoforge/ai/prompts/architect.yaml
 ```
 
 Never say:
+
 - "Run the architect prompt"
 - "Use architect.yaml"
 - "Execute architect"
@@ -331,9 +348,11 @@ When documenting a new feature, use this template:
 ## Feature Name
 
 ### What It Does
+
 [2-3 sentences explaining the feature]
 
 ### Why It Matters
+
 [Benefit to users; what problem does it solve?]
 
 ### How to Use It
@@ -351,10 +370,12 @@ Execute .autoforge/ai/prompts/ROLE.yaml
 [Your specific instructions for this feature]
 
 Reference:
+
 - [Link to related docs]
 - [Link to example]
 
 ### Example Output
+
 [What the user should expect to see]
 
 ### Troubleshooting
@@ -366,6 +387,7 @@ Reference:
 [Solution]
 
 ### Next Steps
+
 - Try [related feature]
 - Read [related documentation]
 - Review [example]
@@ -381,9 +403,11 @@ When documenting a command, use this template:
 ## Command: [Command Name]
 
 ### What It Does
+
 [Clear description of command purpose]
 
 ### When to Use It
+
 [Scenarios where this command is appropriate]
 
 ### Syntax
@@ -394,8 +418,8 @@ When documenting a command, use this template:
 
 ### Options
 
-| Option | Purpose | Example |
-|--------|---------|---------|
+| Option      | Purpose        | Example                   |
+| ----------- | -------------- | ------------------------- |
 | `--option1` | [What it does] | `command --option1 value` |
 | `--option2` | [What it does] | `command --option2 value` |
 
@@ -414,6 +438,7 @@ Output:
 [Same as above]
 
 ### Next Steps
+
 [What to do after running this command]
 ```
 
@@ -457,26 +482,31 @@ about your idea."
 ### How to Link to Other Docs
 
 **From README to QUICKSTART:**
+
 ```markdown
 [QUICKSTART Guide](docs/QUICKSTART.md)
 ```
 
 **From QUICKSTART to feature docs:**
+
 ```markdown
 [Autonomy Levels Explained](docs/AUTOFORGE_EXPANSION_QUICK_START.md)
 ```
 
 **From any doc to PROMPT_HANDBOOK:**
+
 ```markdown
 [Ready-made Prompts](docs/PROMPT_HANDBOOK.md)
 ```
 
 **From feature docs to examples:**
+
 ```markdown
 [See example in fullstack_todo_app](examples/fullstack_todo_app/README.md)
 ```
 
 ### Never Link To:
+
 - `.autoforge/ai/logs/**` (internal, changes frequently)
 - `.autoforge/ai/reports/**` (internal, project-specific)
 - `dist/**` (generated files)
@@ -489,19 +519,24 @@ about your idea."
 ### When Documentation Changes
 
 1. **Increment version in doc header**
+
    ```markdown
    **Version:** 1.0 → 1.1
    **Date:** YYYY-MM-DD
    ```
 
 2. **Update CHANGELOG.md**
+
    ```markdown
    ## [1.1] - 2025-10-29
+
    ### Changed
+
    - Updated prompt examples in QUICKSTART
    - Added new section on autonomy levels
 
    ### Fixed
+
    - Fixed broken link to PROMPT_HANDBOOK
    ```
 
@@ -512,6 +547,7 @@ about your idea."
 ## Documentation Release Checklist for v0.3.0
 
 ### Content Completeness
+
 - [ ] README.md — Updated with v0.3 features
 - [ ] QUICKSTART.md — Path A and B complete
 - [ ] DOCUMENTATION_ROADMAP.md — Navigation clear
@@ -526,6 +562,7 @@ about your idea."
 - [ ] examples/fullstack_todo_app/README.md — Example walkthrough
 
 ### Copy/Paste Prompts
+
 - [ ] Every prompt is exactly copy/paste ready
 - [ ] No manual edits needed before pasting
 - [ ] Full paths given (.autoforge/ai/prompts/ROLE.yaml)
@@ -533,24 +570,28 @@ about your idea."
 - [ ] Expected outputs explained
 
 ### Cross-Linking
+
 - [ ] All references are correct
 - [ ] No dead links
 - [ ] Navigation flows naturally
 - [ ] Decision trees clearly marked
 
 ### Consistency
+
 - [ ] Formatting consistent across all docs
 - [ ] Terminology consistent
 - [ ] Code block syntax correct
 - [ ] Command examples tested
 
 ### Accessibility
+
 - [ ] Clear for non-technical users
 - [ ] Role-based paths work
 - [ ] Decision tree helps navigation
 - [ ] Multiple entry points covered
 
 ### Release
+
 - [ ] All files committed to git
 - [ ] CHANGELOG.md updated
 - [ ] Version bumped in package.json
@@ -580,6 +621,7 @@ A: Create separate sections for each platform. Cross-link between them.
 ## Standards Evolution
 
 As AutoForge evolves, these standards evolve with it. This document should be:
+
 - **Reviewed quarterly** — Ensure still relevant
 - **Updated when patterns emerge** — New common practices documented
 - **Referenced in code reviews** — Enforce consistency in PRs

@@ -32,12 +32,12 @@ AutoForge has been designed as a **role-based, multi-agent SDLC orchestration fr
 
 Enables true end-to-end automation with 4 autonomy levels:
 
-| Level | Description | Human Gates | Use Case |
-|-------|-------------|------------|----------|
-| 0 | Manual (every step approved) | 100% | Complex, high-risk, first-time |
-| 1 | Supervised (agents run; pause on critical actions) | Deployments, integrations, security | Standard projects |
-| 2 | Full autopilot (agents decide; log everything) | Post-deployment only | Proven recipes, mature teams |
-| 3 | Adaptive (agents learn and improve themselves) | Training changes, recipe updates | Continuous deployment, feedback-driven |
+| Level | Description                                        | Human Gates                         | Use Case                               |
+| ----- | -------------------------------------------------- | ----------------------------------- | -------------------------------------- |
+| 0     | Manual (every step approved)                       | 100%                                | Complex, high-risk, first-time         |
+| 1     | Supervised (agents run; pause on critical actions) | Deployments, integrations, security | Standard projects                      |
+| 2     | Full autopilot (agents decide; log everything)     | Post-deployment only                | Proven recipes, mature teams           |
+| 3     | Adaptive (agents learn and improve themselves)     | Training changes, recipe updates    | Continuous deployment, feedback-driven |
 
 **Key innovations:**
 
@@ -48,6 +48,7 @@ Enables true end-to-end automation with 4 autonomy levels:
 - **Decision conflict resolution**: Defined arbiters (security agent always wins on security decisions)
 
 **Expected impact:**
+
 - Reduces human oversight from 8 hours/project to 30 minutes
 - Increases project success rate from 67% to 95%+
 - Enables 24/7 continuous development (agents work unsupervised)
@@ -59,6 +60,7 @@ Enables true end-to-end automation with 4 autonomy levels:
 Implements a closed-loop system to continuously improve AI agents:
 
 **Data collection** (100% of executions):
+
 - Every gate evaluation (pass/fail/reason)
 - Every agent decision (rationale, confidence)
 - Every human approval/rejection
@@ -66,6 +68,7 @@ Implements a closed-loop system to continuously improve AI agents:
 - Every quality outcome (tests, security, performance)
 
 **Learning patterns** (7 major categories):
+
 1. Gate failure root causes (why 25% of API contracts fail)
 2. Retry hotspots (which agent roles struggle most)
 3. Successful agent combinations (which handoffs work smoothly)
@@ -75,6 +78,7 @@ Implements a closed-loop system to continuously improve AI agents:
 7. Confidence calibration (when does agent confidence match success)
 
 **Feedback loops** (6 closed systems):
+
 1. Gate failures → prompt improvement → A/B test → deploy winning version
 2. Human overrides → context enrichment → retest → measure improvement
 3. Downstream feedback → handoff template refinement → measure satisfaction
@@ -83,6 +87,7 @@ Implements a closed-loop system to continuously improve AI agents:
 6. Autonomy miscalibration → adjust thresholds → retest success rate
 
 **Expected impact:**
+
 - Gate success rate improves: 75% → 95%+ (after 10 projects)
 - Retry rate improves: 1.2 → 0.3 (after 50 projects)
 - Token efficiency improves: 40% savings (better prompts, fewer retries)
@@ -190,6 +195,7 @@ Projects 11+ ship with both improved prompts AND improved recipe
 ## Implementation Roadmap (Full Timeline)
 
 ### Phase 1: Foundation (Weeks 1-2) ← START HERE
+
 ```
 ✓ Define orchestration state machine
 ✓ Extend ACTIVE_MEMORY schema for decisions/assumptions
@@ -199,6 +205,7 @@ Effort: 22 hours (engineering)
 ```
 
 ### Phase 2: Autopilot Execution (Weeks 3-4)
+
 ```
 ✓ Implement orchestration runner (state machine executor)
 ✓ Build decision executor (agent autonomy enforcement)
@@ -209,6 +216,7 @@ Effort: 32 hours (engineering)
 ```
 
 ### Phase 3: Training Pipeline (Weeks 5-6)
+
 ```
 ✓ Build training data collector (hooks into every stage)
 ✓ Implement pattern extractor (find what works/doesn't)
@@ -219,6 +227,7 @@ Effort: 42 hours (engineering)
 ```
 
 ### Phase 4: Integration & Polish (Weeks 7-8)
+
 ```
 ✓ End-to-end tests (idea → shipping code on L2 autopilot)
 ✓ Documentation (guides for all autonomy levels)
@@ -236,6 +245,7 @@ Effort: 18 hours (engineering, product)
 ### Capability 1: True 24/7 Autopilot
 
 **Before:**
+
 ```
 Human: "Start project XYZ"
   ↓ (human waits for Product Manager output)
@@ -247,6 +257,7 @@ Total human involvement: 2-3 hours of active management
 ```
 
 **After:**
+
 ```
 Human: "Start project XYZ on level_2_autopilot"
   ↓ (orchestration engine runs automatically)
@@ -260,6 +271,7 @@ Total human involvement: 5-10 minutes (only if escalation occurs)
 ### Capability 2: Self-Improving Prompts
 
 **Before:**
+
 ```
 architect.v1.0 (static for months)
   - 75% gate success rate
@@ -268,6 +280,7 @@ architect.v1.0 (static for months)
 ```
 
 **After (with training loop):**
+
 ```
 architect.v1.0 (week 1-2): 75% success, 1.2 retries, 8200 tokens
 architect.v1.1 (week 3): +7% improvement (error taxonomy added)
@@ -282,6 +295,7 @@ Net result after 6 weeks: 75% → 98% success rate
 ### Capability 3: Recipe Evolution
 
 **Before:**
+
 ```
 gis_investment.yaml (created once, used forever)
   - 67% success rate (based on founder's best guess)
@@ -290,6 +304,7 @@ gis_investment.yaml (created once, used forever)
 ```
 
 **After (with training loop):**
+
 ```
 gis_investment_v1 (week 1): 67% success (baseline)
   Feedback: "Architect blocks for 2 hours; API contract incomplete"
@@ -313,6 +328,7 @@ Recipes become competitive advantages (your project type is faster/better).
 ### Capability 4: Continuous Deployment
 
 **Before:**
+
 ```
 Developer: "I want to deploy to production"
 System: "Manual approval required" (requires human review)
@@ -321,6 +337,7 @@ Deployment window may close; features ship later than needed
 ```
 
 **After (level_3_autopilot):**
+
 ```
 Developer: "I want to deploy to production"
 System: "Deploying on your command"
@@ -336,6 +353,7 @@ Deployment completes in 15 minutes without human waiting
 ### Capability 5: Cross-Project Learning
 
 **Before:**
+
 ```
 Project ABC: "Learned that React hooks need examples in prompts"
 Project DEF: Doesn't benefit; commits same mistake
@@ -344,6 +362,7 @@ Project GHI: Also struggles with same issue
 ```
 
 **After (with training loop):**
+
 ```
 Project ABC: "Learned that React hooks need examples in prompts"
   → Signal goes to training pipeline
@@ -363,33 +382,33 @@ After 50 projects: System has learned ~200+ lessons
 
 ### Quarter 1 (After Phase 1-2: Autopilot Foundation)
 
-| Metric | Target | Why |
-|--------|--------|-----|
-| Projects completed on L1 autopilot | 80% | Proof of orchestration working |
-| Average human involvement time | 45 min/project | Down from 3 hours |
-| Gate success rate (first attempt) | 80% | Up from 75% |
-| Escalation rate | < 15% | Indicates smooth automation |
-| Project completion time | < 8 hours | Typical project end-to-end |
+| Metric                             | Target         | Why                            |
+| ---------------------------------- | -------------- | ------------------------------ |
+| Projects completed on L1 autopilot | 80%            | Proof of orchestration working |
+| Average human involvement time     | 45 min/project | Down from 3 hours              |
+| Gate success rate (first attempt)  | 80%            | Up from 75%                    |
+| Escalation rate                    | < 15%          | Indicates smooth automation    |
+| Project completion time            | < 8 hours      | Typical project end-to-end     |
 
 ### Quarter 2 (After Phase 3: Training Pipeline)
 
-| Metric | Target | Why |
-|--------|--------|-----|
-| Gate success rate | 90% | Training loop is improving prompts |
-| Projects completed on L2 autopilot | 40% | Teams trust autonomous decisions |
-| Avg retries per gate | < 0.8 | Prompts are better refined |
-| Token efficiency improvement | +15% | Training reduced wastefulness |
-| Prompt versions deployed | 10+ | Active iteration of improvements |
+| Metric                             | Target | Why                                |
+| ---------------------------------- | ------ | ---------------------------------- |
+| Gate success rate                  | 90%    | Training loop is improving prompts |
+| Projects completed on L2 autopilot | 40%    | Teams trust autonomous decisions   |
+| Avg retries per gate               | < 0.8  | Prompts are better refined         |
+| Token efficiency improvement       | +15%   | Training reduced wastefulness      |
+| Prompt versions deployed           | 10+    | Active iteration of improvements   |
 
 ### Quarter 3 (After Full Integration)
 
-| Metric | Target | Why |
-|--------|--------|-----|
-| Gate success rate | 95%+ | System is highly optimized |
-| Projects completed on L3 autopilot | 20% | Advanced teams running full autopilot |
-| Human satisfaction (survey) | 4.5/5 | System is reliable and helpful |
-| Recipe success rate improvement | +25% vs v1 | Recipes have evolved with learnings |
-| New agent onboarding time | 2 hours | Only need template + 5 examples |
+| Metric                             | Target     | Why                                   |
+| ---------------------------------- | ---------- | ------------------------------------- |
+| Gate success rate                  | 95%+       | System is highly optimized            |
+| Projects completed on L3 autopilot | 20%        | Advanced teams running full autopilot |
+| Human satisfaction (survey)        | 4.5/5      | System is reliable and helpful        |
+| Recipe success rate improvement    | +25% vs v1 | Recipes have evolved with learnings   |
+| New agent onboarding time          | 2 hours    | Only need template + 5 examples       |
 
 ---
 
@@ -462,6 +481,7 @@ characteristic_benefits:
 ### Scenario: Non-technical founder, wants to launch fintech+GIS platform
 
 #### Before Expansion
+
 ```
 Week 1: Founder tries to explain idea; keeps getting stuck on technical details
         Auto-assigns to engineer who must ask clarifying questions
@@ -489,6 +509,7 @@ Quality: 3 critical issues post-launch (had to hotfix)
 ```
 
 #### After Expansion (L1 Autopilot)
+
 ```
 Day 1:
   Founder specifies: "GIS investment tracker, real-estate focus, mobile + web, secure"

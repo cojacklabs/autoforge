@@ -30,4 +30,3 @@ providers:
       - "integrations/data_api/**"
       - "tests/integrations/data_api/**"
     notes: "Schema validation, retries/backoff, error taxonomy, and mocks."
-

@@ -33,10 +33,18 @@ async function main() {
   const schemaArgIdx = args.findIndex((a) => a === "--schema");
   const filesIdx = args.findIndex((a) => a === "--files");
   const schemaName = schemaArgIdx >= 0 ? args[schemaArgIdx + 1] : null;
-  const files = filesIdx >= 0 ? args[filesIdx + 1].split(",").map((s) => s.trim()).filter(Boolean) : [];
+  const files =
+    filesIdx >= 0
+      ? args[filesIdx + 1]
+          .split(",")
+          .map((s) => s.trim())
+          .filter(Boolean)
+      : [];
 
   if (!schemaName || files.length === 0) {
-    console.error("Usage: validate_artifacts --schema <SchemaFileOrId> --files <file1.json,file2.json>");
+    console.error(
+      "Usage: validate_artifacts --schema <SchemaFileOrId> --files <file1.json,file2.json>",
+    );
     process.exit(1);
   }
 
@@ -75,4 +83,3 @@ async function main() {
 }
 
 main();
-

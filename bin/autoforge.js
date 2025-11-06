@@ -140,7 +140,9 @@ async function prepareAutoforgeFolder(projectRoot, { force = false } = {}) {
     );
   }
   if (exists && force) {
-    console.log(color.yellow(`⚠ Removing existing ${DEFAULT_DIRNAME}/ (force mode)`));
+    console.log(
+      color.yellow(`⚠ Removing existing ${DEFAULT_DIRNAME}/ (force mode)`),
+    );
     await rm(targetDir, { recursive: true, force: true });
   }
   await mkdir(targetDir, { recursive: true });
@@ -155,7 +157,11 @@ async function copyFramework(targetDir) {
       return true;
     }
     const parts = relative.split(path.sep);
-    if (parts[0] === "bin" || parts[0] === CONFIG_FILE || parts[0] === "repomix.config.json") {
+    if (
+      parts[0] === "bin" ||
+      parts[0] === CONFIG_FILE ||
+      parts[0] === "repomix.config.json"
+    ) {
       return false;
     }
     return true;
@@ -213,7 +219,11 @@ async function commandUpgrade() {
   const projectRoot = process.cwd();
   const autoforgeDir = await resolveAutoforgeDir(projectRoot);
   if (!(await pathExists(autoforgeDir))) {
-    console.log(color.yellow(`No ${DEFAULT_DIRNAME}/ directory found. Running init instead.`));
+    console.log(
+      color.yellow(
+        `No ${DEFAULT_DIRNAME}/ directory found. Running init instead.`,
+      ),
+    );
     await commandInit([]);
     return;
   }
@@ -233,7 +243,9 @@ async function commandValidate() {
   const projectRoot = process.cwd();
   const autoforgeDir = await resolveAutoforgeDir(projectRoot);
   if (!(await pathExists(autoforgeDir))) {
-    throw new Error(`${DEFAULT_DIRNAME}/ directory not found. Run \`autoforge init\` first.`);
+    throw new Error(
+      `${DEFAULT_DIRNAME}/ directory not found. Run \`autoforge init\` first.`,
+    );
   }
   console.log(color.blue("→ Running validation"));
   const scriptPath = path.join(packageRoot, "scripts", "validate_context.js");
@@ -257,7 +269,10 @@ async function commandSnapshot(args) {
 
 function findRecipes(projectRoot) {
   const recipesDir = path.join(projectRoot, "docs", "blueprint", "recipes");
-  const patterns = [path.join(recipesDir, "*.yaml"), path.join(recipesDir, "*.yml")];
+  const patterns = [
+    path.join(recipesDir, "*.yaml"),
+    path.join(recipesDir, "*.yml"),
+  ];
   const files = patterns.flatMap((p) => globSync(p, { nodir: true }));
   return files;
 }
@@ -284,26 +299,43 @@ async function commandDryrun(args) {
   const name = args[0];
   const loaded = loadRecipeByName(projectRoot, name);
   if (!loaded) {
-    console.log(color.yellow("No recipes found under docs/blueprint/recipes/."));
-    console.log("Create one (e.g., docs/blueprint/recipes/web_app.yaml) and retry.");
+    console.log(
+      color.yellow("No recipes found under docs/blueprint/recipes/."),
+    );
+    console.log(
+      "Create one (e.g., docs/blueprint/recipes/web_app.yaml) and retry.",
+    );
     return;
   }
   const { file, recipe } = loaded;
-  console.log(color.blue(`→ Dry run for recipe: ${recipe.name || path.basename(file)}`));
+  console.log(
+    color.blue(`→ Dry run for recipe: ${recipe.name || path.basename(file)}`),
+  );
   console.log(color.yellow("(No files will be written.)\n"));
 
   // Preflight checks
   const checks = [
-    { label: "ideas present", pattern: path.join(projectRoot, "ideas", "*.yaml") },
-    { label: "PRD present", path: path.join(projectRoot, "docs", "prd", "PRODUCT_REQUIREMENTS.md") },
-    { label: "API contract present", path: path.join(projectRoot, "api", "openapi.yaml") },
+    {
+      label: "ideas present",
+      pattern: path.join(projectRoot, "ideas", "*.yaml"),
+    },
+    {
+      label: "PRD present",
+      path: path.join(projectRoot, "docs", "prd", "PRODUCT_REQUIREMENTS.md"),
+    },
+    {
+      label: "API contract present",
+      path: path.join(projectRoot, "api", "openapi.yaml"),
+    },
   ];
   console.log(color.blue("Preflight checks:"));
   for (const c of checks) {
     let ok = false;
     if (c.path) ok = await pathExists(c.path);
     else if (c.pattern) ok = globSync(c.pattern, { nodir: true }).length > 0;
-    console.log(`- ${c.label}: ${ok ? color.green("OK") : color.red("MISSING")}`);
+    console.log(
+      `- ${c.label}: ${ok ? color.green("OK") : color.red("MISSING")}`,
+    );
   }
   console.log("");
 
@@ -314,8 +346,12 @@ async function commandDryrun(args) {
     console.log(color.red("No stages defined in recipe."));
   } else {
     stages.forEach((s, i) => {
-      const approvals = Array.isArray(s.approvals) ? s.approvals.join(", ") : "";
-      console.log(`${i + 1}. ${s.id} — role: ${s.role}${approvals ? ` (approvals: ${approvals})` : ""}`);
+      const approvals = Array.isArray(s.approvals)
+        ? s.approvals.join(", ")
+        : "";
+      console.log(
+        `${i + 1}. ${s.id} — role: ${s.role}${approvals ? ` (approvals: ${approvals})` : ""}`,
+      );
       if (Array.isArray(s.deliverables) && s.deliverables.length) {
         console.log(`   deliverables: ${s.deliverables.join(", ")}`);
       }
@@ -336,7 +372,9 @@ async function commandDryrun(args) {
   console.log(color.blue("Next steps:"));
   console.log("- Review the plan above and suggest edits.");
   console.log("- Approve the recipe selection.");
-  console.log("- In Chat Mode: run 'Execute .autoforge/ai/prompts/automation_bootstrap.yaml' to proceed with approvals.");
+  console.log(
+    "- In Chat Mode: run 'Execute .autoforge/ai/prompts/automation_bootstrap.yaml' to proceed with approvals.",
+  );
 }
 
 function formatTimestampISO() {
@@ -367,12 +405,12 @@ async function listMemoryFiles(autoforgeDir) {
     });
     const files = await Promise.all(
       entries
-      .filter((e) => e.isFile())
-      .map(async (e) => {
-        const full = path.join(memDir, e.name);
-        const stat = await fsp.stat(full);
-        return { name: e.name, mtimeMs: stat.mtimeMs };
-      }),
+        .filter((e) => e.isFile())
+        .map(async (e) => {
+          const full = path.join(memDir, e.name);
+          const stat = await fsp.stat(full);
+          return { name: e.name, mtimeMs: stat.mtimeMs };
+        }),
     );
     const memFiles = files
       .map((o) => o.name)
@@ -394,7 +432,9 @@ async function commandRefresh() {
   const projectRoot = process.cwd();
   const autoforgeDir = await resolveAutoforgeDir(projectRoot);
   if (!(await pathExists(autoforgeDir))) {
-    throw new Error(`${DEFAULT_DIRNAME}/ directory not found. Run \`autoforge init\` first.`);
+    throw new Error(
+      `${DEFAULT_DIRNAME}/ directory not found. Run \`autoforge init\` first.`,
+    );
   }
   const timestamp = formatTimestampISO();
   const dirBase = path.basename(autoforgeDir);
@@ -403,7 +443,7 @@ async function commandRefresh() {
     `${dirBase}/ai/agents.yaml`,
     `${dirBase}/ai/AGENTS.md`,
     `${dirBase}/docs/ai/COMMIT_PLAYBOOK.md`,
-    `docs/AUTOFORGE_MULTI_PROJECT_GUIDE.md`,
+    `${dirBase}/docs/AUTOFORGE_MULTI_PROJECT_GUIDE.md`,
   ];
   const memoryFiles = await listMemoryFiles(autoforgeDir);
   const memoryPaths = memoryFiles.map((f) => `${dirBase}/ai/memory/${f}`);
@@ -447,14 +487,55 @@ async function commandLoad() {
   const projectRoot = process.cwd();
   const autoforgeDir = await resolveAutoforgeDir(projectRoot);
   if (!(await pathExists(autoforgeDir))) {
-    throw new Error(`${DEFAULT_DIRNAME}/ directory not found. Run \`autoforge init\` first.`);
+    throw new Error(
+      `${DEFAULT_DIRNAME}/ directory not found. Run \`autoforge init\` first.`,
+    );
   }
 
-  const contextPath = path.join(autoforgeDir, "ai", "prompts", "orchestrator_context.md");
+  // Prefer new docs-based orchestrator context; fallback to legacy ai/prompts path
+  const contextPathDocs = path.join(
+    autoforgeDir,
+    "docs",
+    "ORCHESTRATOR_CONTEXT.md",
+  );
+  const contextPathLegacy = path.join(
+    autoforgeDir,
+    "ai",
+    "prompts",
+    "orchestrator_context.md",
+  );
+  const contextPath = (await pathExists(contextPathDocs))
+    ? contextPathDocs
+    : contextPathLegacy;
   if (await pathExists(contextPath)) {
     const context = await readFile(contextPath, "utf8");
-    console.log(color.green("✔ AutoForge orchestrator context (copy/paste this into your AI tool):\n"));
-    console.log(context);
+    const dirBase = path.basename(autoforgeDir);
+    const shortPrompt = [
+      "Read and reload the latest AutoForge context.",
+      "Load these files in order:",
+      `- ${dirBase}/ai/context.manifest.yaml`,
+      `- ${dirBase}/ai/agents.yaml`,
+      `- ${dirBase}/ai/AGENTS.md`,
+      `- ${dirBase}/ai/rules/README.md`,
+      `- ${dirBase}/ai/rules/enforcement.yaml`,
+      `- ${dirBase}/docs/ai/COMMIT_PLAYBOOK.md`,
+      `- ${dirBase}/docs/AUTOFORGE_MULTI_PROJECT_GUIDE.md`,
+      "",
+      "Acknowledge that managed files (ai/code_targets.yaml, ai/context_targets.yaml) are generated from autoforge.config.json and should not be edited directly.",
+      "Confirm you have reloaded rules, roles, progress, and memory.",
+      "",
+      "Then read the full orchestrator context below (single session, multi‑role).",
+      "After loading, reply: AutoForge context loaded (strict). Ready for your prompt.",
+      "",
+      "--- Orchestrator Context ---",
+      context,
+    ].join("\n");
+    console.log(
+      color.green(
+        "✔ AutoForge load prompt (copy/paste this into your AI tool):\n",
+      ),
+    );
+    console.log(shortPrompt);
     return;
   }
   // Fallback: generate broader context refresh prompt
@@ -468,7 +549,9 @@ async function commandDoctor() {
   const issues = [];
 
   if (!(await pathExists(autoforgeDir))) {
-    issues.push(`${DEFAULT_DIRNAME}/ directory is missing. Run \`autoforge init\`.`);
+    issues.push(
+      `${DEFAULT_DIRNAME}/ directory is missing. Run \`autoforge init\`.`,
+    );
   }
   if (!(await pathExists(configPath))) {
     issues.push(
