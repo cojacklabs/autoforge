@@ -5,6 +5,9 @@ import path from "node:path";
 import process from "node:process";
 import fs from "node:fs";
 import { fileURLToPath } from "node:url";
+import { createRequire } from "node:module";
+
+const require = createRequire(import.meta.url);
 
 const SNAPSHOT_FILENAME = "REPO.md";
 const CONFIG_FILENAME = "repomix.config.json";
@@ -15,23 +18,18 @@ const cwd = process.cwd();
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-function findPackageRoot(startDir) {
-  let current = startDir;
-  while (true) {
-    const candidate = path.join(
-      current,
-      "node_modules",
-      "autoforge",
-      "package.json",
+function findRepomixBin() {
+  try {
+    const repomixEntry = require.resolve("repomix");
+    const repomixBin = path.resolve(
+      path.dirname(repomixEntry),
+      "../bin/repomix.cjs",
     );
-    if (fs.existsSync(candidate)) {
-      return path.dirname(candidate);
+    if (fs.existsSync(repomixBin)) {
+      return repomixBin;
     }
-    const parent = path.dirname(current);
-    if (parent === current) {
-      break;
-    }
-    current = parent;
+  } catch {
+    // ignore
   }
   return null;
 }
@@ -100,13 +98,13 @@ async function main() {
     }
 
     const createdConfig = ensureConfig();
-    const packageRoot = findPackageRoot(__dirname);
-    const env = { ...process.env };
-    if (packageRoot) {
-      const binDir = path.join(packageRoot, "node_modules", ".bin");
-      env.PATH = env.PATH ? `${binDir}${path.delimiter}${env.PATH}` : binDir;
+    const repomixBin = findRepomixBin();
+
+    if (repomixBin) {
+      await run(process.execPath, [repomixBin], { cwd: targetDir });
+    } else {
+      await run("npx", ["--yes", "repomix"], { cwd: targetDir });
     }
-    await run("npx", ["--yes", "repomix"], { cwd: targetDir, env });
     console.log(`Repository snapshot written to ${outputPath}`);
 
     if (createdConfig) {

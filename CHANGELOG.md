@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.4.2] - 2026-08-16
+
+### Fixes & Improvements
+
+- **Snapshot Resolution Fix**: Updated `scripts/generate_snapshot.js` to resolve bundled `repomix` binary directly via Node resolution rather than relying on global `npx` execution, fixing command-not-found errors in `pnpm` and monorepo environments.
+- **Added Script Shortcut**: Added `"repomix": "repomix"` to `package.json` for convenient repository packing.
+
 ## [0.3.0] - 2025-10-29
 
 ### Major Features
