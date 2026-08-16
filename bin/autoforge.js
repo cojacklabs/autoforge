@@ -13,7 +13,10 @@ import {
 } from "node:fs/promises";
 import { spawn } from "node:child_process";
 import os from "node:os";
-// Note: CLI trimmed to init, load, snapshot. Extra imports removed.
+import { OrchestratorKernel } from "../scripts/orchestrator_kernel.js";
+import { RunStore } from "../scripts/run_store.js";
+import { ResearchEngine } from "../scripts/research_engine.js";
+import { TelemetryCollector } from "../scripts/telemetry_collector.js";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -46,6 +49,14 @@ function printUsage() {
 Usage:
   autoforge init [--force]
   autoforge load
+  autoforge autopilot [--dry-run] [--level <0-3>] [--task "<objective>"] [--recipe <name>]
+  autoforge research scan [--task "<objective>"] [--generate]
+  autoforge readiness check
+  autoforge train [--from-last-N <N>] [--apply]
+  autoforge metrics
+  autoforge status [run-id]
+  autoforge approve <approval-id> [--reject] [--note "<note>"]
+  autoforge doctor
   autoforge snapshot [targetDir]
   autoforge configure
   autoforge version
@@ -294,87 +305,303 @@ function loadRecipeByName(projectRoot, name) {
   return { file: candidate, recipe: doc };
 }
 
-async function commandDryrun(args) {
+async function commandAutopilot(args) {
   const projectRoot = process.cwd();
-  const name = args[0];
-  const loaded = loadRecipeByName(projectRoot, name);
-  if (!loaded) {
-    console.log(
-      color.yellow("No recipes found under docs/blueprint/recipes/."),
-    );
-    console.log(
-      "Create one (e.g., docs/blueprint/recipes/web_app.yaml) and retry.",
-    );
+  const kernel = new OrchestratorKernel({ projectRoot });
+
+  const isDryRun = args.includes("--dry-run");
+  const levelIdx = args.findIndex((a) => a === "--level");
+  const autonomyLevel = levelIdx >= 0 ? parseInt(args[levelIdx + 1], 10) : 1;
+
+  const taskIdx = args.findIndex((a) => a === "--task");
+  const task = taskIdx >= 0 ? args[taskIdx + 1] : "";
+
+  const recipeIdx = args.findIndex((a) => a === "--recipe");
+  const recipeName = recipeIdx >= 0 ? args[recipeIdx + 1] : "web_app";
+
+  if (isDryRun || !task) {
+    try {
+      const report = await kernel.dryRun(recipeName);
+      console.log(color.blue(`→ Dry run for recipe: ${report.recipeName}`));
+      console.log(color.yellow("(No code will be generated or modified.)\n"));
+
+      console.log(color.blue("Preflight Checks:"));
+      for (const check of report.preflight) {
+        const statusText =
+          check.status === "passed"
+            ? color.green("PASSED")
+            : color.red("MISSING");
+        console.log(`- ${check.label}: ${statusText}`);
+      }
+      console.log("");
+
+      console.log(color.blue("Execution Plan:"));
+      for (const stage of report.executionPlan) {
+        const approvals = stage.approvals.length
+          ? ` (requires: ${stage.approvals.join(", ")})`
+          : "";
+        console.log(`${stage.step}. ${stage.id} — Role: ${stage.role}${approvals}`);
+        if (stage.deliverables.length) {
+          console.log(`   Deliverables: ${stage.deliverables.join(", ")}`);
+        }
+      }
+      console.log("");
+
+      if (report.ciTemplates.length) {
+        console.log(color.blue("Suggested CI Templates:"));
+        for (const t of report.ciTemplates) {
+          console.log(`- ${t}`);
+        }
+        console.log("");
+      }
+
+      if (!task && !isDryRun) {
+        console.log(
+          color.yellow(
+            `Tip: Pass --task "<objective>" to initialize a real orchestrated run.`,
+          ),
+        );
+      }
+    } catch (err) {
+      console.error(color.red(`Dry run error: ${err.message}`));
+      process.exitCode = 1;
+    }
     return;
   }
-  const { file, recipe } = loaded;
-  console.log(
-    color.blue(`→ Dry run for recipe: ${recipe.name || path.basename(file)}`),
-  );
-  console.log(color.yellow("(No files will be written.)\n"));
 
-  // Preflight checks
-  const checks = [
-    {
-      label: "ideas present",
-      pattern: path.join(projectRoot, "ideas", "*.yaml"),
-    },
-    {
-      label: "PRD present",
-      path: path.join(projectRoot, "docs", "prd", "PRODUCT_REQUIREMENTS.md"),
-    },
-    {
-      label: "API contract present",
-      path: path.join(projectRoot, "api", "openapi.yaml"),
-    },
-  ];
-  console.log(color.blue("Preflight checks:"));
-  for (const c of checks) {
-    let ok = false;
-    if (c.path) ok = await pathExists(c.path);
-    else if (c.pattern) ok = globSync(c.pattern, { nodir: true }).length > 0;
+  // Real Run Initialization
+  try {
+    const { workItemId, runId } = kernel.startRun({
+      title: task,
+      objective: task,
+      riskTier: "R1",
+      autonomyLevel,
+      recipeName,
+      owner: "developer",
+    });
+
+    console.log(color.green(`✔ Initialized AutoForge Run [${runId}]`));
+    console.log(color.blue(`  WorkItem ID : ${workItemId}`));
+    console.log(color.blue(`  Objective   : ${task}`));
+    console.log(color.blue(`  Autonomy    : Level ${autonomyLevel}`));
+    console.log(color.blue(`  Recipe      : ${recipeName}`));
     console.log(
-      `- ${c.label}: ${ok ? color.green("OK") : color.red("MISSING")}`,
+      `\nTo view execution status, run:\n  ${color.green(`npx autoforge status ${runId}`)}\n`,
+    );
+  } catch (err) {
+    console.error(color.red(`Failed to start run: ${err.message}`));
+    process.exitCode = 1;
+  }
+}
+
+async function commandStatus(args) {
+  const projectRoot = process.cwd();
+  const runId = args[0];
+  const kernel = new OrchestratorKernel({ projectRoot });
+
+  if (!runId) {
+    console.log(color.yellow("Usage: autoforge status <run-id>"));
+    return;
+  }
+
+  const status = kernel.getStatus(runId);
+  if (!status) {
+    console.log(color.red(`Run not found: ${runId}`));
+    process.exitCode = 1;
+    return;
+  }
+
+  const { run, workItem, pendingApprovals } = status;
+  console.log(color.blue(`=== AutoForge Run Status: ${run.id} ===`));
+  console.log(`Status        : ${color.green(run.status)}`);
+  console.log(`Autonomy Level: Level ${run.autonomyLevel}`);
+  console.log(`Recipe        : ${run.recipeName}`);
+  console.log(`Started At    : ${run.startedAt}`);
+
+  if (workItem) {
+    console.log(color.blue(`\n=== Linked WorkItem: ${workItem.id} ===`));
+    console.log(`Title         : ${workItem.title}`);
+    console.log(`Risk Tier     : ${workItem.riskTier}`);
+    console.log(`State         : ${workItem.state}`);
+  }
+
+  if (pendingApprovals && pendingApprovals.length > 0) {
+    console.log(color.yellow(`\n⚠ Pending Approvals (${pendingApprovals.length}):`));
+    for (const app of pendingApprovals) {
+      console.log(`- [${app.id}] Class: ${app.decisionClass} | Scope: ${app.scope}`);
+      console.log(`  To approve: ${color.green(`npx autoforge approve ${app.id}`)}`);
+    }
+  } else {
+    console.log(color.green("\n✔ No pending human approvals required."));
+  }
+}
+
+async function commandApprove(args) {
+  const projectRoot = process.cwd();
+  const approvalId = args[0];
+  if (!approvalId) {
+    console.log(color.yellow("Usage: autoforge approve <approval-id> [--reject] [--note \"<note>\"]"));
+    return;
+  }
+
+  const isReject = args.includes("--reject");
+  const noteIdx = args.findIndex((a) => a === "--note");
+  const note = noteIdx >= 0 ? args[noteIdx + 1] : "";
+
+  const kernel = new OrchestratorKernel({ projectRoot });
+  try {
+    kernel.resolveApproval(
+      approvalId,
+      isReject ? "rejected" : "approved",
+      "developer",
+      note,
+    );
+    console.log(
+      color.green(
+        `✔ Approval [${approvalId}] successfully marked as ${isReject ? "REJECTED" : "APPROVED"}`,
+      ),
+    );
+  } catch (err) {
+    console.error(color.red(`Failed to resolve approval: ${err.message}`));
+    process.exitCode = 1;
+  }
+}
+
+async function commandResearch(args) {
+  const projectRoot = process.cwd();
+  const taskIdx = args.findIndex((a) => a === "--task");
+  const task = taskIdx >= 0 ? args[taskIdx + 1] : "";
+  const shouldGenerate = args.includes("--generate");
+
+  const engine = new ResearchEngine({ projectRoot });
+  console.log(color.blue("→ Running Advanced Research & Risk Discovery Scan..."));
+
+  const scanResult = await engine.scan(task);
+  console.log(color.blue(`\n=== Application Risk Assessment ===`));
+  console.log(`Risk Tier: ${scanResult.riskTier === "R2" ? color.yellow("R2 (Elevated Risk)") : color.green("R1 (Standard)")}`);
+  console.log(`Objective: ${scanResult.goal || "Standard Application Baseline"}\n`);
+
+  if (scanResult.findings.length > 0) {
+    console.log(color.yellow("Findings & Required Controls:"));
+    for (const f of scanResult.findings) {
+      console.log(`- [${f.domain.toUpperCase()}] ${f.message}`);
+      console.log(`  Assigned Reviewer: ${f.reviewer}`);
+      for (const c of f.controlsRequired) {
+        console.log(`  • ${c}`);
+      }
+    }
+  } else {
+    console.log(color.green("✔ No elevated risk domains detected."));
+  }
+
+  if (scanResult.dataInventory.detectedCategories.length > 0) {
+    console.log(color.blue("\nDetected Data Categories:"));
+    for (const cat of scanResult.dataInventory.detectedCategories) {
+      console.log(`- ${cat.field} [${cat.classification}]`);
+    }
+  }
+
+  if (shouldGenerate) {
+    engine.scaffoldReadinessArtifacts(scanResult);
+    console.log(color.green("\n✔ Generated readiness artifacts:"));
+    console.log("  - docs/security/APPLICATION_RISK_PROFILE.md");
+    console.log("  - docs/privacy/DATA_INVENTORY.yaml");
+    console.log("  - docs/security/THREAT_MODEL.md");
+    console.log("  - docs/uiux/ACCESSIBILITY_PLAN.md");
+  } else {
+    console.log(
+      color.yellow(
+        `\nTip: Re-run with ${color.green("autoforge research scan --generate")} to scaffold these readiness artifacts into docs/`,
+      ),
     );
   }
-  console.log("");
+}
 
-  // Plan outline
-  console.log(color.blue("Execution plan:"));
-  const stages = Array.isArray(recipe.stages) ? recipe.stages : [];
-  if (stages.length === 0) {
-    console.log(color.red("No stages defined in recipe."));
-  } else {
-    stages.forEach((s, i) => {
-      const approvals = Array.isArray(s.approvals)
-        ? s.approvals.join(", ")
-        : "";
-      console.log(
-        `${i + 1}. ${s.id} — role: ${s.role}${approvals ? ` (approvals: ${approvals})` : ""}`,
-      );
-      if (Array.isArray(s.deliverables) && s.deliverables.length) {
-        console.log(`   deliverables: ${s.deliverables.join(", ")}`);
-      }
-    });
-  }
-  console.log("");
+async function commandReadiness() {
+  const projectRoot = process.cwd();
+  const engine = new ResearchEngine({ projectRoot });
+  const scanResult = await engine.scan();
 
-  // CI templates
-  if (Array.isArray(recipe.ci_templates) && recipe.ci_templates.length) {
-    console.log(color.blue("Suggested CI templates:"));
-    for (const t of recipe.ci_templates) {
-      console.log(`- ${t}`);
+  console.log(color.blue("=== AutoForge Pre-Release Readiness Check ==="));
+  if (scanResult.missingArtifacts.length > 0) {
+    console.log(color.yellow(`⚠ Missing Readiness Artifacts (${scanResult.missingArtifacts.length}):`));
+    for (const missing of scanResult.missingArtifacts) {
+      console.log(`- ${missing}`);
     }
-    console.log("");
+    console.log(
+      `\nRun ${color.green("npx autoforge research scan --generate")} to scaffold the missing planning artifacts.`,
+    );
+  } else {
+    console.log(color.green("✔ All core readiness artifacts are present and tracked."));
+  }
+}
+
+async function commandMetrics() {
+  const projectRoot = process.cwd();
+  const telemetry = new TelemetryCollector({ projectRoot });
+  const metrics = telemetry.computeMetrics();
+
+  console.log(color.blue("=== AutoForge Telemetry & Quality Metrics ==="));
+  console.log(`Total Runs Tracked      : ${color.green(metrics.totalRuns)}`);
+  console.log(`Lifecycle Events Logged : ${metrics.totalEvents}`);
+  console.log(`Total Quality Gates     : ${metrics.totalGates} (${color.green(`${metrics.passedGates} passed`)}, ${color.red(`${metrics.failedGates} failed`)})`);
+  console.log(`First-Pass Gate Rate    : ${metrics.firstPassGateRate >= 80 ? color.green(`${metrics.firstPassGateRate}%`) : color.yellow(`${metrics.firstPassGateRate}%`)}`);
+  console.log(`Total Agent Retries     : ${metrics.totalRetries}`);
+  console.log(`Estimated Tokens Used   : ${metrics.totalTokens.toLocaleString()} tokens`);
+  console.log(`Human Approvals Handled : ${metrics.humanApprovals}`);
+
+  if (Object.keys(metrics.gateFailureTypes).length > 0) {
+    console.log(color.yellow("\nFailure Breakdown by Gate:"));
+    for (const [gate, count] of Object.entries(metrics.gateFailureTypes)) {
+      console.log(`- ${gate.toUpperCase()}: ${count} failures`);
+    }
+  }
+}
+
+async function commandTrain(args) {
+  const projectRoot = process.cwd();
+  const nIdx = args.findIndex((a) => a === "--from-last-N");
+  const lastN = nIdx >= 0 ? parseInt(args[nIdx + 1], 10) : 10;
+  const isApply = args.includes("--apply");
+
+  const telemetry = new TelemetryCollector({ projectRoot });
+  const suggestions = telemetry.generateSuggestions(lastN);
+
+  console.log(color.blue(`→ Running Governed Learning & Pattern Extraction (last ${lastN} runs)...`));
+
+  if (suggestions.length === 0) {
+    console.log(color.green("✔ No recurring failure patterns detected across recent execution telemetry."));
+    return;
   }
 
-  // Next steps
-  console.log(color.blue("Next steps:"));
-  console.log("- Review the plan above and suggest edits.");
-  console.log("- Approve the recipe selection.");
-  console.log(
-    "- In Chat Mode: run 'Execute .autoforge/ai/prompts/automation_bootstrap.yaml' to proceed with approvals.",
-  );
+  console.log(color.yellow(`\n⚠ Detected ${suggestions.length} Optimization Opportunities:`));
+  for (const s of suggestions) {
+    console.log(`- [${s.targetRole.toUpperCase()}] Recurring failure on '${s.gateType}' (${s.failureCount}x occurrences)`);
+    console.log(`  Recommendation: ${s.recommendation}`);
+  }
+
+  if (isApply) {
+    const memoryDir = path.join(projectRoot, ".autoforge", "ai", "memory");
+    if (!fs.existsSync(memoryDir)) {
+      fs.mkdirSync(memoryDir, { recursive: true });
+    }
+    const learningsPath = path.join(memoryDir, "learnings.yaml");
+    const doc = [
+      `# AutoForge Governed Learnings`,
+      `updatedAt: "${new Date().toISOString()}"`,
+      `suggestions:`,
+      ...suggestions.map((s) => `  - role: "${s.targetRole}"\n    gate: "${s.gateType}"\n    recommendation: "${s.recommendation}"`),
+      "",
+    ].join("\n");
+    await writeFile(learningsPath, doc, "utf8");
+    console.log(color.green(`\n✔ Applied learning patches to .autoforge/ai/memory/learnings.yaml`));
+  } else {
+    console.log(
+      color.yellow(
+        `\nTip: Run ${color.green("autoforge train --apply")} to write these optimizations into .autoforge/ai/memory/learnings.yaml`,
+      ),
+    );
+  }
 }
 
 function formatTimestampISO() {
@@ -599,6 +826,30 @@ async function run() {
         break;
       case "load":
         await commandLoad();
+        break;
+      case "autopilot":
+        await commandAutopilot(rest);
+        break;
+      case "research":
+        await commandResearch(rest);
+        break;
+      case "readiness":
+        await commandReadiness();
+        break;
+      case "train":
+        await commandTrain(rest);
+        break;
+      case "metrics":
+        await commandMetrics();
+        break;
+      case "status":
+        await commandStatus(rest);
+        break;
+      case "approve":
+        await commandApprove(rest);
+        break;
+      case "doctor":
+        await commandDoctor();
         break;
       case "refresh":
         await commandRefresh();

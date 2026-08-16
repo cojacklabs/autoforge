@@ -1,32 +1,68 @@
-# 🧠 AutoForge — Multi-Agent SDLC with Autopilot & Continuous Learning
+# 🧠 AutoForge — Multi-Agent SDLC Orchestration & Autopilot Engine
 
-[![npm version](https://img.shields.io/npm/v/autoforge?color=0f9d58&label=autoforge)](https://www.npmjs.com/package/@cojacklabs/autoforge)
+[![npm version](https://img.shields.io/npm/v/@cojacklabs/autoforge?color=0f9d58&label=@cojacklabs/autoforge)](https://www.npmjs.com/package/@cojacklabs/autoforge)
+[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 
-AutoForge is a multi-agent orchestration framework that lives as `.autoforge/` inside your project. AI agents collaboratively plan, design, code, test, and deploy—while improving autonomously with every project through continuous feedback loops.
-
-**What's new in this release:**
-
-- ✨ **Autopilot orchestration** – Agents run 24/7 without manual blocking; choose autonomy level (0=manual → 3=adaptive)
-- 🎓 **Continuous learning** – Every execution trains models; prompts/recipes improve automatically
-- 🚀 **Faster initialization** – 2-step setup for new projects; 1-step resume for existing ones
-- 📊 **Real-time observability** – Track agent performance and system improvements quarterly
-
-Planning artifacts stay inside `.autoforge/`, while application code and tests write to your project paths. (Legacy installs used `autoforge/`; the CLI recognises both.)
-
-> 🧩 **Quality policies:** [docs/QUALITY_POLICIES.md](docs/QUALITY_POLICIES.md)
-> 🔐 **Governance & memory:** [docs/GOVERNANCE_AND_MEMORY.md](docs/GOVERNANCE_AND_MEMORY.md)
+AutoForge is a **multi-agent SDLC orchestration framework** that lives inside your project as `.autoforge/`. It transforms any Node.js repository into an accountable, self-running software factory where AI coding agents collaboratively research, plan, design, code, test, audit, and deploy with strict governance boundaries.
 
 ---
 
-## Quick Start: New Project (2 Steps)
+## 🤖 Teach Your AI Assistant (Copy & Paste Onboarding Prompt)
+
+> **For Developers:** Copy and paste the prompt below directly into Claude Code, Gemini CLI, Cursor, ChatGPT, or GitHub Copilot to teach your AI how to install, research, document, and build with AutoForge.
+
+```markdown
+You are assisting me in a Node.js project powered by @cojacklabs/autoforge.
+Please follow these guidelines to install, research, document, and develop with AutoForge:
+
+1. INSTALLATION & SETUP:
+   - Ensure AutoForge is installed: `npm install --save-dev @cojacklabs/autoforge`
+   - Initialize the local control plane: `npx autoforge init`
+   - Verify health: `npx autoforge doctor`
+
+2. ADVANCED RESEARCH & READINESS (Always run before architectural design or coding):
+   - Perform risk discovery: `npx autoforge research scan --task "<my-task-objective>" --generate`
+   - Review generated planning artifacts in `docs/`:
+     • `docs/security/APPLICATION_RISK_PROFILE.md` (Risk tier & required controls)
+     • `docs/privacy/DATA_INVENTORY.yaml` (Data classification & retention)
+     • `docs/security/THREAT_MODEL.md` (OWASP ASVS baseline & abuse cases)
+     • `docs/uiux/ACCESSIBILITY_PLAN.md` (WCAG 2.2 AA guidelines)
+   - Verify readiness: `npx autoforge readiness check`
+
+3. AUTOPILOT & WORK ITEM ORCHESTRATION:
+   - Preview stage execution without writing code: `npx autoforge autopilot --dry-run`
+   - Start an orchestrated run: `npx autoforge autopilot --level 1 --task "<my-task-objective>"`
+   - Check status and pending approvals: `npx autoforge status <run-id>`
+   - Approve sensitive operations: `npx autoforge approve <approval-id>`
+
+4. WORKSPACE BOUNDARIES & QUALITY GATES:
+   - Only edit application code within paths defined in `autoforge.config.json` (e.g. `src/**`, `tests/**`).
+   - Planning documents, memory, and logs stay inside `.autoforge/` and `docs/`.
+   - Never bypass quality gates (Parse, Prettier, ESLint, TypeScript `tsc`, Unit Tests).
+   - View telemetry & learning metrics anytime with `npx autoforge metrics`.
+```
+
+---
+
+## ⚡ What's New in v0.5.0
+
+- 🏛️ **Durable Orchestration Kernel** — Built-in SQLite transactional run store (`.autoforge/runtime/autoforge.db`) for crash-resilient state, approvals, and work items.
+- 🛡️ **Advanced Research & Risk Discovery** — Automatic detection of financial/payment (`R2`), auth/identity (`R1`), and AI model (`R2`) risk triggers.
+- ♿ **Production Readiness Verification** — Automatic generation of Risk Profiles, Data Inventories, Threat Models, and WCAG 2.2 AA Accessibility plans.
+- 🧠 **Telemetry & Governed Learning** — Event streaming (`.autoforge/training/telemetry.jsonl`) with automated prompt improvement suggestions (`autoforge train`).
+- 🔍 **Real-Time Observability** — Live SDLC pass rates, token metrics, and retry trends (`autoforge metrics`).
+
+---
+
+## 🚀 Quick Start (2 Steps)
 
 ```bash
 # Step 1: Install and initialize
 npm install --save-dev @cojacklabs/autoforge
 npx autoforge init
 
-# Step 2: Load context into your AI
-npx autoforge load   # prints the full orchestrator context for a single paste
+# Step 2: Run pre-flight risk scan & readiness scaffolding
+npx autoforge research scan --generate
 ```
 
 Done! The framework is ready. The `--copy` flag outputs a ready-to-paste prompt for your coding AI. Paste it and you're set to start building.
@@ -258,12 +294,20 @@ Tip: Recipe-driven CI templates live under `devops/ci/` (e.g., `devops/ci/web_ap
 
 Essential commands:
 
-- `autoforge init [--force]` — scaffold `.autoforge/` and `autoforge.config.json`
-- `autoforge load` — print copy/paste stub, then paste `.autoforge/ai/prompts/orchestrator_context.md`
-- `autoforge snapshot [path]` — generate `REPO.md` for audits/handover
-- `autoforge configure` — regenerate managed YAML files from config (safe)
-- `autoforge refresh` — emit a context-reload prompt to re-read policies + latest memory
-- `autoforge version` — print CLI version
+- `autoforge init [--force]` — Scaffold `.autoforge/` and `autoforge.config.json`
+- `autoforge autopilot [--dry-run] [--level <0-3>] [--task "<objective>"]` — Run pre-flight recipe analysis or start orchestrated work item
+- `autoforge research scan [--task "<objective>"] [--generate]` — Scan for financial/auth/AI risks and scaffold readiness artifacts into `docs/`
+- `autoforge readiness check` — Verify all required security, privacy, and accessibility planning docs exist
+- `autoforge status <run-id>` — Inspect live state, risk tier, and pending approvals for a run
+- `autoforge approve <approval-id> [--reject] [--note "<note>"]` — Approve or reject high-risk actions (migrations, deploys)
+- `autoforge metrics` — View real-time SDLC health, gate pass rates, retry counts, and token metrics
+- `autoforge train [--from-last-N <N>] [--apply]` — Extract failure patterns from telemetry and apply prompt optimizations
+- `autoforge doctor` — Health check on project configuration and manifests
+- `autoforge load` — Print orchestrator copy/paste context for your AI
+- `autoforge snapshot [path]` — Generate `REPO.md` for audits and handover
+- `autoforge configure` — Regenerate managed YAML files from config (safe)
+- `autoforge refresh` — Emit context-reload prompt to re-read policies + latest memory
+- `autoforge version` — Print CLI version
 
 ---
 
@@ -288,6 +332,7 @@ This flow preserves existing `.autoforge/` data (logs, memory, reports) and keep
 
 | Resource                                                                           | What it covers                                                   |
 | ---------------------------------------------------------------------------------- | ---------------------------------------------------------------- |
+| [docs/AUTOFORGE_CLI_REFERENCE.md](docs/AUTOFORGE_CLI_REFERENCE.md)                 | Complete CLI command reference, flags, and workflows             |
 | [docs/QUICKSTART.md](docs/QUICKSTART.md)                                           | Fast setup for new and existing projects                         |
 | [docs/AUTOFORGE_EXPANSION_QUICK_START.md](docs/AUTOFORGE_EXPANSION_QUICK_START.md) | One-page guide to autopilot & training                           |
 | [docs/AUTOFORGE_AUTOPILOT_ENGINE.md](docs/AUTOFORGE_AUTOPILOT_ENGINE.md)           | Full orchestration spec, autonomy levels, state machine          |

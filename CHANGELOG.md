@@ -2,6 +2,23 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.5.0] - 2026-08-16
+
+### Major Features & Enhancements
+
+- **Durable Orchestration Kernel (Pillar 1)**:
+  - Added embedded, transactional SQLite persistence via `node:sqlite` in `.autoforge/runtime/autoforge.db`.
+  - Added canonical typed domain models: `WorkItem`, `Run`, `GateResult`, `Decision`, and `Approval`.
+  - Added CLI commands: `autoforge autopilot [--dry-run] [--level <0-3>] [--task "<objective>"]`, `autoforge status <run-id>`, and `autoforge approve <approval-id>`.
+
+- **Advanced Research & Risk Discovery Layer (Pillar 2)**:
+  - Added proactive risk scanner (`autoforge research scan`) to identify financial, authentication, AI, and data sensitivity triggers.
+  - Added readiness check (`autoforge readiness check`) to enforce tracking of `APPLICATION_RISK_PROFILE.md`, `DATA_INVENTORY.yaml`, `THREAT_MODEL.md`, and `ACCESSIBILITY_PLAN.md`.
+
+- **Telemetry & Governed Learning (Pillar 3)**:
+  - Added streaming telemetry collector (`.autoforge/training/telemetry.jsonl`) tracking token usage, quality gate pass rates, and retries.
+  - Added CLI commands: `autoforge metrics` for live SDLC metrics and `autoforge train [--from-last-N <N>] [--apply]` to extract failure patterns and propose prompt/recipe patches.
+
 ## [0.4.2] - 2026-08-16
 
 ### Fixes & Improvements
