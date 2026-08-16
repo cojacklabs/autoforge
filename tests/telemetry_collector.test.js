@@ -6,10 +6,15 @@ import path from "node:path";
 import { TelemetryCollector } from "../scripts/telemetry_collector.js";
 
 test("TelemetryCollector - event logging, metrics computation, and suggestions", async (t) => {
-  const tempDir = fs.mkdtempSync(path.join(os.tmpdir(), "autoforge-telemetry-test-"));
+  const tempDir = fs.mkdtempSync(
+    path.join(os.tmpdir(), "autoforge-telemetry-test-"),
+  );
   const telemetryPath = path.join(tempDir, "telemetry.jsonl");
 
-  const collector = new TelemetryCollector({ projectRoot: tempDir, customPath: telemetryPath });
+  const collector = new TelemetryCollector({
+    projectRoot: tempDir,
+    customPath: telemetryPath,
+  });
 
   await t.test("should record events to JSONL file", () => {
     collector.record({
@@ -62,23 +67,26 @@ test("TelemetryCollector - event logging, metrics computation, and suggestions",
     assert.equal(metrics.gateFailureTypes.tsc, 1);
   });
 
-  await t.test("should generate prompt improvement suggestions when recurring failures are detected", () => {
-    // Record another tsc failure
-    collector.record({
-      runId: "RUN-002",
-      type: "gate_evaluation",
-      role: "fullstack_engineer",
-      gateType: "tsc",
-      passed: false,
-    });
+  await t.test(
+    "should generate prompt improvement suggestions when recurring failures are detected",
+    () => {
+      // Record another tsc failure
+      collector.record({
+        runId: "RUN-002",
+        type: "gate_evaluation",
+        role: "fullstack_engineer",
+        gateType: "tsc",
+        passed: false,
+      });
 
-    const suggestions = collector.generateSuggestions(5);
-    assert.equal(suggestions.length, 1);
-    assert.equal(suggestions[0].targetRole, "fullstack_engineer");
-    assert.equal(suggestions[0].gateType, "tsc");
-    assert.equal(suggestions[0].failureCount, 2);
-    assert.ok(suggestions[0].recommendation.includes("tsc"));
-  });
+      const suggestions = collector.generateSuggestions(5);
+      assert.equal(suggestions.length, 1);
+      assert.equal(suggestions[0].targetRole, "fullstack_engineer");
+      assert.equal(suggestions[0].gateType, "tsc");
+      assert.equal(suggestions[0].failureCount, 2);
+      assert.ok(suggestions[0].recommendation.includes("tsc"));
+    },
+  );
 
   // Teardown
   fs.rmSync(tempDir, { recursive: true, force: true });

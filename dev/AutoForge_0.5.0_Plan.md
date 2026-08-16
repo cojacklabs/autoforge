@@ -34,7 +34,8 @@ graph TD
 ## 🎯 0.5.0 Milestone Roadmap
 
 ### Pillar 1: Foundation & Durable Orchestration Kernel (Weeks 1–3)
-*Goal: Move from ad-hoc prompt coordination to an auditable, recoverable execution kernel.*
+
+_Goal: Move from ad-hoc prompt coordination to an auditable, recoverable execution kernel._
 
 - [ ] **Milestone 1.1: Core Domain Schemas**
   - Define strictly typed, versioned contracts: `WorkItem.v1`, `Run.v1`, `Step.v1`, `Decision.v1`, `GateResult.v1`, and `Approval.v1`.
@@ -50,7 +51,8 @@ graph TD
 ---
 
 ### Pillar 2: Advanced Research & Production Readiness Layer (Weeks 4–5)
-*Goal: Proactively discover hidden security, privacy, data governance, and compliance obligations before code generation.*
+
+_Goal: Proactively discover hidden security, privacy, data governance, and compliance obligations before code generation._
 
 - [ ] **Milestone 2.1: Intake Discovery & Risk Profiler**
   - CLI: `autoforge research scan` to infer application domain, public exposure, authentication models, and data sensitivity.
@@ -64,7 +66,8 @@ graph TD
 ---
 
 ### Pillar 3: Telemetry, Observability & Governed Learning (Weeks 6–7)
-*Goal: Capture empirical execution telemetry and provide safe, recommendation-based continuous improvement.*
+
+_Goal: Capture empirical execution telemetry and provide safe, recommendation-based continuous improvement._
 
 - [ ] **Milestone 3.1: Structured Telemetry Hooks**
   - Attach non-intrusive lifecycle observers (`onAgentStart`, `onGateEvaluate`, `onApprovalDecided`, `onAgentComplete`).
@@ -80,25 +83,26 @@ graph TD
 ## 📋 Technical Blueprint: The Orchestration Kernel & Research Integration
 
 ### 1. Work Item & Run Schema (`src/core/types/orchestration.ts`)
+
 ```typescript
-export type WorkItemState = 
-  | 'draft'
-  | 'ready_for_planning'
-  | 'plan_review'
-  | 'ready_to_build'
-  | 'building'
-  | 'verify'
-  | 'release_candidate'
-  | 'awaiting_approval'
-  | 'released'
-  | 'blocked'
-  | 'cancelled';
+export type WorkItemState =
+  | "draft"
+  | "ready_for_planning"
+  | "plan_review"
+  | "ready_to_build"
+  | "building"
+  | "verify"
+  | "release_candidate"
+  | "awaiting_approval"
+  | "released"
+  | "blocked"
+  | "cancelled";
 
 export interface WorkItem {
   id: string; // e.g. "WI-2026-001"
   title: string;
   objective: string;
-  riskTier: 'R0' | 'R1' | 'R2' | 'R3';
+  riskTier: "R0" | "R1" | "R2" | "R3";
   state: WorkItemState;
   owner: string; // Accountable human or agent
   acceptanceCriteria: string[];
@@ -113,12 +117,13 @@ export interface RunState {
   recipeName: string;
   autonomyLevel: 0 | 1 | 2 | 3;
   currentStepId?: string;
-  status: 'running' | 'paused_approval' | 'completed' | 'failed' | 'cancelled';
+  status: "running" | "paused_approval" | "completed" | "failed" | "cancelled";
   evidence: Record<string, string>; // Gate -> artifact/log hash
 }
 ```
 
 ### 2. Execution Flow with Research & Governance
+
 ```text
 1. Developer / CLI: autoforge autopilot --level 1 --task "Add Stripe Checkout"
 2. Intake Engine:

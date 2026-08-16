@@ -1,0 +1,29 @@
+# Change Management Policy
+version: 1
+policy_id: POL-CHG-002
+
+overview:
+  title: Change Management & Deployment Governance Policy
+  purpose: Ensure all code changes, database migrations, and production releases are authorized, tested, and reversible.
+
+rules:
+  peer_review:
+    required: true
+    min_approvers: 1
+    self_approval_permitted: false
+
+  risk_classifications:
+    standard:
+      description: "Low-risk features and non-breaking bug fixes with automated test coverage."
+      approval_path: "Automated gate pass + 1 peer review"
+    elevated:
+      description: "Database schema migrations, authentication changes, or payment flows."
+      approval_path: "Mandatory human domain lead sign-off"
+    emergency:
+      description: "P0 production incident resolution."
+      approval_path: "Expedited single-approver with mandatory post-release retrospective within 48 hours"
+
+  release_requirements:
+    rollback_plan: mandatory
+    change_record: mandatory
+    audit_traceability: true

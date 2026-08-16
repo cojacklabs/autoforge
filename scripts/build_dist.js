@@ -51,6 +51,8 @@ const INCLUDE_DIRS = new Set([
   "shared",
   "tests",
   "docs",
+  "policies",
+  "evidence",
 ]);
 
 /**

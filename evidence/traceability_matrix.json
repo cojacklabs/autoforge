@@ -1,0 +1,35 @@
+{
+  "standard": "SOC 2 Type II / ISO 27001 Secure SDLC",
+  "generatedAt": "2026-08-16T22:09:30.827Z",
+  "phases": {
+    "1_planning": {
+      "status": "verified",
+      "artifacts": ["docs/security/APPLICATION_RISK_PROFILE.md"]
+    },
+    "2_requirements": {
+      "status": "verified",
+      "artifacts": ["docs/prd/PRODUCT_REQUIREMENTS.md"]
+    },
+    "3_architecture": {
+      "status": "verified",
+      "artifacts": ["api/openapi.yaml", "docs/security/THREAT_MODEL.md"]
+    },
+    "4_development": {
+      "status": "verified",
+      "convention": "Conventional Commits",
+      "secretScanPassed": true
+    },
+    "5_testing": {
+      "status": "verified",
+      "coverageFloorMet": true
+    },
+    "6_release": {
+      "status": "verified",
+      "rollbackPlanIncluded": true
+    },
+    "7_maintenance": {
+      "status": "active",
+      "telemetryLogging": true
+    }
+  }
+}

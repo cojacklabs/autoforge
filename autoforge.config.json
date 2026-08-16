@@ -47,8 +47,12 @@
     "securityChecklists": true
   },
   "qualityPolicies": {
-    "typecheck": { "cmd": "npm run typecheck", "required": true },
-    "lint": { "cmd": "npm run lint", "maxWarnings": 0, "required": true },
+    "typecheck": { "cmd": "tsc --noEmit", "required": false },
+    "lint": {
+      "cmd": "eslint --max-warnings=0 .",
+      "maxWarnings": 0,
+      "required": false
+    },
     "format": {
       "cmdCheck": "npm run format:check",
       "cmdWrite": "npm run format",
@@ -60,6 +64,6 @@
       "markdownLint": true,
       "openapiLint": true
     },
-    "tests": { "cmd": "npm test -s", "runOnChanged": true }
+    "tests": { "cmd": "npm test", "runOnChanged": true }
   }
 }

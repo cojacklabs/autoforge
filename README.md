@@ -15,9 +15,13 @@ AutoForge is a **multi-agent SDLC orchestration framework** that lives inside yo
 You are assisting me in a Node.js project powered by @cojacklabs/autoforge.
 Please follow these guidelines to install, research, document, and develop with AutoForge:
 
-1. INSTALLATION & SETUP:
-   - Ensure AutoForge is installed: `npm install --save-dev @cojacklabs/autoforge`
-   - Initialize the local control plane: `npx autoforge init`
+1. INSTALLATION, HEALTH & PROACTIVE VERSION CHECKS:
+   - Check if AutoForge is installed and up to date: `npx autoforge update`
+   - If AutoForge is missing or needs an upgrade, prompt the user with the appropriate command:
+     • npm: `npm install --save-dev @cojacklabs/autoforge@latest`
+     • pnpm: `pnpm add -D @cojacklabs/autoforge@latest`
+     • yarn: `yarn add -D @cojacklabs/autoforge@latest`
+   - Initialize/re-sync control plane: `npx autoforge init` or `npx autoforge configure`
    - Verify health: `npx autoforge doctor`
 
 2. ADVANCED RESEARCH & READINESS (Always run before architectural design or coding):
@@ -35,22 +39,24 @@ Please follow these guidelines to install, research, document, and develop with 
    - Check status and pending approvals: `npx autoforge status <run-id>`
    - Approve sensitive operations: `npx autoforge approve <approval-id>`
 
-4. WORKSPACE BOUNDARIES & QUALITY GATES:
+4. WORKSPACE BOUNDARIES, QUALITY GATES & AUDITS:
    - Only edit application code within paths defined in `autoforge.config.json` (e.g. `src/**`, `tests/**`).
    - Planning documents, memory, and logs stay inside `.autoforge/` and `docs/`.
-   - Never bypass quality gates (Parse, Prettier, ESLint, TypeScript `tsc`, Unit Tests).
+   - Never bypass quality gates: Run `npx autoforge gate check` before staging commits.
+   - Generate SOC 2 / ISO 27001 SDLC compliance evidence: `npx autoforge audit --generate`.
+   - Strictly follow Conventional Commits (`type(scope): message`) and test coverage floors (≥80%).
    - View telemetry & learning metrics anytime with `npx autoforge metrics`.
 ```
 
 ---
 
-## ⚡ What's New in v0.5.0
+## ⚡ What's New in v0.6.0
 
-- 🏛️ **Durable Orchestration Kernel** — Built-in SQLite transactional run store (`.autoforge/runtime/autoforge.db`) for crash-resilient state, approvals, and work items.
-- 🛡️ **Advanced Research & Risk Discovery** — Automatic detection of financial/payment (`R2`), auth/identity (`R1`), and AI model (`R2`) risk triggers.
-- ♿ **Production Readiness Verification** — Automatic generation of Risk Profiles, Data Inventories, Threat Models, and WCAG 2.2 AA Accessibility plans.
-- 🧠 **Telemetry & Governed Learning** — Event streaming (`.autoforge/training/telemetry.jsonl`) with automated prompt improvement suggestions (`autoforge train`).
-- 🔍 **Real-Time Observability** — Live SDLC pass rates, token metrics, and retry trends (`autoforge metrics`).
+- 🛡️ **Shift-Left Security & Quality Gate Runner** — Built-in sequential gate runner (`autoforge gate check`) validating secrets, parse checks, Prettier formatting, ESLint rules, TypeScript compile check, and unit tests.
+- 📋 **Machine-Enforceable Policies** — Standard policy manifests for Software Development (SDLC), Change Management (2-stage approvals), Access Control (least-privilege/secrets hygiene), and Incident Response (`.autoforge/policies/`).
+- 📁 **Automated Audit Evidence Engine** — Automated generation of SOC 2 / ISO 27001 SDLC Traceability Matrices and gate test records (`autoforge audit` / `evidence/`).
+- 🤖 **Strict AI Agent CI/CD Constraints** — Prompt rules enforcing Conventional Commits, mandatory companion test files, zero hardcoded credentials, and rollback verification in deployment runbooks.
+- 🏛️ **Durable Orchestration Kernel & Risk Discovery** — SQLite transactional run store with pre-flight risk discovery and governed learning.
 
 ---
 
@@ -298,6 +304,8 @@ Essential commands:
 - `autoforge autopilot [--dry-run] [--level <0-3>] [--task "<objective>"]` — Run pre-flight recipe analysis or start orchestrated work item
 - `autoforge research scan [--task "<objective>"] [--generate]` — Scan for financial/auth/AI risks and scaffold readiness artifacts into `docs/`
 - `autoforge readiness check` — Verify all required security, privacy, and accessibility planning docs exist
+- `autoforge gate check [--files <paths>] [--format-write]` — Run shift-left quality gates (secrets, parse, format, lint, types, tests)
+- `autoforge audit [--generate]` — Generate audit-ready SOC 2 / ISO 27001 SDLC Traceability Matrix evidence
 - `autoforge status <run-id>` — Inspect live state, risk tier, and pending approvals for a run
 - `autoforge approve <approval-id> [--reject] [--note "<note>"]` — Approve or reject high-risk actions (migrations, deploys)
 - `autoforge metrics` — View real-time SDLC health, gate pass rates, retry counts, and token metrics

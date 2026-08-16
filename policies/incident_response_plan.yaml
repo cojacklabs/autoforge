@@ -1,0 +1,26 @@
+# Incident Response & Post-Mortem Policy
+version: 1
+policy_id: POL-INC-004
+
+overview:
+  title: Incident Management & Root Cause Analysis Policy
+  purpose: Establish rapid triage, containment, escalation, and blameless retrospective procedures.
+
+severity_levels:
+  P0_critical:
+    description: "Total outage or active data security breach."
+    response_sla: "15 minutes"
+    post_mortem_required: true
+  P1_high:
+    description: "Core business feature impaired with no workaround."
+    response_sla: "1 hour"
+    post_mortem_required: true
+  P2_medium:
+    description: "Non-critical functionality degraded."
+    response_sla: "1 business day"
+    post_mortem_required: false
+
+requirements:
+  hotfix_workflow: "Must execute via hotfix prompt with reproducible test case"
+  post_mortem_template: "docs/observability/post_mortem_template.md"
+  telemetry_logging: mandatory

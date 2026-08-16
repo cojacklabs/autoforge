@@ -16,7 +16,8 @@ export class OrchestratorKernel {
   constructor({ projectRoot = process.cwd(), runStore, telemetry } = {}) {
     this.projectRoot = projectRoot;
     this.runStore = runStore || new RunStore();
-    this.telemetry = telemetry || new TelemetryCollector({ projectRoot: this.projectRoot });
+    this.telemetry =
+      telemetry || new TelemetryCollector({ projectRoot: this.projectRoot });
   }
 
   /**
@@ -24,7 +25,12 @@ export class OrchestratorKernel {
    * @param {string} [name]
    */
   loadRecipe(name) {
-    const recipesDir = path.join(this.projectRoot, "docs", "blueprint", "recipes");
+    const recipesDir = path.join(
+      this.projectRoot,
+      "docs",
+      "blueprint",
+      "recipes",
+    );
     const patterns = [
       path.join(recipesDir, "*.yaml"),
       path.join(recipesDir, "*.yml"),
@@ -39,7 +45,10 @@ export class OrchestratorKernel {
     }
     const candidate = files.find((f) => /web_app\.ya?ml$/i.test(f)) || files[0];
     if (!candidate) return null;
-    return { file: candidate, recipe: yaml.parse(fs.readFileSync(candidate, "utf8")) };
+    return {
+      file: candidate,
+      recipe: yaml.parse(fs.readFileSync(candidate, "utf8")),
+    };
   }
 
   /**
@@ -65,7 +74,12 @@ export class OrchestratorKernel {
       {
         id: "prd",
         label: "Product Requirements Document (PRD)",
-        path: path.join(this.projectRoot, "docs", "prd", "PRODUCT_REQUIREMENTS.md"),
+        path: path.join(
+          this.projectRoot,
+          "docs",
+          "prd",
+          "PRODUCT_REQUIREMENTS.md",
+        ),
       },
       {
         id: "api",

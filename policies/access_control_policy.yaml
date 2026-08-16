@@ -1,0 +1,21 @@
+# Access Control & Secrets Policy
+version: 1
+policy_id: POL-ACC-003
+
+overview:
+  title: Access Control, Environment Separation & Secret Hygiene Policy
+  purpose: Enforce least-privilege access, environment separation, and prevent secret exfiltration in code.
+
+rules:
+  environment_isolation:
+    separation: ["dev", "stage", "prod"]
+    cross_environment_data_sync: prohibited_without_anonymization
+
+  secret_management:
+    hardcoded_credentials: strictly_forbidden
+    storage_mechanism: "Environment Variables or Cloud Secret Manager"
+    detection: "Pre-commit and CI automated regex/entropy scans"
+
+  least_privilege:
+    ai_agent_boundaries: "Restricted to declared codeTargets and planning zones"
+    privileged_commands: "Requires explicit human elevation approval"

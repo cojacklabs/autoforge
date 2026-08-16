@@ -1,0 +1,50 @@
+# Software Development Policy (SOC 2 / ISO 27001 SDLC Baseline)
+version: 1
+policy_id: POL-SDLC-001
+
+overview:
+  title: Secure Software Development Life Cycle Policy
+  purpose: Establish mandatory engineering, testing, and approval standards across all 7 SDLC stages.
+  enforcement: Automated via AutoForge Quality Gates and CI/CD pipelines.
+
+phases:
+  1_planning:
+    requirement: "A documented brief and risk profile must exist prior to architectural planning."
+    artifacts: ["ideas/*.yaml", "docs/security/APPLICATION_RISK_PROFILE.md"]
+    gate: spec_gate
+
+  2_requirements:
+    requirement: "Functional and non-functional acceptance criteria must be defined."
+    artifacts: ["docs/prd/PRODUCT_REQUIREMENTS.md"]
+    gate: prd_gate
+
+  3_design_and_architecture:
+    requirement: "Threat models, data flow diagrams, and OpenAPI contracts must be reviewed for cross-cutting changes."
+    artifacts:
+      [
+        "api/openapi.yaml",
+        "docs/security/THREAT_MODEL.md",
+        "diagrams/system_architecture.mmd",
+      ]
+    gate: design_gate
+
+  4_development:
+    requirement: "All code must follow clean-code standards, Conventional Commits, and pass pre-commit secret scans."
+    commit_convention: "Conventional Commits (type(scope): message)"
+    gate: build_gate
+
+  5_testing:
+    requirement: "Unit and integration tests must pass with zero regression."
+    coverage_floor: 80
+    gate: test_gate
+
+  6_deployment:
+    requirement: "Two-stage approval required for production promotion; rollback plan mandatory."
+    artifacts: ["devops/runbooks/deploy.md", "evidence/change_records/"]
+    gate: change_gate
+
+  7_observability:
+    requirement: "Logs, metrics, and alerts must be configured; incident post-mortems logged."
+    artifacts:
+      ["docs/observability/dashboards.md", "docs/observability/alerts.md"]
+    gate: monitor_gate

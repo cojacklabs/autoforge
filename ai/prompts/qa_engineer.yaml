@@ -13,7 +13,8 @@ inputs:
   - "ai/code_targets.yaml"
 constraints:
   - STOP for human approval before declaring NO-GO.
-  - Aim for ≥ 80% coverage where practical or document exceptions.
+  - "STRICT: Enforce minimum 80% test coverage floor; zero untested code changes on sensitive paths."
+  - "STRICT: Test pyramid enforcement: Unit tests for core logic, Integration tests for APIs, E2E smoke tests for user journeys."
   - Include at least one end-to-end smoke test for the critical user journey touched by the change.
   - Produce a defects list; if blocking issues remain, mark the request as NO-GO.
   - Respect test code locations defined in the managed ai/code_targets.yaml (generated from autoforge.config.json); default path is ../tests.

@@ -5,23 +5,23 @@
  */
 
 export const WORK_ITEM_STATES = [
-  'draft',
-  'ready_for_planning',
-  'plan_review',
-  'ready_to_build',
-  'building',
-  'verify',
-  'release_candidate',
-  'awaiting_approval',
-  'released',
-  'blocked',
-  'cancelled',
+  "draft",
+  "ready_for_planning",
+  "plan_review",
+  "ready_to_build",
+  "building",
+  "verify",
+  "release_candidate",
+  "awaiting_approval",
+  "released",
+  "blocked",
+  "cancelled",
 ] as const;
 
-export type WorkItemState = typeof WORK_ITEM_STATES[number];
+export type WorkItemState = (typeof WORK_ITEM_STATES)[number];
 
-export const RISK_TIERS = ['R0', 'R1', 'R2', 'R3'] as const;
-export type RiskTier = typeof RISK_TIERS[number];
+export const RISK_TIERS = ["R0", "R1", "R2", "R3"] as const;
+export type RiskTier = (typeof RISK_TIERS)[number];
 
 export interface WorkItem {
   id: string; // e.g. "WI-2026-001"
@@ -38,15 +38,15 @@ export interface WorkItem {
 }
 
 export const RUN_STATUSES = [
-  'pending',
-  'running',
-  'paused_approval',
-  'completed',
-  'failed',
-  'cancelled',
+  "pending",
+  "running",
+  "paused_approval",
+  "completed",
+  "failed",
+  "cancelled",
 ] as const;
 
-export type RunStatus = typeof RUN_STATUSES[number];
+export type RunStatus = (typeof RUN_STATUSES)[number];
 
 export type AutonomyLevel = 0 | 1 | 2 | 3;
 
@@ -65,15 +65,15 @@ export interface Run {
 }
 
 export const STEP_STATUSES = [
-  'pending',
-  'running',
-  'waiting_approval',
-  'completed',
-  'failed',
-  'skipped',
+  "pending",
+  "running",
+  "waiting_approval",
+  "completed",
+  "failed",
+  "skipped",
 ] as const;
 
-export type StepStatus = typeof STEP_STATUSES[number];
+export type StepStatus = (typeof STEP_STATUSES)[number];
 
 export interface Step {
   id: string; // e.g. "STEP-01"
@@ -94,7 +94,14 @@ export interface GateResult {
   id: string;
   runId: string;
   stepId?: string;
-  gateType: 'parse' | 'prettier' | 'eslint' | 'tsc' | 'tests' | 'security' | 'custom';
+  gateType:
+    | "parse"
+    | "prettier"
+    | "eslint"
+    | "tsc"
+    | "tests"
+    | "security"
+    | "custom";
   passed: boolean;
   command?: string;
   evidence?: Record<string, unknown>;
@@ -110,12 +117,17 @@ export interface Decision {
   actor: string; // e.g. "agent:architect" or "user:colton"
   rationale: string;
   confidence?: number;
-  policyOutcome: 'allowed' | 'escalated' | 'rejected';
+  policyOutcome: "allowed" | "escalated" | "rejected";
   recordedAt: string;
 }
 
-export const APPROVAL_STATUSES = ['pending', 'approved', 'rejected', 'expired'] as const;
-export type ApprovalStatus = typeof APPROVAL_STATUSES[number];
+export const APPROVAL_STATUSES = [
+  "pending",
+  "approved",
+  "rejected",
+  "expired",
+] as const;
+export type ApprovalStatus = (typeof APPROVAL_STATUSES)[number];
 
 export interface Approval {
   id: string;

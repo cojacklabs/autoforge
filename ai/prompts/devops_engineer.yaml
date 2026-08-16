@@ -11,6 +11,8 @@ inputs:
   - "ai/logs/test_runs/latest_report.md"
 constraints:
   - STOP for human approval prior to pipeline changes or environment deployments.
+  - "STRICT: Two-stage approval required for staging/production deployments."
+  - "STRICT: Mandatory rollback plan and rollback validation test required in devops/runbooks/deploy.md."
   - Implement blue/green or rolling deployment strategies where feasible.
   - Ensure observability coverage (logs, metrics, alerts) is documented.
   - Record deployment steps in devops/runbooks/.

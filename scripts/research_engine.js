@@ -41,25 +41,58 @@ export class ResearchEngine {
     }
 
     // Risk Trigger: Financial / Payment integration
-    const paymentKeywords = ["stripe", "paypal", "braintree", "paddle", "billing", "payment", "checkout", "subscription"];
-    const hasPaymentDep = dependencies.some((d) => paymentKeywords.some((k) => d.includes(k)));
-    const hasPaymentGoal = paymentKeywords.some((k) => goal.toLowerCase().includes(k));
+    const paymentKeywords = [
+      "stripe",
+      "paypal",
+      "braintree",
+      "paddle",
+      "billing",
+      "payment",
+      "checkout",
+      "subscription",
+    ];
+    const hasPaymentDep = dependencies.some((d) =>
+      paymentKeywords.some((k) => d.includes(k)),
+    );
+    const hasPaymentGoal = paymentKeywords.some((k) =>
+      goal.toLowerCase().includes(k),
+    );
 
     if (hasPaymentDep || hasPaymentGoal) {
       riskTier = "R2";
       findings.push({
         domain: "financial_integrity",
         riskTier: "R2",
-        message: "Payment or financial transactions detected in dependencies or task objective.",
-        controlsRequired: ["PCI-DSS scope minimization", "Webhook signature verification", "Idempotency keys"],
+        message:
+          "Payment or financial transactions detected in dependencies or task objective.",
+        controlsRequired: [
+          "PCI-DSS scope minimization",
+          "Webhook signature verification",
+          "Idempotency keys",
+        ],
         reviewer: "Security / Compliance Lead",
       });
     }
 
     // Risk Trigger: Auth / Identity / Sensitive Personal Data
-    const authKeywords = ["auth", "passport", "jwt", "oauth", "session", "bcrypt", "cookie", "login", "signup", "user"];
-    const hasAuthDep = dependencies.some((d) => authKeywords.some((k) => d.includes(k)));
-    const hasAuthGoal = authKeywords.some((k) => goal.toLowerCase().includes(k));
+    const authKeywords = [
+      "auth",
+      "passport",
+      "jwt",
+      "oauth",
+      "session",
+      "bcrypt",
+      "cookie",
+      "login",
+      "signup",
+      "user",
+    ];
+    const hasAuthDep = dependencies.some((d) =>
+      authKeywords.some((k) => d.includes(k)),
+    );
+    const hasAuthGoal = authKeywords.some((k) =>
+      goal.toLowerCase().includes(k),
+    );
 
     if (hasAuthDep || hasAuthGoal) {
       if (riskTier === "R1") riskTier = "R1"; // Keep elevated
@@ -67,14 +100,33 @@ export class ResearchEngine {
         domain: "privacy_and_identity",
         riskTier: "R1",
         message: "Authentication, identity, or user account handling detected.",
-        controlsRequired: ["OWASP ASVS Password Policies", "Rate Limiting on Auth Endpoints", "Data Minimization & Deletion Policy"],
+        controlsRequired: [
+          "OWASP ASVS Password Policies",
+          "Rate Limiting on Auth Endpoints",
+          "Data Minimization & Deletion Policy",
+        ],
         reviewer: "Engineering Lead / Privacy Reviewer",
       });
     }
 
     // Risk Trigger: AI / Model integrations
-    const aiKeywords = ["openai", "anthropic", "gemini", "langchain", "ollama", "mistral", "cohere", "llama", "gpt", "rag", "agent", "llm"];
-    const hasAiDep = dependencies.some((d) => aiKeywords.some((k) => d.includes(k)));
+    const aiKeywords = [
+      "openai",
+      "anthropic",
+      "gemini",
+      "langchain",
+      "ollama",
+      "mistral",
+      "cohere",
+      "llama",
+      "gpt",
+      "rag",
+      "agent",
+      "llm",
+    ];
+    const hasAiDep = dependencies.some((d) =>
+      aiKeywords.some((k) => d.includes(k)),
+    );
     const hasAiGoal =
       aiKeywords.some((k) => goal.toLowerCase().includes(k)) ||
       /\b(ai|llm|ml|gpt)\b/i.test(goal);
@@ -85,7 +137,11 @@ export class ResearchEngine {
         domain: "ai_risk_management",
         riskTier: "R2",
         message: "Generative AI or machine learning models in use.",
-        controlsRequired: ["NIST AI RMF Human-in-the-Loop Oversight", "Prompt Injection Defenses", "PII Redaction before External Model Calls"],
+        controlsRequired: [
+          "NIST AI RMF Human-in-the-Loop Oversight",
+          "Prompt Injection Defenses",
+          "PII Redaction before External Model Calls",
+        ],
         reviewer: "AI Safety / Architecture Lead",
       });
     }
@@ -100,7 +156,8 @@ export class ResearchEngine {
       dataInventory.detectedCategories.push({
         field: "User Credentials / Tokens",
         classification: "Confidential / Auth",
-        retentionPolicy: "Encrypted at rest (bcrypt/argon2), zero-plain-text logs",
+        retentionPolicy:
+          "Encrypted at rest (bcrypt/argon2), zero-plain-text logs",
       });
     }
 
@@ -108,16 +165,23 @@ export class ResearchEngine {
       dataInventory.detectedCategories.push({
         field: "Payment Metadata & Customer IDs",
         classification: "Sensitive Financial",
-        retentionPolicy: "Delegated to PCI-compliant provider (e.g. Stripe Customer ID only)",
+        retentionPolicy:
+          "Delegated to PCI-compliant provider (e.g. Stripe Customer ID only)",
       });
     }
 
     // 3. Check for standard readiness artifacts
     const requiredDocs = [
-      { name: "APPLICATION_RISK_PROFILE.md", path: "docs/security/APPLICATION_RISK_PROFILE.md" },
+      {
+        name: "APPLICATION_RISK_PROFILE.md",
+        path: "docs/security/APPLICATION_RISK_PROFILE.md",
+      },
       { name: "DATA_INVENTORY.yaml", path: "docs/privacy/DATA_INVENTORY.yaml" },
       { name: "THREAT_MODEL.md", path: "docs/security/THREAT_MODEL.md" },
-      { name: "ACCESSIBILITY_PLAN.md", path: "docs/uiux/ACCESSIBILITY_PLAN.md" },
+      {
+        name: "ACCESSIBILITY_PLAN.md",
+        path: "docs/uiux/ACCESSIBILITY_PLAN.md",
+      },
     ];
 
     for (const doc of requiredDocs) {
@@ -166,31 +230,56 @@ export class ResearchEngine {
 
 ## 📊 Summary of Findings
 
-${scanResult.findings.length === 0 ? "_No elevated risk triggers detected._" : scanResult.findings.map((f, i) => `### ${i + 1}. [${f.domain.toUpperCase()}] Tier: ${f.riskTier}
+${
+  scanResult.findings.length === 0
+    ? "_No elevated risk triggers detected._"
+    : scanResult.findings
+        .map(
+          (
+            f,
+            i,
+          ) => `### ${i + 1}. [${f.domain.toUpperCase()}] Tier: ${f.riskTier}
 - **Description:** ${f.message}
 - **Assigned Reviewer:** ${f.reviewer}
 - **Mandatory Controls:**
 ${f.controlsRequired.map((c) => `  - [ ] ${c}`).join("\n")}
-`).join("\n")}
+`,
+        )
+        .join("\n")
+}
 
 ---
 
 ## 🔍 Assumptions Requiring Verification
 ${scanResult.assumptions.map((a) => `- [ ] ${a}`).join("\n")}
 `;
-    fs.writeFileSync(path.join(securityDir, "APPLICATION_RISK_PROFILE.md"), riskProfileContent, "utf8");
+    fs.writeFileSync(
+      path.join(securityDir, "APPLICATION_RISK_PROFILE.md"),
+      riskProfileContent,
+      "utf8",
+    );
 
     // 2. DATA_INVENTORY.yaml
     const dataInventoryYaml = `# AutoForge Data Inventory & Classification Map
 generatedAt: "${scanResult.timestamp}"
 riskTier: "${scanResult.riskTier}"
 categories:
-${scanResult.dataInventory.detectedCategories.map((c) => `  - field: "${c.field}"
+${
+  scanResult.dataInventory.detectedCategories
+    .map(
+      (c) => `  - field: "${c.field}"
     classification: "${c.classification}"
     retention: "${c.retentionPolicy}"
-`).join("") || "  []\n"}
+`,
+    )
+    .join("") || "  []\n"
+}
 `;
-    fs.writeFileSync(path.join(privacyDir, "DATA_INVENTORY.yaml"), dataInventoryYaml, "utf8");
+    fs.writeFileSync(
+      path.join(privacyDir, "DATA_INVENTORY.yaml"),
+      dataInventoryYaml,
+      "utf8",
+    );
 
     // 3. THREAT_MODEL.md
     const threatModelContent = `# 🔒 Threat Model (OWASP ASVS Baseline)
@@ -214,7 +303,11 @@ ${scanResult.dataInventory.detectedCategories.map((c) => `  - field: "${c.field}
 - [ ] OWASP Top 10 API Security Checklist
 - [ ] Sanitization on all external user-supplied inputs
 `;
-    fs.writeFileSync(path.join(securityDir, "THREAT_MODEL.md"), threatModelContent, "utf8");
+    fs.writeFileSync(
+      path.join(securityDir, "THREAT_MODEL.md"),
+      threatModelContent,
+      "utf8",
+    );
 
     // 4. ACCESSIBILITY_PLAN.md
     const a11yPlanContent = `# ♿ Accessibility & Inclusive Design Plan (WCAG 2.2 Level AA)
@@ -233,6 +326,10 @@ ${scanResult.dataInventory.detectedCategories.map((c) => `  - field: "${c.field}
 - Automated: Lighthouse Accessibility Score >= 95
 - Human Review: Manual Tab-key walkthrough across key user journeys.
 `;
-    fs.writeFileSync(path.join(uiuxDir, "ACCESSIBILITY_PLAN.md"), a11yPlanContent, "utf8");
+    fs.writeFileSync(
+      path.join(uiuxDir, "ACCESSIBILITY_PLAN.md"),
+      a11yPlanContent,
+      "utf8",
+    );
   }
 }

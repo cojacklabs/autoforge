@@ -158,7 +158,7 @@ export class RunStore {
       JSON.stringify(item.linkedArtifacts || []),
       item.metadata ? JSON.stringify(item.metadata) : null,
       now,
-      now
+      now,
     );
   }
 
@@ -183,7 +183,9 @@ export class RunStore {
 
   updateWorkItemState(id, state) {
     const now = new Date().toISOString();
-    const stmt = this.db.prepare(`UPDATE work_items SET state = ?, updated_at = ? WHERE id = ?`);
+    const stmt = this.db.prepare(
+      `UPDATE work_items SET state = ?, updated_at = ? WHERE id = ?`,
+    );
     stmt.run(state, now, id);
   }
 
@@ -199,10 +201,10 @@ export class RunStore {
       run.workItemId,
       run.recipeName,
       run.autonomyLevel,
-      run.status || 'pending',
+      run.status || "pending",
       now,
       now,
-      now
+      now,
     );
   }
 
@@ -233,7 +235,11 @@ export class RunStore {
       query += `, error = ?`;
       params.push(error);
     }
-    if (status === 'completed' || status === 'failed' || status === 'cancelled') {
+    if (
+      status === "completed" ||
+      status === "failed" ||
+      status === "cancelled"
+    ) {
       query += `, completed_at = ?`;
       params.push(now);
     }
@@ -258,7 +264,7 @@ export class RunStore {
       approval.scope,
       approval.requestedBy,
       approval.expiresAt || null,
-      now
+      now,
     );
   }
 
@@ -271,7 +277,9 @@ export class RunStore {
   }
 
   getPendingApprovals(runId) {
-    const stmt = this.db.prepare(`SELECT * FROM approvals WHERE run_id = ? AND status = 'pending'`);
+    const stmt = this.db.prepare(
+      `SELECT * FROM approvals WHERE run_id = ? AND status = 'pending'`,
+    );
     const rows = stmt.all(runId);
     return rows.map((r) => ({
       id: r.id,
@@ -305,7 +313,7 @@ export class RunStore {
       result.command || null,
       result.evidence ? JSON.stringify(result.evidence) : null,
       result.errorContext || null,
-      now
+      now,
     );
   }
 
@@ -316,6 +324,12 @@ export class RunStore {
       INSERT INTO events (id, run_id, type, payload, timestamp)
       VALUES (?, ?, ?, ?, ?)
     `);
-    stmt.run(event.id, event.runId, event.type, JSON.stringify(event.payload), now);
+    stmt.run(
+      event.id,
+      event.runId,
+      event.type,
+      JSON.stringify(event.payload),
+      now,
+    );
   }
 }

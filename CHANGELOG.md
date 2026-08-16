@@ -2,6 +2,30 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.6.0] - 2026-08-16
+
+### Major Features & Compliance Hardening
+
+- **Shift-Left Security & Quality Gate Runner (`autoforge gate check`)**:
+  - Implemented sequential gate execution: Secret Detection → Parse Check → Prettier Format → ESLint Rules → TypeScript Typecheck → Unit Test Suite.
+  - Added secret scanning against high-entropy API keys, OAuth tokens, GitHub PATs, and AWS credentials.
+  - Added configurable threshold manifest in `devops/quality_gates.yaml`.
+
+- **Audit-Ready Policy Manifests (`policies/`)**:
+  - Added machine-readable policy definitions:
+    - `policies/software_development_policy.yaml` (SDLC 7-phase mapping & evidence rules).
+    - `policies/change_management_policy.yaml` (2-stage approvals, rollback plans, and emergency hotfix paths).
+    - `policies/access_control_policy.yaml` (Least-privilege, environment separation, secret hygiene).
+    - `policies/incident_response_plan.yaml` (SLA tiers, escalation paths, and post-mortems).
+
+- **Automated Evidence Collection (`autoforge audit` & `evidence/`)**:
+  - Implemented `EvidenceManager` to generate audit-ready **SDLC Compliance Traceability Matrices** (`evidence/traceability_matrix.json`) mapped against SOC 2 Type II and ISO 27001 Secure SDLC criteria.
+  - Added structured storage for gate evaluation records (`evidence/test_reports/`) and change approvals (`evidence/change_records/`).
+
+- **Strict AI Agent CI/CD Constraints**:
+  - Updated agent prompts (`fullstack_engineer`, `qa_engineer`, `devops_engineer`) to mandate Conventional Commits (`type(scope): message`), minimum 80% test coverage floors, zero hardcoded credentials, and rollback verification in deployment runbooks.
+  - Upgraded GitHub Actions CI workflow template (`devops/ci/web_app.yml`) to 2026 multi-job audit standards.
+
 ## [0.5.0] - 2026-08-16
 
 ### Major Features & Enhancements

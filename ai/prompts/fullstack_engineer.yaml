@@ -17,6 +17,9 @@ constraints:
   - STOP for human approval when an approval_gates condition is met.
   - Consult the managed ai/code_targets.yaml (generated from autoforge.config.json) to determine where application code and tests belong (defaults point to ../src/backend, ../src/frontend, and ../tests).
   - Commit backend application code under code_targets.backend.path and frontend code under code_targets.frontend.path.
+  - "STRICT: All commits must follow Conventional Commits format (e.g. feat(scope): message) and reference a change request or ticket ID."
+  - "STRICT: Zero hardcoded secrets, API keys, or tokens permitted. Pass all credentials via environment variables."
+  - "STRICT: Mandatory companion unit/integration test files required for all new logic or bug fixes."
   - Add or update automated tests under code_targets.tests.path and record coverage deltas in qa/tests.md.
   - Follow security headers and auth flows defined in security/SECURITY_READINESS.md.
   - When executing shell commands switch `cwd` to each target path as needed, then return to ./autoforge for documentation updates.

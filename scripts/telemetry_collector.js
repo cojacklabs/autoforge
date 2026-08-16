@@ -98,7 +98,8 @@ export class TelemetryCollector {
       if (e.type === "agent_complete") {
         totalRetries += e.retries || 0;
         if (e.tokens) {
-          totalTokens += (e.tokens.promptTokens || 0) + (e.tokens.completionTokens || 0);
+          totalTokens +=
+            (e.tokens.promptTokens || 0) + (e.tokens.completionTokens || 0);
         }
       }
 
@@ -107,7 +108,8 @@ export class TelemetryCollector {
       }
     }
 
-    const firstPassGateRate = totalGates > 0 ? (passedGates / totalGates) * 100 : 100;
+    const firstPassGateRate =
+      totalGates > 0 ? (passedGates / totalGates) * 100 : 100;
 
     return {
       totalRuns: runs.size,
@@ -152,7 +154,9 @@ export class TelemetryCollector {
           proposedPatch: {
             role,
             section: "quality_checks",
-            enforceRules: [`Ensure code satisfies strict '${gateType}' checks before handoff.`],
+            enforceRules: [
+              `Ensure code satisfies strict '${gateType}' checks before handoff.`,
+            ],
           },
         });
       }

@@ -1,0 +1,52 @@
+# Quality Gates Configuration
+version: 1
+
+gates:
+  pre_commit:
+    enabled: true
+    secret_scan:
+      enabled: true
+      patterns:
+        - "(?:api[_-]?key|secret|token|password|auth[_-]?token|bearer)\\s*[:=]\\s*['\"][0-9a-zA-Z\\-_]{16,}['\"]"
+        - "ghp_[0-9a-zA-Z]{36}"
+        - "sk-[0-9a-zA-Z]{32,}"
+        - "AKIA[0-9A-Z]{16}"
+    formatting:
+      tool: prettier
+      check_cmd: "prettier --check"
+      write_cmd: "prettier --write"
+    linting:
+      tool: eslint
+      max_warnings: 0
+      cmd: "eslint --max-warnings=0"
+
+  static_analysis:
+    enabled: true
+    typecheck:
+      tool: tsc
+      cmd: "tsc --noEmit"
+    sast:
+      enabled: true
+      block_on: "high"
+
+  testing:
+    enabled: true
+    unit_tests:
+      cmd: "npm test --if-present"
+    coverage:
+      enabled: true
+      threshold_percent: 80
+      allow_negative_delta: false
+
+  security:
+    enabled: true
+    dependency_audit:
+      tool: npm_audit
+      max_cvss: 7.0
+      block_on_vulnerabilities: true
+
+  release_governance:
+    enabled: true
+    require_two_stage_approval: true
+    require_rollback_plan: true
+    require_sbom: true

@@ -18,7 +18,10 @@ test("RunStore - database initialization and CRUD operations", async (t) => {
       riskTier: "R2",
       state: "draft",
       owner: "user:colton",
-      acceptanceCriteria: ["Support monthly plan", "Webhook signature verification"],
+      acceptanceCriteria: [
+        "Support monthly plan",
+        "Webhook signature verification",
+      ],
       linkedArtifacts: ["docs/prd/PRODUCT_REQUIREMENTS.md"],
     });
 
@@ -70,7 +73,12 @@ test("RunStore - database initialization and CRUD operations", async (t) => {
     assert.equal(pending[0].id, "APP-001");
     assert.equal(pending[0].status, "pending");
 
-    store.resolveApproval("APP-001", "user:colton", "approved", "Looks safe, indexes are present");
+    store.resolveApproval(
+      "APP-001",
+      "user:colton",
+      "approved",
+      "Looks safe, indexes are present",
+    );
     const pendingAfter = store.getPendingApprovals("RUN-001");
     assert.equal(pendingAfter.length, 0);
   });
