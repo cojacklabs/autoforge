@@ -34,7 +34,9 @@ npx autoforge done
 
 Copy and paste this one-liner into any supported agent before starting work:
 
-> Review the repository's AutoForge instructions and current project infrastructure, bring your understanding up to date using `AGENTS.md`, `npx autoforge doctor`, and `npx autoforge context --explain`, then summarize the governing rules, active work, relevant decisions, and validation requirements before proceeding.
+```text
+Review the repository's AutoForge instructions and current project infrastructure, bring your understanding up to date using `AGENTS.md`, `npx autoforge doctor`, and `npx autoforge context --explain`, then summarize the governing rules, active work, relevant decisions, and validation requirements before proceeding.
+```
 
 ## Memory and Design
 
