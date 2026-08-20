@@ -1,40 +1,46 @@
 {
   "name": "@cojacklabs/autoforge",
-  "version": "0.6.0",
+  "version": "0.7.0",
   "type": "module",
   "private": false,
   "license": "MIT",
+  "engines": {
+    "node": ">=20"
+  },
   "scripts": {
+    "build": "node ./scripts/clean_dist.js && tsup",
     "format": "prettier --write \"**/*.{js,jsx,ts,tsx,json,md,yaml,yml}\"",
     "format:check": "prettier --check \"**/*.{js,jsx,ts,tsx,json,md,yaml,yml}\"",
-    "lint": "eslint --max-warnings=0 . --if-present",
-    "typecheck": "tsc --noEmit --if-present",
-    "validate": "node ./scripts/validate_context.js",
-    "snapshot": "node ./scripts/generate_snapshot.js",
-    "repomix": "repomix",
-    "test": "node --test tests/*.test.js",
-    "update": "node ./scripts/update_autoforge.js",
-    "build": "node ./scripts/build_dist.js",
+    "typecheck": "tsc --noEmit",
+    "test": "npm run test:foundation && npm run test:legacy",
+    "test:foundation": "npm run build && vitest run",
+    "test:legacy": "node --test tests/*.test.js",
     "prepack": "npm run build"
   },
   "bin": {
-    "autoforge": "./bin/autoforge.js"
+    "autoforge": "./dist/cli.js"
   },
   "files": [
     "dist",
-    "bin/autoforge.js",
-    "scripts",
     "LICENSE"
   ],
   "dependencies": {
-    "glob": "^10.3.0",
-    "ignore": "^5.3.1",
-    "repomix": "^1.8.0",
-    "yaml": "^2.4.2"
+    "@piotrjura/pm": "^0.5.3",
+    "yaml": "^2.9.0",
+    "zod": "^4.4.3"
   },
   "devDependencies": {
-    "@cojacklabs/autoforge": "^0.4.2",
-    "prettier": "^3.3.3"
+    "@types/node": "^26.2.0",
+    "glob": "^10.5.0",
+    "ignore": "^5.3.1",
+    "prettier": "^3.3.3",
+    "repomix": "^1.18.0",
+    "tsup": "^8.5.1",
+    "typescript": "^7.0.2",
+    "vitest": "^4.1.11"
+  },
+  "overrides": {
+    "esbuild": "^0.28.1"
   },
   "publishConfig": {
     "access": "public"

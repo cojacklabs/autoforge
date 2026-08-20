@@ -1,0 +1,42 @@
+{
+  "schemaVersion": 1,
+  "projectId": "7017fe1c-8174-4f40-b4a6-e3c2238a69d8",
+  "contextBudget": {
+    "maxTokens": 12000
+  },
+  "qualityGates": [
+    {
+      "id": "typecheck",
+      "command": "tsc",
+      "args": [
+        "--noEmit"
+      ],
+      "timeoutMs": 120000
+    },
+    {
+      "id": "format",
+      "command": "npm",
+      "args": [
+        "run",
+        "format:check"
+      ],
+      "timeoutMs": 120000
+    },
+    {
+      "id": "tests",
+      "command": "npm",
+      "args": [
+        "test"
+      ],
+      "timeoutMs": 120000
+    }
+  ],
+  "artifacts": {
+    "work": "tracked",
+    "decisions": "tracked",
+    "doctrines": "tracked",
+    "specifications": "tracked",
+    "sessions": "ignored",
+    "packets": "ignored"
+  }
+}

@@ -1,0 +1,101 @@
+{
+  "schemaVersion": 1,
+  "revision": 4,
+  "updatedAt": "2026-08-20T15:39:35.234Z",
+  "data": {
+    "decisions": [
+      {
+        "id": "decision.retained-legacy-migration-backups-must-be-ignored-by-git",
+        "statement": "Retained legacy migration backups must be ignored by Git",
+        "reasoning": "Backups may contain generated state, telemetry, credentials, or historical files and exist only for local recovery.",
+        "consequences": [
+          "Migration ensures the backup pattern is present in the project .gitignore before publication."
+        ],
+        "scope": [
+          "migration",
+          "repository-safety"
+        ],
+        "keywords": [
+          "backup",
+          "gitignore"
+        ],
+        "relatedWork": [
+          "task.ignore-retained-migration-backups"
+        ],
+        "supersedes": null,
+        "status": "active",
+        "createdAt": "2026-08-20T15:16:23.810Z",
+        "updatedAt": "2026-08-20T15:16:23.810Z"
+      },
+      {
+        "id": "decision.self-hosted-quality-gates-must-reference-tools-installed-by-the-repository",
+        "statement": "Self-hosted quality gates must reference tools installed by the repository",
+        "reasoning": "A migrated command can be syntactically safe yet unavailable in the current project, causing false operational failure.",
+        "consequences": [
+          "The AutoForge repository retains typecheck, formatting, and test gates but removes its unavailable ESLint gate."
+        ],
+        "scope": [
+          "dogfood",
+          "quality"
+        ],
+        "keywords": [
+          "gates",
+          "tooling"
+        ],
+        "relatedWork": [
+          "task.align-self-hosted-quality-gates"
+        ],
+        "supersedes": null,
+        "status": "active",
+        "createdAt": "2026-08-20T15:20:20.041Z",
+        "updatedAt": "2026-08-20T15:20:20.041Z"
+      },
+      {
+        "id": "decision.quality-command-timeouts-must-terminate-the-entire-spawned-process-tree",
+        "statement": "Quality command timeouts must terminate the entire spawned process tree",
+        "reasoning": "Killing only an npm parent leaves test runners active, causes resource contention, and makes later checks nondeterministic.",
+        "consequences": [
+          "Use an isolated POSIX process group and group termination, with direct child termination as the portable fallback."
+        ],
+        "scope": [
+          "dogfood",
+          "quality"
+        ],
+        "keywords": [
+          "timeout",
+          "process-tree"
+        ],
+        "relatedWork": [
+          "task.terminate-timed-out-quality-process-trees"
+        ],
+        "supersedes": null,
+        "status": "active",
+        "createdAt": "2026-08-20T15:33:53.277Z",
+        "updatedAt": "2026-08-20T15:33:53.277Z"
+      },
+      {
+        "id": "decision.foundation-tests-must-use-bounded-worker-concurrency",
+        "statement": "Foundation tests must use bounded worker concurrency",
+        "reasoning": "Running every test file at default parallelism creates filesystem and process contention that causes otherwise passing integration tests to exceed local timeouts.",
+        "consequences": [
+          "Vitest uses at most four workers while preserving per-file isolation and existing timeouts."
+        ],
+        "scope": [
+          "dogfood",
+          "testing"
+        ],
+        "keywords": [
+          "vitest",
+          "concurrency"
+        ],
+        "relatedWork": [
+          "task.bound-foundation-test-concurrency"
+        ],
+        "supersedes": null,
+        "status": "active",
+        "createdAt": "2026-08-20T15:39:35.182Z",
+        "updatedAt": "2026-08-20T15:39:35.182Z"
+      }
+    ]
+  }
+}

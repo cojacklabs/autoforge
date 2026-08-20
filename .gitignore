@@ -1,4 +1,8 @@
-.autoforge/
+.autoforge.backup-*/
+.autoforge/context/
+.autoforge/state/session.json
+.autoforge/state/doctrine-session.json
+.autoforge/state/*.json.bak
 **/logs/deployments/*
 **/logs/mastermind/*
 **/logs/security/*
@@ -20,7 +24,6 @@ build/
 .vscode/
 .idea/
 *.lock
-package-lock.json
 *.zip
 *.tgz
 *.tar

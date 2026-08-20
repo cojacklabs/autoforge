@@ -34,7 +34,7 @@
 - **Multi-Agent Assembly Line** — Specialized agents (PM, UI/UX, Architect, Engineer, QA, Security, SRE, DevOps) each handle their SDLC role
 - **Continuous Learning** — Execution telemetry trains models; prompts/recipes improve automatically
 - **Quality Gates** — Enforces TypeScript typecheck, ESLint, Prettier, and artifact validation
-- **CLI commands**: `init`, `load`, `snapshot`, `configure`, `refresh`, `version`
+- **CLI commands**: `init`, `add`, `start`, `context`, `check`, `done`, `doctor`, `version`
 
 ---
 

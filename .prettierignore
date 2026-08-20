@@ -1,0 +1,10 @@
+dev/AutoForge_0.7.0_Rewrite_Development_Plan.md
+dev/AutoForge_Foundation.md
+dev/AutoForge_Planning_Bundle.md
+dev/Design_Specification_Standard.md
+AUTOFORGE.md
+bin/autoforge.js
+pnpm-lock.yaml
+shared/types/orchestration.ts
+.autoforge/
+.autoforge.backup-*/

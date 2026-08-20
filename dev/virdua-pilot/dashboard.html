@@ -1,0 +1,25 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Virdua Dashboard Pilot</title>
+    <style>
+      :root { color-scheme: light; font-family: system-ui, sans-serif; }
+      body { margin: 0; color: #242124; background: #faf8fc; }
+      .shell { display: grid; grid-template-columns: 240px 1fr; min-height: 100vh; }
+      aside { padding: 28px 20px; background: #f0ebf5; }
+      main { padding: 40px; max-width: 960px; }
+      nav a { display: block; padding: 12px; color: #6750a4; font-weight: 700; }
+      .card { margin-top: 28px; padding: 24px; background: white; border: 1px solid #e2dce8; border-radius: 16px; }
+      button { padding: 10px 16px; color: white; background: #6750a4; border: 0; border-radius: 999px; }
+      @media (max-width: 640px) { .shell { grid-template-columns: 72px 1fr; } aside { padding: 20px 8px; } main { padding: 24px 16px; } }
+    </style>
+  </head>
+  <body>
+    <div class="shell">
+      <aside aria-label="Primary navigation"><strong>Virdua</strong><nav><a href="#dashboard">Dashboard</a><a href="#reviews">Reviews</a></nav></aside>
+      <main id="dashboard"><h1>Review dashboard</h1><p>Choose a job to begin your review.</p><section class="card" id="reviews"><h2>Review queue</h2><p>No review jobs are available.</p><button type="button">Refresh queue</button></section></main>
+    </div>
+  </body>
+</html>

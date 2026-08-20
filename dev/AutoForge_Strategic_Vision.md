@@ -1,6 +1,6 @@
 # 🎯 AutoForge — Strategic Vision Document
 
-> Generated: 2026-08-16 | Version: 0.4.1 | For internal planning and AI onboarding reference
+> **Archived historical document.** This v0.4.1 vision is retained for context only; its command examples are not supported by v0.7.0. See `dev/AutoForge_0.7.0_Subcommand_Lifecycle_Audit.md` for the current command lifecycle.
 
 ---
 
@@ -24,7 +24,7 @@ When a developer runs `npx autoforge init`, the framework injects a `.autoforge/
 | `ai/memory/`            | Persistent cross-session memory so no context is ever lost between AI conversations                                                                 |
 | `autoforge.config.json` | Tells agents _where_ the real code lives (e.g. `src/backend`, `src/frontend`, `tests`) so they never touch files outside their declared targets     |
 
-The CLI's `load` command prints a single block of orchestrator context that any developer can paste into Claude, Gemini, or Codex — instantly turning their AI into a disciplined, role-aware engineering team.
+The v0.7 CLI's `context` command produces a bounded, task-specific build packet that Codex, Claude, Gemini, and other supported agents can consume without a giant prompt dump.
 
 ### Current CLI Commands
 

@@ -27,12 +27,14 @@ Refer to the prompts for detailed instructions, constraints, and deliverable for
 
 - 2025-10-24: Initial public release of @cojacklabs/autoforge v0.1.0. Scoped package, added config-driven workflow (`autoforge configure`), planning-first quality gates, project snapshot (`autoforge snapshot`), and onboarding prompt generator (`autoforge load` / `refresh`).
 - 2025-10-28: v0.2.0 updates in progress. Default folder renamed to `.autoforge/` (legacy `autoforge/` still supported), STOP/APPROVAL gates with `max_retries` added across prompts, recipe-based orchestration (`docs/blueprint/recipes/*` + `automation_bootstrap`), integration registry (`ai/integrations.yaml`), and new optional roles (integration_engineer, payments_engineer, data_analyst, compliance_officer). Agents should reload manifests and follow the updated approvals cadence.
+- 2026-08-16: v0.5.0 release. Durable SQLite Orchestration Kernel (`.autoforge/runtime/autoforge.db`), Advanced Research & Risk Discovery Layer (`autoforge research scan`), and Telemetry & Governed Learning (`autoforge train` / `metrics`).
+- 2026-08-16: v0.6.0 release. Shift-Left Quality Gate runner (`autoforge gate check`), SOC 2 / ISO 27001 Compliance Policies (`policies/`), Automated SDLC Traceability Evidence Engine (`autoforge audit` / `evidence/`), and proactive version update checking (`autoforge update`).
 
 **Upcoming / To Do**
 
-1. Publish v0.2.0 notes, update `README`/`QUICKSTART` links, and collect adopter feedback.
-2. Wire recipes into automation flows end-to-end and add example CI configs per recipe.
-3. Expand validator to enforce new gates and optional role deliverables.
+1. Finalize NPM 0.6.0 publication.
+2. Advance recipe DAG catalog (`mobile_app`, `analytics_app`, microservices) and dynamic multi-agent task branching.
+3. Expand runtime integration adapters for CI/CD runners and external IDE plugins.
 
 ## Lessons Learned
 

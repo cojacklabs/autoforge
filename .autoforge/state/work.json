@@ -1,0 +1,154 @@
+{
+  "schemaVersion": 1,
+  "revision": 23,
+  "updatedAt": "2026-08-20T15:56:16.374Z",
+  "data": {
+    "features": [
+      {
+        "name": "AutoForge self-hosting",
+        "description": "Use AutoForge to govern implementation work on its own repository.",
+        "status": "planned",
+        "createdAt": "2026-08-20T15:16:22.267Z",
+        "updatedAt": "2026-08-20T15:16:22.267Z",
+        "id": "feature.autoforge-self-hosting"
+      },
+      {
+        "name": "Virdua design pilot",
+        "description": "Validate a linked Virdua screen design specification through AutoForge context delivery.",
+        "status": "planned",
+        "createdAt": "2026-08-20T15:56:00.272Z",
+        "updatedAt": "2026-08-20T15:56:00.272Z",
+        "id": "feature.virdua-design-pilot"
+      },
+      {
+        "name": "Virdua design pilot",
+        "description": "Validate a linked Virdua screen design specification through AutoForge context delivery.",
+        "status": "planned",
+        "createdAt": "2026-08-20T15:56:04.937Z",
+        "updatedAt": "2026-08-20T15:56:04.937Z",
+        "id": "feature.virdua-design-pilot-2"
+      }
+    ],
+    "phases": [
+      {
+        "name": "Dogfood safety feedback",
+        "description": "Address concrete safety and ergonomics findings exposed by the first self-hosted run.",
+        "status": "planned",
+        "createdAt": "2026-08-20T15:16:22.750Z",
+        "updatedAt": "2026-08-20T15:16:22.750Z",
+        "id": "phase.dogfood-safety-feedback",
+        "featureId": "feature.autoforge-self-hosting",
+        "sequence": 1
+      },
+      {
+        "name": "Dashboard screen validation",
+        "description": "Exercise the Virdua dashboard screen, component, token, state, and flow graph.",
+        "status": "planned",
+        "createdAt": "2026-08-20T15:56:10.330Z",
+        "updatedAt": "2026-08-20T15:56:10.330Z",
+        "id": "phase.dashboard-screen-validation",
+        "featureId": "feature.virdua-design-pilot-2",
+        "sequence": 1
+      }
+    ],
+    "tasks": [
+      {
+        "name": "Ignore retained migration backups",
+        "description": "Ensure complete legacy migration backups remain local recovery artifacts and never appear as commit candidates.",
+        "status": "completed",
+        "createdAt": "2026-08-20T15:16:23.228Z",
+        "updatedAt": "2026-08-20T15:19:28.728Z",
+        "id": "task.ignore-retained-migration-backups",
+        "phaseId": "phase.dogfood-safety-feedback",
+        "scope": {
+          "include": [
+            ".gitignore",
+            "src/migrations/**",
+            "test/legacy-migration.test.ts"
+          ],
+          "exclude": []
+        }
+      },
+      {
+        "name": "Align self-hosted quality gates",
+        "description": "Remove the unavailable legacy lint command so AutoForge quality gates reflect tools installed by this repository.",
+        "status": "completed",
+        "createdAt": "2026-08-20T15:20:18.813Z",
+        "updatedAt": "2026-08-20T15:33:17.904Z",
+        "id": "task.align-self-hosted-quality-gates",
+        "phaseId": "phase.dogfood-safety-feedback",
+        "scope": {
+          "include": [
+            ".autoforge/config.json"
+          ],
+          "exclude": []
+        }
+      },
+      {
+        "name": "Terminate timed-out quality process trees",
+        "description": "Prevent timed-out npm quality commands from leaving Vitest or other child processes running after the gate returns.",
+        "status": "completed",
+        "createdAt": "2026-08-20T15:33:52.547Z",
+        "updatedAt": "2026-08-20T15:39:21.260Z",
+        "id": "task.terminate-timed-out-quality-process-trees",
+        "phaseId": "phase.dogfood-safety-feedback",
+        "scope": {
+          "include": [
+            "src/quality/service.ts",
+            "test/quality-gate.test.ts"
+          ],
+          "exclude": []
+        }
+      },
+      {
+        "name": "Bound foundation test concurrency",
+        "description": "Limit Vitest worker concurrency so bundled CLI and filesystem integration tests remain deterministic under constrained environments.",
+        "status": "completed",
+        "createdAt": "2026-08-20T15:39:34.459Z",
+        "updatedAt": "2026-08-20T15:45:49.947Z",
+        "id": "task.bound-foundation-test-concurrency",
+        "phaseId": "phase.dogfood-safety-feedback",
+        "scope": {
+          "include": [
+            "vitest.config.ts"
+          ],
+          "exclude": []
+        }
+      },
+      {
+        "name": "Exclude managed state from formatting",
+        "description": "Keep Prettier focused on authored repository files while preserving the self-hosted format quality gate.",
+        "status": "completed",
+        "createdAt": "2026-08-20T15:46:19.924Z",
+        "updatedAt": "2026-08-20T15:48:41.824Z",
+        "id": "task.exclude-managed-state-from-formatting",
+        "phaseId": "phase.dogfood-safety-feedback",
+        "scope": {
+          "include": [
+            ".prettierignore",
+            ".autoforge/config.json"
+          ],
+          "exclude": []
+        }
+      },
+      {
+        "name": "Deliver Virdua dashboard pilot packet",
+        "description": "Validate the linked Virdua dashboard specifications and deliver an implementation-ready context packet.",
+        "status": "completed",
+        "createdAt": "2026-08-20T15:56:10.725Z",
+        "updatedAt": "2026-08-20T15:56:16.270Z",
+        "id": "task.deliver-virdua-dashboard-pilot-packet",
+        "phaseId": "phase.dashboard-screen-validation",
+        "scope": {
+          "include": [
+            "dev/virdua-pilot/**",
+            "src/specifications/**"
+          ],
+          "exclude": []
+        }
+      }
+    ],
+    "issues": [],
+    "activeWork": null
+  }
+}
