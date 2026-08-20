@@ -7,6 +7,9 @@ import { discoverProjectRoot } from "../core/project.js";
 import { triageIntentSchema } from "../intent/triage.js";
 import { planningArtifactKindSchema } from "../planning/artifacts.js";
 import { PlanningArtifactStore } from "../planning/store.js";
+import { createWorkStateStore } from "../state/kernel.js";
+import { WorkService } from "../work/service.js";
+import { workScopeSchema } from "../work/schemas.js";
 
 export interface PlanningCommandOptions {
   args: readonly string[];
@@ -24,7 +27,7 @@ const KINDS = [
 
 function usage(output: LogWriter): ExitCode {
   output.stderr(
-    "Usage: autoforge planning list [--source <intent.json>] | autoforge planning show <kind> [--source <intent.json>]",
+    "Usage: autoforge planning list [--source <intent.json>] | autoforge planning show <kind> [--source <intent.json>] | autoforge planning handoff <kind> --phase <phase-id> --include <pattern>",
   );
   return EXIT_CODE.usage;
 }
@@ -33,6 +36,43 @@ export async function runPlanningCommand(
   options: PlanningCommandOptions,
 ): Promise<ExitCode> {
   const [action, subject, ...argumentsAfterSubject] = options.args;
+  if (action === "handoff") {
+    if (!subject || !KINDS.includes(subject as (typeof KINDS)[number]))
+      return usage(options.output);
+    let phaseId: string | undefined;
+    let include: string | undefined;
+    for (let index = 0; index < argumentsAfterSubject.length; index += 2) {
+      const flag = argumentsAfterSubject[index];
+      const value = argumentsAfterSubject[index + 1];
+      if ((flag !== "--phase" && flag !== "--include") || !value)
+        return usage(options.output);
+      if (flag === "--phase") phaseId = value;
+      else include = value;
+    }
+    if (!phaseId || !include) return usage(options.output);
+    try {
+      const project = await discoverProjectRoot({
+        startDirectory: options.startDirectory,
+      });
+      const artifact = await new PlanningArtifactStore(project.path).read(
+        planningArtifactKindSchema.parse(subject),
+      );
+      const result = await new WorkService(
+        createWorkStateStore(project.path),
+      ).createTask({
+        phaseId,
+        name: `${subject} implementation`,
+        description: `Planning artifact: ${subject}\n\n${artifact.content}`,
+        scope: workScopeSchema.parse({ include: [include], exclude: [] }),
+      });
+      options.output.stdout(
+        `Created task ${result.entity.id} from ${subject}.`,
+      );
+      return EXIT_CODE.success;
+    } catch {
+      return usage(options.output);
+    }
+  }
   if (action !== "list" && action !== "show") return usage(options.output);
   let sourceFile: string | undefined;
   if (action === "list") {

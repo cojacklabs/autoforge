@@ -81,6 +81,7 @@ Intent assessment:
   autoforge knowledge show <id>
   autoforge planning list [--source <intent.json>]
   autoforge planning show <kind> [--source <intent.json>]
+  autoforge planning handoff <kind> --phase <phase-id> --include <pattern>
 
 Options:
   -h, --help       Show this command reference

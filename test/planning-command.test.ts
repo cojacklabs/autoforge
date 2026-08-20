@@ -9,6 +9,8 @@ import { runPlanningCommand } from "../src/commands/planning.js";
 import { EXIT_CODE } from "../src/core/errors.js";
 import { generatePlanningArtifact } from "../src/planning/artifacts.js";
 import { PlanningArtifactStore } from "../src/planning/store.js";
+import { createWorkStateStore } from "../src/state/kernel.js";
+import { WorkService } from "../src/work/service.js";
 
 const directories: string[] = [];
 const intent = {
@@ -107,5 +109,70 @@ describe("planning command", () => {
     expect(JSON.parse(output.stdout.mock.calls[0]?.[0] ?? "[]")).toEqual([
       expect.objectContaining({ kind: "feature-brief", fresh: true }),
     ]);
+  });
+
+  it("hands a planning artifact off to a scoped task", async () => {
+    const projectRoot = await mkdtemp(
+      path.join(os.tmpdir(), "autoforge-planning-handoff-"),
+    );
+    directories.push(projectRoot);
+    await mkdir(path.join(projectRoot, ".git"));
+    await initializeProject({ projectRoot });
+    const service = new WorkService(createWorkStateStore(projectRoot));
+    const feature = await service.createFeature({
+      name: "Checkout",
+      description: "Payments",
+    });
+    const phase = await service.createPhase({
+      featureId: feature.entity.id,
+      name: "Build",
+      description: "Implement",
+    });
+    await new PlanningArtifactStore(projectRoot).write(
+      generatePlanningArtifact(intent, "feature-brief"),
+    );
+    const output = { stdout: vi.fn(), stderr: vi.fn() };
+
+    await expect(
+      runPlanningCommand({
+        args: [
+          "handoff",
+          "feature-brief",
+          "--phase",
+          phase.entity.id,
+          "--include",
+          "src/checkout/**",
+        ],
+        output,
+        startDirectory: projectRoot,
+      }),
+    ).resolves.toBe(EXIT_CODE.success);
+    expect(output.stdout).toHaveBeenCalledWith(
+      expect.stringContaining("Created task task.feature-brief-implementation"),
+    );
+  });
+
+  it("rejects missing artifacts and invalid phases", async () => {
+    const projectRoot = await mkdtemp(
+      path.join(os.tmpdir(), "autoforge-planning-handoff-errors-"),
+    );
+    directories.push(projectRoot);
+    await mkdir(path.join(projectRoot, ".git"));
+    await initializeProject({ projectRoot });
+    const output = { stdout: vi.fn(), stderr: vi.fn() };
+    await expect(
+      runPlanningCommand({
+        args: [
+          "handoff",
+          "feature-brief",
+          "--phase",
+          "phase.missing",
+          "--include",
+          "src/**",
+        ],
+        output,
+        startDirectory: projectRoot,
+      }),
+    ).resolves.toBe(EXIT_CODE.usage);
   });
 });
