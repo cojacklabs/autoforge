@@ -17,7 +17,10 @@ const MANAGED_HOOK = {
 };
 
 export type ClaudeGuardrailHookStatus =
-  "configured" | "absent" | "outdated" | "malformed";
+  | "configured"
+  | "absent"
+  | "outdated"
+  | "malformed";
 
 export interface PreparedClaudeGuardrailSettings {
   path: string;

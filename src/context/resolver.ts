@@ -479,21 +479,25 @@ function decisionCandidates(
   const matchedIds = new Set(matches.map(({ decision }) => decision.id));
   const exclusions = memory.decisions
     .filter(({ id }) => !matchedIds.has(id))
-    .map((decision): ContextExclusion => ({
-      kind: "decision",
-      id: decision.id,
-      reason: decision.status === "active" ? "not-relevant" : "inactive",
-      details: [
-        decision.status === "active"
-          ? "No task or work-hierarchy signal matched"
-          : `Decision status is ${decision.status}`,
-      ],
-      estimatedTokens: estimator.estimate(
-        [decision.statement, decision.reasoning, ...decision.consequences].join(
-          "\n",
+    .map(
+      (decision): ContextExclusion => ({
+        kind: "decision",
+        id: decision.id,
+        reason: decision.status === "active" ? "not-relevant" : "inactive",
+        details: [
+          decision.status === "active"
+            ? "No task or work-hierarchy signal matched"
+            : `Decision status is ${decision.status}`,
+        ],
+        estimatedTokens: estimator.estimate(
+          [
+            decision.statement,
+            decision.reasoning,
+            ...decision.consequences,
+          ].join("\n"),
         ),
-      ),
-    }));
+      }),
+    );
   return { candidates, exclusions };
 }
 

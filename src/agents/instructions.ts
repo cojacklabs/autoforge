@@ -14,7 +14,10 @@ export interface ManagedInstructionBlock {
 }
 
 export type ManagedInstructionStatus =
-  "absent" | "configured" | "outdated" | "malformed";
+  | "absent"
+  | "configured"
+  | "outdated"
+  | "malformed";
 
 export async function resolveAgentPath(
   context: AgentAdapterContext,

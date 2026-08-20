@@ -106,11 +106,13 @@ export class SpecificationFileStore {
         await lockHandle.writeFile(`${process.pid}\n`, "utf8");
         await lockHandle.sync();
       } catch (error) {
-        if (!(
-          error instanceof Error &&
-          "code" in error &&
-          error.code === "EEXIST"
-        )) {
+        if (
+          !(
+            error instanceof Error &&
+            "code" in error &&
+            error.code === "EEXIST"
+          )
+        ) {
           throw specificationError(
             "FILESYSTEM_ERROR",
             `Unable to lock specification ${validated.id}`,
