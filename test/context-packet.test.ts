@@ -93,6 +93,7 @@ function selection() {
           relationships: {
             uses: ["component.packet-store", "component.packet-compiler"],
             implements: ["design.context-contract"],
+            "derived-from": ["intent.context-packet"],
           },
           tags: ["context", "architecture"],
           source: "project",
@@ -176,6 +177,7 @@ describe("context packet compiler", () => {
       packet.content.indexOf("## Relevant Specifications"),
     );
     expect(packet.content).toContain("Keep context scoped to active work.");
+    expect(packet.content).toContain("derived-from → `intent.context-packet`");
     expect(packet.content).toContain("Render build packets as Markdown.");
     expect(packet.content).toContain(
       "The compiler consumes an immutable selection snapshot.",

@@ -27,7 +27,7 @@ export interface DesignCommandOptions {
 function usage(message: string, output: LogWriter): ExitCode {
   output.stderr(message);
   output.stderr(
-    "Usage: autoforge design <validate|import> <file> | autoforge design list [--type <type>] | autoforge design show <id>",
+    "Usage: autoforge design <validate|import> <file> [--intent <intent-id>] | autoforge design list [--type <type>] | autoforge design show <id>",
   );
   return EXIT_CODE.usage;
 }
@@ -77,11 +77,18 @@ export async function runDesignCommand(
   );
 
   if (action === "validate" || action === "import") {
-    if (!subject || rest.length > 0) {
+    if (!subject || (action === "validate" && rest.length > 0)) {
       return usage(
         `Design ${action} requires exactly one file.`,
         options.output,
       );
+    }
+    let intentId: string | undefined;
+    if (action === "import" && rest.length > 0) {
+      if (rest.length !== 2 || rest[0] !== "--intent") {
+        return usage("Invalid design import arguments.", options.output);
+      }
+      intentId = rest[1];
     }
     const specification = await readDesignFile(project.path, subject);
     if (action === "validate") {
@@ -99,9 +106,21 @@ export async function runDesignCommand(
     if (design === undefined) {
       return usage("Design metadata is required for import.", options.output);
     }
+    if (intentId !== undefined) {
+      const intent = await registry.read(intentId).catch(() => undefined);
+      if (!intent || intent.type !== "intent") {
+        return usage(
+          `Intent provenance ${intentId} was not found or is not an intent specification.`,
+          options.output,
+        );
+      }
+    }
     const result = await registry.register({
       ...input,
       design,
+      relationships: intentId
+        ? { ...input.relationships, "derived-from": [intentId] }
+        : input.relationships,
       ...(knowledge === undefined ? {} : { knowledge }),
     });
     options.output.stdout(

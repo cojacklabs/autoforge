@@ -9,6 +9,8 @@ import { initializeProject } from "../src/commands/init.js";
 import { EXIT_CODE } from "../src/core/errors.js";
 import { serializeSpecificationMarkdown } from "../src/specifications/codec.js";
 import { designSpecificationSchema } from "../src/specifications/schemas.js";
+import { SpecificationRegistry } from "../src/specifications/registry.js";
+import { SpecificationFileStore } from "../src/specifications/store.js";
 
 const temporaryDirectories: string[] = [];
 
@@ -56,6 +58,27 @@ describe("design command", () => {
   it("validates, imports, lists, filters, and shows a typed design spec", async () => {
     const projectRoot = await createProject();
     await writeFile(path.join(projectRoot, "compact.md"), tokenMarkdown());
+    await new SpecificationRegistry(
+      new SpecificationFileStore(projectRoot),
+    ).register({
+      id: "intent.checkout",
+      type: "intent",
+      name: "Checkout intent",
+      description: "Intent for checkout.",
+      relationships: {},
+      tags: ["checkout"],
+      source: "project",
+      content: "# Checkout intent",
+      knowledge: {
+        kind: "intent",
+        raw: "Build checkout.",
+        requirements: [],
+        assumptions: [],
+        unknowns: [],
+        constraints: [],
+        acceptanceCriteria: [],
+      },
+    });
     const output = { stdout: vi.fn(), stderr: vi.fn() };
 
     await expect(
@@ -71,7 +94,7 @@ describe("design command", () => {
 
     await expect(
       runDesignCommand({
-        args: ["import", "compact.md"],
+        args: ["import", "compact.md", "--intent", "intent.checkout"],
         output,
         startDirectory: projectRoot,
       }),
@@ -80,6 +103,15 @@ describe("design command", () => {
       expect.stringContaining(
         ".autoforge/specifications/token/spacing-compact.md",
       ),
+    );
+
+    await runDesignCommand({
+      args: ["show", "token.spacing-compact"],
+      output,
+      startDirectory: projectRoot,
+    });
+    expect(output.stdout).toHaveBeenLastCalledWith(
+      expect.stringContaining("derived-from"),
     );
 
     await runDesignCommand({
@@ -131,5 +163,22 @@ describe("design command", () => {
         startDirectory: projectRoot,
       }),
     ).resolves.toBe(EXIT_CODE.usage);
+  });
+
+  it("rejects design imports with unknown intent provenance", async () => {
+    const projectRoot = await createProject();
+    await writeFile(path.join(projectRoot, "compact.md"), tokenMarkdown());
+    const output = { stdout: vi.fn(), stderr: vi.fn() };
+
+    await expect(
+      runDesignCommand({
+        args: ["import", "compact.md", "--intent", "intent.missing"],
+        output,
+        startDirectory: projectRoot,
+      }),
+    ).resolves.toBe(EXIT_CODE.usage);
+    expect(output.stderr).toHaveBeenCalledWith(
+      expect.stringContaining("was not found"),
+    );
   });
 });
