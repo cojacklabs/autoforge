@@ -75,6 +75,7 @@ Design context:
 
 Intent assessment:
   autoforge intent assess <json-file> --kind <implementation|research|architecture|design|planning> [--artifact <kind>]
+  intent assess also returns deterministic workflow stages and rationale
   autoforge intent register <json-file>
   autoforge research register <json-file>
   autoforge knowledge list [--type <intent|research>]

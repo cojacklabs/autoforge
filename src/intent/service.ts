@@ -16,6 +16,7 @@ import {
   planningArtifactSchema,
   type PlanningArtifactKind,
 } from "../planning/artifacts.js";
+import { recommendWorkflow, workflowRecommendationSchema } from "./workflow.js";
 
 export const intentAssessmentInputSchema = z
   .object({
@@ -30,6 +31,7 @@ export const intentAssessmentSchema = z
     triage: triageResultSchema,
     readiness: readinessResultSchema,
     artifacts: z.array(planningArtifactSchema),
+    workflow: workflowRecommendationSchema,
   })
   .strict();
 
@@ -49,9 +51,12 @@ export class IntentApplicationService {
 
   assess(input: IntentAssessmentInput): IntentAssessment {
     const validated = intentAssessmentInputSchema.parse(input);
+    const triage = triageIntent(validated.intent);
+    const readiness = evaluateReadiness(validated.intent, validated.workKind);
     return intentAssessmentSchema.parse({
-      triage: triageIntent(validated.intent),
-      readiness: evaluateReadiness(validated.intent, validated.workKind),
+      triage,
+      readiness,
+      workflow: recommendWorkflow(triage.labels, readiness.level),
       artifacts: validated.artifacts.map((kind: PlanningArtifactKind) =>
         generatePlanningArtifact(validated.intent, kind, this.now()),
       ),

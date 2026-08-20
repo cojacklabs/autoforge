@@ -64,6 +64,7 @@ describe("intent command", () => {
     const result = JSON.parse(output.stdout.mock.calls[0]?.[0] ?? "{}");
     expect(result.triage.labels).toEqual(["READY_FOR_IMPLEMENTATION"]);
     expect(result.readiness.level).toBe("ready");
+    expect(result.workflow.stages).toEqual(["implementation", "validation"]);
     expect(result.artifacts[0].kind).toBe("feature-brief");
     expect(result.persisted).toEqual([
       ".autoforge/planning/feature-brief.json",
