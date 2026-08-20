@@ -79,4 +79,60 @@ describe("specification schemas", () => {
       targetId: "design.spacing",
     });
   });
+
+  it("accepts intent knowledge metadata with progressive fields", () => {
+    expect(
+      specificationSchema.parse(
+        specification({
+          id: "intent.checkout",
+          type: "intent",
+          knowledge: {
+            kind: "intent",
+            raw: "I need a checkout flow.",
+            requirements: ["Support card payments"],
+            unknowns: ["Which provider?"],
+          },
+        }),
+      ).knowledge,
+    ).toMatchObject({ kind: "intent", raw: "I need a checkout flow." });
+  });
+
+  it("requires research provenance and findings", () => {
+    expect(
+      specificationSchema.safeParse(
+        specification({
+          id: "research.checkout",
+          type: "research",
+          knowledge: {
+            kind: "research",
+            question: "Which provider fits?",
+            sources: [
+              {
+                type: "human",
+                capturedAt: TIMESTAMP,
+              },
+            ],
+            findings: ["Provider A supports the required region."],
+          },
+        }),
+      ).success,
+    ).toBe(false);
+  });
+
+  it("rejects knowledge metadata whose kind disagrees with the type", () => {
+    expect(
+      specificationSchema.safeParse(
+        specification({
+          id: "intent.checkout",
+          type: "intent",
+          knowledge: {
+            kind: "research",
+            question: "x",
+            sources: [],
+            findings: [],
+          },
+        }),
+      ).success,
+    ).toBe(false);
+  });
 });

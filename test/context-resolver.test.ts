@@ -358,6 +358,60 @@ describe("context resolver", () => {
     ).toContain("flow.payment-review");
   });
 
+  it("selects intent and research knowledge by task signals and relationships", async () => {
+    const base = specificationRegistry();
+    const knowledge = [
+      specification("intent.dashboard", "intent", {
+        name: "Dashboard intent",
+        description: "Clarify the dashboard job summary goal.",
+        tags: ["dashboard", "intent"],
+        relationships: { informs: ["screen.dashboard"] },
+        knowledge: {
+          kind: "intent",
+          raw: "Improve the dashboard job summary.",
+          objective: "Improve dashboard summaries.",
+          requirements: ["Show job status"],
+          assumptions: [],
+          unknowns: [],
+          constraints: [],
+          acceptanceCriteria: [],
+        },
+      }),
+      specification("research.dashboard", "research", {
+        name: "Dashboard research",
+        description: "Research dashboard summary patterns.",
+        tags: ["dashboard", "research"],
+        relationships: { informs: ["intent.dashboard"] },
+        knowledge: {
+          kind: "research",
+          question: "Which summary pattern is clearest?",
+          sources: [
+            {
+              type: "human",
+              locator: "notes/dashboard.md",
+              capturedAt: TIMESTAMP,
+            },
+          ],
+          findings: ["Compact cards improve scanning."],
+          alternatives: [],
+        },
+      }),
+    ];
+    const selection = await new ContextResolver().resolve(
+      input({
+        specifications: {
+          async list() {
+            return [...(await base.list()), ...knowledge];
+          },
+          findRelationships: base.findRelationships,
+        },
+      }),
+    );
+    expect(selection.specs.map(({ specification: value }) => value.id)).toEqual(
+      expect.arrayContaining(["intent.dashboard", "research.dashboard"]),
+    );
+  });
+
   it("uses typed design metadata as a relevance signal", async () => {
     const responsive = specification("responsive.card-grid", "responsive", {
       name: "Layout contract",

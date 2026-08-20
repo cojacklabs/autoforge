@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
-  "revision": 23,
-  "updatedAt": "2026-08-20T15:56:16.374Z",
+  "revision": 79,
+  "updatedAt": "2026-08-20T19:33:34.375Z",
   "data": {
     "features": [
       {
@@ -27,6 +27,14 @@
         "createdAt": "2026-08-20T15:56:04.937Z",
         "updatedAt": "2026-08-20T15:56:04.937Z",
         "id": "feature.virdua-design-pilot-2"
+      },
+      {
+        "name": "v0.8 intent and knowledge",
+        "description": "Convert human intent into structured, triaged, research-aware project knowledge without breaking v0.7 contracts.",
+        "status": "planned",
+        "createdAt": "2026-08-20T18:38:32.376Z",
+        "updatedAt": "2026-08-20T18:38:32.376Z",
+        "id": "feature.v0-8-intent-and-knowledge"
       }
     ],
     "phases": [
@@ -48,6 +56,16 @@
         "updatedAt": "2026-08-20T15:56:10.330Z",
         "id": "phase.dashboard-screen-validation",
         "featureId": "feature.virdua-design-pilot-2",
+        "sequence": 1
+      },
+      {
+        "name": "Schema decisions",
+        "description": "Resolve the remaining intent, research, readiness, naming, and artifact contract decisions.",
+        "status": "planned",
+        "createdAt": "2026-08-20T18:38:32.688Z",
+        "updatedAt": "2026-08-20T18:38:32.688Z",
+        "id": "phase.schema-decisions",
+        "featureId": "feature.v0-8-intent-and-knowledge",
         "sequence": 1
       }
     ],
@@ -143,6 +161,304 @@
           "include": [
             "dev/virdua-pilot/**",
             "src/specifications/**"
+          ],
+          "exclude": []
+        }
+      },
+      {
+        "name": "Finalize v0.8 schema contracts",
+        "description": "Decide intent storage, intent-to-work relationships, triage precedence, readiness evidence, confidence representation, research provenance, token naming, and planning artifact freshness.",
+        "status": "completed",
+        "createdAt": "2026-08-20T18:38:33.088Z",
+        "updatedAt": "2026-08-20T18:39:14.846Z",
+        "id": "task.finalize-v0-8-schema-contracts",
+        "phaseId": "phase.schema-decisions",
+        "scope": {
+          "include": [
+            "docs/planning/0.8/**",
+            ".autoforge/state/decisions.json"
+          ],
+          "exclude": []
+        }
+      },
+      {
+        "name": "Implement v0.8 knowledge schemas",
+        "description": "Add additive intent, research, product, architecture, domain, and API specification metadata with validation tests.",
+        "status": "completed",
+        "createdAt": "2026-08-20T18:42:52.119Z",
+        "updatedAt": "2026-08-20T18:42:53.674Z",
+        "id": "task.implement-v0-8-knowledge-schemas",
+        "phaseId": "phase.schema-decisions",
+        "scope": {
+          "include": [
+            "src/specifications/**",
+            "test/specification-schemas.test.ts",
+            "docs/planning/0.8/**"
+          ],
+          "exclude": []
+        }
+      },
+      {
+        "name": "Extend knowledge codec and registry",
+        "description": "Preserve intent and research metadata through Markdown serialization and registry persistence.",
+        "status": "completed",
+        "createdAt": "2026-08-20T18:48:22.508Z",
+        "updatedAt": "2026-08-20T18:48:24.278Z",
+        "id": "task.extend-knowledge-codec-and-registry",
+        "phaseId": "phase.schema-decisions",
+        "scope": {
+          "include": [
+            "src/specifications/**",
+            "src/commands/design.ts",
+            "test/specification-*.test.ts"
+          ],
+          "exclude": []
+        }
+      },
+      {
+        "name": "Implement deterministic intent triage",
+        "description": "Classify structured intent with additive labels, explicit evidence, and conflict reporting.",
+        "status": "completed",
+        "createdAt": "2026-08-20T18:49:23.112Z",
+        "updatedAt": "2026-08-20T18:50:22.505Z",
+        "id": "task.implement-deterministic-intent-triage",
+        "phaseId": "phase.schema-decisions",
+        "scope": {
+          "include": [
+            "src/intent/**",
+            "test/intent/**",
+            "docs/planning/0.8/**"
+          ],
+          "exclude": []
+        }
+      },
+      {
+        "name": "Implement explainable readiness evaluator",
+        "description": "Evaluate intent readiness by work kind with explicit evidence, missing fields, categorical levels, and bounded confidence.",
+        "status": "completed",
+        "createdAt": "2026-08-20T18:51:09.336Z",
+        "updatedAt": "2026-08-20T18:52:07.611Z",
+        "id": "task.implement-explainable-readiness-evaluator",
+        "phaseId": "phase.schema-decisions",
+        "scope": {
+          "include": [
+            "src/intent/**",
+            "test/intent/**"
+          ],
+          "exclude": []
+        }
+      },
+      {
+        "name": "Render knowledge context contracts",
+        "description": "Include intent and research metadata in compiled context packets without changing packet identity or budget behavior.",
+        "status": "completed",
+        "createdAt": "2026-08-20T18:56:46.170Z",
+        "updatedAt": "2026-08-20T18:57:43.682Z",
+        "id": "task.render-knowledge-context-contracts",
+        "phaseId": "phase.schema-decisions",
+        "scope": {
+          "include": [
+            "src/context/packet.ts",
+            "test/context-packet.test.ts"
+          ],
+          "exclude": []
+        }
+      },
+      {
+        "name": "Generate modular planning artifacts",
+        "description": "Compile intent into independently generated feature, technical, design, story, and acceptance artifacts with freshness metadata.",
+        "status": "completed",
+        "createdAt": "2026-08-20T18:59:28.636Z",
+        "updatedAt": "2026-08-20T19:00:16.653Z",
+        "id": "task.generate-modular-planning-artifacts",
+        "phaseId": "phase.schema-decisions",
+        "scope": {
+          "include": [
+            "src/planning/**",
+            "test/planning/**",
+            "docs/planning/0.8/**"
+          ],
+          "exclude": []
+        }
+      },
+      {
+        "name": "Compose intent application service",
+        "description": "Expose a stable service boundary that evaluates intent, readiness, and requested planning artifacts without CLI coupling.",
+        "status": "completed",
+        "createdAt": "2026-08-20T19:03:21.132Z",
+        "updatedAt": "2026-08-20T19:04:07.059Z",
+        "id": "task.compose-intent-application-service",
+        "phaseId": "phase.schema-decisions",
+        "scope": {
+          "include": [
+            "src/intent/**",
+            "src/planning/**",
+            "test/intent/**",
+            "test/planning/**"
+          ],
+          "exclude": []
+        }
+      },
+      {
+        "name": "Test intent assessment command",
+        "description": "Cover project-contained intent assessment, artifact generation, and malformed CLI arguments.",
+        "status": "completed",
+        "createdAt": "2026-08-20T19:09:07.596Z",
+        "updatedAt": "2026-08-20T19:09:08.783Z",
+        "id": "task.test-intent-assessment-command",
+        "phaseId": "phase.schema-decisions",
+        "scope": {
+          "include": [
+            "src/commands/intent.ts",
+            "src/cli/**",
+            "test/intent-command.test.ts"
+          ],
+          "exclude": []
+        }
+      },
+      {
+        "name": "Register intent and research artifacts",
+        "description": "Persist validated intent and research JSON artifacts through the existing specification registry.",
+        "status": "completed",
+        "createdAt": "2026-08-20T19:13:18.314Z",
+        "updatedAt": "2026-08-20T19:14:55.464Z",
+        "id": "task.register-intent-and-research-artifacts",
+        "phaseId": "phase.schema-decisions",
+        "scope": {
+          "include": [
+            "src/commands/**",
+            "src/cli/**",
+            "test/intent-command.test.ts",
+            "test/research-command.test.ts"
+          ],
+          "exclude": []
+        }
+      },
+      {
+        "name": "Inspect registered knowledge artifacts",
+        "description": "List and show registered intent and research specifications through a focused knowledge command.",
+        "status": "completed",
+        "createdAt": "2026-08-20T19:16:01.764Z",
+        "updatedAt": "2026-08-20T19:16:52.913Z",
+        "id": "task.inspect-registered-knowledge-artifacts",
+        "phaseId": "phase.schema-decisions",
+        "scope": {
+          "include": [
+            "src/commands/knowledge.ts",
+            "src/cli/**",
+            "test/knowledge-command.test.ts"
+          ],
+          "exclude": []
+        }
+      },
+      {
+        "name": "Persist planning artifacts",
+        "description": "Store generated planning artifacts with fingerprints, generator metadata, and freshness validation.",
+        "status": "completed",
+        "createdAt": "2026-08-20T19:19:08.160Z",
+        "updatedAt": "2026-08-20T19:19:57.391Z",
+        "id": "task.persist-planning-artifacts",
+        "phaseId": "phase.schema-decisions",
+        "scope": {
+          "include": [
+            "src/planning/**",
+            "test/planning/**"
+          ],
+          "exclude": []
+        }
+      },
+      {
+        "name": "Persist assessed planning artifacts",
+        "description": "Allow intent assessment to persist requested planning artifacts atomically while retaining JSON output.",
+        "status": "completed",
+        "createdAt": "2026-08-20T19:20:27.287Z",
+        "updatedAt": "2026-08-20T19:21:26.506Z",
+        "id": "task.persist-assessed-planning-artifacts",
+        "phaseId": "phase.schema-decisions",
+        "scope": {
+          "include": [
+            "src/commands/intent.ts",
+            "src/planning/**",
+            "test/intent-command.test.ts"
+          ],
+          "exclude": []
+        }
+      },
+      {
+        "name": "Report planning artifact freshness",
+        "description": "Inspect persisted planning artifacts and report whether they match a supplied source intent fingerprint.",
+        "status": "completed",
+        "createdAt": "2026-08-20T19:21:57.280Z",
+        "updatedAt": "2026-08-20T19:23:23.118Z",
+        "id": "task.report-planning-artifact-freshness",
+        "phaseId": "phase.schema-decisions",
+        "scope": {
+          "include": [
+            "src/commands/planning.ts",
+            "src/cli/**",
+            "test/planning-command.test.ts"
+          ],
+          "exclude": []
+        }
+      },
+      {
+        "name": "Repair GitHub CI workflow",
+        "description": "Align CI with Node 20, npm lockfile installation, current test/build commands, and packed package smoke verification.",
+        "status": "completed",
+        "createdAt": "2026-08-20T19:28:37.047Z",
+        "updatedAt": "2026-08-20T19:29:06.078Z",
+        "id": "task.repair-github-ci-workflow",
+        "phaseId": "phase.schema-decisions",
+        "scope": {
+          "include": [
+            ".github/workflows/ci.yml",
+            "package.json",
+            "package-lock.json"
+          ],
+          "exclude": []
+        }
+      },
+      {
+        "name": "Replace legacy agent workflow",
+        "description": "Replace the prompt-chain change processor with v0.8 intent, research, triage, readiness, and planning validation.",
+        "status": "completed",
+        "createdAt": "2026-08-20T19:29:48.666Z",
+        "updatedAt": "2026-08-20T19:30:32.736Z",
+        "id": "task.replace-legacy-agent-workflow",
+        "phaseId": "phase.schema-decisions",
+        "scope": {
+          "include": [
+            ".github/workflows/agent-change-processor.yml"
+          ],
+          "exclude": []
+        }
+      },
+      {
+        "name": "Convert deployment to release verification",
+        "description": "Replace placeholder deployment with tag-driven package and release validation without introducing hosted deployment infrastructure.",
+        "status": "completed",
+        "createdAt": "2026-08-20T19:31:03.374Z",
+        "updatedAt": "2026-08-20T19:31:35.579Z",
+        "id": "task.convert-deployment-to-release-verification",
+        "phaseId": "phase.schema-decisions",
+        "scope": {
+          "include": [
+            ".github/workflows/deploy.yml"
+          ],
+          "exclude": []
+        }
+      },
+      {
+        "name": "Modernize GitHub issue templates",
+        "description": "Add AutoForge work, intent, context packet, adapter, and reproduction fields to issue templates.",
+        "status": "completed",
+        "createdAt": "2026-08-20T19:33:04.721Z",
+        "updatedAt": "2026-08-20T19:33:34.226Z",
+        "id": "task.modernize-github-issue-templates",
+        "phaseId": "phase.schema-decisions",
+        "scope": {
+          "include": [
+            ".github/ISSUE_TEMPLATE/**"
           ],
           "exclude": []
         }

@@ -1,25 +1,52 @@
-name: Deploy
+name: Release Verification
 
 on:
+  push:
+    tags:
+      - "v*"
   workflow_dispatch:
-    inputs:
-      environment:
-        description: "Target environment (stage/prod)"
-        required: true
-        default: stage
+
+permissions:
+  contents: read
 
 jobs:
-  deploy:
+  verify-release:
     runs-on: ubuntu-latest
-    environment: ${{ github.event.inputs.environment }}
     steps:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Validate context
-        run: node ./scripts/validate_context.js
+      - name: Set up Node.js 20
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
 
-      - name: Placeholder deployment
+      - name: Install dependencies
+        run: npm ci --ignore-scripts
+
+      - name: Run release gates
         run: |
-          echo "Deploying to ${{ github.event.inputs.environment }}"
-          echo "Wire this step to your deployment tooling (e.g., Terraform, gcloud, helm)."
+          npm run format:check
+          npm run typecheck
+          npm test
+          npm run build
+
+      - name: Verify tag matches package version
+        if: startsWith(github.ref, 'refs/tags/')
+        run: |
+          TAG_VERSION="${GITHUB_REF_NAME#v}"
+          PACKAGE_VERSION=$(node -p "require('./package.json').version")
+          test "$TAG_VERSION" = "$PACKAGE_VERSION"
+
+      - name: Verify package contents
+        run: npm pack --dry-run
+
+      - name: Publish handoff
+        run: |
+          {
+            echo "### Release verification passed"
+            echo "Package: $(node -p \"require('./package.json').name\")"
+            echo "Version: $(node -p \"require('./package.json').version\")"
+            echo "Publishing remains an explicit, credentialed npm operation."
+          } >> "$GITHUB_STEP_SUMMARY"

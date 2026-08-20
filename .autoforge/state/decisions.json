@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
-  "revision": 4,
-  "updatedAt": "2026-08-20T15:39:35.234Z",
+  "revision": 19,
+  "updatedAt": "2026-08-20T18:38:56.736Z",
   "data": {
     "decisions": [
       {
@@ -95,6 +95,321 @@
         "status": "active",
         "createdAt": "2026-08-20T15:39:35.182Z",
         "updatedAt": "2026-08-20T15:39:35.182Z"
+      },
+      {
+        "id": "decision.intent-is-a-durable-typed-artifact-linked-to-work-specifications-and-research",
+        "statement": "Intent is a durable typed artifact linked to work, specifications, and research.",
+        "reasoning": "Intent must preserve raw user input and progressively structured fields without pretending incomplete information is complete.",
+        "consequences": [
+          "Add an intent schema and registry-backed storage; work items reference intent IDs."
+        ],
+        "scope": [
+          "v0.8",
+          "intent"
+        ],
+        "keywords": [
+          "intent",
+          "schema"
+        ],
+        "relatedWork": [],
+        "supersedes": null,
+        "status": "active",
+        "createdAt": "2026-08-20T18:09:51.239Z",
+        "updatedAt": "2026-08-20T18:09:51.239Z"
+      },
+      {
+        "id": "decision.triage-is-a-deterministic-multi-label-service",
+        "statement": "Triage is a deterministic multi-label service.",
+        "reasoning": "The same request must produce repeatable classifications before any agent-specific behavior or model call.",
+        "consequences": [
+          "Implement pure triage rules with explicit evidence and golden fixtures."
+        ],
+        "scope": [
+          "v0.8",
+          "triage"
+        ],
+        "keywords": [
+          "triage",
+          "deterministic"
+        ],
+        "relatedWork": [],
+        "supersedes": null,
+        "status": "active",
+        "createdAt": "2026-08-20T18:09:51.691Z",
+        "updatedAt": "2026-08-20T18:09:51.691Z"
+      },
+      {
+        "id": "decision.readiness-is-an-explainable-heuristic-never-a-claim-of-certainty",
+        "statement": "Readiness is an explainable heuristic, never a claim of certainty.",
+        "reasoning": "Missing requirements must remain visible and confidence scores must not hide unknowns.",
+        "consequences": [
+          "Return known fields, missing evidence, labels, and an optional bounded score."
+        ],
+        "scope": [
+          "v0.8",
+          "readiness"
+        ],
+        "keywords": [
+          "readiness",
+          "evidence"
+        ],
+        "relatedWork": [],
+        "supersedes": null,
+        "status": "active",
+        "createdAt": "2026-08-20T18:09:52.174Z",
+        "updatedAt": "2026-08-20T18:09:52.174Z"
+      },
+      {
+        "id": "decision.research-records-are-first-class-linked-artifacts",
+        "statement": "Research records are first-class linked artifacts.",
+        "reasoning": "Research findings, sources, alternatives, and recommendations need durable provenance and must connect to decisions and specifications.",
+        "consequences": [
+          "Add a research specification type with confidence and source metadata."
+        ],
+        "scope": [
+          "v0.8",
+          "research"
+        ],
+        "keywords": [
+          "research",
+          "provenance"
+        ],
+        "relatedWork": [],
+        "supersedes": null,
+        "status": "active",
+        "createdAt": "2026-08-20T18:09:52.666Z",
+        "updatedAt": "2026-08-20T18:09:52.666Z"
+      },
+      {
+        "id": "decision.planning-artifacts-are-modular-projections-not-a-monolithic-generated-document",
+        "statement": "Planning artifacts are modular projections, not a monolithic generated document.",
+        "reasoning": "Different requests require different planning outputs and irrelevant context should remain excluded.",
+        "consequences": [
+          "Compile feature briefs, technical plans, design briefs, stories, and acceptance criteria independently."
+        ],
+        "scope": [
+          "v0.8",
+          "planning"
+        ],
+        "keywords": [
+          "planning",
+          "modular"
+        ],
+        "relatedWork": [],
+        "supersedes": null,
+        "status": "active",
+        "createdAt": "2026-08-20T18:09:53.178Z",
+        "updatedAt": "2026-08-20T18:09:53.178Z"
+      },
+      {
+        "id": "decision.0-8-extends-the-v0-7-registry-and-packet-contracts-additively",
+        "statement": "0.8 extends the v0.7 registry and packet contracts additively.",
+        "reasoning": "Existing work, state, specification, resolver, adapter, and packet behavior is the released compatibility baseline.",
+        "consequences": [
+          "Preserve current IDs and formats; add migrations only for unavoidable schema changes."
+        ],
+        "scope": [
+          "v0.8",
+          "compatibility"
+        ],
+        "keywords": [
+          "compatibility",
+          "additive"
+        ],
+        "relatedWork": [],
+        "supersedes": null,
+        "status": "active",
+        "createdAt": "2026-08-20T18:09:53.648Z",
+        "updatedAt": "2026-08-20T18:09:53.648Z"
+      },
+      {
+        "id": "decision.the-0-8-architecture-decision-set-is-approved-as-the-baseline-for-schema-impleme",
+        "statement": "The 0.8 architecture decision set is approved as the baseline for schema implementation.",
+        "reasoning": "The reviewed decisions preserve v0.7 compatibility while defining intent, triage, readiness, research, and modular planning boundaries.",
+        "consequences": [
+          "Proceed to resolve the remaining schema-level decisions, then implement intent and research contracts."
+        ],
+        "scope": [
+          "v0.8",
+          "architecture"
+        ],
+        "keywords": [
+          "approved",
+          "baseline"
+        ],
+        "relatedWork": [],
+        "supersedes": null,
+        "status": "active",
+        "createdAt": "2026-08-20T18:14:29.632Z",
+        "updatedAt": "2026-08-20T18:14:29.632Z"
+      },
+      {
+        "id": "decision.intent-is-stored-as-a-registry-backed-specification-with-raw-and-structured-fiel",
+        "statement": "Intent is stored as a registry-backed specification with raw and structured fields; work stores only the intent reference.",
+        "reasoning": "Intent is project knowledge and should use the existing specification identity, relationships, codec, and resolver rather than a parallel state domain.",
+        "consequences": [
+          "Add an intent type and preserve raw input plus optional structured fields in the specification body and metadata."
+        ],
+        "scope": [
+          "v0.8",
+          "intent"
+        ],
+        "keywords": [
+          "storage",
+          "specification"
+        ],
+        "relatedWork": [],
+        "supersedes": null,
+        "status": "active",
+        "createdAt": "2026-08-20T18:38:54.515Z",
+        "updatedAt": "2026-08-20T18:38:54.515Z"
+      },
+      {
+        "id": "decision.one-intent-may-produce-multiple-work-items-through-explicit-intent-relationships",
+        "statement": "One intent may produce multiple work items through explicit intent relationships.",
+        "reasoning": "A single request can yield research, design, architecture, and implementation tasks without duplicating the source intent.",
+        "consequences": [
+          "Use typed outgoing work references and preserve independent lifecycle state for each work item."
+        ],
+        "scope": [
+          "v0.8",
+          "work"
+        ],
+        "keywords": [
+          "relationships",
+          "intent"
+        ],
+        "relatedWork": [],
+        "supersedes": null,
+        "status": "active",
+        "createdAt": "2026-08-20T18:38:54.819Z",
+        "updatedAt": "2026-08-20T18:38:54.819Z"
+      },
+      {
+        "id": "decision.triage-labels-are-additive-conflicts-are-reported-rather-than-hidden-by-preceden",
+        "statement": "Triage labels are additive; conflicts are reported rather than hidden by precedence.",
+        "reasoning": "Requests can legitimately require research and design or clarification and architecture at the same time.",
+        "consequences": [
+          "Return all matching labels, evidence, and a conflict flag; do not collapse the result to one winner."
+        ],
+        "scope": [
+          "v0.8",
+          "triage"
+        ],
+        "keywords": [
+          "conflict",
+          "labels"
+        ],
+        "relatedWork": [],
+        "supersedes": null,
+        "status": "active",
+        "createdAt": "2026-08-20T18:38:55.104Z",
+        "updatedAt": "2026-08-20T18:38:55.104Z"
+      },
+      {
+        "id": "decision.readiness-requires-objective-evidence-fields-and-reports-missing-evidence-by-wor",
+        "statement": "Readiness requires objective evidence fields and reports missing evidence by work kind.",
+        "reasoning": "A universal checklist would overstate readiness for different request classes.",
+        "consequences": [
+          "Define minimum evidence profiles for implementation, research, architecture, and design work."
+        ],
+        "scope": [
+          "v0.8",
+          "readiness"
+        ],
+        "keywords": [
+          "evidence",
+          "work-kind"
+        ],
+        "relatedWork": [],
+        "supersedes": null,
+        "status": "active",
+        "createdAt": "2026-08-20T18:38:55.417Z",
+        "updatedAt": "2026-08-20T18:38:55.417Z"
+      },
+      {
+        "id": "decision.readiness-confidence-uses-a-bounded-categorical-level-plus-an-optional-percentag",
+        "statement": "Readiness confidence uses a bounded categorical level plus an optional percentage for display.",
+        "reasoning": "Categories communicate uncertainty better while a bounded percentage supports progress reporting.",
+        "consequences": [
+          "Every score includes evidence and missing-field explanations; no score is treated as a guarantee."
+        ],
+        "scope": [
+          "v0.8",
+          "readiness"
+        ],
+        "keywords": [
+          "confidence",
+          "heuristic"
+        ],
+        "relatedWork": [],
+        "supersedes": null,
+        "status": "active",
+        "createdAt": "2026-08-20T18:38:55.784Z",
+        "updatedAt": "2026-08-20T18:38:55.784Z"
+      },
+      {
+        "id": "decision.research-sources-require-provenance-type-locator-captured-timestamp-and-confiden",
+        "statement": "Research sources require provenance type, locator, captured timestamp, and confidence when available.",
+        "reasoning": "Research must remain auditable across local files, URLs, agent observations, and human notes.",
+        "consequences": [
+          "Represent sources as typed records and permit unavailable locators only with an explicit explanation."
+        ],
+        "scope": [
+          "v0.8",
+          "research"
+        ],
+        "keywords": [
+          "provenance",
+          "sources"
+        ],
+        "relatedWork": [],
+        "supersedes": null,
+        "status": "active",
+        "createdAt": "2026-08-20T18:38:56.112Z",
+        "updatedAt": "2026-08-20T18:38:56.112Z"
+      },
+      {
+        "id": "decision.the-canonical-v0-8-token-type-remains-token-design-token-is-a-documentation-alia",
+        "statement": "The canonical v0.8 token type remains token; design-token is a documentation alias only.",
+        "reasoning": "The v0.7 registry already ships token IDs and changing the prefix would create unnecessary migration risk.",
+        "consequences": [
+          "Accept token in schemas and map any imported design-token terminology to token without changing identity."
+        ],
+        "scope": [
+          "v0.8",
+          "design"
+        ],
+        "keywords": [
+          "token",
+          "compatibility"
+        ],
+        "relatedWork": [],
+        "supersedes": null,
+        "status": "active",
+        "createdAt": "2026-08-20T18:38:56.427Z",
+        "updatedAt": "2026-08-20T18:38:56.427Z"
+      },
+      {
+        "id": "decision.generated-planning-artifacts-store-source-fingerprints-and-freshness-metadata",
+        "statement": "Generated planning artifacts store source fingerprints and freshness metadata.",
+        "reasoning": "Planning outputs must be reproducible and visibly stale when their inputs change.",
+        "consequences": [
+          "Persist generated artifacts with source IDs, revisions or hashes, generator version, and generated timestamp."
+        ],
+        "scope": [
+          "v0.8",
+          "planning"
+        ],
+        "keywords": [
+          "freshness",
+          "generated"
+        ],
+        "relatedWork": [],
+        "supersedes": null,
+        "status": "active",
+        "createdAt": "2026-08-20T18:38:56.711Z",
+        "updatedAt": "2026-08-20T18:38:56.711Z"
       }
     ]
   }

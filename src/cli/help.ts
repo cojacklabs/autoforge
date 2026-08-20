@@ -15,6 +15,10 @@ Commands:
   gate       Run retained quality and security checks
   help       Show this command reference
   init       Initialize AutoForge in the current project
+  intent     Assess intent and generate planning artifacts
+  research   Register research artifacts
+  knowledge  List and show intent and research artifacts
+  planning   Inspect generated planning artifacts and freshness
   migrate    Back up and migrate a legacy AutoForge installation
   recap      Summarize current work and session state
   start      Start a task or issue and open a session
@@ -68,6 +72,15 @@ Design context:
   autoforge design import <file>
   autoforge design list [--type <screen|component|token|flow|state|responsive>]
   autoforge design show <id>
+
+Intent assessment:
+  autoforge intent assess <json-file> --kind <implementation|research|architecture|design|planning> [--artifact <kind>]
+  autoforge intent register <json-file>
+  autoforge research register <json-file>
+  autoforge knowledge list [--type <intent|research>]
+  autoforge knowledge show <id>
+  autoforge planning list [--source <intent.json>]
+  autoforge planning show <kind> [--source <intent.json>]
 
 Options:
   -h, --help       Show this command reference

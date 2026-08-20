@@ -14,6 +14,10 @@ import { runDoctorCommand } from "../commands/doctor.js";
 import { runDoneCommand } from "../commands/done.js";
 import { runGateCommand } from "../commands/gate.js";
 import { runInitCommand } from "../commands/init.js";
+import { runIntentCommand } from "../commands/intent.js";
+import { runResearchCommand } from "../commands/research.js";
+import { runKnowledgeCommand } from "../commands/knowledge.js";
+import { runPlanningCommand } from "../commands/planning.js";
 import { runMigrateCommand } from "../commands/migrate.js";
 import { runRecapCommand } from "../commands/recap.js";
 import { runStartCommand } from "../commands/start.js";
@@ -127,6 +131,30 @@ export async function main(
           }),
         init: (commandArgs) =>
           runInitCommand({
+            args: commandArgs,
+            output,
+            startDirectory: process.cwd(),
+          }),
+        intent: (commandArgs) =>
+          runIntentCommand({
+            args: commandArgs,
+            output,
+            startDirectory: process.cwd(),
+          }),
+        research: (commandArgs) =>
+          runResearchCommand({
+            args: commandArgs,
+            output,
+            startDirectory: process.cwd(),
+          }),
+        knowledge: (commandArgs) =>
+          runKnowledgeCommand({
+            args: commandArgs,
+            output,
+            startDirectory: process.cwd(),
+          }),
+        planning: (commandArgs) =>
+          runPlanningCommand({
             args: commandArgs,
             output,
             startDirectory: process.cwd(),

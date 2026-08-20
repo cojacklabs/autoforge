@@ -38,7 +38,14 @@ function createRegistry() {
 
 function input(
   id: string,
-  type: "architecture" | "screen" | "component" | "flow" | "design",
+  type:
+    | "architecture"
+    | "screen"
+    | "component"
+    | "flow"
+    | "design"
+    | "intent"
+    | "research",
   overrides: Record<string, unknown> = {},
 ) {
   return {
@@ -99,6 +106,26 @@ describe("specification registry", () => {
     ).resolves.toHaveLength(2);
     await expect(registry.list({ source: "figma" })).resolves.toMatchObject([
       { id: "screen.dashboard" },
+    ]);
+  });
+
+  it("registers and lists knowledge specifications", async () => {
+    const registry = createRegistry();
+    await registry.register(
+      input("intent.checkout", "intent", {
+        knowledge: {
+          kind: "intent",
+          raw: "Build checkout.",
+          requirements: [],
+          assumptions: [],
+          unknowns: [],
+          constraints: [],
+          acceptanceCriteria: [],
+        },
+      }),
+    );
+    await expect(registry.list({ types: ["intent"] })).resolves.toMatchObject([
+      { id: "intent.checkout", knowledge: { kind: "intent" } },
     ]);
   });
 

@@ -41,6 +41,26 @@ describe("specification Markdown codec", () => {
     );
   });
 
+  it("round trips intent and research knowledge metadata", () => {
+    const intent: Specification = {
+      ...specification,
+      id: "intent.checkout",
+      type: "intent",
+      knowledge: {
+        kind: "intent",
+        raw: "Build a checkout flow.",
+        requirements: ["Support cards"],
+        assumptions: [],
+        unknowns: ["Provider"],
+        constraints: [],
+        acceptanceCriteria: [],
+      },
+    };
+    expect(
+      parseSpecificationMarkdown(serializeSpecificationMarkdown(intent)),
+    ).toEqual(intent);
+  });
+
   it("rejects missing frontmatter, malformed YAML, and invalid metadata", () => {
     expect(() => parseSpecificationMarkdown("# No metadata\n")).toThrowError(
       /requires YAML frontmatter/,

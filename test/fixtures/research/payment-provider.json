@@ -1,0 +1,27 @@
+{
+  "id": "research.payment-provider",
+  "type": "research",
+  "name": "Payment provider research",
+  "description": "Compare providers for card payments.",
+  "relationships": {},
+  "tags": ["payments"],
+  "source": "project",
+  "updatedAt": "2026-08-20T00:00:00.000Z",
+  "content": "# Payment provider research",
+  "knowledge": {
+    "kind": "research",
+    "question": "Which provider should handle card payments?",
+    "sources": [
+      {
+        "type": "url",
+        "locator": "https://example.com/providers",
+        "capturedAt": "2026-08-20T00:00:00.000Z",
+        "explanation": "Provider comparison"
+      }
+    ],
+    "findings": ["Provider A supports required card flows."],
+    "alternatives": ["Provider B"],
+    "recommendation": "Provider A",
+    "confidence": 0.8
+  }
+}

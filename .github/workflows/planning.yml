@@ -1,0 +1,36 @@
+name: Planning Validation
+
+on:
+  pull_request:
+    paths:
+      - "dev/AutoForge_Foundation.md"
+      - "dev/AutoForge_Development_Roadmap_0.8-0.10.md"
+      - "dev/Design_Specification_Standard.md"
+      - "dev/Codex_Implementation_Plan_0.8-0.10.md"
+      - "dev/AutoForge_Planning_Bundle.md"
+      - "scripts/check_planning_bundle.mjs"
+      - "package.json"
+      - "package-lock.json"
+      - ".github/workflows/planning.yml"
+  push:
+    branches: [main]
+    paths:
+      - "dev/**"
+      - "scripts/check_planning_bundle.mjs"
+      - "package.json"
+      - "package-lock.json"
+
+permissions:
+  contents: read
+
+jobs:
+  planning:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+      - run: npm ci --ignore-scripts
+      - run: npm run planning:check

@@ -18,6 +18,10 @@ export interface CliDependencies {
     done(args: readonly string[]): Promise<ExitCode>;
     gate(args: readonly string[]): Promise<ExitCode>;
     init(args: readonly string[]): Promise<ExitCode>;
+    intent?(args: readonly string[]): Promise<ExitCode>;
+    research?(args: readonly string[]): Promise<ExitCode>;
+    knowledge?(args: readonly string[]): Promise<ExitCode>;
+    planning?(args: readonly string[]): Promise<ExitCode>;
     migrate(args: readonly string[]): Promise<ExitCode>;
     recap(args: readonly string[]): Promise<ExitCode>;
     start(args: readonly string[]): Promise<ExitCode>;
@@ -81,6 +85,26 @@ export async function runCli(
 
     case "init":
       return dependencies.commands.init(commandArgs);
+
+    case "intent":
+      return dependencies.commands.intent
+        ? dependencies.commands.intent(commandArgs)
+        : EXIT_CODE.usage;
+
+    case "research":
+      return dependencies.commands.research
+        ? dependencies.commands.research(commandArgs)
+        : EXIT_CODE.usage;
+
+    case "knowledge":
+      return dependencies.commands.knowledge
+        ? dependencies.commands.knowledge(commandArgs)
+        : EXIT_CODE.usage;
+
+    case "planning":
+      return dependencies.commands.planning
+        ? dependencies.commands.planning(commandArgs)
+        : EXIT_CODE.usage;
 
     case "migrate":
       return dependencies.commands.migrate(commandArgs);

@@ -1,8 +1,10 @@
-# AutoForge 0.7.1
+# AutoForge 0.8.0
 
 AutoForge is a task-specific context and control plane for AI-assisted software development. It gives Codex, Claude Code, Gemini/Antigravity, Grok Build, Cursor, and generic agents durable project memory, governed work lifecycle, scoped edits, and explainable build packets.
 
 ## Release History
+
+- **0.8.0** — Intent and research knowledge contracts, deterministic triage and readiness, planning artifacts, knowledge/planning CLI commands, golden fixtures, and Planning Bundle synchronization.
 
 - **0.7.1** — Corrective packaging release. Restores the published `bin/autoforge.js` launcher and keeps it aligned with the rewritten v0.7 CLI.
 - **0.7.0** — Rewrite release with durable work state, decision memory, doctrines, typed specifications, explainable context packets, guardrails, migrations, adapters, TUI support, and Virdua dogfood validation.
@@ -27,6 +29,12 @@ npx autoforge check --path src/checkout.ts
 npx autoforge gate check
 npx autoforge done
 ```
+
+## Agent Review Prompt
+
+Copy and paste this one-liner into any supported agent before starting work:
+
+> Review the repository's AutoForge instructions and current project infrastructure, bring your understanding up to date using `AGENTS.md`, `npx autoforge doctor`, and `npx autoforge context --explain`, then summarize the governing rules, active work, relevant decisions, and validation requirements before proceeding.
 
 ## Memory and Design
 

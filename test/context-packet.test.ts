@@ -97,6 +97,11 @@ function selection() {
           tags: ["context", "architecture"],
           source: "project",
           updatedAt: TIMESTAMP,
+          knowledge: {
+            kind: "architecture",
+            summary: "Context is compiled from a bounded selection.",
+            status: "active",
+          },
           content: "The compiler consumes an immutable selection snapshot.",
         },
         score: 32,
@@ -225,6 +230,50 @@ describe("context packet compiler", () => {
     expect(packet.content).toContain(
       "`compact` (0px–767px): Stack packet panels vertically.",
     );
+  });
+
+  it("renders intent and research knowledge contracts", () => {
+    const base = selection();
+    const knowledgeSelection = contextSelectionSchema.parse({
+      ...base,
+      specs: [
+        {
+          ...base.specs[0],
+          specification: {
+            id: "research.checkout",
+            type: "research",
+            name: "Checkout research",
+            description: "Provider research.",
+            relationships: {},
+            tags: ["research"],
+            source: "manual",
+            updatedAt: TIMESTAMP,
+            knowledge: {
+              kind: "research",
+              question: "Which provider fits?",
+              sources: [
+                {
+                  type: "human",
+                  locator: "notes/checkout.md",
+                  capturedAt: TIMESTAMP,
+                },
+              ],
+              findings: ["Provider A supports the required region."],
+              alternatives: [],
+              recommendation: "Evaluate Provider A.",
+              confidence: 0.8,
+            },
+            content: "Research summary.",
+          },
+        },
+      ],
+    });
+
+    const packet = new ContextPacketCompiler().compile(knowledgeSelection);
+
+    expect(packet.content).toContain("**Knowledge Contract:**");
+    expect(packet.content).toContain("**Question:** Which provider fits?");
+    expect(packet.content).toContain("**Sources:** 1");
   });
 
   it("formats selection evidence separately from packet content", () => {

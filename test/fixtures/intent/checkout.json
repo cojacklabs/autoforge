@@ -1,0 +1,9 @@
+{
+  "raw": "Build a card checkout flow.",
+  "objective": "Allow customers to complete card payments.",
+  "requirements": ["Support card payments", "Record successful payments"],
+  "assumptions": ["The payment provider SDK is available"],
+  "unknowns": [],
+  "constraints": ["Do not store raw card data"],
+  "acceptanceCriteria": ["A successful payment is recorded."]
+}

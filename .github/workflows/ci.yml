@@ -13,16 +13,14 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Set up Node.js 18
+      - name: Set up Node.js 20
         uses: actions/setup-node@v4
         with:
-          node-version: 18
-
-      - name: Validate agent context
-        run: node ./scripts/validate_context.js
+          node-version: 20
+          cache: npm
 
       - name: Install dependencies
-        run: npm install --ignore-scripts
+        run: npm ci --ignore-scripts
 
       - name: Lint formatting
         run: npm run format:check
@@ -30,11 +28,16 @@ jobs:
       - name: Run unit tests
         run: npm test
 
-      - name: Run demo slice tests (Todo)
+      - name: Build package
+        run: npm run build
+
+      - name: Smoke test packed package
         run: |
-          node examples/fullstack_todo_app/demo_src/backend/server.js &
-          SERVER_PID=$!
-          # wait for server
-          sleep 1
-          node --test examples/fullstack_todo_app/demo_src/tests/todo.test.js || (kill $SERVER_PID; exit 1)
-          kill $SERVER_PID || true
+          PACKAGE=$(npm pack --pack-destination "$RUNNER_TEMP" | tail -n 1)
+          SMOKE_DIR="$RUNNER_TEMP/autoforge-package-smoke"
+          mkdir -p "$SMOKE_DIR"
+          cd "$SMOKE_DIR"
+          npm init -y >/dev/null
+          npm install "$RUNNER_TEMP/$PACKAGE" --ignore-scripts
+          npx autoforge version
+          npx autoforge help >/dev/null

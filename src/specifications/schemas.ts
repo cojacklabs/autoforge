@@ -9,6 +9,11 @@ export const SPECIFICATION_TYPES = [
   "token",
   "state",
   "responsive",
+  "product",
+  "domain",
+  "api",
+  "research",
+  "intent",
 ] as const;
 
 export const DESIGN_SPECIFICATION_TYPES = [
@@ -268,6 +273,75 @@ export const designMetadataSchema = z.discriminatedUnion("kind", [
   responsiveDesignMetadataSchema,
 ]);
 
+const intentKnowledgeMetadataSchema = z
+  .object({
+    kind: z.literal("intent"),
+    raw: z.string().trim().min(1).max(20_000),
+    objective: z.string().trim().min(1).max(2_000).optional(),
+    requirements: z
+      .array(z.string().trim().min(1).max(2_000))
+      .max(200)
+      .default([]),
+    assumptions: z
+      .array(z.string().trim().min(1).max(2_000))
+      .max(200)
+      .default([]),
+    unknowns: z.array(z.string().trim().min(1).max(2_000)).max(200).default([]),
+    constraints: z
+      .array(z.string().trim().min(1).max(2_000))
+      .max(200)
+      .default([]),
+    acceptanceCriteria: z
+      .array(z.string().trim().min(1).max(2_000))
+      .max(200)
+      .default([]),
+  })
+  .strict();
+
+const researchSourceSchema = z
+  .object({
+    type: z.enum(["file", "url", "agent", "human", "other"]),
+    locator: z.string().trim().min(1).max(2_000).optional(),
+    capturedAt: timestampSchema,
+    confidence: z.number().min(0).max(1).optional(),
+    explanation: z.string().trim().min(1).max(2_000).optional(),
+  })
+  .strict()
+  .refine(
+    (source) =>
+      source.locator !== undefined || source.explanation !== undefined,
+    "Research sources require a locator or explanation",
+  );
+
+const researchKnowledgeMetadataSchema = z
+  .object({
+    kind: z.literal("research"),
+    question: z.string().trim().min(1).max(2_000),
+    sources: z.array(researchSourceSchema).min(1).max(200),
+    findings: z.array(z.string().trim().min(1).max(4_000)).min(1).max(200),
+    alternatives: z
+      .array(z.string().trim().min(1).max(2_000))
+      .max(200)
+      .default([]),
+    recommendation: z.string().trim().min(1).max(4_000).optional(),
+    confidence: z.number().min(0).max(1).optional(),
+  })
+  .strict();
+
+const generalKnowledgeMetadataSchema = z
+  .object({
+    kind: z.enum(["product", "architecture", "domain", "api"]),
+    summary: z.string().trim().min(1).max(4_000),
+    status: z.enum(["draft", "active", "deprecated"]).default("draft"),
+  })
+  .strict();
+
+export const knowledgeMetadataSchema = z.discriminatedUnion("kind", [
+  intentKnowledgeMetadataSchema,
+  researchKnowledgeMetadataSchema,
+  generalKnowledgeMetadataSchema,
+]);
+
 const specificationFrontmatterFields = {
   id: specificationIdSchema,
   type: specificationTypeSchema,
@@ -278,6 +352,7 @@ const specificationFrontmatterFields = {
   source: z.string().trim().min(1).max(500),
   updatedAt: timestampSchema,
   design: designMetadataSchema.optional(),
+  knowledge: knowledgeMetadataSchema.optional(),
 };
 
 export const specificationFrontmatterSchema = z
@@ -306,6 +381,16 @@ export const specificationSchema = z
         code: "custom",
         message: "Design metadata kind must match the specification type",
         path: ["design", "kind"],
+      });
+    }
+    if (
+      specification.knowledge !== undefined &&
+      specification.knowledge.kind !== specification.type
+    ) {
+      context.addIssue({
+        code: "custom",
+        message: "Knowledge metadata kind must match the specification type",
+        path: ["knowledge", "kind"],
       });
     }
     if (new Set(specification.tags).size !== specification.tags.length) {
@@ -364,6 +449,7 @@ export type DesignSpecificationType = z.infer<
   typeof designSpecificationTypeSchema
 >;
 export type DesignMetadata = z.infer<typeof designMetadataSchema>;
+export type KnowledgeMetadata = z.infer<typeof knowledgeMetadataSchema>;
 export type SpecificationRelationships = z.infer<
   typeof specificationRelationshipsSchema
 >;

@@ -5,7 +5,10 @@ import {
   type ContextTokenEstimator,
 } from "./estimator.js";
 import { contextSelectionSchema, type ContextSelection } from "./schemas.js";
-import type { DesignMetadata } from "../specifications/schemas.js";
+import type {
+  DesignMetadata,
+  KnowledgeMetadata,
+} from "../specifications/schemas.js";
 
 export const contextPacketSchema = z
   .object({
@@ -226,6 +229,46 @@ function renderDesignMetadata(metadata: DesignMetadata | undefined): string[] {
   return [...lines, ""];
 }
 
+function renderKnowledgeMetadata(
+  metadata: KnowledgeMetadata | undefined,
+): string[] {
+  if (metadata === undefined) {
+    return [];
+  }
+  const lines = ["**Knowledge Contract:**", "", `- **Kind:** ${metadata.kind}`];
+  switch (metadata.kind) {
+    case "intent":
+      lines.push(
+        `- **Raw intent:** ${inlineText(metadata.raw)}`,
+        `- **Objective:** ${metadata.objective ? inlineText(metadata.objective) : "(not specified)"}`,
+        `- **Requirements:** ${metadata.requirements.map(inlineText).join("; ") || "(none)"}`,
+        `- **Unknowns:** ${metadata.unknowns.map(inlineText).join("; ") || "(none)"}`,
+        `- **Acceptance criteria:** ${metadata.acceptanceCriteria.map(inlineText).join("; ") || "(none)"}`,
+      );
+      break;
+    case "research":
+      lines.push(
+        `- **Question:** ${inlineText(metadata.question)}`,
+        `- **Sources:** ${metadata.sources.length}`,
+        `- **Findings:** ${metadata.findings.map(inlineText).join("; ")}`,
+        `- **Alternatives:** ${metadata.alternatives.map(inlineText).join("; ") || "(none)"}`,
+        `- **Recommendation:** ${metadata.recommendation ? inlineText(metadata.recommendation) : "(not specified)"}`,
+        `- **Confidence:** ${metadata.confidence === undefined ? "(not specified)" : metadata.confidence}`,
+      );
+      break;
+    case "product":
+    case "architecture":
+    case "domain":
+    case "api":
+      lines.push(
+        `- **Status:** ${metadata.status}`,
+        `- **Summary:** ${inlineText(metadata.summary)}`,
+      );
+      break;
+  }
+  return [...lines, ""];
+}
+
 function renderSpecifications(selection: ContextSelection): string[] {
   const lines = ["## Relevant Specifications", ""];
   if (selection.specs.length === 0) {
@@ -239,6 +282,7 @@ function renderSpecifications(selection: ContextSelection): string[] {
       "",
       `**Source:** ${inlineText(specification.source)}`,
       "",
+      ...renderKnowledgeMetadata(specification.knowledge),
       ...renderDesignMetadata(specification.design),
       ...renderRelationships(specification.relationships),
       specification.content,

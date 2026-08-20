@@ -90,11 +90,20 @@ export async function runDesignCommand(
       );
       return EXIT_CODE.success;
     }
-    const { updatedAt: _updatedAt, design, ...input } = specification;
+    const {
+      updatedAt: _updatedAt,
+      design,
+      knowledge,
+      ...input
+    } = specification;
     if (design === undefined) {
       return usage("Design metadata is required for import.", options.output);
     }
-    const result = await registry.register({ ...input, design });
+    const result = await registry.register({
+      ...input,
+      design,
+      ...(knowledge === undefined ? {} : { knowledge }),
+    });
     options.output.stdout(
       `Imported design specification ${result.specification.id} to ${result.path}`,
     );

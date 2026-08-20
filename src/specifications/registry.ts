@@ -6,6 +6,7 @@ import {
   specificationSchema,
   type Specification,
   type DesignMetadata,
+  type KnowledgeMetadata,
   type SpecificationRelationshipEdge,
   type SpecificationRelationships,
   type SpecificationType,
@@ -21,6 +22,7 @@ export interface RegisterSpecificationInput {
   source: string;
   content: string;
   design?: DesignMetadata;
+  knowledge?: KnowledgeMetadata;
 }
 
 export interface RegisterSpecificationResult {
