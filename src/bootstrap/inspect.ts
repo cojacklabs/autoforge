@@ -11,6 +11,11 @@ export interface BootstrapReport {
   manifests: string[];
   projectTypes: string[];
   nextAction: "initialize" | "migrate" | "repair" | "ready";
+  legacyInventory: string[];
+  migrationPlan: {
+    status: "not-applicable" | "available" | "review-required";
+    reason?: string;
+  };
 }
 
 const BOOTSTRAP_ARTIFACTS = [
@@ -70,6 +75,10 @@ export async function inspectBootstrap(
     }
   }
   const installation = await inspectInstallation(project.path);
+  const legacyInventory =
+    installation.status === "legacy"
+      ? await listLegacyFiles(installation.directory)
+      : [];
   const projectTypes = [
     ...new Set(
       manifests.flatMap((manifest) => {
@@ -102,7 +111,32 @@ export async function inspectBootstrap(
     manifests,
     projectTypes,
     nextAction,
+    legacyInventory,
+    migrationPlan:
+      installation.status !== "legacy"
+        ? { status: "not-applicable" }
+        : legacyInventory.includes("package.json")
+          ? { status: "available" }
+          : {
+              status: "review-required",
+              reason:
+                "Legacy package metadata is missing; manual review is required.",
+            },
   };
+}
+
+async function listLegacyFiles(directory: string): Promise<string[]> {
+  const files: string[] = [];
+  async function walk(current: string): Promise<void> {
+    const entries = await readdir(current, { withFileTypes: true });
+    for (const entry of entries) {
+      const candidate = path.join(current, entry.name);
+      if (entry.isDirectory()) await walk(candidate);
+      else if (entry.isFile()) files.push(path.relative(directory, candidate));
+    }
+  }
+  await walk(directory);
+  return files.sort();
 }
 
 export async function scaffoldBootstrapManifest(

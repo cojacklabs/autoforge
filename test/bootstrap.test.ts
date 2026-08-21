@@ -79,6 +79,28 @@ describe("bootstrap inspection", () => {
     });
   });
 
+  it("reports legacy inventory and migration readiness", async () => {
+    const project = await mkdtemp(
+      path.join(os.tmpdir(), "autoforge-bootstrap-"),
+    );
+    directories.push(project);
+    await mkdir(path.join(project, ".autoforge", "ai"), { recursive: true });
+    await writeFile(
+      path.join(project, ".autoforge", "package.json"),
+      JSON.stringify({ name: "@cojacklabs/autoforge", version: "0.6.2" }),
+    );
+    await writeFile(
+      path.join(project, ".autoforge", "ai", "README.md"),
+      "legacy",
+    );
+
+    await expect(inspectBootstrap(project)).resolves.toMatchObject({
+      installation: "legacy",
+      legacyInventory: ["ai/README.md", "package.json"],
+      migrationPlan: { status: "available" },
+    });
+  });
+
   it("scaffolds a non-destructive bootstrap manifest", async () => {
     const project = await mkdtemp(
       path.join(os.tmpdir(), "autoforge-bootstrap-"),
