@@ -11,6 +11,8 @@ Status: in progress
 - Cross-language manifest detection.
 - Normalized project-type classification.
 - Deterministic next actions: initialize, migrate, repair, or ready.
+- Non-destructive bootstrap manifest scaffolding with lifecycle-tracked artifacts.
+- `autoforge bootstrap status` manifest inspection.
 
 ## Verified
 
@@ -20,7 +22,6 @@ Status: in progress
 
 ## Remaining
 
-- Structured artifact scaffolding for new projects.
 - Legacy inventory and migration planning output.
 - Human-approved discovery inputs.
 - Bootstrap acceptance gates for architecture, design, data, and security.
