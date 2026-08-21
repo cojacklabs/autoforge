@@ -298,6 +298,24 @@ describe("context token estimation", () => {
 });
 
 describe("context resolver", () => {
+  it("propagates active workflow metadata into the selection", async () => {
+    const selection = await new ContextResolver().resolve(
+      input({
+        workflow: {
+          kind: "feature-development",
+          currentStage: "planning",
+          status: "active",
+          handoffIds: ["feature.checkout-research-to-planning"],
+        },
+      }),
+    );
+    expect(selection.workflow).toEqual({
+      kind: "feature-development",
+      currentStage: "planning",
+      status: "active",
+      handoffIds: ["feature.checkout-research-to-planning"],
+    });
+  });
   it("combines active work, routed doctrine, decisions, and related specs", async () => {
     const selection = await new ContextResolver().resolve(input());
 

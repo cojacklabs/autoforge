@@ -10,6 +10,7 @@ import type {
   SpecificationRelationshipEdge,
 } from "../specifications/schemas.js";
 import type { WorkState } from "../work/schemas.js";
+import type { WorkflowRun } from "../workflows/state.js";
 import {
   CharacterTokenEstimator,
   type ContextTokenEstimator,
@@ -63,6 +64,9 @@ export interface ResolveContextInput {
   specifications: ContextSpecificationRegistry;
   config: Pick<AutoForgeConfig, "contextBudget">;
   taskDescription?: string;
+  workflow?: Pick<WorkflowRun, "kind" | "currentStage" | "status"> & {
+    handoffIds: string[];
+  };
 }
 
 export interface ContextResolverOptions {
@@ -508,6 +512,7 @@ function applyBudget(
   decisionRefs: DecisionRef[],
   specificationRefs: SpecificationRef[],
   exclusions: ContextExclusion[],
+  workflow?: ResolveContextInput["workflow"],
 ): ContextSelection {
   const queues: BudgetCandidate[][] = [
     doctrineRefs.map((reference) => ({ kind: "doctrine", reference })),
@@ -575,6 +580,7 @@ function applyBudget(
       remainingTokens: Math.max(0, maxTokens - usedTokens),
       exceeded: usedTokens > maxTokens,
     },
+    ...(workflow ? { workflow } : {}),
   });
 }
 
@@ -619,6 +625,7 @@ export class ContextResolver {
         ...decision.exclusions,
         ...specification.exclusions,
       ],
+      input.workflow,
     );
   }
 }
