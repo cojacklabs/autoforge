@@ -84,10 +84,11 @@ export async function main(
       const alias = normalizedArgs[1];
       if (!alias) return EXIT_CODE.usage;
       const config = await new GlobalWorkspaceStore().read();
-      const projectDirectory = config.projects.find(
+      const matchingProjects = config.projects.filter(
         (project) => config.projectMetadata?.[project]?.name === alias,
       );
-      if (!projectDirectory) return EXIT_CODE.usage;
+      if (matchingProjects.length !== 1) return EXIT_CODE.usage;
+      const projectDirectory = matchingProjects[0]!;
       normalizedArgs = [
         "--project",
         projectDirectory,
