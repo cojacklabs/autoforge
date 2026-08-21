@@ -33,3 +33,13 @@ Focused governance tests cover schemas, persistence, evaluation, context deliver
 ## Audit Decision
 
 The v0.15 governance foundation is implementation-complete for the current roadmap boundary and is ready for broader validation. No release or remote publication is authorized by this audit.
+
+## Release-Readiness Evidence
+
+- Focused Prettier checks pass for source, tests, README, and v0.15 planning documents.
+- TypeScript typechecking passes.
+- Foundation suite passes: 94 files and 435 tests.
+- Legacy suite passes: 17 tests.
+- `npm pack --dry-run` succeeds with an isolated npm cache and includes `bin/autoforge.js` and `dist/cli.js`.
+
+The default local npm cache contains root-owned files and can cause `npm pack` to fail with `EPERM`; this is an environment remediation item, not a package-content failure.
