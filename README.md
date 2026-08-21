@@ -50,6 +50,19 @@ For a new project, ask your coding agent to set up AutoForge with this one-liner
 Set up and use AutoForge for this repository: review `AGENTS.md` and the AutoForge agent guidance, run `npx --no-install autoforge doctor`, initialize only if this project is not already initialized, then inspect `npx --no-install autoforge context --explain`; summarize the detected project structure, active work, governing rules, and validation steps before making changes.
 ```
 
+### Project Constitution (v0.15)
+
+Projects can make governance explicit and reviewable through the constitution workflow:
+
+```bash
+npx autoforge constitution init
+npx autoforge constitution list
+npx autoforge constitution show <rule-id>
+npx autoforge constitution check "<objective>"
+```
+
+`constitution check` evaluates the objective against scoped governance rules and reports conflicts before implementation. Existing projects remain compatible; initialization is additive and stores the constitution under `.autoforge/governance/`.
+
 See `docs/AUTOFORGE_AGENT_SETUP_GUIDE.md` for the complete safe setup procedure.
 Agent behavior and long-prompt handling are documented in `docs/AUTOFORGE_AGENTIC_AI_GUIDE.md`.
 
