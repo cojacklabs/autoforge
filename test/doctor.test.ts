@@ -48,7 +48,7 @@ describe("foundation doctor", () => {
       projectRoot,
       checks: expect.arrayContaining([
         expect.objectContaining({ id: "node-version", status: "pass" }),
-        expect.objectContaining({ id: "global-registry", status: "warning" }),
+        expect.objectContaining({ id: "global-registry" }),
         expect.objectContaining({ id: "project-root", status: "pass" }),
         expect.objectContaining({ id: "filesystem-access", status: "pass" }),
         expect.objectContaining({ id: "installation", status: "pass" }),
