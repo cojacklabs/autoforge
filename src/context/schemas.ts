@@ -9,6 +9,7 @@ import {
   phaseSchema,
   taskSchema,
 } from "../work/schemas.js";
+import { governanceEvaluationSchema } from "../governance/schemas.js";
 
 const selectionMetadataSchema = z
   .object({
@@ -85,6 +86,7 @@ export const contextSelectionSchema = z
     doctrines: z.array(doctrineRefSchema),
     decisions: z.array(decisionRefSchema),
     specs: z.array(specificationRefSchema),
+    governance: z.array(governanceEvaluationSchema).default([]),
     exclusions: z.array(contextExclusionSchema),
     budget: contextBudgetSummarySchema,
     workflow: z

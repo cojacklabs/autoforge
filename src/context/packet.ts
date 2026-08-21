@@ -318,6 +318,19 @@ function renderSpecifications(selection: ContextSelection): string[] {
   return lines.slice(0, -1);
 }
 
+function renderGovernance(selection: ContextSelection): string[] {
+  if (selection.governance.length === 0) return [];
+  return [
+    "## Applicable Governance",
+    "",
+    ...selection.governance.map(
+      (evaluation) =>
+        `- **${evaluation.status}** ${code(evaluation.ruleId)} — ${inlineText(evaluation.reason)}`,
+    ),
+    "",
+  ];
+}
+
 function renderPacket(selection: ContextSelection): string {
   const packetId = `packet.${selection.work.item.id}`;
   return [
@@ -331,6 +344,7 @@ function renderPacket(selection: ContextSelection): string {
     ...renderWorkflow(selection),
     ...renderContract(selection),
     ...renderDoctrines(selection),
+    ...renderGovernance(selection),
     "",
     ...renderDecisions(selection),
     "",
