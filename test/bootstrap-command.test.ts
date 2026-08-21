@@ -194,5 +194,25 @@ describe("bootstrap command", () => {
     await expect(
       readFile(path.join(project, "VISION.md"), "utf8"),
     ).resolves.toContain("Make project direction durable");
+    await writeFile(
+      source,
+      JSON.stringify({
+        approved: true,
+        vision: "Expand durable direction",
+        problem: "New ideas can conflict",
+        users: ["founders", "teams"],
+        useCases: ["review a vision amendment"],
+      }),
+    );
+    await expect(
+      runBootstrapCommand({
+        args: ["vision-amend", source],
+        output,
+        startDirectory: project,
+      }),
+    ).resolves.toBe(0);
+    await expect(
+      readFile(path.join(project, "VISION.md"), "utf8"),
+    ).resolves.toContain("Expand durable direction");
   });
 });
