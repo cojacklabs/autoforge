@@ -34,9 +34,10 @@ async function createProject(): Promise<string> {
 async function runBundledCli(
   cwd: string,
   args: readonly string[],
+  entryPath = BUNDLED_CLI,
 ): Promise<CliProcessResult> {
   return new Promise((resolve, reject) => {
-    const child = spawn(process.execPath, [BUNDLED_CLI, ...args], {
+    const child = spawn(process.execPath, [entryPath, ...args], {
       cwd,
       env: { ...process.env, NO_COLOR: "1" },
       stdio: ["ignore", "pipe", "pipe"],
@@ -83,7 +84,7 @@ describe("bundled foundation CLI", () => {
     ).resolves.toMatchObject({
       exitCode: 0,
       stderr: "",
-      stdout: "AutoForge 0.11.1\n",
+      stdout: "AutoForge 0.11.2\n",
     });
   });
 
@@ -110,7 +111,23 @@ describe("bundled foundation CLI", () => {
     ).resolves.toMatchObject({
       exitCode: 0,
       stderr: "",
-      stdout: "AutoForge 0.11.1\n",
+      stdout: "AutoForge 0.11.2\n",
+    });
+  });
+
+  it("runs through the npm-style node_modules/.bin path", async () => {
+    const projectRoot = await createProject();
+    const binDirectory = path.join(projectRoot, "node_modules", ".bin");
+    await mkdir(binDirectory, { recursive: true });
+    const link = path.join(binDirectory, "autoforge");
+    await symlink(BUNDLED_CLI, link);
+
+    await expect(
+      runBundledCli(projectRoot, ["version"], link),
+    ).resolves.toMatchObject({
+      exitCode: 0,
+      stderr: "",
+      stdout: "AutoForge 0.11.2\n",
     });
   });
 
