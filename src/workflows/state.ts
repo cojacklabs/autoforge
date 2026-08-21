@@ -15,6 +15,7 @@ export const workflowRunSchema = z
     kind: workflowKindSchema,
     currentStage: z.string().min(1),
     completedStages: z.array(z.string()),
+    status: z.enum(["active", "completed"]),
     updatedAt: z.string().datetime({ offset: true }),
   })
   .strict();
@@ -44,6 +45,7 @@ export class WorkflowStateStore {
       kind,
       currentStage: first.id,
       completedStages: [],
+      status: "active",
       updatedAt: now.toISOString(),
     });
     await this.write(run);
@@ -56,18 +58,45 @@ export class WorkflowStateStore {
     );
   }
 
-  async advance(id: string, now = new Date()): Promise<WorkflowRun> {
+  async advance(
+    id: string,
+    now = new Date(),
+    skipOptional = false,
+  ): Promise<WorkflowRun> {
     const current = await this.read(id);
+    if (current.status === "completed") {
+      throw new Error(`Workflow ${id} is already complete`);
+    }
     const stages = getWorkflowDefinition(current.kind).stages;
     const index = stages.findIndex(
       (stage) => stage.id === current.currentStage,
     );
-    const next = stages[index + 1];
-    if (!next) throw new Error(`Workflow ${id} is already complete`);
+    let nextIndex = index + 1;
+    if (skipOptional) {
+      while (nextIndex < stages.length && !stages[nextIndex]?.required)
+        nextIndex += 1;
+    }
+    const next = stages[nextIndex];
+    if (!next) {
+      const completed = workflowRunSchema.parse({
+        ...current,
+        status: "completed",
+        completedStages: [...current.completedStages, current.currentStage],
+        updatedAt: now.toISOString(),
+      });
+      await this.write(completed);
+      return completed;
+    }
     const updated = workflowRunSchema.parse({
       ...current,
       currentStage: next.id,
-      completedStages: [...current.completedStages, current.currentStage],
+      completedStages: [
+        ...current.completedStages,
+        current.currentStage,
+        ...(skipOptional
+          ? stages.slice(index + 1, nextIndex).map((stage) => stage.id)
+          : []),
+      ],
       updatedAt: now.toISOString(),
     });
     await this.write(updated);

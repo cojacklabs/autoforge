@@ -19,11 +19,13 @@ export async function runWorkflowCommand(
   options: WorkflowCommandOptions,
 ): Promise<ExitCode> {
   const [action, id, kind] = options.args;
+  const skipOptional = options.args.includes("--skip-optional");
   if (
     !action ||
     !id ||
     (action === "start" && !kind) ||
-    options.args.length > (action === "start" ? 3 : 2)
+    options.args.length !==
+      (action === "advance" && skipOptional ? 3 : action === "start" ? 3 : 2)
   )
     return usage(options.output);
   try {
@@ -37,7 +39,7 @@ export async function runWorkflowCommand(
         : action === "show"
           ? await store.read(id)
           : action === "advance"
-            ? await store.advance(id)
+            ? await store.advance(id, new Date(), skipOptional)
             : undefined;
     if (!run) return usage(options.output);
     options.output.stdout(JSON.stringify(run, null, 2));

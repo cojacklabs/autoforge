@@ -36,6 +36,39 @@ describe("workflow state", () => {
     ).resolves.toMatchObject({
       currentStage: "planning",
       completedStages: ["research"],
+      status: "active",
     });
+  });
+
+  it("skips optional stages when requested", async () => {
+    const projectRoot = await mkdtemp(
+      path.join(os.tmpdir(), "autoforge-workflow-skip-"),
+    );
+    directories.push(projectRoot);
+    await mkdir(path.join(projectRoot, ".git"));
+    const store = new WorkflowStateStore(projectRoot);
+    await store.create("feature.skip", "feature-development");
+    await expect(
+      store.advance("feature.skip", new Date(), true),
+    ).resolves.toMatchObject({
+      currentStage: "planning",
+      completedStages: ["research"],
+    });
+  });
+
+  it("marks the final stage complete and rejects further advancement", async () => {
+    const projectRoot = await mkdtemp(
+      path.join(os.tmpdir(), "autoforge-workflow-complete-"),
+    );
+    directories.push(projectRoot);
+    await mkdir(path.join(projectRoot, ".git"));
+    const store = new WorkflowStateStore(projectRoot);
+    await store.create("validation.run", "validation");
+    await expect(store.advance("validation.run")).resolves.toMatchObject({
+      status: "completed",
+    });
+    await expect(store.advance("validation.run")).rejects.toThrow(
+      "already complete",
+    );
   });
 });

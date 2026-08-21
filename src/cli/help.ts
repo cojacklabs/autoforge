@@ -86,7 +86,7 @@ Intent assessment:
   autoforge planning handoff <kind> --phase <phase-id> --include <pattern>
   autoforge workflow start <id> <kind>
   autoforge workflow show <id>
-  autoforge workflow advance <id>
+  autoforge workflow advance <id> [--skip-optional]
 
 Options:
   -h, --help       Show this command reference
