@@ -103,6 +103,19 @@ function renderWork(selection: ContextSelection): string[] {
   return lines;
 }
 
+function renderWorkflow(selection: ContextSelection): string[] {
+  if (!selection.workflow) return [];
+  return [
+    "## Active Workflow",
+    "",
+    `- **Kind:** ${selection.workflow.kind}`,
+    `- **Stage:** ${selection.workflow.currentStage}`,
+    `- **Status:** ${selection.workflow.status}`,
+    `- **Handoffs:** ${selection.workflow.handoffIds.join(", ") || "(none)"}`,
+    "",
+  ];
+}
+
 function renderDoctrines(selection: ContextSelection): string[] {
   const lines = ["## Applicable Doctrines", ""];
   if (selection.doctrines.length === 0) {
@@ -302,6 +315,7 @@ function renderPacket(selection: ContextSelection): string {
     "",
     ...renderWork(selection),
     "",
+    ...renderWorkflow(selection),
     ...renderDoctrines(selection),
     "",
     ...renderDecisions(selection),

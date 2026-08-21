@@ -87,6 +87,15 @@ export const contextSelectionSchema = z
     specs: z.array(specificationRefSchema),
     exclusions: z.array(contextExclusionSchema),
     budget: contextBudgetSummarySchema,
+    workflow: z
+      .object({
+        kind: z.string().min(1),
+        currentStage: z.string().min(1),
+        status: z.enum(["active", "completed"]),
+        handoffIds: z.array(z.string().min(1)),
+      })
+      .strict()
+      .optional(),
   })
   .strict()
   .superRefine((selection, context) => {

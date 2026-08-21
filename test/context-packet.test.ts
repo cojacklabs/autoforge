@@ -125,6 +125,12 @@ function selection() {
       remainingTokens: 860,
       exceeded: false,
     },
+    workflow: {
+      kind: "feature-development",
+      currentStage: "planning",
+      status: "active",
+      handoffIds: ["feature.checkout-research-to-planning"],
+    },
   });
 }
 
@@ -177,6 +183,8 @@ describe("context packet compiler", () => {
       packet.content.indexOf("## Relevant Specifications"),
     );
     expect(packet.content).toContain("Keep context scoped to active work.");
+    expect(packet.content).toContain("## Active Workflow");
+    expect(packet.content).toContain("feature.checkout-research-to-planning");
     expect(packet.content).toContain("derived-from → `intent.context-packet`");
     expect(packet.content).toContain("Render build packets as Markdown.");
     expect(packet.content).toContain(
