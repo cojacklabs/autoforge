@@ -1,4 +1,4 @@
-import { existsSync, readFileSync } from "node:fs";
+import { existsSync, readFileSync, realpathSync } from "node:fs";
 import path from "node:path";
 import { pathToFileURL } from "node:url";
 import { fileURLToPath } from "node:url";
@@ -206,6 +206,9 @@ export async function main(
 }
 
 const entryPath = process.argv[1];
-if (entryPath && import.meta.url === pathToFileURL(entryPath).href) {
+if (
+  entryPath &&
+  import.meta.url === pathToFileURL(realpathSync(entryPath)).href
+) {
   process.exitCode = await main();
 }

@@ -6,6 +6,7 @@ import {
   readdir,
   rm,
   writeFile,
+  symlink,
 } from "node:fs/promises";
 import os from "node:os";
 import path from "node:path";
@@ -82,7 +83,34 @@ describe("bundled foundation CLI", () => {
     ).resolves.toMatchObject({
       exitCode: 0,
       stderr: "",
-      stdout: "AutoForge 0.8.1\n",
+      stdout: "AutoForge 0.8.2\n",
+    });
+  });
+
+  it("runs through a symlinked package bin entrypoint", async () => {
+    const projectRoot = await createProject();
+    const link = path.join(projectRoot, "autoforge-bin");
+    await symlink(BUNDLED_CLI, link);
+    await expect(
+      new Promise<CliProcessResult>((resolve, reject) => {
+        const child = spawn(process.execPath, [link, "version"], {
+          cwd: projectRoot,
+          env: { ...process.env, NO_COLOR: "1" },
+          stdio: ["ignore", "pipe", "pipe"],
+        });
+        let stdout = "";
+        let stderr = "";
+        child.stdout.setEncoding("utf8");
+        child.stderr.setEncoding("utf8");
+        child.stdout.on("data", (chunk: string) => (stdout += chunk));
+        child.stderr.on("data", (chunk: string) => (stderr += chunk));
+        child.on("error", reject);
+        child.on("close", (exitCode) => resolve({ exitCode, stdout, stderr }));
+      }),
+    ).resolves.toMatchObject({
+      exitCode: 0,
+      stderr: "",
+      stdout: "AutoForge 0.8.2\n",
     });
   });
 
