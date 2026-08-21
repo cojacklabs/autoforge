@@ -108,4 +108,33 @@ describe("knowledge command", () => {
       "knowledge.vision.durable-project-memory",
     );
   });
+
+  it("extracts knowledge without rewriting a legacy installation", async () => {
+    const projectRoot = await mkdtemp(
+      path.join(os.tmpdir(), "autoforge-knowledge-legacy-command-"),
+    );
+    directories.push(projectRoot);
+    await mkdir(path.join(projectRoot, ".autoforge", "ai"), {
+      recursive: true,
+    });
+    await writeFile(
+      path.join(projectRoot, ".autoforge", "package.json"),
+      JSON.stringify({ name: "@cojacklabs/autoforge", version: "0.6.2" }),
+    );
+    await writeFile(
+      path.join(projectRoot, "legacy-notes.txt"),
+      "Problem: Context is fragmented\n",
+    );
+    const output = { stdout: vi.fn(), stderr: vi.fn() };
+    await expect(
+      runKnowledgeCommand({
+        args: ["extract", "legacy-notes.txt"],
+        output,
+        startDirectory: projectRoot,
+      }),
+    ).resolves.toBe(EXIT_CODE.success);
+    expect(output.stdout.mock.calls[0]?.[0]).toContain(
+      "knowledge.problem.context-is-fragmented",
+    );
+  });
 });

@@ -9,6 +9,8 @@ Status: implementation in progress
 - Deterministic extraction from labeled unstructured input.
 - Context-slice resolution from seed artifacts and relationship depth.
 - Vendor-neutral `autoforge.context.v1` serialization protocol.
+- CLI extraction and context resolution workflows.
+- Clean and legacy project integration coverage.
 
 ## Verified
 
@@ -17,7 +19,4 @@ Status: implementation in progress
 
 ## Remaining
 
-- Persist the registry and context packets in project scope.
-- Add CLI access for extraction and context resolution.
-- Validate clean and legacy project integration.
 - Run the full foundation and legacy suites before release preparation.
