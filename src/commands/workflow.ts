@@ -4,6 +4,7 @@ import { discoverProjectRoot } from "../core/project.js";
 import { resolveContainedProjectPath } from "../core/paths.js";
 import { workflowKindSchema } from "../workflows/definitions.js";
 import { WorkflowStateStore } from "../workflows/state.js";
+import { AgentContractStore } from "../contract/generator.js";
 import { workflowHandoffSchema } from "../workflows/handoff.js";
 
 export interface WorkflowCommandOptions {
@@ -41,6 +42,7 @@ export async function runWorkflowCommand(
       startDirectory: options.startDirectory,
     });
     const store = new WorkflowStateStore(project.path);
+    if (action === "start") await new AgentContractStore(project.path).read();
     if (action === "list") {
       options.output.stdout(JSON.stringify(await store.list(), null, 2));
       return EXIT_CODE.success;

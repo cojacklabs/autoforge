@@ -33,6 +33,13 @@ Set up and use AutoForge for this repository: review `AGENTS.md` and the AutoFor
 
 See `docs/AUTOFORGE_AGENT_SETUP_GUIDE.md` for the complete safe setup procedure.
 
+After initialization, generate and validate the agent contract:
+
+```bash
+npx autoforge contract generate generic
+npx autoforge contract validate
+```
+
 ## Canonical Workflow
 
 ```bash

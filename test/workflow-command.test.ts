@@ -6,6 +6,10 @@ import { afterEach, describe, expect, it, vi } from "vitest";
 
 import { initializeProject } from "../src/commands/init.js";
 import { runWorkflowCommand } from "../src/commands/workflow.js";
+import {
+  AgentContractStore,
+  generateAgentContract,
+} from "../src/contract/generator.js";
 import { EXIT_CODE } from "../src/core/errors.js";
 
 const directories: string[] = [];
@@ -26,6 +30,13 @@ describe("workflow command", () => {
     directories.push(projectRoot);
     await mkdir(path.join(projectRoot, ".git"));
     await initializeProject({ projectRoot });
+    await new AgentContractStore(projectRoot).write(
+      generateAgentContract({
+        agentId: "generic",
+        projectRoot,
+        validationCommands: ["npm test"],
+      }),
+    );
     const output = { stdout: vi.fn(), stderr: vi.fn() };
 
     await expect(
@@ -64,6 +75,13 @@ describe("workflow command", () => {
     directories.push(projectRoot);
     await mkdir(path.join(projectRoot, ".git"));
     await initializeProject({ projectRoot });
+    await new AgentContractStore(projectRoot).write(
+      generateAgentContract({
+        agentId: "generic",
+        projectRoot,
+        validationCommands: ["npm test"],
+      }),
+    );
     await writeFile(
       path.join(projectRoot, "handoff.json"),
       JSON.stringify({
@@ -100,6 +118,13 @@ describe("workflow command", () => {
     directories.push(projectRoot);
     await mkdir(path.join(projectRoot, ".git"));
     await initializeProject({ projectRoot });
+    await new AgentContractStore(projectRoot).write(
+      generateAgentContract({
+        agentId: "generic",
+        projectRoot,
+        validationCommands: ["npm test"],
+      }),
+    );
     const output = { stdout: vi.fn(), stderr: vi.fn() };
     await runWorkflowCommand({
       args: ["start", "feature.z", "feature-development"],
@@ -123,5 +148,22 @@ describe("workflow command", () => {
         (run: { id: string }) => run.id,
       ),
     ).toEqual(["feature.a", "feature.z"]);
+  });
+
+  it("rejects workflow starts without a valid contract", async () => {
+    const projectRoot = await mkdtemp(
+      path.join(os.tmpdir(), "autoforge-workflow-contract-required-"),
+    );
+    directories.push(projectRoot);
+    await mkdir(path.join(projectRoot, ".git"));
+    await initializeProject({ projectRoot });
+    const output = { stdout: vi.fn(), stderr: vi.fn() };
+    await expect(
+      runWorkflowCommand({
+        args: ["start", "feature.missing-contract", "feature-development"],
+        output,
+        startDirectory: projectRoot,
+      }),
+    ).resolves.toBe(EXIT_CODE.usage);
   });
 });

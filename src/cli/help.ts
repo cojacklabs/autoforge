@@ -20,6 +20,7 @@ Commands:
   knowledge  List and show intent and research artifacts
   planning   Inspect generated planning artifacts and freshness
   workflow   Start, inspect, and advance workflow runs
+  contract   Generate and validate the agent execution contract
   migrate    Back up and migrate a legacy AutoForge installation
   recap      Summarize current work and session state
   start      Start a task or issue and open a session
@@ -89,6 +90,9 @@ Intent assessment:
   autoforge workflow show <id>
   autoforge workflow advance <id> [--skip-optional]
   autoforge workflow handoff <json-file>
+  autoforge contract generate <agent-id>
+  autoforge contract show
+  autoforge contract validate
 
 Options:
   -h, --help       Show this command reference

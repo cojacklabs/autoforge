@@ -19,6 +19,7 @@ import { runResearchCommand } from "../commands/research.js";
 import { runKnowledgeCommand } from "../commands/knowledge.js";
 import { runPlanningCommand } from "../commands/planning.js";
 import { runWorkflowCommand } from "../commands/workflow.js";
+import { runContractCommand } from "../commands/contract.js";
 import { runMigrateCommand } from "../commands/migrate.js";
 import { runRecapCommand } from "../commands/recap.js";
 import { runStartCommand } from "../commands/start.js";
@@ -162,6 +163,12 @@ export async function main(
           }),
         workflow: (commandArgs) =>
           runWorkflowCommand({
+            args: commandArgs,
+            output,
+            startDirectory: process.cwd(),
+          }),
+        contract: (commandArgs) =>
+          runContractCommand({
             args: commandArgs,
             output,
             startDirectory: process.cwd(),

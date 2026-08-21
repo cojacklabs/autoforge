@@ -23,6 +23,7 @@ export interface CliDependencies {
     knowledge?(args: readonly string[]): Promise<ExitCode>;
     planning?(args: readonly string[]): Promise<ExitCode>;
     workflow?(args: readonly string[]): Promise<ExitCode>;
+    contract?(args: readonly string[]): Promise<ExitCode>;
     migrate(args: readonly string[]): Promise<ExitCode>;
     recap(args: readonly string[]): Promise<ExitCode>;
     start(args: readonly string[]): Promise<ExitCode>;
@@ -105,6 +106,11 @@ export async function runCli(
     case "workflow":
       return dependencies.commands.workflow
         ? dependencies.commands.workflow(commandArgs)
+        : EXIT_CODE.usage;
+
+    case "contract":
+      return dependencies.commands.contract
+        ? dependencies.commands.contract(commandArgs)
         : EXIT_CODE.usage;
 
     case "planning":

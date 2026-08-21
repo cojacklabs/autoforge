@@ -116,6 +116,19 @@ function renderWorkflow(selection: ContextSelection): string[] {
   ];
 }
 
+function renderContract(selection: ContextSelection): string[] {
+  if (!selection.contract) return [];
+  return [
+    "## Agent Contract",
+    "",
+    `- **Agent:** ${selection.contract.agentId}`,
+    `- **Required actions:** ${selection.contract.requiredActions.join("; ")}`,
+    `- **Prohibited actions:** ${selection.contract.prohibitedActions.join("; ")}`,
+    `- **Validation:** ${selection.contract.validationCommands.join("; ")}`,
+    "",
+  ];
+}
+
 function renderDoctrines(selection: ContextSelection): string[] {
   const lines = ["## Applicable Doctrines", ""];
   if (selection.doctrines.length === 0) {
@@ -316,6 +329,7 @@ function renderPacket(selection: ContextSelection): string {
     ...renderWork(selection),
     "",
     ...renderWorkflow(selection),
+    ...renderContract(selection),
     ...renderDoctrines(selection),
     "",
     ...renderDecisions(selection),
@@ -388,6 +402,11 @@ export function formatContextExplanation(
     `- **Remaining:** ${selection.budget.remainingTokens} tokens`,
     `- **Mandatory source overrun:** ${selection.budget.exceeded ? "yes" : "no"}`,
     `- **Rendered packet estimate:** ${validatedPacket.estimatedTokens} tokens`,
+    "",
+    "## Execution Contract",
+    "",
+    `- **Workflow:** ${selection.workflow ? `${selection.workflow.kind} (${selection.workflow.currentStage})` : "(not provided)"}`,
+    `- **Agent contract:** ${selection.contract ? selection.contract.agentId : "(not provided)"}`,
     "",
     "## Included",
     "",

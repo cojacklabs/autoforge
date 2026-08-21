@@ -5,6 +5,7 @@ import { EXIT_CODE, type ExitCode } from "../core/errors.js";
 import type { LogWriter } from "../core/logger.js";
 import { discoverProjectRoot } from "../core/project.js";
 import { inspectInstallation } from "./init.js";
+import { AgentContractStore } from "../contract/generator.js";
 
 export type DoctorCheckStatus = "pass" | "warning" | "fail";
 
@@ -91,6 +92,22 @@ export async function runDoctor(options: DoctorOptions): Promise<DoctorReport> {
           : "Unable to discover the project root.",
     });
     return report(checks);
+  }
+
+  try {
+    const contract = await new AgentContractStore(projectRoot).read();
+    checks.push({
+      id: "agent-contract",
+      status: "pass",
+      message: `Agent contract for ${contract.agentId} is valid.`,
+    });
+  } catch {
+    checks.push({
+      id: "agent-contract",
+      status: "warning",
+      message:
+        "No valid agent contract found; generate one before agent execution.",
+    });
   }
 
   const checkAccess = options.checkAccess ?? access;

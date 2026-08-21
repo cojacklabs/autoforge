@@ -131,6 +131,12 @@ function selection() {
       status: "active",
       handoffIds: ["feature.checkout-research-to-planning"],
     },
+    contract: {
+      agentId: "generic",
+      requiredActions: ["Read the context packet."],
+      prohibitedActions: ["Modify files outside scope."],
+      validationCommands: ["npm test"],
+    },
   });
 }
 
@@ -185,6 +191,8 @@ describe("context packet compiler", () => {
     expect(packet.content).toContain("Keep context scoped to active work.");
     expect(packet.content).toContain("## Active Workflow");
     expect(packet.content).toContain("feature.checkout-research-to-planning");
+    expect(packet.content).toContain("## Agent Contract");
+    expect(packet.content).toContain("Modify files outside scope.");
     expect(packet.content).toContain("derived-from → `intent.context-packet`");
     expect(packet.content).toContain("Render build packets as Markdown.");
     expect(packet.content).toContain(
@@ -290,6 +298,8 @@ describe("context packet compiler", () => {
     const selected = selection();
     const packet = new ContextPacketCompiler().compile(selected);
     const explanation = formatContextExplanation(selected, packet);
+    expect(explanation).toContain("## Execution Contract");
+    expect(explanation).toContain("generic");
 
     expect(packet.content).not.toContain("Context Selection Explanation");
     expect(explanation).toContain("# Context Selection Explanation");

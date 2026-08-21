@@ -96,6 +96,15 @@ export const contextSelectionSchema = z
       })
       .strict()
       .optional(),
+    contract: z
+      .object({
+        agentId: z.string().min(1),
+        requiredActions: z.array(z.string().min(1)),
+        prohibitedActions: z.array(z.string().min(1)),
+        validationCommands: z.array(z.string().min(1)),
+      })
+      .strict()
+      .optional(),
   })
   .strict()
   .superRefine((selection, context) => {

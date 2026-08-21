@@ -11,6 +11,8 @@
 3. Run `npx --no-install autoforge init` only when `.autoforge/` is absent.
 4. Inspect active work with `npx --no-install autoforge recap`.
 5. Resolve context with `npx --no-install autoforge context --explain`.
-6. Ask for confirmation when initialization would overwrite or migrate existing project state.
+6. Generate the compatible agent contract with `npx --no-install autoforge contract generate <agent-id>`.
+7. Validate it with `npx --no-install autoforge contract validate`.
+8. Ask for confirmation when initialization would overwrite or migrate existing project state.
 
 Agents must not silently replace existing configuration, delete project memory, or broaden file scope during setup.
