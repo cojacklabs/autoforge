@@ -254,6 +254,6 @@ describe("foundation CLI router", () => {
 
 describe("foundation CLI entry", () => {
   it("discovers the repository package version", () => {
-    expect(findPackageVersion()).toBe("0.11.7");
+    expect(findPackageVersion()).toBe("0.11.8");
   });
 });
