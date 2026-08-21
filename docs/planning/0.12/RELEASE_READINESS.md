@@ -1,6 +1,6 @@
 # AutoForge v0.12 Release Readiness
 
-Status: development complete; release candidate not yet versioned
+Status: v0.12.0 release candidate prepared; approval pending
 
 ## Verified
 
@@ -13,11 +13,9 @@ Status: development complete; release candidate not yet versioned
 - Dry-run npm pack contains the launcher, bundled CLI, README, license, and package metadata only.
 - Local launcher execution prints `AutoForge 0.12.0` successfully.
 - Clean npm-style `.bin/autoforge` symlink smoke test passes for `version` and `--help`.
+- Complete `npm test` passes: 83 foundation files / 412 tests and 17 legacy tests.
 
 ## Before Release
 
-- Review and approve the v0.12 changelog entry and README version heading.
-- Bump `package.json` to `0.12.0` and update version assertions.
-- Run the full `npm test` suite after the version bump.
 - Create the `v0.12.0` commit and tag locally.
 - Push and publish only after explicit release approval.
