@@ -7,6 +7,7 @@ Status: implementation in progress
 - Canonical `VISION.md` generation from approved discovery.
 - Non-destructive approved vision amendments.
 - Explicit non-goal conflict detection for new ideas.
+- Explicit human approval recording for reviewed vision conflicts.
 - Structured discovery refinement questions for incomplete inputs.
 - Focused command coverage for the v0.13 workflows.
 
@@ -17,5 +18,4 @@ Status: implementation in progress
 
 ## Remaining
 
-- Conflict review output with explicit human approval recording.
 - Full foundation and legacy suite validation.

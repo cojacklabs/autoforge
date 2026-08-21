@@ -228,6 +228,19 @@ describe("bootstrap command", () => {
     expect(output.stdout).toHaveBeenCalledWith(
       expect.stringContaining('"conflict": true'),
     );
+    await expect(
+      runBootstrapCommand({
+        args: ["vision-approve", "Build a social network"],
+        output,
+        startDirectory: project,
+      }),
+    ).resolves.toBe(0);
+    await expect(
+      readFile(
+        path.join(project, ".autoforge", "bootstrap", "vision-approvals.json"),
+        "utf8",
+      ),
+    ).resolves.toContain('"approved": true');
   });
 
   it("returns targeted questions for incomplete discovery", async () => {

@@ -11,6 +11,7 @@ import { recordBootstrapDiscovery } from "../bootstrap/discovery.js";
 import { evaluateBootstrapGates } from "../bootstrap/gates.js";
 import { checkVisionConflict } from "../bootstrap/vision-check.js";
 import { identifyDiscoveryQuestions } from "../bootstrap/questions.js";
+import { recordVisionApproval } from "../bootstrap/approvals.js";
 import {
   amendVisionDocument,
   generateVisionDocument,
@@ -32,6 +33,7 @@ export async function runBootstrapCommand(options: {
       "vision-amend",
       "vision-check",
       "discovery-questions",
+      "vision-approve",
       "discover",
     ].includes(options.args[0] ?? "") ||
     ([
@@ -39,6 +41,7 @@ export async function runBootstrapCommand(options: {
       "vision-amend",
       "vision-check",
       "discovery-questions",
+      "vision-approve",
     ].includes(options.args[0] ?? "") &&
       options.args.length !== 2) ||
     (![
@@ -46,16 +49,23 @@ export async function runBootstrapCommand(options: {
       "vision-amend",
       "vision-check",
       "discovery-questions",
+      "vision-approve",
     ].includes(options.args[0] ?? "") &&
       options.args.length !== 1)
   ) {
     options.output.stderr(
-      "Usage: autoforge bootstrap inspect|scaffold|status|gates|vision|vision-amend|vision-check <idea>|discovery-questions <json-file>|discover <json-file>",
+      "Usage: autoforge bootstrap inspect|scaffold|status|gates|vision|vision-amend|vision-check <idea>|vision-approve <idea>|discovery-questions <json-file>|discover <json-file>",
     );
     return EXIT_CODE.usage;
   }
   try {
-    if (options.args[0] === "discovery-questions") {
+    if (options.args[0] === "vision-approve") {
+      const approvalPath = await recordVisionApproval(
+        options.startDirectory,
+        options.args[1]!,
+      );
+      options.output.stdout(`Recorded vision approval at ${approvalPath}`);
+    } else if (options.args[0] === "discovery-questions") {
       options.output.stdout(
         JSON.stringify(
           await identifyDiscoveryQuestions(options.args[1]!),
