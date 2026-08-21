@@ -83,7 +83,7 @@ describe("bundled foundation CLI", () => {
     ).resolves.toMatchObject({
       exitCode: 0,
       stderr: "",
-      stdout: "AutoForge 0.9.0\n",
+      stdout: "AutoForge 0.10.0\n",
     });
   });
 
@@ -110,7 +110,7 @@ describe("bundled foundation CLI", () => {
     ).resolves.toMatchObject({
       exitCode: 0,
       stderr: "",
-      stdout: "AutoForge 0.9.0\n",
+      stdout: "AutoForge 0.10.0\n",
     });
   });
 
