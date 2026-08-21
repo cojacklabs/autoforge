@@ -161,4 +161,38 @@ describe("bootstrap command", () => {
       expect.stringContaining('"ready": false'),
     );
   });
+
+  it("generates a canonical vision document from discovery", async () => {
+    const project = await mkdtemp(
+      path.join(os.tmpdir(), "autoforge-bootstrap-vision-"),
+    );
+    directories.push(project);
+    const source = path.join(project, "discovery.json");
+    await writeFile(
+      source,
+      JSON.stringify({
+        approved: true,
+        vision: "Make project direction durable",
+        problem: "Ideas are lost between conversations",
+        users: ["founders"],
+        useCases: ["capture a product direction"],
+      }),
+    );
+    const output = { stdout: vi.fn(), stderr: vi.fn() };
+    await runBootstrapCommand({
+      args: ["discover", source],
+      output,
+      startDirectory: project,
+    });
+    await expect(
+      runBootstrapCommand({
+        args: ["vision"],
+        output,
+        startDirectory: project,
+      }),
+    ).resolves.toBe(0);
+    await expect(
+      readFile(path.join(project, "VISION.md"), "utf8"),
+    ).resolves.toContain("Make project direction durable");
+  });
 });
