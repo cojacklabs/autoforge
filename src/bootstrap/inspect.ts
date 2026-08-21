@@ -13,6 +13,22 @@ export interface BootstrapReport {
   nextAction: "initialize" | "migrate" | "repair" | "ready";
 }
 
+const BOOTSTRAP_ARTIFACTS = [
+  "vision",
+  "problem",
+  "users",
+  "use-cases",
+  "user-stories",
+  "flows",
+  "research",
+  "architecture",
+  "design",
+  "data",
+  "security",
+  "development-plan",
+  "tasks",
+] as const;
+
 const MANIFESTS = [
   "package.json",
   "pyproject.toml",
@@ -102,7 +118,15 @@ export async function scaffoldBootstrapManifest(
   const report = await inspectBootstrap(projectRoot);
   await writeFile(
     manifestPath,
-    `${JSON.stringify({ version: "0.12.0", report }, null, 2)}\n`,
+    `${JSON.stringify(
+      {
+        version: "0.12.0",
+        report,
+        artifacts: BOOTSTRAP_ARTIFACTS.map((id) => ({ id, status: "planned" })),
+      },
+      null,
+      2,
+    )}\n`,
     { encoding: "utf8", flag: "wx" },
   );
   return manifestPath;

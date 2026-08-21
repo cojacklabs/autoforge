@@ -1,4 +1,4 @@
-import { mkdir, mkdtemp, rm, writeFile } from "node:fs/promises";
+import { mkdir, mkdtemp, readFile, rm, writeFile } from "node:fs/promises";
 import os from "node:os";
 import path from "node:path";
 
@@ -89,6 +89,9 @@ describe("bootstrap inspection", () => {
 
     expect(manifestPath).toBe(
       path.join(project, ".autoforge", "bootstrap", "manifest.json"),
+    );
+    await expect(readFile(manifestPath, "utf8")).resolves.toContain(
+      '"id": "vision"',
     );
     await expect(scaffoldBootstrapManifest(project)).rejects.toMatchObject({
       code: "EEXIST",
