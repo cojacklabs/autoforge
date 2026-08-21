@@ -16,6 +16,7 @@ Status: in progress
 - Legacy file inventory and migration-readiness reporting.
 - Explicitly approved discovery input recording with schema validation.
 - Acceptance-gate evaluation for architecture, design, data, and security.
+- End-to-end bootstrap workflow validation across the CLI lifecycle.
 
 ## Verified
 
@@ -24,5 +25,3 @@ Status: in progress
 - Typecheck and production build pass.
 
 ## Remaining
-
-- End-to-end bootstrap workflow validation.

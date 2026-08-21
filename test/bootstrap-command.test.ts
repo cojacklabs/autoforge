@@ -106,4 +106,59 @@ describe("bootstrap command", () => {
       expect.stringContaining('"ready": false'),
     );
   });
+
+  it("validates the complete bootstrap workflow", async () => {
+    const project = await mkdtemp(
+      path.join(os.tmpdir(), "autoforge-bootstrap-e2e-"),
+    );
+    directories.push(project);
+    await mkdir(path.join(project, ".git"));
+    const source = path.join(project, "approved-discovery.json");
+    await writeFile(
+      source,
+      JSON.stringify({
+        approved: true,
+        vision: "A complete workflow",
+        problem: "Project context is fragmented",
+        users: ["teams"],
+        useCases: ["capture project intent"],
+      }),
+    );
+    const output = { stdout: vi.fn(), stderr: vi.fn() };
+
+    await expect(
+      runBootstrapCommand({
+        args: ["inspect"],
+        output,
+        startDirectory: project,
+      }),
+    ).resolves.toBe(0);
+    await expect(
+      runBootstrapCommand({
+        args: ["scaffold"],
+        output,
+        startDirectory: project,
+      }),
+    ).resolves.toBe(0);
+    await expect(
+      runBootstrapCommand({
+        args: ["discover", source],
+        output,
+        startDirectory: project,
+      }),
+    ).resolves.toBe(0);
+    await expect(
+      runBootstrapCommand({
+        args: ["status"],
+        output,
+        startDirectory: project,
+      }),
+    ).resolves.toBe(0);
+    await expect(
+      runBootstrapCommand({ args: ["gates"], output, startDirectory: project }),
+    ).resolves.toBe(0);
+    expect(output.stdout).toHaveBeenCalledWith(
+      expect.stringContaining('"ready": false'),
+    );
+  });
 });
