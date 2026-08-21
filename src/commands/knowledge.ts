@@ -7,6 +7,12 @@ import { SpecificationRegistry } from "../specifications/registry.js";
 import { SpecificationFileStore } from "../specifications/store.js";
 import { specificationSchema } from "../specifications/schemas.js";
 import { readFile } from "node:fs/promises";
+import { KnowledgeStore } from "../knowledge/store.js";
+import { KnowledgeRegistry } from "../knowledge/registry.js";
+import {
+  createContextPacket,
+  serializeContextPacket,
+} from "../knowledge/protocol.js";
 
 export interface KnowledgeCommandOptions {
   args: readonly string[];
@@ -37,7 +43,7 @@ export async function registerKnowledgeSpecification(
 
 function usage(output: LogWriter): ExitCode {
   output.stderr(
-    "Usage: autoforge knowledge list [--type <intent|research>] | autoforge knowledge show <id>",
+    "Usage: autoforge knowledge list [--type <intent|research>] | autoforge knowledge show <id> | autoforge knowledge extract <file> | autoforge knowledge context <id>",
   );
   return EXIT_CODE.usage;
 }
@@ -52,6 +58,42 @@ export async function runKnowledgeCommand(
   const registry = new SpecificationRegistry(
     new SpecificationFileStore(project.path),
   );
+  const knowledgeStore = new KnowledgeStore(project.path);
+  if (action === "extract" && subject && rest.length === 0) {
+    const input = await readFile(
+      await resolveContainedProjectPath(project.path, subject).then(
+        (result) => result.absolutePath,
+      ),
+      "utf8",
+    );
+    const knowledgeRegistry = new KnowledgeStore(project.path);
+    const registryState = await (async () => {
+      try {
+        return await knowledgeRegistry.load();
+      } catch {
+        return new KnowledgeRegistry();
+      }
+    })();
+    const artifacts = registryState.ingest(input, subject);
+    await knowledgeRegistry.save(registryState);
+    options.output.stdout(JSON.stringify(artifacts, null, 2));
+    return EXIT_CODE.success;
+  }
+  if (action === "context" && subject && rest.length === 0) {
+    const knowledgeRegistry = await knowledgeStore.load();
+    const artifacts = knowledgeRegistry.resolveContext([subject]);
+    options.output.stdout(
+      serializeContextPacket(
+        createContextPacket({
+          seedIds: [subject],
+          maxDepth: 1,
+          artifacts,
+          relationships: knowledgeRegistry.relationships(),
+        }),
+      ).trimEnd(),
+    );
+    return EXIT_CODE.success;
+  }
   if (action === "list") {
     let type: "intent" | "research" | undefined;
     if (subject !== undefined || rest.length > 0) {

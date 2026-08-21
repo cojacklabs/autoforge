@@ -1,4 +1,4 @@
-import { mkdir, mkdtemp, rm } from "node:fs/promises";
+import { mkdir, mkdtemp, rm, writeFile } from "node:fs/promises";
 import os from "node:os";
 import path from "node:path";
 
@@ -84,5 +84,28 @@ describe("knowledge command", () => {
       }),
     ).resolves.toBe(EXIT_CODE.success);
     expect(output.stdout.mock.calls[1]?.[0]).toContain("# Checkout research");
+  });
+
+  it("extracts and persists atomic knowledge through the CLI", async () => {
+    const projectRoot = await mkdtemp(
+      path.join(os.tmpdir(), "autoforge-knowledge-extract-command-"),
+    );
+    directories.push(projectRoot);
+    await mkdir(path.join(projectRoot, ".git"));
+    await writeFile(
+      path.join(projectRoot, "brain-dump.txt"),
+      "Vision: Durable project memory\nFeature: Context packets\n",
+    );
+    const output = { stdout: vi.fn(), stderr: vi.fn() };
+    await expect(
+      runKnowledgeCommand({
+        args: ["extract", "brain-dump.txt"],
+        output,
+        startDirectory: projectRoot,
+      }),
+    ).resolves.toBe(EXIT_CODE.success);
+    expect(output.stdout.mock.calls[0]?.[0]).toContain(
+      "knowledge.vision.durable-project-memory",
+    );
   });
 });

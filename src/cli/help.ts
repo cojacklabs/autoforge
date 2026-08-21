@@ -89,6 +89,8 @@ Intent assessment:
   autoforge research register <json-file>
   autoforge knowledge list [--type <intent|research>]
   autoforge knowledge show <id>
+  autoforge knowledge extract <file>
+  autoforge knowledge context <id>
   autoforge planning list [--source <intent.json>]
   autoforge planning show <kind> [--source <intent.json>]
   autoforge planning handoff <kind> --phase <phase-id> --include <pattern>
