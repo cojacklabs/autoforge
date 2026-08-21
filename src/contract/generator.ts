@@ -16,7 +16,7 @@ export function generateAgentContract(
   input: AgentContractInput,
 ): AgentContract {
   return agentContractSchema.parse({
-    version: "0.10.0",
+    version: "0.11.0",
     ...input,
     requiredActions: [
       "Read AGENTS.md and the current AutoForge context.",

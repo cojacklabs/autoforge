@@ -21,6 +21,12 @@ Commands:
   planning   Inspect generated planning artifacts and freshness
   workflow   Start, inspect, and advance workflow runs
   contract   Generate and validate the agent execution contract
+  projects   List and register globally known projects
+  attach     Initialize and register a project
+  detach     Remove a project from the global registry
+  use        Run a command against a registered project name
+  agents     List supported agent adapters and capabilities
+  assets     List global templates and doctrines
   migrate    Back up and migrate a legacy AutoForge installation
   recap      Summarize current work and session state
   start      Start a task or issue and open a session
@@ -93,8 +99,17 @@ Intent assessment:
   autoforge contract generate <agent-id>
   autoforge contract show
   autoforge contract validate
+  autoforge projects list
+  autoforge projects register <path>
+  autoforge projects prune
+  autoforge attach <path>
+  autoforge detach <path>
+  autoforge use <project-name> <command>
+  autoforge agents list
+  autoforge assets list templates|doctrines
 
 Options:
   -h, --help       Show this command reference
+  --project <path> Resolve project-scoped commands from another repository
   -v, --version    Show the installed AutoForge version
 `;

@@ -48,6 +48,7 @@ describe("foundation doctor", () => {
       projectRoot,
       checks: expect.arrayContaining([
         expect.objectContaining({ id: "node-version", status: "pass" }),
+        expect.objectContaining({ id: "global-registry", status: "warning" }),
         expect.objectContaining({ id: "project-root", status: "pass" }),
         expect.objectContaining({ id: "filesystem-access", status: "pass" }),
         expect.objectContaining({ id: "installation", status: "pass" }),
@@ -62,6 +63,28 @@ describe("foundation doctor", () => {
           status: "pass",
         }),
         expect.objectContaining({ id: "project-identity", status: "pass" }),
+      ]),
+    });
+  });
+
+  it("reports a registered global workspace", async () => {
+    const projectRoot = await createProject();
+    await initializeFixture(projectRoot);
+    const homeDirectory = await mkdtemp(
+      path.join(os.tmpdir(), "autoforge-doctor-home-"),
+    );
+    temporaryDirectories.push(homeDirectory);
+    await mkdir(path.join(homeDirectory, ".autoforge"), { recursive: true });
+    await writeFile(
+      path.join(homeDirectory, ".autoforge", "config.json"),
+      JSON.stringify({ version: "0.11.0", projects: [projectRoot] }),
+    );
+
+    await expect(
+      runDoctor({ startDirectory: projectRoot, homeDirectory }),
+    ).resolves.toMatchObject({
+      checks: expect.arrayContaining([
+        expect.objectContaining({ id: "global-registry", status: "pass" }),
       ]),
     });
   });

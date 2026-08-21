@@ -5,7 +5,7 @@ import { validateAgentContract } from "../src/contract/schema.js";
 describe("agent contract", () => {
   it("validates the canonical execution contract", () => {
     const contract = validateAgentContract({
-      version: "0.10.0",
+      version: "0.11.0",
       agentId: "codex",
       projectRoot: "/workspace/project",
       activeWorkId: "task.checkout",

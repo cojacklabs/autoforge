@@ -24,6 +24,11 @@ export interface CliDependencies {
     planning?(args: readonly string[]): Promise<ExitCode>;
     workflow?(args: readonly string[]): Promise<ExitCode>;
     contract?(args: readonly string[]): Promise<ExitCode>;
+    projects?(args: readonly string[]): Promise<ExitCode>;
+    attach?(args: readonly string[]): Promise<ExitCode>;
+    detach?(args: readonly string[]): Promise<ExitCode>;
+    agents?(args: readonly string[]): Promise<ExitCode>;
+    assets?(args: readonly string[]): Promise<ExitCode>;
     migrate(args: readonly string[]): Promise<ExitCode>;
     recap(args: readonly string[]): Promise<ExitCode>;
     start(args: readonly string[]): Promise<ExitCode>;
@@ -111,6 +116,31 @@ export async function runCli(
     case "contract":
       return dependencies.commands.contract
         ? dependencies.commands.contract(commandArgs)
+        : EXIT_CODE.usage;
+
+    case "projects":
+      return dependencies.commands.projects
+        ? dependencies.commands.projects(commandArgs)
+        : EXIT_CODE.usage;
+
+    case "attach":
+      return dependencies.commands.attach
+        ? dependencies.commands.attach(commandArgs)
+        : EXIT_CODE.usage;
+
+    case "detach":
+      return dependencies.commands.detach
+        ? dependencies.commands.detach(commandArgs)
+        : EXIT_CODE.usage;
+
+    case "agents":
+      return dependencies.commands.agents
+        ? dependencies.commands.agents(commandArgs)
+        : EXIT_CODE.usage;
+
+    case "assets":
+      return dependencies.commands.assets
+        ? dependencies.commands.assets(commandArgs)
         : EXIT_CODE.usage;
 
     case "planning":

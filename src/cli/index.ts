@@ -20,11 +20,17 @@ import { runKnowledgeCommand } from "../commands/knowledge.js";
 import { runPlanningCommand } from "../commands/planning.js";
 import { runWorkflowCommand } from "../commands/workflow.js";
 import { runContractCommand } from "../commands/contract.js";
+import { runProjectsCommand } from "../commands/projects.js";
+import { runAttachCommand } from "../commands/attach.js";
+import { runDetachCommand } from "../commands/detach.js";
+import { runAgentsCommand } from "../commands/agents.js";
+import { runAssetsCommand } from "../commands/assets.js";
 import { runMigrateCommand } from "../commands/migrate.js";
 import { runRecapCommand } from "../commands/recap.js";
 import { runStartCommand } from "../commands/start.js";
 import { runTuiCommand } from "../commands/tui.js";
 import { runWhyCommand } from "../commands/why.js";
+import { GlobalWorkspaceStore } from "../workspace/global-store.js";
 import { runCli, type CliOutput } from "./router.js";
 
 interface PackageMetadata {
@@ -73,7 +79,38 @@ export async function main(
   output: CliOutput = consoleOutput,
 ): Promise<number> {
   try {
-    return await runCli(args, {
+    let normalizedArgs = [...args];
+    if (normalizedArgs[0] === "use") {
+      const alias = normalizedArgs[1];
+      if (!alias) return EXIT_CODE.usage;
+      const config = await new GlobalWorkspaceStore().read();
+      const projectDirectory = config.projects.find(
+        (project) => config.projectMetadata?.[project]?.name === alias,
+      );
+      if (!projectDirectory) return EXIT_CODE.usage;
+      normalizedArgs = [
+        "--project",
+        projectDirectory,
+        ...normalizedArgs.slice(2),
+      ];
+    }
+    const projectIndex = normalizedArgs.indexOf("--project");
+    const projectDirectory =
+      projectIndex >= 0 ? normalizedArgs[projectIndex + 1] : undefined;
+    if (projectIndex >= 0 && !projectDirectory) {
+      output.stderr('Option "--project" requires a path.');
+      return EXIT_CODE.usage;
+    }
+    const cliArgs =
+      projectIndex >= 0
+        ? normalizedArgs.filter(
+            (_, index) => index !== projectIndex && index !== projectIndex + 1,
+          )
+        : normalizedArgs;
+    const startDirectory = projectDirectory
+      ? path.resolve(projectDirectory)
+      : process.cwd();
+    return await runCli(cliArgs, {
       output,
       version: findPackageVersion(),
       commands: {
@@ -81,127 +118,137 @@ export async function main(
           runAddCommand({
             args: commandArgs,
             output,
-            startDirectory: process.cwd(),
+            startDirectory,
           }),
         check: (commandArgs) =>
           runCheckCommand({
             args: commandArgs,
             output,
-            startDirectory: process.cwd(),
+            startDirectory,
           }),
         context: (commandArgs) =>
           runContextCommand({
             args: commandArgs,
             output,
-            startDirectory: process.cwd(),
+            startDirectory,
           }),
         decide: (commandArgs) =>
           runDecideCommand({
             args: commandArgs,
             output,
-            startDirectory: process.cwd(),
+            startDirectory,
           }),
         design: (commandArgs) =>
           runDesignCommand({
             args: commandArgs,
             output,
-            startDirectory: process.cwd(),
+            startDirectory,
           }),
         doctrine: (commandArgs) =>
           runDoctrineCommand({
             args: commandArgs,
             output,
-            startDirectory: process.cwd(),
+            startDirectory,
           }),
         doctor: (commandArgs) =>
           runDoctorCommand({
             args: commandArgs,
             output,
-            startDirectory: process.cwd(),
+            startDirectory,
           }),
         done: (commandArgs) =>
           runDoneCommand({
             args: commandArgs,
             output,
-            startDirectory: process.cwd(),
+            startDirectory,
           }),
         gate: (commandArgs) =>
           runGateCommand({
             args: commandArgs,
             output,
-            startDirectory: process.cwd(),
+            startDirectory,
           }),
         init: (commandArgs) =>
           runInitCommand({
             args: commandArgs,
             output,
-            startDirectory: process.cwd(),
+            startDirectory,
           }),
         intent: (commandArgs) =>
           runIntentCommand({
             args: commandArgs,
             output,
-            startDirectory: process.cwd(),
+            startDirectory,
           }),
         research: (commandArgs) =>
           runResearchCommand({
             args: commandArgs,
             output,
-            startDirectory: process.cwd(),
+            startDirectory,
           }),
         knowledge: (commandArgs) =>
           runKnowledgeCommand({
             args: commandArgs,
             output,
-            startDirectory: process.cwd(),
+            startDirectory,
           }),
         planning: (commandArgs) =>
           runPlanningCommand({
             args: commandArgs,
             output,
-            startDirectory: process.cwd(),
+            startDirectory,
           }),
         workflow: (commandArgs) =>
           runWorkflowCommand({
             args: commandArgs,
             output,
-            startDirectory: process.cwd(),
+            startDirectory,
           }),
         contract: (commandArgs) =>
           runContractCommand({
             args: commandArgs,
             output,
-            startDirectory: process.cwd(),
+            startDirectory,
           }),
+        projects: (commandArgs) =>
+          runProjectsCommand({ args: commandArgs, output }),
+        attach: (commandArgs) =>
+          runAttachCommand({ args: commandArgs, output }),
+        detach: (commandArgs) =>
+          runDetachCommand({ args: commandArgs, output }),
+        agents: (commandArgs) =>
+          runAgentsCommand({ args: commandArgs, output }),
+        assets: (commandArgs) =>
+          runAssetsCommand({ args: commandArgs, output }),
         migrate: (commandArgs) =>
           runMigrateCommand({
             args: commandArgs,
             output,
-            startDirectory: process.cwd(),
+            startDirectory,
           }),
         recap: (commandArgs) =>
           runRecapCommand({
             args: commandArgs,
             output,
-            startDirectory: process.cwd(),
+            startDirectory,
           }),
         start: (commandArgs) =>
           runStartCommand({
             args: commandArgs,
             output,
-            startDirectory: process.cwd(),
+            startDirectory,
           }),
         tui: (commandArgs) =>
           runTuiCommand({
             args: commandArgs,
             output,
-            startDirectory: process.cwd(),
+            startDirectory,
           }),
         why: (commandArgs) =>
           runWhyCommand({
             args: commandArgs,
             output,
-            startDirectory: process.cwd(),
+            startDirectory,
           }),
       },
     });

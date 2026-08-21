@@ -1,7 +1,7 @@
 import { describe, expect, it, vi } from "vitest";
 
 import { AUTOFORGE_HELP } from "../src/cli/help.js";
-import { findPackageVersion } from "../src/cli/index.js";
+import { findPackageVersion, main } from "../src/cli/index.js";
 import { runCli } from "../src/cli/router.js";
 import { EXIT_CODE } from "../src/core/errors.js";
 
@@ -23,6 +23,7 @@ function createDependencies() {
       done: vi.fn(async () => EXIT_CODE.success),
       gate: vi.fn(async () => EXIT_CODE.success),
       init: vi.fn(async () => EXIT_CODE.success),
+      projects: vi.fn(async () => EXIT_CODE.success),
       migrate: vi.fn(async () => EXIT_CODE.success),
       recap: vi.fn(async () => EXIT_CODE.success),
       start: vi.fn(async () => EXIT_CODE.success),
@@ -33,6 +34,18 @@ function createDependencies() {
 }
 
 describe("foundation CLI router", () => {
+  it("accepts a project selector before the command", async () => {
+    const output = { stdout: vi.fn(), stderr: vi.fn() };
+
+    await expect(
+      main(["--project", "/tmp/example", "version"], output),
+    ).resolves.toBe(EXIT_CODE.success);
+    expect(output.stdout).toHaveBeenCalledWith(
+      expect.stringMatching(/^AutoForge \d+\.\d+\.\d+$/),
+    );
+    expect(output.stderr).not.toHaveBeenCalled();
+  });
+
   it.each([
     { args: [] },
     { args: ["help"] },
@@ -85,6 +98,16 @@ describe("foundation CLI router", () => {
       EXIT_CODE.success,
     );
     expect(dependencies.commands.migrate).toHaveBeenCalledWith(["--dry-run"]);
+  });
+
+  it("routes projects arguments to its injected command", async () => {
+    const dependencies = createDependencies();
+    const args = ["register", "/tmp/example-project"];
+
+    await expect(runCli(["projects", ...args], dependencies)).resolves.toBe(
+      EXIT_CODE.success,
+    );
+    expect(dependencies.commands.projects).toHaveBeenCalledWith(args);
   });
 
   it("routes done to its injected command", async () => {
@@ -231,6 +254,6 @@ describe("foundation CLI router", () => {
 
 describe("foundation CLI entry", () => {
   it("discovers the repository package version", () => {
-    expect(findPackageVersion()).toBe("0.10.0");
+    expect(findPackageVersion()).toBe("0.11.0");
   });
 });

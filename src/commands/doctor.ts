@@ -6,6 +6,7 @@ import type { LogWriter } from "../core/logger.js";
 import { discoverProjectRoot } from "../core/project.js";
 import { inspectInstallation } from "./init.js";
 import { AgentContractStore } from "../contract/generator.js";
+import { GlobalWorkspaceStore } from "../workspace/global-store.js";
 
 export type DoctorCheckStatus = "pass" | "warning" | "fail";
 
@@ -23,6 +24,7 @@ export interface DoctorReport {
 
 export interface DoctorOptions {
   startDirectory: string;
+  homeDirectory?: string;
   nodeVersion?: string;
   checkAccess?: (candidatePath: string, mode: number) => Promise<void>;
 }
@@ -68,6 +70,24 @@ export async function runDoctor(options: DoctorOptions): Promise<DoctorReport> {
       id: "node-version",
       status: "fail",
       message: `Node.js ${version} is unsupported; AutoForge requires Node.js ${MINIMUM_NODE_MAJOR} or newer.`,
+    });
+  }
+
+  try {
+    const globalConfig = await new GlobalWorkspaceStore(
+      options.homeDirectory,
+    ).read();
+    checks.push({
+      id: "global-registry",
+      status: "pass",
+      message: `Global registry contains ${globalConfig.projects.length} project(s).`,
+    });
+  } catch {
+    checks.push({
+      id: "global-registry",
+      status: "warning",
+      message:
+        'Global project registry is not initialized. It will be created by "autoforge attach" or "autoforge projects register".',
     });
   }
 
