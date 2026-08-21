@@ -87,6 +87,7 @@ Intent assessment:
   autoforge workflow start <id> <kind>
   autoforge workflow show <id>
   autoforge workflow advance <id> [--skip-optional]
+  autoforge workflow handoff <json-file>
 
 Options:
   -h, --help       Show this command reference

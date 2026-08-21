@@ -5,6 +5,7 @@ import path from "node:path";
 import { afterEach, describe, expect, it } from "vitest";
 
 import { WorkflowStateStore } from "../src/workflows/state.js";
+import { createWorkflowHandoff } from "../src/workflows/handoff.js";
 
 const directories: string[] = [];
 
@@ -70,5 +71,30 @@ describe("workflow state", () => {
     await expect(store.advance("validation.run")).rejects.toThrow(
       "already complete",
     );
+  });
+
+  it("persists and reads stage handoffs", async () => {
+    const projectRoot = await mkdtemp(
+      path.join(os.tmpdir(), "autoforge-workflow-handoff-store-"),
+    );
+    directories.push(projectRoot);
+    await mkdir(path.join(projectRoot, ".git"));
+    const store = new WorkflowStateStore(projectRoot);
+    const handoff = createWorkflowHandoff({
+      workflowId: "feature.checkout",
+      workflowKind: "feature-development",
+      fromStage: "research",
+      toStage: "planning",
+      objective: "Plan checkout.",
+      completedWork: ["Research complete."],
+      decisions: [],
+      openQuestions: [],
+      validation: ["Sources recorded."],
+      sourceArtifacts: ["research.payment-provider"],
+    });
+    await expect(store.writeHandoff(handoff)).resolves.toContain("handoffs/");
+    await expect(
+      store.readHandoff("feature.checkout", "research", "planning"),
+    ).resolves.toEqual(handoff);
   });
 });

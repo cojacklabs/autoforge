@@ -1,4 +1,4 @@
-import { mkdir, mkdtemp, rm } from "node:fs/promises";
+import { mkdir, mkdtemp, rm, writeFile } from "node:fs/promises";
 import os from "node:os";
 import path from "node:path";
 
@@ -55,5 +55,41 @@ describe("workflow command", () => {
     expect(
       JSON.parse(output.stdout.mock.calls[2]?.[0] ?? "{}").currentStage,
     ).toBe("planning");
+  });
+
+  it("imports a handoff artifact", async () => {
+    const projectRoot = await mkdtemp(
+      path.join(os.tmpdir(), "autoforge-workflow-handoff-command-"),
+    );
+    directories.push(projectRoot);
+    await mkdir(path.join(projectRoot, ".git"));
+    await initializeProject({ projectRoot });
+    await writeFile(
+      path.join(projectRoot, "handoff.json"),
+      JSON.stringify({
+        workflowId: "feature.checkout",
+        workflowKind: "feature-development",
+        fromStage: "research",
+        toStage: "planning",
+        objective: "Plan checkout.",
+        completedWork: ["Research complete."],
+        decisions: [],
+        openQuestions: [],
+        validation: ["Sources recorded."],
+        sourceArtifacts: ["research.payment-provider"],
+        createdAt: "2026-08-20T00:00:00.000Z",
+      }),
+    );
+    const output = { stdout: vi.fn(), stderr: vi.fn() };
+    await expect(
+      runWorkflowCommand({
+        args: ["handoff", "handoff.json"],
+        output,
+        startDirectory: projectRoot,
+      }),
+    ).resolves.toBe(EXIT_CODE.success);
+    expect(output.stdout).toHaveBeenCalledWith(
+      expect.stringContaining("research → planning"),
+    );
   });
 });

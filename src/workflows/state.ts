@@ -8,6 +8,7 @@ import {
   workflowKindSchema,
   type WorkflowKind,
 } from "./definitions.js";
+import { workflowHandoffSchema, type WorkflowHandoff } from "./handoff.js";
 
 export const workflowRunSchema = z
   .object({
@@ -24,9 +25,11 @@ export type WorkflowRun = z.infer<typeof workflowRunSchema>;
 
 export class WorkflowStateStore {
   private readonly directory: string;
+  private readonly handoffDirectory: string;
 
   constructor(projectRoot: string) {
     this.directory = path.join(projectRoot, ".autoforge", "workflows");
+    this.handoffDirectory = path.join(this.directory, "handoffs");
   }
 
   private filePath(id: string): string {
@@ -55,6 +58,41 @@ export class WorkflowStateStore {
   async read(id: string): Promise<WorkflowRun> {
     return workflowRunSchema.parse(
       JSON.parse(await readFile(this.filePath(id), "utf8")) as unknown,
+    );
+  }
+
+  async writeHandoff(handoff: WorkflowHandoff): Promise<string> {
+    const validated = workflowHandoffSchema.parse(handoff);
+    await mkdir(this.handoffDirectory, { recursive: true });
+    const destination = path.join(
+      this.handoffDirectory,
+      `${validated.workflowId}-${validated.fromStage}-to-${validated.toStage}.json`,
+    );
+    const temporary = `${destination}.${process.pid}.${Date.now()}.tmp`;
+    await writeFile(
+      temporary,
+      `${JSON.stringify(validated, null, 2)}\n`,
+      "utf8",
+    );
+    await rename(temporary, destination);
+    return path.relative(path.dirname(this.directory), destination);
+  }
+
+  async readHandoff(
+    workflowId: string,
+    fromStage: string,
+    toStage: string,
+  ): Promise<WorkflowHandoff> {
+    return workflowHandoffSchema.parse(
+      JSON.parse(
+        await readFile(
+          path.join(
+            this.handoffDirectory,
+            `${workflowId}-${fromStage}-to-${toStage}.json`,
+          ),
+          "utf8",
+        ),
+      ) as unknown,
     );
   }
 
