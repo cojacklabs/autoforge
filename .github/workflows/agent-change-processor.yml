@@ -6,6 +6,7 @@ on:
       - "src/intent/**"
       - "src/planning/**"
       - "src/specifications/**"
+      - "src/knowledge/**"
       - "src/commands/intent.ts"
       - "src/commands/knowledge.ts"
       - "src/commands/planning.ts"
@@ -15,13 +16,17 @@ on:
       - "test/planning/**"
       - "test/context-resolver.test.ts"
       - "test/context-packet.test.ts"
+      - "test/knowledge-*.test.ts"
+      - "docs/planning/0.14/**"
   push:
     branches: [main]
     paths:
       - "src/intent/**"
       - "src/planning/**"
       - "src/specifications/**"
+      - "src/knowledge/**"
       - "docs/planning/0.8/**"
+      - "docs/planning/0.14/**"
   workflow_dispatch:
 
 permissions:
