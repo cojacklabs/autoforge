@@ -20,6 +20,8 @@
 
 ## Remaining Gaps
 
+- Update README and agent guidance with a canonical setup prompt and safe automatic initialization procedure.
+
 - Workflow definitions are currently code-backed; project-configured custom workflows are not supported.
 - Handoffs are persisted but are not yet automatically generated when advancing a stage.
 - Context selection accepts workflow state but does not yet rank specifications by stage-specific policy.

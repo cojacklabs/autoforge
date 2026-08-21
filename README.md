@@ -21,6 +21,16 @@ npx autoforge init
 npx autoforge doctor
 ```
 
+## Starting From Scratch
+
+For a new project, ask your coding agent to set up AutoForge with this one-liner:
+
+```text
+Set up and use AutoForge for this repository: review `AGENTS.md` and the AutoForge agent guidance, run `npx --no-install autoforge doctor`, initialize only if this project is not already initialized, then inspect `npx --no-install autoforge context --explain`; summarize the detected project structure, active work, governing rules, and validation steps before making changes.
+```
+
+See `docs/AUTOFORGE_AGENT_SETUP_GUIDE.md` for the complete safe setup procedure.
+
 ## Canonical Workflow
 
 ```bash

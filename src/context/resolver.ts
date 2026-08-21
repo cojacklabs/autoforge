@@ -24,6 +24,7 @@ import {
   type DoctrineRef,
   type SpecificationRef,
 } from "./schemas.js";
+import { getWorkflowContextPolicy } from "./workflow-policy.js";
 
 const SPECIFICATION_FIELD_WEIGHTS = {
   id: 24,
@@ -197,6 +198,7 @@ async function rankSpecifications(
   objective: string,
   scopePaths: readonly string[],
   estimator: ContextTokenEstimator,
+  preferredTypes: readonly string[] = [],
 ): Promise<RankedSpecifications> {
   const specifications = await registry.list();
   const byId = new Map(
@@ -207,6 +209,7 @@ async function rankSpecifications(
   for (const specification of specifications) {
     const candidate = rankSpecification(estimator, specification, queryTokens);
     if (candidate) {
+      if (preferredTypes.includes(specification.type)) candidate.score += 30;
       candidates.set(specification.id, candidate);
     }
   }
@@ -613,6 +616,12 @@ export class ContextResolver {
       work.objective,
       work.item.scope.include,
       this.estimator,
+      input.workflow
+        ? getWorkflowContextPolicy(
+            input.workflow.kind,
+            input.workflow.currentStage,
+          ).preferredTypes
+        : [],
     );
     return applyBudget(
       work,
