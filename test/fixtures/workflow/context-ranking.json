@@ -1,0 +1,10 @@
+{
+  "workflowKind": "feature-development",
+  "stage": "research",
+  "candidates": [
+    { "id": "architecture.checkout", "type": "architecture", "baseScore": 80 },
+    { "id": "research.payment-provider", "type": "research", "baseScore": 70 },
+    { "id": "design.checkout", "type": "design", "baseScore": 95 }
+  ],
+  "expectedPreferredType": "research"
+}
