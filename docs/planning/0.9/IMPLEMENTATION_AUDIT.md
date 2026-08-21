@@ -16,6 +16,7 @@
 - Typecheck passes.
 - Locked Prettier `3.6.2` check passes.
 - Integration slice: 8 test files and 37 tests pass.
+- Full foundation suite: 70 test files and 377 tests pass.
 - `git diff --check` passes.
 
 ## Remaining Gaps
