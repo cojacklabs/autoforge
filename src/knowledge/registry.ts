@@ -2,6 +2,7 @@ import {
   knowledgeArtifactSchema,
   type KnowledgeArtifact,
 } from "./artifacts.js";
+import { extractKnowledgeArtifacts } from "./extract.js";
 
 export const KNOWLEDGE_RELATIONS = [
   "derived-from",
@@ -31,6 +32,16 @@ export class KnowledgeRegistry {
     this.artifacts.set(parsed.id, parsed);
   }
 
+  ingest(
+    input: string,
+    source: string,
+    createdAt = new Date(),
+  ): KnowledgeArtifact[] {
+    const artifacts = extractKnowledgeArtifacts(input, source, createdAt);
+    for (const artifact of artifacts) this.add(artifact);
+    return artifacts;
+  }
+
   get(id: string): KnowledgeArtifact | undefined {
     return this.artifacts.get(id);
   }
@@ -57,5 +68,23 @@ export class KnowledgeRegistry {
 
   relationships(): KnowledgeEdge[] {
     return this.edges.map((edge) => ({ ...edge }));
+  }
+
+  resolveContext(
+    seedIds: readonly string[],
+    maxDepth = 1,
+  ): KnowledgeArtifact[] {
+    const selected = new Set(seedIds);
+    let frontier = new Set(seedIds);
+    for (let depth = 0; depth < maxDepth; depth += 1) {
+      const next = new Set<string>();
+      for (const edge of this.edges) {
+        if (frontier.has(edge.from)) next.add(edge.to);
+        if (frontier.has(edge.to)) next.add(edge.from);
+      }
+      for (const id of next) selected.add(id);
+      frontier = next;
+    }
+    return this.list().filter((artifact) => selected.has(artifact.id));
   }
 }

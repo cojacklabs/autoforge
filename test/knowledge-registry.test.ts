@@ -42,4 +42,26 @@ describe("knowledge registry", () => {
       }),
     ).toThrow();
   });
+
+  it("ingests labeled input and resolves related context", () => {
+    const registry = new KnowledgeRegistry();
+    const [vision] = registry.ingest(
+      "Vision: Product direction",
+      "discovery",
+      new Date("2026-08-21T00:00:00.000Z"),
+    );
+    const [feature] = registry.ingest(
+      "Feature: Online ordering",
+      "chat",
+      new Date("2026-08-21T00:00:00.000Z"),
+    );
+    registry.relate({
+      from: feature!.id,
+      relation: "supports",
+      to: vision!.id,
+    });
+    expect(
+      registry.resolveContext([vision!.id]).map((entry) => entry.id),
+    ).toEqual([feature!.id, vision!.id]);
+  });
 });
