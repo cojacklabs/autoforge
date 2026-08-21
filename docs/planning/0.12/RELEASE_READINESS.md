@@ -12,12 +12,12 @@ Status: development complete; release candidate not yet versioned
 - Package metadata is prepared at `0.12.0`; publication remains deferred.
 - Dry-run npm pack contains the launcher, bundled CLI, README, license, and package metadata only.
 - Local launcher execution prints `AutoForge 0.12.0` successfully.
+- Clean npm-style `.bin/autoforge` symlink smoke test passes for `version` and `--help`.
 
 ## Before Release
 
 - Review and approve the v0.12 changelog entry and README version heading.
 - Bump `package.json` to `0.12.0` and update version assertions.
 - Run the full `npm test` suite after the version bump.
-- Verify the packed executable through an npm-style symlink in a clean install.
 - Create the `v0.12.0` commit and tag locally.
 - Push and publish only after explicit release approval.
