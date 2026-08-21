@@ -28,8 +28,7 @@ export async function runProjectsCommand(
           .map((project) => {
             const metadata = (
               config.projectMetadata as
-                | Record<string, { name: string; lastSeen: string }>
-                | undefined
+                Record<string, { name: string; lastSeen: string }> | undefined
             )?.[project];
             return metadata ? `${metadata.name}\t${project}` : project;
           })
@@ -69,8 +68,7 @@ export async function runProjectsCommand(
           .map((project) => {
             const metadata = (
               config.projectMetadata as
-                | Record<string, { name: string; lastSeen: string }>
-                | undefined
+                Record<string, { name: string; lastSeen: string }> | undefined
             )?.[project];
             return metadata ? `${metadata.name}\t${project}` : project;
           })
