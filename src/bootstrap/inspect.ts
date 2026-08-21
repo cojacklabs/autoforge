@@ -15,9 +15,13 @@ export interface BootstrapReport {
 const MANIFESTS = [
   "package.json",
   "pyproject.toml",
+  "requirements.txt",
   "Cargo.toml",
   "go.mod",
   "pom.xml",
+  "Gemfile",
+  "composer.json",
+  "mix.exs",
   "*.sln",
 ] as const;
 
