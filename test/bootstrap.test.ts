@@ -58,4 +58,17 @@ describe("bootstrap inspection", () => {
       manifests: [],
     });
   });
+
+  it("identifies a legacy AutoForge installation", async () => {
+    const project = await mkdtemp(
+      path.join(os.tmpdir(), "autoforge-bootstrap-"),
+    );
+    directories.push(project);
+    await mkdir(path.join(project, ".autoforge"));
+
+    await expect(inspectBootstrap(project)).resolves.toMatchObject({
+      marker: "autoforge",
+      installation: "legacy",
+    });
+  });
 });
