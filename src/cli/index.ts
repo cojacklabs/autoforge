@@ -18,6 +18,7 @@ import { runIntentCommand } from "../commands/intent.js";
 import { runResearchCommand } from "../commands/research.js";
 import { runKnowledgeCommand } from "../commands/knowledge.js";
 import { runPlanningCommand } from "../commands/planning.js";
+import { runWorkflowCommand } from "../commands/workflow.js";
 import { runMigrateCommand } from "../commands/migrate.js";
 import { runRecapCommand } from "../commands/recap.js";
 import { runStartCommand } from "../commands/start.js";
@@ -155,6 +156,12 @@ export async function main(
           }),
         planning: (commandArgs) =>
           runPlanningCommand({
+            args: commandArgs,
+            output,
+            startDirectory: process.cwd(),
+          }),
+        workflow: (commandArgs) =>
+          runWorkflowCommand({
             args: commandArgs,
             output,
             startDirectory: process.cwd(),

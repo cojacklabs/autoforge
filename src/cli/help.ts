@@ -19,6 +19,7 @@ Commands:
   research   Register research artifacts
   knowledge  List and show intent and research artifacts
   planning   Inspect generated planning artifacts and freshness
+  workflow   Start, inspect, and advance workflow runs
   migrate    Back up and migrate a legacy AutoForge installation
   recap      Summarize current work and session state
   start      Start a task or issue and open a session
@@ -83,6 +84,9 @@ Intent assessment:
   autoforge planning list [--source <intent.json>]
   autoforge planning show <kind> [--source <intent.json>]
   autoforge planning handoff <kind> --phase <phase-id> --include <pattern>
+  autoforge workflow start <id> <kind>
+  autoforge workflow show <id>
+  autoforge workflow advance <id>
 
 Options:
   -h, --help       Show this command reference
