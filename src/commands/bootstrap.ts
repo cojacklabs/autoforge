@@ -9,6 +9,7 @@ import {
 } from "../bootstrap/inspect.js";
 import { recordBootstrapDiscovery } from "../bootstrap/discovery.js";
 import { evaluateBootstrapGates } from "../bootstrap/gates.js";
+import { checkVisionConflict } from "../bootstrap/vision-check.js";
 import {
   amendVisionDocument,
   generateVisionDocument,
@@ -28,20 +29,33 @@ export async function runBootstrapCommand(options: {
       "gates",
       "vision",
       "vision-amend",
+      "vision-check",
       "discover",
     ].includes(options.args[0] ?? "") ||
-    (["discover", "vision-amend"].includes(options.args[0] ?? "") &&
+    (["discover", "vision-amend", "vision-check"].includes(
+      options.args[0] ?? "",
+    ) &&
       options.args.length !== 2) ||
-    (!["discover", "vision-amend"].includes(options.args[0] ?? "") &&
+    (!["discover", "vision-amend", "vision-check"].includes(
+      options.args[0] ?? "",
+    ) &&
       options.args.length !== 1)
   ) {
     options.output.stderr(
-      "Usage: autoforge bootstrap inspect|scaffold|status|gates|vision|vision-amend|discover <json-file>",
+      "Usage: autoforge bootstrap inspect|scaffold|status|gates|vision|vision-amend|vision-check <idea>|discover <json-file>",
     );
     return EXIT_CODE.usage;
   }
   try {
-    if (options.args[0] === "vision-amend") {
+    if (options.args[0] === "vision-check") {
+      options.output.stdout(
+        JSON.stringify(
+          await checkVisionConflict(options.startDirectory, options.args[1]!),
+          null,
+          2,
+        ),
+      );
+    } else if (options.args[0] === "vision-amend") {
       const visionPath = await amendVisionDocument(
         options.startDirectory,
         options.args[1]!,

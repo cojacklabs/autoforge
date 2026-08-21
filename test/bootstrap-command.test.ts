@@ -214,5 +214,19 @@ describe("bootstrap command", () => {
     await expect(
       readFile(path.join(project, "VISION.md"), "utf8"),
     ).resolves.toContain("Expand durable direction");
+    await writeFile(
+      path.join(project, "VISION.md"),
+      `${await readFile(path.join(project, "VISION.md"), "utf8")}\n## Non-Goals\n\n- Build a social network.\n`,
+    );
+    await expect(
+      runBootstrapCommand({
+        args: ["vision-check", "Build a social network"],
+        output,
+        startDirectory: project,
+      }),
+    ).resolves.toBe(0);
+    expect(output.stdout).toHaveBeenCalledWith(
+      expect.stringContaining('"conflict": true'),
+    );
   });
 });
