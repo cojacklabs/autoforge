@@ -1,9 +1,10 @@
-# AutoForge 0.11.4
+# AutoForge 0.11.5
 
 AutoForge is a task-specific context and control plane for AI-assisted software development. It gives Codex, Claude Code, Gemini/Antigravity, Grok Build, Cursor, and generic agents durable project memory, governed work lifecycle, scoped edits, and explainable build packets.
 
 ## Release History
 
+- **0.11.5** — Cleans failed global registry write temporary files.
 - **0.11.4** — Rejects ambiguous duplicate project aliases deterministically.
 - **0.11.3** — Adds explicit project-targeting isolation coverage.
 - **0.11.2** — Adds end-to-end coverage for direct and npm-style symlinked CLI execution.

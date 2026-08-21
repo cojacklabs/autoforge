@@ -4,6 +4,7 @@ import {
   readdir,
   readFile,
   rename,
+  unlink,
   writeFile,
 } from "node:fs/promises";
 import os from "node:os";
@@ -70,12 +71,17 @@ export class GlobalWorkspaceStore {
       ),
     );
     const temporary = `${this.filePath}.${process.pid}.${Date.now()}.tmp`;
-    await writeFile(
-      temporary,
-      `${JSON.stringify(validated, null, 2)}\n`,
-      "utf8",
-    );
-    await rename(temporary, this.filePath);
+    try {
+      await writeFile(
+        temporary,
+        `${JSON.stringify(validated, null, 2)}\n`,
+        "utf8",
+      );
+      await rename(temporary, this.filePath);
+    } catch (error) {
+      await unlink(temporary).catch(() => undefined);
+      throw error;
+    }
     return this.filePath;
   }
 
