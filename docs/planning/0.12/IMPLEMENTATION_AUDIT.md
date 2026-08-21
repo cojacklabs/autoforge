@@ -1,6 +1,6 @@
 # AutoForge v0.12 Bootstrap Engine Audit
 
-Status: in progress
+Status: implementation complete; release review pending
 
 ## Implemented
 
@@ -23,5 +23,7 @@ Status: in progress
 - Bootstrap service tests pass.
 - Bootstrap command tests pass.
 - Typecheck and production build pass.
+- Full foundation validation passes: 83 files and 412 tests.
+- Formatting check passes across the repository.
 
 ## Remaining
