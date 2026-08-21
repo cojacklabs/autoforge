@@ -27,6 +27,7 @@ Commands:
   use        Run a command against a registered project name
   agents     List supported agent adapters and capabilities
   assets     List global templates and doctrines
+  bootstrap  Inspect project readiness for structured initialization
   migrate    Back up and migrate a legacy AutoForge installation
   recap      Summarize current work and session state
   start      Start a task or issue and open a session
@@ -107,6 +108,7 @@ Intent assessment:
   autoforge use <project-name> <command>
   autoforge agents list
   autoforge assets list templates|doctrines
+  autoforge bootstrap inspect
 
 Options:
   -h, --help       Show this command reference

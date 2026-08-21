@@ -25,6 +25,7 @@ import { runAttachCommand } from "../commands/attach.js";
 import { runDetachCommand } from "../commands/detach.js";
 import { runAgentsCommand } from "../commands/agents.js";
 import { runAssetsCommand } from "../commands/assets.js";
+import { runBootstrapCommand } from "../commands/bootstrap.js";
 import { runMigrateCommand } from "../commands/migrate.js";
 import { runRecapCommand } from "../commands/recap.js";
 import { runStartCommand } from "../commands/start.js";
@@ -221,6 +222,8 @@ export async function main(
           runAgentsCommand({ args: commandArgs, output }),
         assets: (commandArgs) =>
           runAssetsCommand({ args: commandArgs, output }),
+        bootstrap: (commandArgs) =>
+          runBootstrapCommand({ args: commandArgs, output, startDirectory }),
         migrate: (commandArgs) =>
           runMigrateCommand({
             args: commandArgs,

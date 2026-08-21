@@ -29,6 +29,7 @@ export interface CliDependencies {
     detach?(args: readonly string[]): Promise<ExitCode>;
     agents?(args: readonly string[]): Promise<ExitCode>;
     assets?(args: readonly string[]): Promise<ExitCode>;
+    bootstrap?(args: readonly string[]): Promise<ExitCode>;
     migrate(args: readonly string[]): Promise<ExitCode>;
     recap(args: readonly string[]): Promise<ExitCode>;
     start(args: readonly string[]): Promise<ExitCode>;
@@ -141,6 +142,11 @@ export async function runCli(
     case "assets":
       return dependencies.commands.assets
         ? dependencies.commands.assets(commandArgs)
+        : EXIT_CODE.usage;
+
+    case "bootstrap":
+      return dependencies.commands.bootstrap
+        ? dependencies.commands.bootstrap(commandArgs)
         : EXIT_CODE.usage;
 
     case "planning":
