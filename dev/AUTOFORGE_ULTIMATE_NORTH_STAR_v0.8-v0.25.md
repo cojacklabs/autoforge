@@ -11,7 +11,7 @@ implementation, and Codex context\
 one system, what architectural invariants must remain true, and how each
 capability advances the project toward the North Star.
 
-------------------------------------------------------------------------
+---
 
 # 1. Executive Summary
 
@@ -25,22 +25,22 @@ reasoning/coding agents.
 AutoForge's responsibility is to maintain the durable project
 intelligence those agents need:
 
--   human intent;
--   product vision;
--   structured project knowledge;
--   project memory;
--   governance;
--   domain rules;
--   architecture;
--   design specifications;
--   traceability;
--   active work;
--   release scope;
--   task boundaries;
--   context resolution;
--   validation requirements;
--   evidence;
--   evolving product state.
+- human intent;
+- product vision;
+- structured project knowledge;
+- project memory;
+- governance;
+- domain rules;
+- architecture;
+- design specifications;
+- traceability;
+- active work;
+- release scope;
+- task boundaries;
+- context resolution;
+- validation requirements;
+- evidence;
+- evolving product state.
 
 The long-term philosophy is:
 
@@ -59,7 +59,7 @@ The future-state metaphor is:
 > a software project---without replacing the human or the reasoning
 > agent.**
 
-------------------------------------------------------------------------
+---
 
 # 2. Why This Document Exists
 
@@ -83,7 +83,7 @@ Codex and other contributors should use it to understand:
 5.  how Verdua acts as the real-world proving ground;
 6.  how the full roadmap converges toward AutoForge 1.0.
 
-------------------------------------------------------------------------
+---
 
 # 3. Architectural Invariants
 
@@ -92,7 +92,7 @@ change.
 
 ## 3.1 AutoForge Is Not the Reasoning Model
 
-``` text
+```text
 Agent Intelligence ≠ Project Intelligence
 ```
 
@@ -120,7 +120,7 @@ should not become the only place where essential project truth exists.
 
 Avoid monoliths such as:
 
-``` text
+```text
 EVERYTHING.md
 PROJECT_CONTEXT.md
 ALL_DESIGN.md
@@ -133,12 +133,12 @@ relationships.
 
 AutoForge may:
 
--   identify conflicts;
--   surface risks;
--   enforce configured hard constraints;
--   explain tradeoffs;
--   identify missing evidence;
--   recommend options.
+- identify conflicts;
+- surface risks;
+- enforce configured hard constraints;
+- explain tradeoffs;
+- identify missing evidence;
+- recommend options.
 
 AutoForge must not silently replace human product ownership.
 
@@ -156,11 +156,11 @@ leakage or global filesystem authority.
 
 "Code compiles" is not equivalent to "work is done."
 
-------------------------------------------------------------------------
+---
 
 # 4. The Complete AutoForge Architecture
 
-``` text
+```text
 HUMAN INTENT
       ↓
 INGESTION / DISCOVERY
@@ -199,7 +199,7 @@ UPDATED LIVING PRODUCT MODEL
 
 This is the complete loop AutoForge is moving toward.
 
-------------------------------------------------------------------------
+---
 
 # 5. Core Engine Model
 
@@ -208,33 +208,33 @@ itself should be understood as cooperating engines.
 
 ## Foundation Engines
 
--   Structured Knowledge Engine
--   Workflow Engine
--   Agent Contract Engine
--   Global Workspace Engine
--   Bootstrap Engine
--   Vision & Discovery Engine
--   Knowledge Graph Engine
--   Context Resolution / Context Protocol Engine
--   Interactive CLI
+- Structured Knowledge Engine
+- Workflow Engine
+- Agent Contract Engine
+- Global Workspace Engine
+- Bootstrap Engine
+- Vision & Discovery Engine
+- Knowledge Graph Engine
+- Context Resolution / Context Protocol Engine
+- Interactive CLI
 
 ## Product Intelligence Engines
 
--   Constitution & Governance Engine
--   Domain Intelligence Engine
--   Design Specification Engine
--   Dependency & Traceability Engine
--   Validation & Quality Gate Engine
--   Product Digital Twin
--   Multi-Agent Orchestration Engine
--   Learning & Evidence Engine
--   Strategy & Prioritization Engine
--   Continuous Product Evolution Engine
+- Constitution & Governance Engine
+- Domain Intelligence Engine
+- Design Specification Engine
+- Dependency & Traceability Engine
+- Validation & Quality Gate Engine
+- Product Digital Twin
+- Multi-Agent Orchestration Engine
+- Learning & Evidence Engine
+- Strategy & Prioritization Engine
+- Continuous Product Evolution Engine
 
 These engines should remain composable rather than becoming one giant
 subsystem.
 
-------------------------------------------------------------------------
+---
 
 # 6. Phase 1 --- Build the Project Brain
 
@@ -245,7 +245,7 @@ Phase 1 answers:
 > **How does AutoForge capture, organize, retrieve, and deliver project
 > knowledge reliably?**
 
-------------------------------------------------------------------------
+---
 
 ## v0.8.0 --- Structured Knowledge
 
@@ -262,7 +262,7 @@ files.
 
 Examples of knowledge types:
 
-``` text
+```text
 vision
 product
 research
@@ -284,7 +284,7 @@ work
 Structured knowledge becomes the raw material for workflows, retrieval,
 bootstrap, graphs, governance, and validation.
 
-------------------------------------------------------------------------
+---
 
 ## v0.9.0 --- Workflow Orchestration
 
@@ -299,7 +299,7 @@ workflows.
 
 Possible workflows:
 
-``` text
+```text
 discovery
 research
 feature-development
@@ -317,7 +317,7 @@ Not every request should invoke every discipline.
 The system can reason about project stages instead of treating every
 prompt as an immediate coding request.
 
-------------------------------------------------------------------------
+---
 
 ## v0.10.0 --- Agent Contract
 
@@ -332,7 +332,7 @@ Define how an AutoForge-compatible agent must behave.
 
 Canonical flow:
 
-``` text
+```text
 User Prompt
    ↓
 Host Agent
@@ -356,7 +356,7 @@ Persist durable knowledge
 
 AutoForge can govern AI behavior without becoming the AI itself.
 
-------------------------------------------------------------------------
+---
 
 ## v0.11.0 --- Global Workspace
 
@@ -371,7 +371,7 @@ preserving project isolation.
 
 Concept:
 
-``` text
+```text
 ~/.autoforge/
 ├── config
 ├── registry
@@ -382,7 +382,7 @@ Concept:
 
 and:
 
-``` text
+```text
 project/.autoforge/
 ├── vision
 ├── work
@@ -401,7 +401,7 @@ project/.autoforge/
 
 AutoForge can serve many independent projects from one installation.
 
-------------------------------------------------------------------------
+---
 
 ## v0.12.0 --- Bootstrap Engine
 
@@ -416,7 +416,7 @@ structured knowledge.
 
 Lifecycle:
 
-``` text
+```text
 Idea
  ↓
 Vision
@@ -455,7 +455,7 @@ as authoritative.
 
 AutoForge can initialize clean projects and clean rebuilds.
 
-------------------------------------------------------------------------
+---
 
 ## v0.13.0 --- Vision + Discovery Engine
 
@@ -469,7 +469,7 @@ Turn natural brainstorming into durable project direction.
 
 Inputs may include:
 
-``` text
+```text
 voice transcript
 chat
 brain dump
@@ -483,7 +483,7 @@ technical concern
 
 Possible extracted knowledge:
 
-``` text
+```text
 vision amendment
 feature candidate
 research question
@@ -505,7 +505,7 @@ promise, differentiation, principles, direction, and non-goals.
 
 Humans no longer need to think like specification documents.
 
-------------------------------------------------------------------------
+---
 
 ## v0.14.0 --- Knowledge Graph + Context Protocol
 
@@ -520,7 +520,7 @@ task.
 
 Three layers:
 
-``` text
+```text
 Knowledge Store
       ↓
 Knowledge Graph
@@ -530,7 +530,7 @@ Context Resolver
 
 Example relationships:
 
-``` text
+```text
 screen.candidate-dashboard
   uses → view.recommended-jobs
   follows → flow.job-discovery
@@ -540,7 +540,7 @@ screen.candidate-dashboard
 
 Context packets should include:
 
-``` text
+```text
 objective
 active task
 relevant specs
@@ -564,7 +564,7 @@ Reducing irrelevant context is a feature.
 AutoForge can provide model-independent, task-specific project
 understanding.
 
-------------------------------------------------------------------------
+---
 
 ## v0.15.0 --- Interactive AutoForge CLI
 
@@ -575,7 +575,7 @@ into a coding agent.
 
 Possible interaction:
 
-``` text
+```text
 $ autoforge
 
 Project: Verdua
@@ -588,7 +588,7 @@ What are you thinking about?
 
 Possible modes:
 
-``` text
+```text
 brainstorm
 discovery
 research
@@ -601,7 +601,7 @@ validation
 
 ### Companion Mode
 
-``` text
+```text
 Codex + AutoForge
 Claude Code + AutoForge
 Cursor + AutoForge
@@ -617,30 +617,30 @@ a dependency of the open-source core.
 
 Users gain a consistent interface to the project brain.
 
-------------------------------------------------------------------------
+---
 
 # 7. Phase 1 Readiness Gate
 
 Before Phase 2 is treated as production-ready architecture, Phase 1
 should demonstrate:
 
--   modular project knowledge;
--   stable artifact identifiers;
--   project isolation;
--   reliable bootstrap;
--   conversational knowledge extraction;
--   explicit relationships;
--   task-specific context resolution;
--   explainable context inclusion;
--   agent contract enforcement;
--   context budgeting;
--   working agent adapters;
--   CLI/project entry points;
--   validation fixtures proving unrelated context is excluded.
+- modular project knowledge;
+- stable artifact identifiers;
+- project isolation;
+- reliable bootstrap;
+- conversational knowledge extraction;
+- explicit relationships;
+- task-specific context resolution;
+- explainable context inclusion;
+- agent contract enforcement;
+- context budgeting;
+- working agent adapters;
+- CLI/project entry points;
+- validation fixtures proving unrelated context is excluded.
 
 Phase 2 should extend these primitives rather than duplicate them.
 
-------------------------------------------------------------------------
+---
 
 # 8. Phase 2 --- Build the Living Product Model
 
@@ -651,7 +651,7 @@ Phase 2 answers:
 > **How does AutoForge preserve product intent, understand the product
 > itself, govern execution, validate results, and learn over time?**
 
-------------------------------------------------------------------------
+---
 
 ## v0.16.0 --- Project Constitution & Governance Engine
 
@@ -665,17 +665,17 @@ Create the rules of the road.
 
 Capabilities:
 
--   product principles;
--   engineering doctrines;
--   security principles;
--   UX principles;
--   explicit non-goals;
--   forbidden architectural patterns;
--   MUST / MUST NOT / SHOULD / MAY rules;
--   release scope;
--   conflict detection;
--   ADR requirements;
--   definition of done.
+- product principles;
+- engineering doctrines;
+- security principles;
+- UX principles;
+- explicit non-goals;
+- forbidden architectural patterns;
+- MUST / MUST NOT / SHOULD / MAY rules;
+- release scope;
+- conflict detection;
+- ADR requirements;
+- definition of done.
 
 ### Dependency
 
@@ -686,7 +686,7 @@ Requires Phase 1's structured knowledge and agent contract.
 Agents can be prevented from silently drifting away from approved
 intent.
 
-------------------------------------------------------------------------
+---
 
 ## v0.17.0 --- Domain Intelligence Engine
 
@@ -700,7 +700,7 @@ Represent the business/product model rather than only repository files.
 
 Domain artifacts may represent:
 
-``` text
+```text
 User
 Profile
 Resume
@@ -714,7 +714,7 @@ with relationships and invariants.
 
 Example:
 
-``` text
+```text
 User owns Profile
 Profile supplies Resume
 Subscription grants Entitlement
@@ -722,7 +722,7 @@ Subscription grants Entitlement
 
 Domain invariant:
 
-``` text
+```text
 Subscription does not imply authorization.
 ```
 
@@ -735,7 +735,7 @@ Builds on structured artifacts and governance.
 Architecture, APIs, schemas, UI, permissions, and tests can all
 reference the same business meaning.
 
-------------------------------------------------------------------------
+---
 
 ## v0.18.0 --- Repository-Native Design Specification Protocol
 
@@ -749,7 +749,7 @@ Make product design portable, structured, and repository-native.
 
 Suggested structure:
 
-``` text
+```text
 design/
   tokens/
   components/
@@ -771,7 +771,7 @@ Uses vision, domain knowledge, context protocol, and governance.
 
 Multiple design/coding agents can work from the same design truth.
 
-------------------------------------------------------------------------
+---
 
 ## v0.19.0 --- Dependency, Traceability & Change-Impact Engine
 
@@ -785,7 +785,7 @@ Connect product intent to implementation.
 
 Canonical chain:
 
-``` text
+```text
 Vision
  ↓
 Use Case
@@ -815,7 +815,7 @@ Builds directly on v0.14's graph and v0.17/v0.18 semantics.
 
 AutoForge can perform impact analysis instead of file-name guessing.
 
-------------------------------------------------------------------------
+---
 
 ## v0.20.0 --- Validation & Quality Gate Engine
 
@@ -829,18 +829,18 @@ Make "done" a governed state.
 
 Potential gates:
 
--   product;
--   architecture;
--   security;
--   privacy;
--   UX;
--   accessibility;
--   testing;
--   documentation.
+- product;
+- architecture;
+- security;
+- privacy;
+- UX;
+- accessibility;
+- testing;
+- documentation.
 
 Lifecycle:
 
-``` text
+```text
 idea
 discovery
 validated
@@ -864,7 +864,7 @@ Requires governance, domain semantics, design specs, and traceability.
 AutoForge can prevent incomplete work from being promoted merely because
 code exists.
 
-------------------------------------------------------------------------
+---
 
 ## v0.21.0 --- Product Digital Twin
 
@@ -880,21 +880,21 @@ The digital twin is **not one giant file**.
 
 It is the connected interpretation of:
 
--   vision;
--   constitution;
--   releases;
--   domains;
--   features;
--   screens;
--   components;
--   APIs;
--   architecture;
--   permissions;
--   tests;
--   decisions;
--   risks;
--   evidence;
--   active work.
+- vision;
+- constitution;
+- releases;
+- domains;
+- features;
+- screens;
+- components;
+- APIs;
+- architecture;
+- permissions;
+- tests;
+- decisions;
+- risks;
+- evidence;
+- active work.
 
 ### Dependency
 
@@ -906,7 +906,7 @@ domain model, and validation state.
 Project-wide queries become possible without loading the entire
 repository into an agent.
 
-------------------------------------------------------------------------
+---
 
 ## v0.22.0 --- Multi-Agent Orchestration Engine
 
@@ -916,7 +916,7 @@ Coordinate specialized agents through governed, scoped context.
 
 Possible roles:
 
-``` text
+```text
 Product Agent
 Architecture Agent
 Design Agent
@@ -929,7 +929,7 @@ Research Agent
 
 Each receives only:
 
-``` text
+```text
 active task
 role
 required knowledge
@@ -956,7 +956,7 @@ validation.
 AutoForge becomes an orchestration layer across agents rather than an
 instruction file for one agent.
 
-------------------------------------------------------------------------
+---
 
 ## v0.23.0 --- Learning & Evidence Engine
 
@@ -966,19 +966,19 @@ Bring real-world evidence back into project knowledge.
 
 Evidence may include:
 
--   analytics;
--   beta feedback;
--   support tickets;
--   bug reports;
--   usability studies;
--   experiment results;
--   performance metrics;
--   interviews;
--   AI evaluations.
+- analytics;
+- beta feedback;
+- support tickets;
+- bug reports;
+- usability studies;
+- experiment results;
+- performance metrics;
+- interviews;
+- AI evaluations.
 
 Relationship:
 
-``` text
+```text
 hypothesis
  ↓
 feature
@@ -1000,7 +1000,7 @@ Requires a living product model and traceable features/decisions.
 
 AutoForge can distinguish assumptions from observed evidence.
 
-------------------------------------------------------------------------
+---
 
 ## v0.24.0 --- Product Strategy & Prioritization Engine
 
@@ -1015,13 +1015,13 @@ Help humans evaluate what should be built next.
 
 AutoForge may organize:
 
--   strategic alignment;
--   user value;
--   risk;
--   cost;
--   evidence strength;
--   dependencies;
--   technical complexity.
+- strategic alignment;
+- user value;
+- risk;
+- cost;
+- evidence strength;
+- dependencies;
+- technical complexity.
 
 ### Invariant
 
@@ -1038,7 +1038,7 @@ data.
 Roadmap discussions can be grounded in project reality rather than
 isolated prompts.
 
-------------------------------------------------------------------------
+---
 
 ## v0.25.0 --- Continuous Product Evolution Engine
 
@@ -1046,7 +1046,7 @@ isolated prompts.
 
 Close the complete product-development loop.
 
-``` text
+```text
 Human Thought
      ↓
 Discovery
@@ -1088,7 +1088,7 @@ Updated Project Knowledge
 
 This is the integration milestone for the complete architecture.
 
-------------------------------------------------------------------------
+---
 
 # 9. Dependency-Aware Roadmap
 
@@ -1097,7 +1097,7 @@ releases.
 
 The deeper dependency chain is:
 
-``` text
+```text
 STRUCTURED KNOWLEDGE (0.8)
         ↓
 WORKFLOW (0.9)
@@ -1137,16 +1137,16 @@ CONTINUOUS EVOLUTION (0.25)
 
 Important architectural interpretation:
 
--   v0.14 provides the graph primitive.
--   v0.19 enriches that graph with end-to-end product traceability.
--   v0.21 exposes the connected graph/state as the product digital twin.
--   v0.22 uses the mature context/governance model to coordinate
-    multiple agents.
--   v0.25 integrates the full loop.
+- v0.14 provides the graph primitive.
+- v0.19 enriches that graph with end-to-end product traceability.
+- v0.21 exposes the connected graph/state as the product digital twin.
+- v0.22 uses the mature context/governance model to coordinate
+  multiple agents.
+- v0.25 integrates the full loop.
 
 These should not become duplicate representations.
 
-------------------------------------------------------------------------
+---
 
 # 10. The Seam Between Phase 1 and Phase 2
 
@@ -1155,7 +1155,7 @@ Phase 1 creates the **project brain infrastructure**.
 Phase 2 gives that brain **product meaning, governance, verification,
 and learning**.
 
-``` text
+```text
 PHASE 1
 Capture
 Structure
@@ -1175,7 +1175,7 @@ Learn
 
 The seam is v0.14--v0.16:
 
-``` text
+```text
 v0.14:
 What context is relevant?
 
@@ -1188,7 +1188,7 @@ What rules govern what can happen with that context?
 
 That seam should be treated as an explicit architecture boundary.
 
-------------------------------------------------------------------------
+---
 
 # 11. Verdua as the Reference Implementation
 
@@ -1198,7 +1198,7 @@ It should continuously stress-test it.
 
 Recommended loop:
 
-``` text
+```text
 AutoForge capability reaches usable state
         ↓
 Apply it to Verdua
@@ -1214,7 +1214,7 @@ Re-run the Verdua workflow
 
 Recommended rebuild sequence:
 
-``` text
+```text
 1. Archive current Verdua prototype
 2. Extract useful lessons
 3. Do not treat legacy architecture as authoritative
@@ -1232,7 +1232,7 @@ Recommended rebuild sequence:
 15. Repeat
 ```
 
-------------------------------------------------------------------------
+---
 
 # 12. When Is AutoForge Ready to Rebuild Verdua?
 
@@ -1240,24 +1240,24 @@ Do not use a version number alone as the criterion.
 
 The practical readiness test is whether AutoForge can reliably:
 
--   capture Verdua's vision;
--   preserve its product principles;
--   bootstrap modular specifications;
--   model important domains;
--   represent user stories and flows;
--   represent design canonically;
--   connect dependencies;
--   generate scoped context;
--   constrain an agent's work;
--   explain why context was selected;
--   validate acceptance criteria;
--   preserve decisions after implementation.
+- capture Verdua's vision;
+- preserve its product principles;
+- bootstrap modular specifications;
+- model important domains;
+- represent user stories and flows;
+- represent design canonically;
+- connect dependencies;
+- generate scoped context;
+- constrain an agent's work;
+- explain why context was selected;
+- validate acceptance criteria;
+- preserve decisions after implementation.
 
 The Phase 2 source roadmap proposes Verdua as a governance,
 design-protocol, context-resolution, orchestration, and multi-agent
 benchmark. That should remain the operating strategy.
 
-------------------------------------------------------------------------
+---
 
 # 13. Canonical Validation Benchmarks
 
@@ -1267,18 +1267,18 @@ Same task + same packet + same constraints.
 
 Compare Codex, Claude, or other capable agents for:
 
--   scope;
--   architecture;
--   requirements;
--   design fidelity;
--   tests;
--   acceptance criteria.
+- scope;
+- architecture;
+- requirements;
+- design fidelity;
+- tests;
+- acceptance criteria.
 
 ## Benchmark 2 --- Context Efficiency
 
 Measure:
 
-``` text
+```text
 total available knowledge
 selected knowledge
 excluded knowledge
@@ -1300,14 +1300,14 @@ Change a domain rule.
 
 AutoForge should identify affected:
 
--   stories;
--   flows;
--   screens;
--   APIs;
--   entities;
--   permissions;
--   tests;
--   documentation.
+- stories;
+- flows;
+- screens;
+- APIs;
+- entities;
+- permissions;
+- tests;
+- documentation.
 
 ## Benchmark 5 --- Design Fidelity
 
@@ -1323,7 +1323,7 @@ states.
 
 AutoForge should prevent release-ready status.
 
-------------------------------------------------------------------------
+---
 
 # 14. Codex Implementation Guidance
 
@@ -1356,33 +1356,33 @@ agents.
 
 Do not build v0.24 as an autonomous product manager.
 
-------------------------------------------------------------------------
+---
 
 # 15. Definition of AutoForge 1.0 Readiness
 
 A future 1.0 maturity threshold should mean AutoForge reliably:
 
--   captures natural human intent;
--   structures durable project knowledge;
--   preserves vision and governance;
--   understands core product domains;
--   maintains repository-native design truth;
--   tracks dependencies and traceability;
--   resolves minimum complete context;
--   coordinates compatible agents;
--   validates implementation against configured gates;
--   preserves rationale and decisions;
--   incorporates real-world evidence;
--   supports human prioritization;
--   keeps projects isolated;
--   remains vendor-neutral;
--   maintains a living interpretation of the product;
--   closes the loop from thought to evidence to updated knowledge.
+- captures natural human intent;
+- structures durable project knowledge;
+- preserves vision and governance;
+- understands core product domains;
+- maintains repository-native design truth;
+- tracks dependencies and traceability;
+- resolves minimum complete context;
+- coordinates compatible agents;
+- validates implementation against configured gates;
+- preserves rationale and decisions;
+- incorporates real-world evidence;
+- supports human prioritization;
+- keeps projects isolated;
+- remains vendor-neutral;
+- maintains a living interpretation of the product;
+- closes the loop from thought to evidence to updated knowledge.
 
-1.0 should represent system maturity, not simply the next semantic
-version after 0.25.
+  1.0 should represent system maturity, not simply the next semantic
+  version after 0.25.
 
-------------------------------------------------------------------------
+---
 
 # 16. Final North Star
 
@@ -1406,7 +1406,7 @@ version after 0.25.
 
 ## The Simplest Mental Model
 
-``` text
+```text
 Human provides intent.
 AutoForge preserves truth.
 AutoForge resolves context.
@@ -1419,7 +1419,7 @@ Human remains in control.
 
 That is the seamless path from v0.8 through v0.25.
 
-------------------------------------------------------------------------
+---
 
 # 17. Immediate Focus
 
@@ -1433,15 +1433,15 @@ The objective is to make each Phase 1 primitive strong enough that Phase
 
 In particular, the transition should protect:
 
--   stable project isolation;
--   stable artifact IDs;
--   modular knowledge;
--   explicit relationships;
--   deterministic schemas;
--   explainable context resolution;
--   agent-neutral context packets;
--   human authority;
--   repository portability.
+- stable project isolation;
+- stable artifact IDs;
+- modular knowledge;
+- explicit relationships;
+- deterministic schemas;
+- explainable context resolution;
+- agent-neutral context packets;
+- human authority;
+- repository portability.
 
 If those foundations remain stable, Phase 2 can evolve naturally from
 the system already being built rather than requiring AutoForge to
