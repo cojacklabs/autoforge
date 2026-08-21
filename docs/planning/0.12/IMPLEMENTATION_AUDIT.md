@@ -15,6 +15,7 @@ Status: in progress
 - `autoforge bootstrap status` manifest inspection.
 - Legacy file inventory and migration-readiness reporting.
 - Explicitly approved discovery input recording with schema validation.
+- Acceptance-gate evaluation for architecture, design, data, and security.
 
 ## Verified
 
@@ -24,5 +25,4 @@ Status: in progress
 
 ## Remaining
 
-- Bootstrap acceptance gates for architecture, design, data, and security.
 - End-to-end bootstrap workflow validation.

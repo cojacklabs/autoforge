@@ -8,6 +8,7 @@ import {
   scaffoldBootstrapManifest,
 } from "../bootstrap/inspect.js";
 import { recordBootstrapDiscovery } from "../bootstrap/discovery.js";
+import { evaluateBootstrapGates } from "../bootstrap/gates.js";
 
 export async function runBootstrapCommand(options: {
   args: readonly string[];
@@ -16,19 +17,27 @@ export async function runBootstrapCommand(options: {
 }): Promise<ExitCode> {
   if (
     options.args.length === 0 ||
-    !["inspect", "scaffold", "status", "discover"].includes(
+    !["inspect", "scaffold", "status", "gates", "discover"].includes(
       options.args[0] ?? "",
     ) ||
     (options.args[0] === "discover" && options.args.length !== 2) ||
     (options.args[0] !== "discover" && options.args.length !== 1)
   ) {
     options.output.stderr(
-      "Usage: autoforge bootstrap inspect|scaffold|status|discover <json-file>",
+      "Usage: autoforge bootstrap inspect|scaffold|status|gates|discover <json-file>",
     );
     return EXIT_CODE.usage;
   }
   try {
-    if (options.args[0] === "discover") {
+    if (options.args[0] === "gates") {
+      options.output.stdout(
+        JSON.stringify(
+          await evaluateBootstrapGates(options.startDirectory),
+          null,
+          2,
+        ),
+      );
+    } else if (options.args[0] === "discover") {
       const discoveryPath = await recordBootstrapDiscovery(
         options.startDirectory,
         options.args[1]!,

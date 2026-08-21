@@ -89,4 +89,21 @@ describe("bootstrap command", () => {
       ),
     ).resolves.toContain('"approved": true');
   });
+
+  it("reports pending acceptance gates", async () => {
+    const project = await mkdtemp(
+      path.join(os.tmpdir(), "autoforge-bootstrap-gates-"),
+    );
+    directories.push(project);
+    await mkdir(path.join(project, ".git"));
+    await scaffoldBootstrapManifest(project);
+    const output = { stdout: vi.fn(), stderr: vi.fn() };
+
+    await expect(
+      runBootstrapCommand({ args: ["gates"], output, startDirectory: project }),
+    ).resolves.toBe(0);
+    expect(output.stdout).toHaveBeenCalledWith(
+      expect.stringContaining('"ready": false'),
+    );
+  });
 });
