@@ -27,7 +27,6 @@
     "LICENSE"
   ],
   "dependencies": {
-    "@piotrjura/pm": "^0.5.3",
     "yaml": "^2.9.0",
     "zod": "^4.4.3"
   },
