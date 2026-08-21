@@ -255,4 +255,35 @@ describe("bootstrap command", () => {
       ),
     );
   });
+
+  it("preserves legacy mode while exposing migration readiness", async () => {
+    const project = await mkdtemp(
+      path.join(os.tmpdir(), "autoforge-bootstrap-legacy-e2e-"),
+    );
+    directories.push(project);
+    await mkdir(path.join(project, ".autoforge", "ai"), { recursive: true });
+    await writeFile(
+      path.join(project, ".autoforge", "package.json"),
+      JSON.stringify({ name: "@cojacklabs/autoforge", version: "0.6.2" }),
+    );
+    const output = { stdout: vi.fn(), stderr: vi.fn() };
+
+    await expect(
+      runBootstrapCommand({
+        args: ["inspect"],
+        output,
+        startDirectory: project,
+      }),
+    ).resolves.toBe(0);
+    expect(output.stdout).toHaveBeenCalledWith(
+      expect.stringContaining('"nextAction": "migrate"'),
+    );
+    await expect(
+      runBootstrapCommand({
+        args: ["status"],
+        output,
+        startDirectory: project,
+      }),
+    ).resolves.toBe(3);
+  });
 });

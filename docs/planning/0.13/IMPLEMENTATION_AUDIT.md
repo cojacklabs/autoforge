@@ -17,6 +17,5 @@ Status: implementation in progress
 
 ## Remaining
 
-- End-to-end vision lifecycle validation across clean project and legacy modes.
 - Conflict review output with explicit human approval recording.
 - Full foundation and legacy suite validation.
