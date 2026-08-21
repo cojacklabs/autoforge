@@ -9,6 +9,7 @@ export interface BootstrapReport {
   marker: ProjectMarker | "none";
   installation: "absent" | "current" | "legacy" | "partial";
   manifests: string[];
+  nextAction: "initialize" | "migrate" | "repair" | "ready";
 }
 
 const MANIFESTS = [
@@ -48,10 +49,19 @@ export async function inspectBootstrap(
     }
   }
   const installation = await inspectInstallation(project.path);
+  const nextAction =
+    installation.status === "absent"
+      ? "initialize"
+      : installation.status === "legacy"
+        ? "migrate"
+        : installation.status === "partial"
+          ? "repair"
+          : "ready";
   return {
     projectRoot: project.path,
     marker: project.marker,
     installation: installation.status,
     manifests,
+    nextAction,
   };
 }

@@ -28,6 +28,7 @@ describe("bootstrap inspection", () => {
       projectRoot: project,
       marker: "autoforge",
       installation: "current",
+      nextAction: "ready",
     });
   });
 
@@ -55,6 +56,7 @@ describe("bootstrap inspection", () => {
       projectRoot: project,
       marker: "none",
       installation: "absent",
+      nextAction: "initialize",
       manifests: [],
     });
   });
@@ -69,6 +71,7 @@ describe("bootstrap inspection", () => {
     await expect(inspectBootstrap(project)).resolves.toMatchObject({
       marker: "autoforge",
       installation: "legacy",
+      nextAction: "migrate",
     });
   });
 });
