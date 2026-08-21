@@ -108,7 +108,7 @@ Intent assessment:
   autoforge use <project-name> <command>
   autoforge agents list
   autoforge assets list templates|doctrines
-  autoforge bootstrap inspect|scaffold|status
+  autoforge bootstrap inspect|scaffold|status|discover <json-file>
 
 Options:
   -h, --help       Show this command reference

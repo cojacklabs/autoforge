@@ -7,6 +7,7 @@ import {
   inspectBootstrap,
   scaffoldBootstrapManifest,
 } from "../bootstrap/inspect.js";
+import { recordBootstrapDiscovery } from "../bootstrap/discovery.js";
 
 export async function runBootstrapCommand(options: {
   args: readonly string[];
@@ -14,14 +15,26 @@ export async function runBootstrapCommand(options: {
   startDirectory: string;
 }): Promise<ExitCode> {
   if (
-    options.args.length !== 1 ||
-    !["inspect", "scaffold", "status"].includes(options.args[0] ?? "")
+    options.args.length === 0 ||
+    !["inspect", "scaffold", "status", "discover"].includes(
+      options.args[0] ?? "",
+    ) ||
+    (options.args[0] === "discover" && options.args.length !== 2) ||
+    (options.args[0] !== "discover" && options.args.length !== 1)
   ) {
-    options.output.stderr("Usage: autoforge bootstrap inspect|scaffold|status");
+    options.output.stderr(
+      "Usage: autoforge bootstrap inspect|scaffold|status|discover <json-file>",
+    );
     return EXIT_CODE.usage;
   }
   try {
-    if (options.args[0] === "status") {
+    if (options.args[0] === "discover") {
+      const discoveryPath = await recordBootstrapDiscovery(
+        options.startDirectory,
+        options.args[1]!,
+      );
+      options.output.stdout(`Recorded bootstrap discovery at ${discoveryPath}`);
+    } else if (options.args[0] === "status") {
       const manifestPath = path.join(
         options.startDirectory,
         ".autoforge",

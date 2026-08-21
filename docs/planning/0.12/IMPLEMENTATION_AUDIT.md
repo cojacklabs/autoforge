@@ -14,6 +14,7 @@ Status: in progress
 - Non-destructive bootstrap manifest scaffolding with lifecycle-tracked artifacts.
 - `autoforge bootstrap status` manifest inspection.
 - Legacy file inventory and migration-readiness reporting.
+- Explicitly approved discovery input recording with schema validation.
 
 ## Verified
 
@@ -23,6 +24,5 @@ Status: in progress
 
 ## Remaining
 
-- Human-approved discovery inputs.
 - Bootstrap acceptance gates for architecture, design, data, and security.
 - End-to-end bootstrap workflow validation.
