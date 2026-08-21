@@ -1,6 +1,6 @@
 # AutoForge v0.14 Knowledge and Context Audit
 
-Status: implementation in progress
+Status: implementation complete; release preparation pending
 
 ## Implemented
 
@@ -16,7 +16,8 @@ Status: implementation in progress
 
 - Knowledge artifact, extraction, registry, and protocol tests pass.
 - Typecheck passes.
+- Full foundation suite passes: 88 files and 426 tests.
+- Legacy suite passes: 17 tests.
+- Repository formatting check passes.
 
 ## Remaining
-
-- Run the full foundation and legacy suites before release preparation.
