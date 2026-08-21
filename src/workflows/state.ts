@@ -1,4 +1,4 @@
-import { mkdir, readFile, rename, writeFile } from "node:fs/promises";
+import { mkdir, readFile, readdir, rename, writeFile } from "node:fs/promises";
 import path from "node:path";
 
 import { z } from "zod";
@@ -59,6 +59,20 @@ export class WorkflowStateStore {
     return workflowRunSchema.parse(
       JSON.parse(await readFile(this.filePath(id), "utf8")) as unknown,
     );
+  }
+
+  async list(): Promise<WorkflowRun[]> {
+    try {
+      const entries = await readdir(this.directory, { withFileTypes: true });
+      const runs = await Promise.all(
+        entries
+          .filter((entry) => entry.isFile() && entry.name.endsWith(".json"))
+          .map((entry) => this.read(entry.name.slice(0, -5))),
+      );
+      return runs.sort((left, right) => left.id.localeCompare(right.id));
+    } catch {
+      return [];
+    }
   }
 
   async writeHandoff(handoff: WorkflowHandoff): Promise<string> {
@@ -136,6 +150,19 @@ export class WorkflowStateStore {
           : []),
       ],
       updatedAt: now.toISOString(),
+    });
+    await this.writeHandoff({
+      workflowId: current.id,
+      workflowKind: current.kind,
+      fromStage: current.currentStage,
+      toStage: next.id,
+      objective: `Continue workflow ${current.id}.`,
+      completedWork: [`Completed ${current.currentStage} stage.`],
+      decisions: [],
+      openQuestions: [],
+      validation: [`Workflow state advanced to ${next.id}.`],
+      sourceArtifacts: [],
+      createdAt: now.toISOString(),
     });
     await this.write(updated);
     return updated;

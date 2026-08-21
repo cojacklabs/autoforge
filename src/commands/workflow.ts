@@ -13,7 +13,7 @@ export interface WorkflowCommandOptions {
 }
 function usage(output: LogWriter): ExitCode {
   output.stderr(
-    "Usage: autoforge workflow start <id> <kind> | workflow show <id> | workflow advance <id> [--skip-optional] | workflow handoff <json-file>",
+    "Usage: autoforge workflow list | workflow start <id> <kind> | workflow show <id> | workflow advance <id> [--skip-optional] | workflow handoff <json-file>",
   );
   return EXIT_CODE.usage;
 }
@@ -24,10 +24,16 @@ export async function runWorkflowCommand(
   const skipOptional = options.args.includes("--skip-optional");
   if (
     !action ||
-    !id ||
+    (!id && action !== "list") ||
     (action === "start" && !kind) ||
     options.args.length !==
-      (action === "advance" && skipOptional ? 3 : action === "start" ? 3 : 2)
+      (action === "list"
+        ? 1
+        : action === "advance" && skipOptional
+          ? 3
+          : action === "start"
+            ? 3
+            : 2)
   )
     return usage(options.output);
   try {
@@ -35,8 +41,12 @@ export async function runWorkflowCommand(
       startDirectory: options.startDirectory,
     });
     const store = new WorkflowStateStore(project.path);
+    if (action === "list") {
+      options.output.stdout(JSON.stringify(await store.list(), null, 2));
+      return EXIT_CODE.success;
+    }
     if (action === "handoff") {
-      const handoffPath = await resolveContainedProjectPath(project.path, id);
+      const handoffPath = await resolveContainedProjectPath(project.path, id!);
       const handoff = workflowHandoffSchema.parse(
         JSON.parse(await readFile(handoffPath.absolutePath, "utf8")) as unknown,
       );
@@ -48,11 +58,11 @@ export async function runWorkflowCommand(
     }
     const run =
       action === "start"
-        ? await store.create(id, workflowKindSchema.parse(kind))
+        ? await store.create(id!, workflowKindSchema.parse(kind))
         : action === "show"
-          ? await store.read(id)
+          ? await store.read(id!)
           : action === "advance"
-            ? await store.advance(id, new Date(), skipOptional)
+            ? await store.advance(id!, new Date(), skipOptional)
             : undefined;
     if (!run) return usage(options.output);
     options.output.stdout(JSON.stringify(run, null, 2));

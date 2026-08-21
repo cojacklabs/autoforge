@@ -39,6 +39,9 @@ describe("workflow state", () => {
       completedStages: ["research"],
       status: "active",
     });
+    await expect(
+      store.readHandoff("feature.checkout", "research", "planning"),
+    ).resolves.toMatchObject({ toStage: "planning" });
   });
 
   it("skips optional stages when requested", async () => {
@@ -96,5 +99,20 @@ describe("workflow state", () => {
     await expect(
       store.readHandoff("feature.checkout", "research", "planning"),
     ).resolves.toEqual(handoff);
+  });
+
+  it("lists workflow runs deterministically", async () => {
+    const projectRoot = await mkdtemp(
+      path.join(os.tmpdir(), "autoforge-workflow-list-"),
+    );
+    directories.push(projectRoot);
+    await mkdir(path.join(projectRoot, ".git"));
+    const store = new WorkflowStateStore(projectRoot);
+    await store.create("feature.z", "feature-development");
+    await store.create("feature.a", "feature-development");
+    await expect(store.list()).resolves.toMatchObject([
+      { id: "feature.a" },
+      { id: "feature.z" },
+    ]);
   });
 });

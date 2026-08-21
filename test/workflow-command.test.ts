@@ -92,4 +92,36 @@ describe("workflow command", () => {
       expect.stringContaining("research → planning"),
     );
   });
+
+  it("lists persisted workflow runs", async () => {
+    const projectRoot = await mkdtemp(
+      path.join(os.tmpdir(), "autoforge-workflow-list-command-"),
+    );
+    directories.push(projectRoot);
+    await mkdir(path.join(projectRoot, ".git"));
+    await initializeProject({ projectRoot });
+    const output = { stdout: vi.fn(), stderr: vi.fn() };
+    await runWorkflowCommand({
+      args: ["start", "feature.z", "feature-development"],
+      output,
+      startDirectory: projectRoot,
+    });
+    await runWorkflowCommand({
+      args: ["start", "feature.a", "feature-development"],
+      output,
+      startDirectory: projectRoot,
+    });
+    await expect(
+      runWorkflowCommand({
+        args: ["list"],
+        output,
+        startDirectory: projectRoot,
+      }),
+    ).resolves.toBe(EXIT_CODE.success);
+    expect(
+      JSON.parse(output.stdout.mock.calls[2]?.[0] ?? "[]").map(
+        (run: { id: string }) => run.id,
+      ),
+    ).toEqual(["feature.a", "feature.z"]);
+  });
 });

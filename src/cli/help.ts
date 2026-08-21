@@ -85,6 +85,7 @@ Intent assessment:
   autoforge planning show <kind> [--source <intent.json>]
   autoforge planning handoff <kind> --phase <phase-id> --include <pattern>
   autoforge workflow start <id> <kind>
+  autoforge workflow list
   autoforge workflow show <id>
   autoforge workflow advance <id> [--skip-optional]
   autoforge workflow handoff <json-file>
