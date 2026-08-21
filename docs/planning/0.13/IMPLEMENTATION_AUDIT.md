@@ -1,6 +1,6 @@
 # AutoForge v0.13 Vision and Discovery Audit
 
-Status: implementation in progress
+Status: implementation complete; release preparation pending
 
 ## Implemented
 
@@ -15,7 +15,8 @@ Status: implementation in progress
 
 - Typecheck passes.
 - Focused bootstrap and vision tests pass.
+- Full foundation suite passes: 83 files and 415 tests.
+- Legacy suite passes: 17 tests.
+- Repository formatting and typecheck pass.
 
 ## Remaining
-
-- Full foundation and legacy suite validation.
