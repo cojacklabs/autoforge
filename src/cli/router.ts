@@ -30,6 +30,7 @@ export interface CliDependencies {
     agents?(args: readonly string[]): Promise<ExitCode>;
     assets?(args: readonly string[]): Promise<ExitCode>;
     bootstrap?(args: readonly string[]): Promise<ExitCode>;
+    constitution?(args: readonly string[]): Promise<ExitCode>;
     migrate(args: readonly string[]): Promise<ExitCode>;
     recap(args: readonly string[]): Promise<ExitCode>;
     start(args: readonly string[]): Promise<ExitCode>;
@@ -107,6 +108,11 @@ export async function runCli(
     case "knowledge":
       return dependencies.commands.knowledge
         ? dependencies.commands.knowledge(commandArgs)
+        : EXIT_CODE.usage;
+
+    case "constitution":
+      return dependencies.commands.constitution
+        ? dependencies.commands.constitution(commandArgs)
         : EXIT_CODE.usage;
 
     case "workflow":

@@ -111,6 +111,7 @@ Intent assessment:
   autoforge agents list
   autoforge assets list templates|doctrines
   autoforge bootstrap inspect|scaffold|status|gates|vision|vision-amend|vision-check <idea>|vision-approve <idea>|discovery-questions <json-file>|discover <json-file>
+  autoforge constitution init|list|show <id>|check <objective>
 
 Options:
   -h, --help       Show this command reference
