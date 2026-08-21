@@ -1,6 +1,6 @@
 # AutoForge v0.11 Foundation Audit
 
-Status: in progress (local development)
+Status: certified for v0.11.10 foundation release
 
 ## Implemented
 
@@ -28,6 +28,13 @@ Status: in progress (local development)
 - Production build passes.
 - Foundation suite passes: 81 files and 398 tests.
 - Legacy suite passes: 17 tests.
+
+## Foundation Certification
+
+The v0.11 foundation is certified for v0.12 bootstrap development. Global
+workspace behavior, project targeting, adapter contracts, asset scoping,
+package entrypoints, planning synchronization, and release validation have
+all passed their required checks.
 
 ## Not Yet Implemented
 
