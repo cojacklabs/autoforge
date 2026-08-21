@@ -229,4 +229,30 @@ describe("bootstrap command", () => {
       expect.stringContaining('"conflict": true'),
     );
   });
+
+  it("returns targeted questions for incomplete discovery", async () => {
+    const project = await mkdtemp(
+      path.join(os.tmpdir(), "autoforge-bootstrap-questions-"),
+    );
+    directories.push(project);
+    const source = path.join(project, "partial.json");
+    await writeFile(source, JSON.stringify({ vision: "A clear direction" }));
+    const output = { stdout: vi.fn(), stderr: vi.fn() };
+
+    await expect(
+      runBootstrapCommand({
+        args: ["discovery-questions", source],
+        output,
+        startDirectory: project,
+      }),
+    ).resolves.toBe(0);
+    expect(output.stdout).toHaveBeenCalledWith(
+      expect.stringContaining('"complete": false'),
+    );
+    expect(output.stdout).toHaveBeenCalledWith(
+      expect.stringContaining(
+        "What specific problem should the project solve?",
+      ),
+    );
+  });
 });

@@ -10,6 +10,7 @@ import {
 import { recordBootstrapDiscovery } from "../bootstrap/discovery.js";
 import { evaluateBootstrapGates } from "../bootstrap/gates.js";
 import { checkVisionConflict } from "../bootstrap/vision-check.js";
+import { identifyDiscoveryQuestions } from "../bootstrap/questions.js";
 import {
   amendVisionDocument,
   generateVisionDocument,
@@ -30,24 +31,39 @@ export async function runBootstrapCommand(options: {
       "vision",
       "vision-amend",
       "vision-check",
+      "discovery-questions",
       "discover",
     ].includes(options.args[0] ?? "") ||
-    (["discover", "vision-amend", "vision-check"].includes(
-      options.args[0] ?? "",
-    ) &&
+    ([
+      "discover",
+      "vision-amend",
+      "vision-check",
+      "discovery-questions",
+    ].includes(options.args[0] ?? "") &&
       options.args.length !== 2) ||
-    (!["discover", "vision-amend", "vision-check"].includes(
-      options.args[0] ?? "",
-    ) &&
+    (![
+      "discover",
+      "vision-amend",
+      "vision-check",
+      "discovery-questions",
+    ].includes(options.args[0] ?? "") &&
       options.args.length !== 1)
   ) {
     options.output.stderr(
-      "Usage: autoforge bootstrap inspect|scaffold|status|gates|vision|vision-amend|vision-check <idea>|discover <json-file>",
+      "Usage: autoforge bootstrap inspect|scaffold|status|gates|vision|vision-amend|vision-check <idea>|discovery-questions <json-file>|discover <json-file>",
     );
     return EXIT_CODE.usage;
   }
   try {
-    if (options.args[0] === "vision-check") {
+    if (options.args[0] === "discovery-questions") {
+      options.output.stdout(
+        JSON.stringify(
+          await identifyDiscoveryQuestions(options.args[1]!),
+          null,
+          2,
+        ),
+      );
+    } else if (options.args[0] === "vision-check") {
       options.output.stdout(
         JSON.stringify(
           await checkVisionConflict(options.startDirectory, options.args[1]!),
