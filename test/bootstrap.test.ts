@@ -29,6 +29,7 @@ describe("bootstrap inspection", () => {
       marker: "autoforge",
       installation: "current",
       nextAction: "ready",
+      projectTypes: [],
     });
   });
 

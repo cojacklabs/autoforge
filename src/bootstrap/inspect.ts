@@ -9,6 +9,7 @@ export interface BootstrapReport {
   marker: ProjectMarker | "none";
   installation: "absent" | "current" | "legacy" | "partial";
   manifests: string[];
+  projectTypes: string[];
   nextAction: "initialize" | "migrate" | "repair" | "ready";
 }
 
@@ -53,6 +54,23 @@ export async function inspectBootstrap(
     }
   }
   const installation = await inspectInstallation(project.path);
+  const projectTypes = [
+    ...new Set(
+      manifests.flatMap((manifest) => {
+        if (["package.json"].includes(manifest)) return ["node"];
+        if (["pyproject.toml", "requirements.txt"].includes(manifest))
+          return ["python"];
+        if (manifest === "Cargo.toml") return ["rust"];
+        if (manifest === "go.mod") return ["go"];
+        if (manifest === "pom.xml") return ["java"];
+        if (manifest === "Gemfile") return ["ruby"];
+        if (manifest === "composer.json") return ["php"];
+        if (manifest === "mix.exs") return ["elixir"];
+        if (manifest === "*.sln") return ["dotnet"];
+        return [];
+      }),
+    ),
+  ];
   const nextAction =
     installation.status === "absent"
       ? "initialize"
@@ -66,6 +84,7 @@ export async function inspectBootstrap(
     marker: project.marker,
     installation: installation.status,
     manifests,
+    projectTypes,
     nextAction,
   };
 }
