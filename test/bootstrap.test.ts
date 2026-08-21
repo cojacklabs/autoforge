@@ -1,4 +1,4 @@
-import { mkdir, mkdtemp, rm } from "node:fs/promises";
+import { mkdir, mkdtemp, rm, writeFile } from "node:fs/promises";
 import os from "node:os";
 import path from "node:path";
 
@@ -28,6 +28,20 @@ describe("bootstrap inspection", () => {
       projectRoot: project,
       marker: "autoforge",
       installation: "current",
+    });
+  });
+
+  it("detects non-Node solution manifests", async () => {
+    const project = await mkdtemp(
+      path.join(os.tmpdir(), "autoforge-bootstrap-"),
+    );
+    directories.push(project);
+    await mkdir(path.join(project, ".git"));
+    await writeFile(path.join(project, "Example.sln"), "");
+
+    await expect(inspectBootstrap(project)).resolves.toMatchObject({
+      marker: "git",
+      manifests: ["*.sln"],
     });
   });
 });

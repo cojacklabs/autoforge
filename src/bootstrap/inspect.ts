@@ -1,4 +1,4 @@
-import { access } from "node:fs/promises";
+import { access, readdir } from "node:fs/promises";
 import path from "node:path";
 
 import { discoverProjectRoot, type ProjectMarker } from "../core/project.js";
@@ -26,7 +26,15 @@ export async function inspectBootstrap(
   const project = await discoverProjectRoot({ startDirectory });
   const manifests: string[] = [];
   for (const manifest of MANIFESTS) {
-    if (manifest.includes("*")) continue;
+    if (manifest === "*.sln") {
+      const entries = await readdir(project.path, { withFileTypes: true });
+      if (
+        entries.some((entry) => entry.isFile() && entry.name.endsWith(".sln"))
+      ) {
+        manifests.push(manifest);
+      }
+      continue;
+    }
     try {
       await access(path.join(project.path, manifest));
       manifests.push(manifest);
