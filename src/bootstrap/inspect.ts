@@ -1,4 +1,4 @@
-import { access, readdir } from "node:fs/promises";
+import { access, mkdir, readdir, writeFile } from "node:fs/promises";
 import path from "node:path";
 
 import { discoverProjectRoot, type ProjectMarker } from "../core/project.js";
@@ -87,4 +87,23 @@ export async function inspectBootstrap(
     projectTypes,
     nextAction,
   };
+}
+
+export async function scaffoldBootstrapManifest(
+  projectRoot: string,
+): Promise<string> {
+  const manifestPath = path.join(
+    path.resolve(projectRoot),
+    ".autoforge",
+    "bootstrap",
+    "manifest.json",
+  );
+  await mkdir(path.dirname(manifestPath), { recursive: true });
+  const report = await inspectBootstrap(projectRoot);
+  await writeFile(
+    manifestPath,
+    `${JSON.stringify({ version: "0.12.0", report }, null, 2)}\n`,
+    { encoding: "utf8", flag: "wx" },
+  );
+  return manifestPath;
 }

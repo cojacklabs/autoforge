@@ -4,7 +4,10 @@ import path from "node:path";
 
 import { afterEach, describe, expect, it } from "vitest";
 import { initializeProject } from "../src/commands/init.js";
-import { inspectBootstrap } from "../src/bootstrap/inspect.js";
+import {
+  inspectBootstrap,
+  scaffoldBootstrapManifest,
+} from "../src/bootstrap/inspect.js";
 
 const directories: string[] = [];
 afterEach(async () => {
@@ -73,6 +76,22 @@ describe("bootstrap inspection", () => {
       marker: "autoforge",
       installation: "legacy",
       nextAction: "migrate",
+    });
+  });
+
+  it("scaffolds a non-destructive bootstrap manifest", async () => {
+    const project = await mkdtemp(
+      path.join(os.tmpdir(), "autoforge-bootstrap-"),
+    );
+    directories.push(project);
+    await mkdir(path.join(project, ".git"));
+    const manifestPath = await scaffoldBootstrapManifest(project);
+
+    expect(manifestPath).toBe(
+      path.join(project, ".autoforge", "bootstrap", "manifest.json"),
+    );
+    await expect(scaffoldBootstrapManifest(project)).rejects.toMatchObject({
+      code: "EEXIST",
     });
   });
 });
