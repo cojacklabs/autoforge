@@ -6,7 +6,7 @@ import { inspectInstallation } from "../commands/init.js";
 
 export interface BootstrapReport {
   projectRoot: string;
-  marker: ProjectMarker;
+  marker: ProjectMarker | "none";
   installation: "absent" | "current" | "legacy" | "partial";
   manifests: string[];
 }
@@ -23,7 +23,12 @@ const MANIFESTS = [
 export async function inspectBootstrap(
   startDirectory: string,
 ): Promise<BootstrapReport> {
-  const project = await discoverProjectRoot({ startDirectory });
+  let project: { path: string; marker: ProjectMarker | "none" };
+  try {
+    project = await discoverProjectRoot({ startDirectory });
+  } catch {
+    project = { path: path.resolve(startDirectory), marker: "none" };
+  }
   const manifests: string[] = [];
   for (const manifest of MANIFESTS) {
     if (manifest === "*.sln") {

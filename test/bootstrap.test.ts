@@ -44,4 +44,18 @@ describe("bootstrap inspection", () => {
       manifests: ["*.sln"],
     });
   });
+
+  it("supports an empty directory for new-project bootstrapping", async () => {
+    const project = await mkdtemp(
+      path.join(os.tmpdir(), "autoforge-bootstrap-"),
+    );
+    directories.push(project);
+
+    await expect(inspectBootstrap(project)).resolves.toMatchObject({
+      projectRoot: project,
+      marker: "none",
+      installation: "absent",
+      manifests: [],
+    });
+  });
 });
