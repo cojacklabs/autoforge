@@ -84,7 +84,7 @@ describe("bundled foundation CLI", () => {
     ).resolves.toMatchObject({
       exitCode: 0,
       stderr: "",
-      stdout: "AutoForge 0.11.2\n",
+      stdout: "AutoForge 0.11.3\n",
     });
   });
 
@@ -111,7 +111,7 @@ describe("bundled foundation CLI", () => {
     ).resolves.toMatchObject({
       exitCode: 0,
       stderr: "",
-      stdout: "AutoForge 0.11.2\n",
+      stdout: "AutoForge 0.11.3\n",
     });
   });
 
@@ -127,7 +127,29 @@ describe("bundled foundation CLI", () => {
     ).resolves.toMatchObject({
       exitCode: 0,
       stderr: "",
-      stdout: "AutoForge 0.11.2\n",
+      stdout: "AutoForge 0.11.3\n",
+    });
+  });
+
+  it("keeps explicit project targeting isolated", async () => {
+    const firstProject = await createProject();
+    const secondProject = await createProject();
+    await expect(runBundledCli(firstProject, ["init"])).resolves.toMatchObject({
+      exitCode: 0,
+    });
+    await expect(runBundledCli(secondProject, ["init"])).resolves.toMatchObject(
+      {
+        exitCode: 0,
+      },
+    );
+
+    await expect(
+      runBundledCli(firstProject, ["--project", secondProject, "doctor"]),
+    ).resolves.toMatchObject({
+      exitCode: 0,
+      stdout: expect.stringContaining(
+        `Project root found at ${secondProject}.`,
+      ),
     });
   });
 
