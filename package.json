@@ -1,6 +1,6 @@
 {
   "name": "@cojacklabs/autoforge",
-  "version": "0.11.10",
+  "version": "0.11.11",
   "type": "module",
   "private": false,
   "license": "MIT",
@@ -19,7 +19,7 @@
     "prepack": "npm run build"
   },
   "bin": {
-    "autoforge": "./dist/cli.js"
+    "autoforge": "bin/autoforge.js"
   },
   "files": [
     "dist",
