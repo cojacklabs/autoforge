@@ -3,6 +3,7 @@ import { EXIT_CODE, type ExitCode } from "../core/errors.js";
 import type { LogWriter } from "../core/logger.js";
 import { GlobalWorkspaceStore } from "../workspace/global-store.js";
 import { inspectProjectStorage } from "../workspace/storage.js";
+import { inspectProjectInventory } from "../workspace/inventory.js";
 import {
   createStorageBundle,
   inspectGlobalStorage,
@@ -83,10 +84,11 @@ export async function runProjectsCommand(
       });
       if (!resolvedPath) return usage(options.output);
       const metadata = config.projectMetadata?.[resolvedPath];
+      const inventory = await inspectProjectInventory(resolvedPath);
       if (json) {
         options.output.stdout(
           JSON.stringify(
-            { path: resolvedPath, metadata: metadata ?? null },
+            { path: resolvedPath, metadata: metadata ?? null, inventory },
             null,
             2,
           ),
@@ -96,6 +98,11 @@ export async function runProjectsCommand(
           [
             `Project: ${metadata?.name ?? resolvedPath}`,
             `Path: ${resolvedPath}`,
+            `Inventory: ${inventory.files} files across ${inventory.directories} directories`,
+            `Categories: ${Object.entries(inventory.categories)
+              .map(([category, count]) => `${category}=${count}`)
+              .join(", ")}`,
+            `Highlights: ${inventory.highlights.join(", ") || "(none)"}`,
             ...(metadata
               ? Object.entries(metadata).map(
                   ([key, value]) =>
