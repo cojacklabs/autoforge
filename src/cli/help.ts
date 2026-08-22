@@ -5,6 +5,7 @@ Usage:
 
 Commands:
   add        Create a feature, phase, task, or issue
+  changelog  Compile documented bugfix and feature-note decisions into CHANGELOG.md
   check      Evaluate work, session, context, and edit guardrails
   context    Generate the active work build packet
   decide     Record or supersede an architectural decision
@@ -145,6 +146,7 @@ Intent assessment:
   autoforge bootstrap approve <artifact-id> [--evidence <path|workflow-id>]
   autoforge constitution init|list|show <id>|check <objective>
   autoforge domain init|list|show <id>|check
+  autoforge changelog compile [--since <git-tag>]
   autoforge update
   trace      Record and inspect traceability links and impact
   evidence   Inspect persisted validation evidence and readiness
