@@ -18,8 +18,8 @@ npx autoforge doctor
 
 For a new project, an existing project, an AutoForge upgrade, or a newly assigned agent, use this canonical one-liner:
 
-```text
-We will use the globally installed AutoForge CLI for this repository (available via [GitHub](https://github.com/cojacklabs/autoforge "AutoForge - GitHub"): run `autoforge version`, `autoforge --project "$PWD" doctor`, and `autoforge --project "$PWD" bootstrap status`; review `AGENTS.md` when present and inspect `.autoforge/`, initialize or attach the project only when needed, refresh your understanding after AutoForge updates, and when active work exists run `autoforge --project "$PWD" context --explain`; summarize the project structure, active work, governance rules, relevant decisions, and validation requirements before making changes.
+```markdown
+We will use the globally installed AutoForge CLI for this repository (available via https://github.com/cojacklabs/autoforge): run `autoforge version`, `autoforge --project "$PWD" doctor`, and `autoforge --project "$PWD" bootstrap status`; review `AGENTS.md` when present and inspect `.autoforge/`, initialize or attach the project only when needed, refresh your understanding after AutoForge updates, and when active work exists run `autoforge --project "$PWD" context --explain`; summarize the project structure, active work, governance rules, relevant decisions, and validation requirements before making changes.
 ```
 
 Use this prompt at initialization, after upgrading AutoForge, and whenever a new agent joins the project. It ensures agents use the current global CLI rather than a stale local bundle.
