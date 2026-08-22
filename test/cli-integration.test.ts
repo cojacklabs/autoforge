@@ -298,6 +298,36 @@ describe("bundled foundation CLI", () => {
     expect(imported).toMatchObject({ exitCode: 0, stderr: "" });
     expect(imported.stdout).toContain("token.spacing-compact");
 
+    const searched = await runBundledCli(projectRoot, [
+      "design",
+      "search",
+      "compact",
+    ]);
+    expect(searched).toMatchObject({ exitCode: 0, stderr: "" });
+    expect(searched.stdout).toContain("token.spacing-compact");
+
+    await writeFile(
+      path.join(projectRoot, "compact-token-updated.md"),
+      (
+        await readFile(path.join(projectRoot, "compact-token.md"), "utf8")
+      ).replace(
+        "Spacing for compact dashboard cards.",
+        "Updated spacing for compact dashboard cards.",
+      ),
+    );
+    const updated = await runBundledCli(projectRoot, [
+      "design",
+      "update",
+      "compact-token-updated.md",
+    ]);
+    expect(updated).toMatchObject({ exitCode: 0, stderr: "" });
+    const checked = await runBundledCli(projectRoot, ["design", "check"]);
+    expect(checked).toMatchObject({
+      exitCode: 0,
+      stderr: "",
+      stdout: "Design relationships: valid.\n",
+    });
+
     await runBundledCli(projectRoot, [
       "add",
       "issue",

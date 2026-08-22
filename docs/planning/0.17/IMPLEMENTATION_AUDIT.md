@@ -9,14 +9,19 @@
 - `design validate`, `design import`, `design list`, and `design show` are implemented and tested.
 - Design specifications can be selected into context packets through the existing specification resolver.
 
-## Gaps Before v0.17 Release
+## Delivered Since Audit
+
+- Provenance metadata is schema-validated and serialized with specifications.
+- Registry search and missing-target relationship diagnostics are deterministic.
+- `design search`, `design check`, and `design update` are available through the CLI.
+- Context packets explain selected design provenance.
+- Bundled CLI coverage exercises import, search, update, check, and context delivery.
+
+## Remaining Gaps Before v0.17 Release
 
 - Add explicit design provenance and source freshness reporting rather than relying only on `source` and `updatedAt`.
-- Add deterministic specification search beyond type, tag, and source filters.
-- Add design relationship validation that reports missing targets and invalid graph edges.
-- Add create/update workflows so repository-native specs do not require importing an external file for every change.
-- Add explainable context output showing why each design artifact was selected.
-- Add end-to-end coverage for stale, missing, and relationship-invalid design artifacts.
+- Add freshness status computation and stale-source diagnostics.
+- Add end-to-end coverage for stale and invalid design artifacts.
 - Align the CLI reference and agent guidance with the final v0.17 command surface.
 
 ## Recommended Order
