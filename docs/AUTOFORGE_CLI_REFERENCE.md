@@ -85,6 +85,7 @@ autoforge workflow handoff <json-file>
 
 ```bash
 autoforge projects list
+autoforge projects show <path> [--json]
 autoforge projects register <path>
 autoforge projects prune
 autoforge attach <path>

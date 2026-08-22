@@ -1,76 +1,34 @@
-import { mkdir, mkdtemp, rm } from "node:fs/promises";
+import { mkdtemp, rm } from "node:fs/promises";
 import os from "node:os";
 import path from "node:path";
-
 import { afterEach, describe, expect, it, vi } from "vitest";
-
 import { runProjectsCommand } from "../src/commands/projects.js";
+import { GlobalWorkspaceStore } from "../src/workspace/global-store.js";
 
-const directories: string[] = [];
+const roots: string[] = [];
 
-afterEach(async () => {
-  await Promise.all(
-    directories
-      .splice(0)
-      .map((directory) => rm(directory, { recursive: true, force: true })),
-  );
-});
+afterEach(async () =>
+  Promise.all(
+    roots.splice(0).map((root) => rm(root, { recursive: true, force: true })),
+  ),
+);
 
 describe("projects command", () => {
-  it("requires the configured global home and lists registered projects", async () => {
-    const home = await mkdtemp(
-      path.join(os.tmpdir(), "autoforge-projects-command-"),
-    );
-    directories.push(home);
+  it("shows registered project metadata as JSON", async () => {
+    const home = await mkdtemp(path.join(os.tmpdir(), "autoforge-projects-"));
+    roots.push(home);
+    const project = path.join(home, "project");
+    await new GlobalWorkspaceStore(home).registerProject(project);
     const output = { stdout: vi.fn(), stderr: vi.fn() };
-    await mkdir(path.join(home, "project"));
     await expect(
       runProjectsCommand({
-        args: ["register", path.join(home, "project")],
+        args: ["show", project, "--json"],
         output,
         homeDirectory: home,
       }),
     ).resolves.toBe(0);
-    await expect(
-      runProjectsCommand({ args: ["list"], output, homeDirectory: home }),
-    ).resolves.toBe(0);
-    expect(output.stdout.mock.calls[1]?.[0]).toContain(
-      path.join(home, "project"),
-    );
-  });
-
-  it("treats the bare command as list", async () => {
-    const home = await mkdtemp(
-      path.join(os.tmpdir(), "autoforge-projects-command-"),
-    );
-    directories.push(home);
-    const output = { stdout: vi.fn(), stderr: vi.fn() };
-
-    await expect(
-      runProjectsCommand({ args: [], output, homeDirectory: home }),
-    ).resolves.toBe(0);
-    expect(output.stdout).toHaveBeenCalledWith("");
-    expect(output.stderr).not.toHaveBeenCalled();
-  });
-
-  it("prunes inaccessible registry entries", async () => {
-    const home = await mkdtemp(
-      path.join(os.tmpdir(), "autoforge-projects-command-"),
-    );
-    directories.push(home);
-    const output = { stdout: vi.fn(), stderr: vi.fn() };
-    await expect(
-      runProjectsCommand({
-        args: ["register", path.join(home, "missing")],
-        output,
-        homeDirectory: home,
-      }),
-    ).resolves.toBe(0);
-    await expect(
-      runProjectsCommand({ args: ["prune"], output, homeDirectory: home }),
-    ).resolves.toBe(0);
-    expect(output.stdout).toHaveBeenLastCalledWith(
-      "Pruned registry. Total projects: 0.",
+    expect(output.stdout).toHaveBeenCalledWith(
+      expect.stringContaining('"name": "project"'),
     );
   });
 });

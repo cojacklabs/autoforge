@@ -107,6 +107,7 @@ Intent assessment:
   autoforge contract show
   autoforge contract validate
   autoforge projects list
+  autoforge projects show <path> [--json]
   autoforge projects register <path>
   autoforge projects prune
   autoforge attach <path>
