@@ -1,3 +1,4 @@
+import { readFile } from "node:fs/promises";
 import { EXIT_CODE, type ExitCode } from "../core/errors.js";
 import type { LogWriter } from "../core/logger.js";
 import { GlobalWorkspaceStore } from "../workspace/global-store.js";
@@ -5,6 +6,7 @@ import { inspectProjectStorage } from "../workspace/storage.js";
 import {
   createStorageBundle,
   inspectGlobalStorage,
+  importStorageBundle,
 } from "../workspace/tiered-storage.js";
 
 export interface ProjectsCommandOptions {
@@ -221,6 +223,32 @@ export async function runProjectsCommand(
       return usage(options.output);
     }
   }
+  if (action === "global-import") {
+    const bundlePath = options.args[2];
+    const jsonOutput = options.args[3] === "--json";
+    if (
+      !projectPath ||
+      !bundlePath ||
+      (options.args.length === 4 && !jsonOutput)
+    )
+      return usage(options.output);
+    try {
+      const bundle = JSON.parse(await readFile(bundlePath, "utf8")) as unknown;
+      const manifest = await importStorageBundle(
+        bundle,
+        projectPath,
+        options.homeDirectory,
+      );
+      options.output.stdout(
+        jsonOutput
+          ? JSON.stringify(manifest, null, 2)
+          : `Imported storage manifest for ${manifest.projectId}.`,
+      );
+      return EXIT_CODE.success;
+    } catch {
+      return usage(options.output);
+    }
+  }
   if (
     action === "register"
       ? !projectPath || options.args.length !== 2
@@ -228,7 +256,9 @@ export async function runProjectsCommand(
         ? options.args.length > 2
         : action === "archive" || action === "restore"
           ? !projectPath || options.args.length !== 2
-          : options.args.length !== 1
+          : action === "global-import"
+            ? !projectPath || options.args.length < 3 || options.args.length > 4
+            : options.args.length !== 1
   )
     return usage(options.output);
   try {
