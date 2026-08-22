@@ -251,6 +251,23 @@ describe("design command", () => {
     );
   });
 
+  it("reports unknown freshness and diagnostics as JSON", async () => {
+    const projectRoot = await createProject();
+    const output = { stdout: vi.fn(), stderr: vi.fn() };
+    await expect(
+      runDesignCommand({
+        args: ["check", "--json"],
+        output,
+        startDirectory: projectRoot,
+      }),
+    ).resolves.toBe(EXIT_CODE.success);
+    expect(JSON.parse(output.stdout.mock.calls[0]?.[0] ?? "{}")).toMatchObject({
+      valid: true,
+      relationships: [],
+      freshness: [],
+    });
+  });
+
   it("rejects untyped design files, invalid types, and malformed actions", async () => {
     const projectRoot = await createProject();
     await writeFile(

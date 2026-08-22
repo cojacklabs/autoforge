@@ -7,5 +7,6 @@
 - Context packet tests pass with provenance rendering.
 - Freshness evaluation distinguishes `current`, `stale`, and `unknown` using SHA-256 source hashes.
 - `design check` reports stale provenance-backed source files with a failing exit code.
+- `design check --json` emits machine-readable relationship and freshness diagnostics, including `unknown` status.
 
 The next bounded task is freshness status computation for imported design sources.

@@ -72,7 +72,7 @@ autoforge design import <file>
 autoforge design update <file>
 autoforge design list
 autoforge design search <query>
-autoforge design check
+autoforge design check [--json]
 autoforge design show <id>
 autoforge workflow start <id> <kind>
 autoforge workflow list

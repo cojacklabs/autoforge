@@ -83,7 +83,7 @@ Design context:
   autoforge design update <file>
   autoforge design list [--type <screen|component|token|flow|state|responsive>]
   autoforge design search <query>
-  autoforge design check
+  autoforge design check [--json]
   autoforge design show <id>
 
 Intent assessment:

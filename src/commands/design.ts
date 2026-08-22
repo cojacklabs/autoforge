@@ -190,9 +190,13 @@ export async function runDesignCommand(
   }
 
   if (action === "check") {
-    if (subject !== undefined || rest.length > 0) {
+    if (
+      (subject !== undefined && subject !== "--json") ||
+      rest.some((argument) => argument !== "--json")
+    ) {
       return usage("Design check does not accept arguments.", options.output);
     }
+    const json = subject === "--json" || rest.includes("--json");
     const diagnostics = await registry.relationshipDiagnostics();
     const freshness: Array<{
       id: string;
@@ -200,7 +204,10 @@ export async function runDesignCommand(
     }> = [];
     for (const specification of await registry.list()) {
       const sourcePath = specification.provenance?.sourcePath;
-      if (!sourcePath) continue;
+      if (!sourcePath) {
+        freshness.push({ id: specification.id, status: "unknown" });
+        continue;
+      }
       const resolved = await resolveContainedProjectPath(
         project.path,
         sourcePath,
@@ -212,6 +219,22 @@ export async function runDesignCommand(
       });
     }
     const stale = freshness.filter(({ status }) => status === "stale");
+    if (json) {
+      options.output.stdout(
+        JSON.stringify(
+          {
+            valid: diagnostics.length === 0 && stale.length === 0,
+            relationships: diagnostics,
+            freshness,
+          },
+          null,
+          2,
+        ),
+      );
+      return diagnostics.length === 0 && stale.length === 0
+        ? EXIT_CODE.success
+        : EXIT_CODE.invalidState;
+    }
     if (diagnostics.length === 0 && stale.length === 0) {
       options.output.stdout("Design relationships: valid.");
       return EXIT_CODE.success;
