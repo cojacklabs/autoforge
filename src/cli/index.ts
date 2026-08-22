@@ -38,6 +38,7 @@ import { runStartCommand } from "../commands/start.js";
 import { runTuiCommand } from "../commands/tui.js";
 import { runWhyCommand } from "../commands/why.js";
 import { GlobalWorkspaceStore } from "../workspace/global-store.js";
+import { projectMutationBlocked } from "../workspace/lifecycle.js";
 import { runCli, type CliOutput } from "./router.js";
 
 interface PackageMetadata {
@@ -118,6 +119,16 @@ export async function main(
     const startDirectory = projectDirectory
       ? path.resolve(projectDirectory)
       : process.cwd();
+    const projectMetadata = projectDirectory
+      ? (await new GlobalWorkspaceStore().read().catch(() => undefined))
+          ?.projectMetadata?.[startDirectory]
+      : undefined;
+    if (projectMutationBlocked(cliArgs[0], projectMetadata)) {
+      output.stderr(
+        `Project lifecycle is ${projectMetadata?.lifecycle}; mutating command "${cliArgs[0]}" is blocked.`,
+      );
+      return EXIT_CODE.invalidState;
+    }
     return await runCli(cliArgs, {
       output,
       version: findPackageVersion(),
