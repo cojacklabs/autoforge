@@ -2,7 +2,10 @@ import { EXIT_CODE, type ExitCode } from "../core/errors.js";
 import type { LogWriter } from "../core/logger.js";
 import { GlobalWorkspaceStore } from "../workspace/global-store.js";
 import { inspectProjectStorage } from "../workspace/storage.js";
-import { inspectGlobalStorage } from "../workspace/tiered-storage.js";
+import {
+  createStorageBundle,
+  inspectGlobalStorage,
+} from "../workspace/tiered-storage.js";
 
 export interface ProjectsCommandOptions {
   args: readonly string[];
@@ -11,7 +14,7 @@ export interface ProjectsCommandOptions {
 }
 function usage(output: LogWriter): ExitCode {
   output.stderr(
-    "Usage: autoforge projects [list | show <path> [--json] | storage <path> [--json] | global-storage <path> [--json] | update <path> [--name <name>] [--alias <alias>] [--lifecycle <state>] [--retention-days <n>] | archive <path> | restore <path> | register <path> | prune [--dry-run]]",
+    "Usage: autoforge projects [list | show <path> [--json] | storage <path> [--json] | global-storage <path> [--json] | global-export <path> [--json] | update <path> [--name <name>] [--alias <alias>] [--lifecycle <state>] [--retention-days <n>] | archive <path> | restore <path> | register <path> | prune [--dry-run]]",
   );
   return EXIT_CODE.usage;
 }
@@ -199,6 +202,20 @@ export async function runProjectsCommand(
               )
               .join("\n"),
       );
+      return EXIT_CODE.success;
+    } catch {
+      return usage(options.output);
+    }
+  }
+  if (action === "global-export") {
+    if (!projectPath || (flag !== undefined && !json))
+      return usage(options.output);
+    try {
+      const bundle = await createStorageBundle(
+        projectPath,
+        options.homeDirectory,
+      );
+      options.output.stdout(JSON.stringify(bundle, null, 2));
       return EXIT_CODE.success;
     } catch {
       return usage(options.output);

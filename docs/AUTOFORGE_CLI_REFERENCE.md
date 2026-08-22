@@ -89,6 +89,7 @@ autoforge projects list --json
 autoforge projects show <path> [--json]
 autoforge projects storage <path> [--json]
 autoforge projects global-storage <path> [--json]
+autoforge projects global-export <path> [--json]
 autoforge projects archive <path>
 autoforge projects restore <path>
 autoforge projects update <path> [--name <name>] [--alias <alias>] [--lifecycle <state>] [--retention-days <n>]

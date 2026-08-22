@@ -6,6 +6,7 @@ import {
   projectStorageId,
   projectStorageTierPath,
   inspectGlobalStorage,
+  createStorageBundle,
   StorageManifestStore,
 } from "../src/workspace/tiered-storage.js";
 
@@ -26,6 +27,10 @@ describe("tiered global storage", () => {
       await expect(inspectGlobalStorage(project, home)).resolves.toHaveLength(
         5,
       );
+      await expect(createStorageBundle(project, home)).resolves.toMatchObject({
+        schemaVersion: 1,
+        manifest: { projectId: projectStorageId(project) },
+      });
     } finally {
       await rm(home, { recursive: true, force: true });
     }

@@ -31,6 +31,22 @@ export interface StorageTierUsage {
   files: number;
 }
 
+export const storageBundleSchema = z
+  .object({
+    schemaVersion: z.literal(1),
+    manifest: storageManifestSchema,
+    tiers: z.array(
+      z.object({
+        tier: z.enum(["metadata", "active", "history", "artifacts", "cache"]),
+        bytes: z.number().int().nonnegative(),
+        files: z.number().int().nonnegative(),
+      }),
+    ),
+  })
+  .strict();
+
+export type StorageBundle = z.infer<typeof storageBundleSchema>;
+
 export function projectStorageId(canonicalPath: string): string {
   return `project.${createHash("sha256").update(path.resolve(canonicalPath)).digest("hex").slice(0, 16)}`;
 }
@@ -72,6 +88,22 @@ export async function inspectGlobalStorage(
       },
     ),
   );
+}
+
+export async function createStorageBundle(
+  canonicalPath: string,
+  homeDirectory?: string,
+): Promise<StorageBundle> {
+  const manifest = await new StorageManifestStore(
+    canonicalPath,
+    homeDirectory,
+  ).read();
+  if (!manifest) throw new Error("Storage manifest not found");
+  return storageBundleSchema.parse({
+    schemaVersion: 1,
+    manifest,
+    tiers: await inspectGlobalStorage(canonicalPath, homeDirectory),
+  });
 }
 
 async function measureDirectory(directory: string): Promise<{
