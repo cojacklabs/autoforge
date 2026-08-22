@@ -72,6 +72,7 @@ describe("decision state persistence", () => {
             relatedWork: ["feature.decision-memory"],
             supersedes: null,
             status: "active",
+            kind: "architecture",
             createdAt: TIMESTAMP,
             updatedAt: TIMESTAMP,
           },

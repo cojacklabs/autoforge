@@ -130,3 +130,59 @@ describe("decision memory contracts", () => {
     ).toBe(false);
   });
 });
+
+describe("decision kind", () => {
+  it("defaults kind to architecture when omitted", () => {
+    const decision_obj = decisionSchema.parse({
+      id: "decision.example",
+      statement: "Example statement.",
+      reasoning: "Example reasoning.",
+      consequences: ["Example consequence."],
+      scope: ["example"],
+      keywords: ["example"],
+      relatedWork: [],
+      supersedes: null,
+      status: "active",
+      createdAt: "2026-08-22T00:00:00.000Z",
+      updatedAt: "2026-08-22T00:00:00.000Z",
+    });
+    expect(decision_obj.kind).toBe("architecture");
+  });
+
+  it("accepts an explicit bugfix kind", () => {
+    const decision_obj = decisionSchema.parse({
+      id: "decision.example-bugfix",
+      statement: "Example statement.",
+      reasoning: "Example reasoning.",
+      consequences: ["Example consequence."],
+      scope: ["example"],
+      keywords: ["example"],
+      relatedWork: [],
+      supersedes: null,
+      status: "active",
+      kind: "bugfix",
+      createdAt: "2026-08-22T00:00:00.000Z",
+      updatedAt: "2026-08-22T00:00:00.000Z",
+    });
+    expect(decision_obj.kind).toBe("bugfix");
+  });
+
+  it("rejects an unknown kind", () => {
+    expect(() =>
+      decisionSchema.parse({
+        id: "decision.example-bad-kind",
+        statement: "Example statement.",
+        reasoning: "Example reasoning.",
+        consequences: ["Example consequence."],
+        scope: ["example"],
+        keywords: ["example"],
+        relatedWork: [],
+        supersedes: null,
+        status: "active",
+        kind: "not-a-real-kind",
+        createdAt: "2026-08-22T00:00:00.000Z",
+        updatedAt: "2026-08-22T00:00:00.000Z",
+      }),
+    ).toThrow();
+  });
+});

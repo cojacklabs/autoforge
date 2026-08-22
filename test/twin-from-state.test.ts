@@ -34,6 +34,7 @@ describe("project state digital twin adapter", () => {
             relatedWork: ["feature.search"],
             supersedes: null,
             status: "active",
+            kind: "architecture",
             createdAt: "2026-08-22T12:00:00.000Z",
             updatedAt: "2026-08-22T12:00:00.000Z",
           },
