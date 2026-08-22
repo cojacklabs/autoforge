@@ -1,6 +1,7 @@
 import { EXIT_CODE, type ExitCode } from "../core/errors.js";
 import type { LogWriter } from "../core/logger.js";
 import { GlobalWorkspaceStore } from "../workspace/global-store.js";
+import { inspectProjectStorage } from "../workspace/storage.js";
 
 export interface ProjectsCommandOptions {
   args: readonly string[];
@@ -9,7 +10,7 @@ export interface ProjectsCommandOptions {
 }
 function usage(output: LogWriter): ExitCode {
   output.stderr(
-    "Usage: autoforge projects [list | show <path> [--json] | update <path> [--name <name>] [--alias <alias>] [--lifecycle <state>] | register <path> | prune]",
+    "Usage: autoforge projects [list | show <path> [--json] | storage <path> [--json] | update <path> [--name <name>] [--alias <alias>] [--lifecycle <state>] | register <path> | prune]",
   );
   return EXIT_CODE.usage;
 }
@@ -128,6 +129,21 @@ export async function runProjectsCommand(
       ).updateProjectMetadata(projectPath, updates);
       options.output.stdout(
         `Updated project metadata. Total projects: ${config.projects.length}.`,
+      );
+      return EXIT_CODE.success;
+    } catch {
+      return usage(options.output);
+    }
+  }
+  if (action === "storage") {
+    if (!projectPath || (flag !== undefined && !json))
+      return usage(options.output);
+    try {
+      const report = await inspectProjectStorage(projectPath);
+      options.output.stdout(
+        json
+          ? JSON.stringify(report, null, 2)
+          : `Storage: ${report.bytes} bytes across ${report.files} files (${report.exists ? "present" : "missing"}).`,
       );
       return EXIT_CODE.success;
     } catch {

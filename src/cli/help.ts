@@ -109,6 +109,7 @@ Intent assessment:
   autoforge projects list
   autoforge projects list --json
   autoforge projects show <path> [--json]
+  autoforge projects storage <path> [--json]
   autoforge projects update <path> [--name <name>] [--alias <alias>] [--lifecycle <state>]
   autoforge projects register <path>
   autoforge projects prune
