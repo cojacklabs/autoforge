@@ -38,6 +38,19 @@ export interface ListSpecificationsOptions {
   source?: string;
 }
 
+export interface SearchSpecificationsOptions {
+  query: string;
+  types?: readonly SpecificationType[];
+  tags?: readonly string[];
+}
+
+export interface RelationshipDiagnostic {
+  sourceId: string;
+  relationship: string;
+  targetId: string;
+  status: "missing-target";
+}
+
 export type RelationshipDirection = "outgoing" | "incoming" | "both";
 
 export interface FindRelationshipsOptions {
@@ -104,6 +117,55 @@ export class SpecificationRegistry {
         (options.source === undefined ||
           specification.source === options.source),
     );
+  }
+
+  async search(options: SearchSpecificationsOptions): Promise<Specification[]> {
+    const query = options.query.trim().toLocaleLowerCase();
+    if (!query) return [];
+    const typeFilter = options.types ? new Set(options.types) : undefined;
+    const tagFilter = options.tags ? new Set(options.tags) : undefined;
+    return (await this.store.list())
+      .filter(
+        (specification) =>
+          (typeFilter === undefined || typeFilter.has(specification.type)) &&
+          (tagFilter === undefined ||
+            [...tagFilter].every((tag) => specification.tags.includes(tag))) &&
+          [
+            specification.id,
+            specification.name,
+            specification.description,
+            specification.content,
+            ...specification.tags,
+          ].some((value) => value.toLocaleLowerCase().includes(query)),
+      )
+      .sort((left, right) => left.id.localeCompare(right.id));
+  }
+
+  async relationshipDiagnostics(): Promise<RelationshipDiagnostic[]> {
+    const specifications = await this.store.list();
+    const ids = new Set(
+      specifications.map((specification) => specification.id),
+    );
+    return specifications
+      .flatMap((specification) =>
+        Object.entries(specification.relationships).flatMap(
+          ([relationship, targets]) =>
+            targets
+              .filter((targetId) => !ids.has(targetId))
+              .map((targetId) => ({
+                sourceId: specification.id,
+                relationship,
+                targetId,
+                status: "missing-target" as const,
+              })),
+        ),
+      )
+      .sort(
+        (left, right) =>
+          left.sourceId.localeCompare(right.sourceId) ||
+          left.relationship.localeCompare(right.relationship) ||
+          left.targetId.localeCompare(right.targetId),
+      );
   }
 
   async findRelationships(

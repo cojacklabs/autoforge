@@ -109,6 +109,48 @@ describe("specification registry", () => {
     ]);
   });
 
+  it("searches deterministically across specification text", async () => {
+    const registry = createRegistry();
+    await registry.register(
+      input("screen.dashboard", "screen", {
+        name: "Dashboard",
+        content: "# Dashboard\n\nShows active jobs.",
+      }),
+    );
+    await registry.register(
+      input("component.job-card", "component", {
+        name: "Job Card",
+        content: "# Job Card",
+      }),
+    );
+    await expect(registry.search({ query: "jobs" })).resolves.toMatchObject([
+      { id: "screen.dashboard" },
+    ]);
+  });
+
+  it("reports missing relationship targets deterministically", async () => {
+    const registry = createRegistry();
+    await registry.register(
+      input("screen.dashboard", "screen", {
+        relationships: { uses: ["component.missing", "token.missing"] },
+      }),
+    );
+    await expect(registry.relationshipDiagnostics()).resolves.toEqual([
+      {
+        sourceId: "screen.dashboard",
+        relationship: "uses",
+        targetId: "component.missing",
+        status: "missing-target",
+      },
+      {
+        sourceId: "screen.dashboard",
+        relationship: "uses",
+        targetId: "token.missing",
+        status: "missing-target",
+      },
+    ]);
+  });
+
   it("registers and lists knowledge specifications", async () => {
     const registry = createRegistry();
     await registry.register(
