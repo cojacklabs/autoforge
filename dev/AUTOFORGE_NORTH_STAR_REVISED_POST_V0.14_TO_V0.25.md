@@ -740,7 +740,7 @@ decision: backlog
 
 ---
 
-## v0.24 — Interactive CLI Experience
+## v0.25 — Interactive CLI Experience
 
 ### Primary Question
 
@@ -806,19 +806,19 @@ It must not own governance logic, graph logic, domain state, context ranking, va
 
 The current thin/read-oriented TUI may remain available throughout Phase 2.
 
-v0.24 represents the richer conversational/operational experience, not the first existence of a terminal interface.
+v0.25 represents the richer conversational/operational experience, not the first existence of a terminal interface.
 
-### Why v0.24 Comes Before v0.25
+### Why v0.25 Follows v0.24
 
-By v0.24 the system's major engines exist.
+By v0.25 the system's major engines exist and the v0.24 lifecycle loop is available.
 
 The human now gets one natural surface to operate them.
 
-The final v0.25 release can then prove that the full lifecycle works as one coherent closed loop.
+The v0.25 interface must remain a presentation/orchestration layer over the already-complete v0.24 lifecycle services.
 
 ---
 
-## v0.25 — Continuous Product Evolution Engine
+## v0.24 — Continuous Product Evolution Engine
 
 ### Primary Question
 
@@ -867,7 +867,7 @@ Updated Product Model
 
 ### Critical Architectural Rule
 
-v0.25 must not depend exclusively on the v0.24 UI.
+v0.24 must not depend exclusively on the v0.25 UI.
 
 Continuous evolution must remain accessible through shared application services so it can be operated through:
 
@@ -910,9 +910,9 @@ v0.22 Evidence + Learning
         ↓
 v0.23 Strategy + Prioritization
         ↓
-v0.24 Interactive Experience
+v0.24 Continuous Evolution
         ↓
-v0.25 Continuous Evolution
+v0.25 Interactive Experience
 ```
 
 This is a dependency narrative, not permission to couple each implementation tightly to the previous release.
