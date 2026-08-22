@@ -21,9 +21,15 @@ interface ParsedDecideArguments {
   keywords: string[];
   relatedWork: string[];
   supersedes?: string;
+  kind?: string;
 }
 
-const SINGLE_FLAGS = new Set(["--statement", "--reasoning", "--supersedes"]);
+const SINGLE_FLAGS = new Set([
+  "--statement",
+  "--reasoning",
+  "--supersedes",
+  "--kind",
+]);
 const REPEATABLE_FLAGS = new Set([
   "--consequence",
   "--scope",
@@ -89,7 +95,21 @@ function parseDecideArguments(
     );
   }
 
+  const KNOWN_KINDS = new Set([
+    "architecture",
+    "bugfix",
+    "feature-note",
+    "skip-reason",
+  ]);
+
   const supersedes = singleValues.get("--supersedes");
+  const kind = singleValues.get("--kind");
+  if (kind !== undefined && !KNOWN_KINDS.has(kind)) {
+    return usageError(
+      output,
+      `Option --kind must be one of: ${[...KNOWN_KINDS].join(", ")}.`,
+    );
+  }
   return {
     statement,
     reasoning,
@@ -98,6 +118,7 @@ function parseDecideArguments(
     keywords,
     relatedWork: repeatableValues.get("--work") ?? [],
     ...(supersedes ? { supersedes } : {}),
+    ...(kind ? { kind } : {}),
   };
 }
 
@@ -117,7 +138,13 @@ export async function runDecideCommand(
     createWorkStateStore(project.path),
   );
   try {
-    const result = await service.record(parsed);
+    const { kind, ...rest } = parsed;
+    const result = await service.record({
+      ...rest,
+      ...(kind
+        ? { kind: kind as import("../decisions/schemas.js").DecisionKind }
+        : {}),
+    });
     options.output.stdout(
       `Recorded decision ${result.decision.id} (revision ${result.revision}).`,
     );

@@ -150,6 +150,35 @@ describe("decision service", () => {
     });
   });
 
+  it("records an explicit decision kind", async () => {
+    const { service } = await createFixture();
+    const result = await service.record(
+      input({
+        statement: "Fix null pointer on empty cart.",
+        reasoning: "Cart total crashed when no items were present.",
+        consequences: ["Guard the total calculation against an empty array."],
+        scope: ["checkout"],
+        keywords: ["bugfix", "cart"],
+        kind: "bugfix",
+      }),
+    );
+    expect(result.decision.kind).toBe("bugfix");
+  });
+
+  it("defaults decision kind to architecture when not provided", async () => {
+    const { service } = await createFixture();
+    const result = await service.record(
+      input({
+        statement: "Use Postgres for durable storage.",
+        reasoning: "Matches existing operational tooling.",
+        consequences: ["Provision a Postgres instance."],
+        scope: ["storage"],
+        keywords: ["database"],
+      }),
+    );
+    expect(result.decision.kind).toBe("architecture");
+  });
+
   it("rejects missing or previously superseded targets", async () => {
     const { decisionStore, service } = await createFixture();
     await expect(

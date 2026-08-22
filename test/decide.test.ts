@@ -158,6 +158,30 @@ describe("decide command", () => {
     expect(output.stderr.mock.calls[0]?.[0]).toContain(message);
   });
 
+  it("accepts an explicit --kind flag", async () => {
+    const { projectRoot } = await createFixture();
+    const output = { stdout: vi.fn(), stderr: vi.fn() };
+    await expect(
+      runDecideCommand({
+        args: decisionArgs(["--kind", "bugfix"]),
+        output,
+        startDirectory: projectRoot,
+      }),
+    ).resolves.toBe(EXIT_CODE.success);
+  });
+
+  it("rejects --kind provided more than once", async () => {
+    const { projectRoot } = await createFixture();
+    const output = { stdout: vi.fn(), stderr: vi.fn() };
+    await expect(
+      runDecideCommand({
+        args: decisionArgs(["--kind", "bugfix", "--kind", "architecture"]),
+        output,
+        startDirectory: projectRoot,
+      }),
+    ).resolves.toBe(EXIT_CODE.usage);
+  });
+
   it("returns usage for non-canonical metadata", async () => {
     const { projectRoot } = await createFixture();
     const output = { stdout: vi.fn(), stderr: vi.fn() };
