@@ -3,6 +3,7 @@ import type { LogWriter } from "../core/logger.js";
 import { discoverProjectRoot } from "../core/project.js";
 import { runQualityGate } from "../quality/service.js";
 import type { QualityGateReport } from "../quality/schemas.js";
+import { ValidationEvidenceStore } from "../quality/evidence.js";
 
 export interface GateCommandOptions {
   args: readonly string[];
@@ -107,6 +108,24 @@ export async function runGateCommand(
     projectRoot: project.path,
     files: parsed.files,
   });
+  const evidenceStore = new ValidationEvidenceStore(project.path);
+  const capturedAt = new Date().toISOString();
+  for (const check of report.checks) {
+    await evidenceStore.record({
+      id: `evidence.${check.id}.${Date.now()}`,
+      gateId: check.id,
+      status:
+        check.status === "pass"
+          ? "passed"
+          : check.status === "skipped"
+            ? "skipped"
+            : "failed",
+      severity: check.status === "warning" ? "advisory" : "required",
+      traceIds: [],
+      reason: check.message,
+      capturedAt,
+    });
+  }
   if (parsed.json) {
     options.output.stdout(JSON.stringify(report, null, 2));
   } else {

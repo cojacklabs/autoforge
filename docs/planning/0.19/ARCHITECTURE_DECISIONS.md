@@ -37,3 +37,7 @@ Before v0.19 release, the implementation must provide typed gate schemas, persis
 ## Deferred
 
 Hosted CI orchestration, probabilistic quality scoring, autonomous remediation, and organization-wide policy synchronization remain outside v0.19.
+
+## Evidence Integration
+
+Quality gate execution records one persistent evidence entry per check under `.autoforge/quality/evidence.json`, preserving status, severity, reason, and capture time.
