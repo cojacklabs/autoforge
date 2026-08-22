@@ -235,7 +235,9 @@ export async function main(
           runUpdateCommand({
             args: commandArgs,
             output,
-            currentVersion: findPackageVersion(),
+            globalInstall: !path
+              .resolve(path.dirname(fileURLToPath(import.meta.url)), "..")
+              .startsWith(path.resolve(startDirectory)),
           }),
         migrate: (commandArgs) =>
           runMigrateCommand({

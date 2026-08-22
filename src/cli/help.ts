@@ -118,7 +118,7 @@ Intent assessment:
   autoforge constitution init|list|show <id>|check <objective>
   autoforge domain init|list|show <id>|check
   autoforge update
-  autoforge update [--check|--dry-run|--apply]
+  autoforge update
 
 Options:
   -h, --help       Show this command reference

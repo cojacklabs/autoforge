@@ -1,4 +1,4 @@
-# AutoForge 0.17.0
+# AutoForge 0.17.1
 
 AutoForge is a task-specific context and control plane for AI-assisted software development. It gives Codex, Claude Code, Gemini/Antigravity, Grok Build, Cursor, and generic agents durable project memory, governed work lifecycle, scoped edits, and explainable build packets.
 
@@ -80,16 +80,14 @@ npx autoforge migrate
 
 Upgrade the package with your package manager, then run `autoforge doctor`.
 
-To check for a newer release or safely preview a global update:
+Update AutoForge to the version currently published on npm:
 
 ```bash
 autoforge update
-autoforge update --check
-autoforge update --dry-run
-autoforge update --apply
+autoforge update
 ```
 
-`--check` flags a newer npm release when one is available. `--apply` resolves the latest npm version and installs that exact version; it is the only mode that changes the global installation. Verify the result with `autoforge version` and `autoforge doctor`.
+The command resolves the npm version, installs that exact version, and uses `--global` when the running AutoForge installation is global. Verify with `autoforge version` and `autoforge doctor`.
 
 ## Supported Commands
 

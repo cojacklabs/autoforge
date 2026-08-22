@@ -2,13 +2,11 @@ import { describe, expect, it, vi } from "vitest";
 import { runUpdateCommand } from "../src/commands/update.js";
 
 describe("update command", () => {
-  it("prints the detected package-manager command in dry-run mode", async () => {
+  it("rejects removed update subcommands", async () => {
     const output = { stdout: vi.fn(), stderr: vi.fn() };
-    await expect(
-      runUpdateCommand({ args: ["--dry-run"], output, packageManager: "pnpm" }),
-    ).resolves.toBe(0);
-    expect(output.stdout).toHaveBeenCalledWith(
-      "pnpm add -g @cojacklabs/autoforge@latest",
+    await expect(runUpdateCommand({ args: ["--check"], output })).resolves.toBe(
+      2,
     );
+    expect(output.stderr).toHaveBeenCalledWith("Usage: autoforge update");
   });
 });

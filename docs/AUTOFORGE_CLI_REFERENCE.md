@@ -101,13 +101,11 @@ autoforge bootstrap status
 autoforge bootstrap scaffold
 autoforge migrate --dry-run
 autoforge update
-autoforge update --check
-autoforge update --dry-run
-autoforge update --apply
+autoforge update
 autoforge version
 ```
 
-Only `update --apply` changes the global installation. Verify updates with `autoforge version` and `autoforge doctor`.
+The command installs the exact version returned by npm and uses `--global` for global installations. Verify with `autoforge version` and `autoforge doctor`.
 
 ## Help and TUI
 
