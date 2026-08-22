@@ -9,7 +9,7 @@ export interface ProjectsCommandOptions {
 }
 function usage(output: LogWriter): ExitCode {
   output.stderr(
-    "Usage: autoforge projects [list | show <path> [--json] | register <path> | prune]",
+    "Usage: autoforge projects [list | show <path> [--json] | update <path> [--name <name>] [--alias <alias>] [--lifecycle <state>] | register <path> | prune]",
   );
   return EXIT_CODE.usage;
 }
@@ -76,6 +76,43 @@ export async function runProjectsCommand(
           ].join("\n"),
         );
       }
+      return EXIT_CODE.success;
+    } catch {
+      return usage(options.output);
+    }
+  }
+  if (action === "update") {
+    if (!projectPath) return usage(options.output);
+    const updates: {
+      name?: string;
+      aliases?: string[];
+      lifecycle?: "active" | "paused" | "archived" | "inaccessible";
+    } = {};
+    for (let index = 2; index < options.args.length; index += 2) {
+      const flag = options.args[index];
+      const value = options.args[index + 1];
+      if (!value) return usage(options.output);
+      if (flag === "--name") updates.name = value;
+      else if (flag === "--alias")
+        updates.aliases = [...(updates.aliases ?? []), value];
+      else if (
+        flag === "--lifecycle" &&
+        ["active", "paused", "archived", "inaccessible"].includes(value)
+      )
+        updates.lifecycle = value as Exclude<
+          typeof updates.lifecycle,
+          undefined
+        >;
+      else return usage(options.output);
+    }
+    if (Object.keys(updates).length === 0) return usage(options.output);
+    try {
+      const config = await new GlobalWorkspaceStore(
+        options.homeDirectory,
+      ).updateProjectMetadata(projectPath, updates);
+      options.output.stdout(
+        `Updated project metadata. Total projects: ${config.projects.length}.`,
+      );
       return EXIT_CODE.success;
     } catch {
       return usage(options.output);

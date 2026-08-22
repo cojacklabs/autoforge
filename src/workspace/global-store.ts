@@ -153,6 +153,34 @@ export class GlobalWorkspaceStore {
     return updated;
   }
 
+  async updateProjectMetadata(
+    projectRoot: string,
+    updates: Partial<Pick<ProjectMetadata, "name" | "aliases" | "lifecycle">>,
+  ): Promise<GlobalWorkspaceConfig> {
+    const current = await this.read();
+    const project = path.resolve(projectRoot);
+    if (!current.projects.includes(project)) {
+      throw new Error(`Project is not registered: ${project}`);
+    }
+    const existing = current.projectMetadata?.[project] ?? {
+      name: path.basename(project),
+      lastSeen: new Date().toISOString(),
+    };
+    const updated = globalWorkspaceConfigSchema.parse({
+      ...current,
+      projectMetadata: {
+        ...(current.projectMetadata ?? {}),
+        [project]: {
+          ...existing,
+          ...updates,
+          lastSeen: new Date().toISOString(),
+        },
+      },
+    });
+    await this.write(updated);
+    return updated;
+  }
+
   async pruneProjects(): Promise<GlobalWorkspaceConfig> {
     const current = await this.read().catch(() => ({
       version: "0.11.0" as const,
