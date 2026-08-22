@@ -84,9 +84,9 @@ autoforge workflow handoff <json-file>
 ## Global Workspace
 
 ```bash
-autoforge projects list
+autoforge projects list [--json]
 autoforge projects list --json
-autoforge projects show <path> [--json]
+autoforge projects show <path|project_name> [--json]
 autoforge projects storage <path> [--json]
 autoforge projects global-storage <path> [--json]
 autoforge projects global-export <path> [--json]

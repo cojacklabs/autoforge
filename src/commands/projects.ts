@@ -16,7 +16,7 @@ export interface ProjectsCommandOptions {
 }
 function usage(output: LogWriter): ExitCode {
   output.stderr(
-    "Usage: autoforge projects [list | show <path> [--json] | storage <path> [--json] | global-storage <path> [--json] | global-export <path> [--json] | update <path> [--name <name>] [--alias <alias>] [--lifecycle <state>] [--retention-days <n>] | archive <path> | restore <path> | register <path> | prune [--dry-run]]",
+    "Usage: autoforge projects [list [--json] | show <path|project_name> [--json] | storage <path> [--json] | global-storage <path> [--json] | global-export <path> [--json] | global-import <path> <bundle> [--json] | update <path> [--name <name>] [--alias <alias>] [--lifecycle <state>] [--retention-days <n>] | archive <path> | restore <path> | register <path> | prune [--dry-run]]",
   );
   return EXIT_CODE.usage;
 }
@@ -53,9 +53,10 @@ export async function runProjectsCommand(
             .map((project) => {
               const metadata = (
                 config.projectMetadata as
-                  Record<string, { name: string }> | undefined
+                  | Record<string, { name: string; lifecycle?: string }>
+                  | undefined
               )?.[project];
-              return metadata ? `${metadata.name}\t${project}` : project;
+              return `${metadata?.lifecycle ?? "active"}\t${metadata?.name ?? project}\t${project}`;
             })
             .join("\n"),
         );
@@ -72,9 +73,14 @@ export async function runProjectsCommand(
       const config = await new GlobalWorkspaceStore(
         options.homeDirectory,
       ).read();
-      const resolvedPath = config.projects.find(
-        (project) => project === projectPath,
-      );
+      const resolvedPath = config.projects.find((project) => {
+        const metadata = config.projectMetadata?.[project];
+        return (
+          project === projectPath ||
+          metadata?.name === projectPath ||
+          metadata?.aliases?.includes(projectPath)
+        );
+      });
       if (!resolvedPath) return usage(options.output);
       const metadata = config.projectMetadata?.[resolvedPath];
       if (json) {
@@ -307,9 +313,10 @@ export async function runProjectsCommand(
               .map((project) => {
                 const metadata = (
                   config.projectMetadata as
-                    Record<string, { name: string }> | undefined
+                    | Record<string, { name: string; lifecycle?: string }>
+                    | undefined
                 )?.[project];
-                return metadata ? `${metadata.name}\t${project}` : project;
+                return `${metadata?.lifecycle ?? "active"}\t${metadata?.name ?? project}\t${project}`;
               })
               .join("\n"),
       );

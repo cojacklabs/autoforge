@@ -106,9 +106,9 @@ Intent assessment:
   autoforge contract generate <agent-id>
   autoforge contract show
   autoforge contract validate
-  autoforge projects list
+  autoforge projects list [--json]
   autoforge projects list --json
-  autoforge projects show <path> [--json]
+  autoforge projects show <path|project_name> [--json]
   autoforge projects storage <path> [--json]
   autoforge projects global-storage <path> [--json]
   autoforge projects global-export <path> [--json]
