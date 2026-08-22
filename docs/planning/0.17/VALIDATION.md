@@ -5,5 +5,6 @@
 - Specification schema, codec, store, and registry tests pass.
 - Bundled CLI integration passes for design import, search, update, check, and context delivery.
 - Context packet tests pass with provenance rendering.
+- Freshness evaluation distinguishes `current`, `stale`, and `unknown` using SHA-256 source hashes.
 
 The next bounded task is freshness status computation for imported design sources.

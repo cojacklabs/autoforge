@@ -4,6 +4,10 @@ import {
   specificationRelationshipEdgeSchema,
   specificationSchema,
 } from "../src/specifications/schemas.js";
+import {
+  evaluateSpecificationFreshness,
+  sourceHash,
+} from "../src/specifications/freshness.js";
 
 const TIMESTAMP = "2026-08-20T12:00:00.000Z";
 
@@ -31,6 +35,25 @@ describe("specification schemas", () => {
       type: "component",
       relationships: { uses: ["design.spacing", "architecture.jobs"] },
     });
+  });
+
+  it("evaluates provenance freshness deterministically", () => {
+    const content = "source design";
+    const specificationValue = specificationSchema.parse({
+      ...specification(),
+      provenance: {
+        sourceKind: "import",
+        sourceHash: sourceHash(content),
+        capturedAt: TIMESTAMP,
+      },
+    });
+    expect(evaluateSpecificationFreshness(specificationValue, content)).toBe(
+      "current",
+    );
+    expect(
+      evaluateSpecificationFreshness(specificationValue, "changed design"),
+    ).toBe("stale");
+    expect(evaluateSpecificationFreshness(specificationValue)).toBe("unknown");
   });
 
   it("accepts validated provenance for freshness tracking", () => {
