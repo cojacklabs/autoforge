@@ -25,18 +25,35 @@ function usage(output: LogWriter): ExitCode {
   return EXIT_CODE.usage;
 }
 
+class UnknownGitTagError extends Error {
+  constructor(readonly tag: string) {
+    super(`Unknown git tag: ${tag}.`);
+  }
+}
+
 async function resolveSinceTimestamp(
   projectRoot: string,
   sinceTag: string | undefined,
 ): Promise<string> {
+  if (sinceTag !== undefined) {
+    try {
+      const { stdout } = await execFileAsync(
+        "git",
+        ["log", "-1", "--format=%aI", sinceTag],
+        { cwd: projectRoot },
+      );
+      return stdout.trim();
+    } catch {
+      throw new UnknownGitTagError(sinceTag);
+    }
+  }
+
   try {
-    const tag =
-      sinceTag ??
-      (
-        await execFileAsync("git", ["describe", "--tags", "--abbrev=0"], {
-          cwd: projectRoot,
-        })
-      ).stdout.trim();
+    const tag = (
+      await execFileAsync("git", ["describe", "--tags", "--abbrev=0"], {
+        cwd: projectRoot,
+      })
+    ).stdout.trim();
     const { stdout } = await execFileAsync(
       "git",
       ["log", "-1", "--format=%aI", tag],
@@ -62,10 +79,19 @@ export async function runChangelogCommand(
   const project = await discoverProjectRoot({
     startDirectory: options.startDirectory,
   });
-  const sinceTimestamp = await resolveSinceTimestamp(
-    project.path,
-    flag === "--since" ? value : undefined,
-  );
+  let sinceTimestamp: string;
+  try {
+    sinceTimestamp = await resolveSinceTimestamp(
+      project.path,
+      flag === "--since" ? value : undefined,
+    );
+  } catch (error) {
+    if (error instanceof UnknownGitTagError) {
+      options.output.stderr(error.message);
+      return EXIT_CODE.invalidState;
+    }
+    throw error;
+  }
   const { state } = await createDecisionStore(project.path).read();
   const section = compileChangelogSection({
     decisions: state.data.decisions,

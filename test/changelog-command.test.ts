@@ -124,6 +124,101 @@ describe("changelog compile command", () => {
     ).resolves.toBe(EXIT_CODE.usage);
   });
 
+  it("bounds compilation to decisions created after the --since tag's commit timestamp", async () => {
+    const { projectRoot } = await createFixture();
+    const workStore = createWorkStateStore(projectRoot);
+    const service = new DecisionService(
+      createDecisionStore(projectRoot),
+      workStore,
+    );
+
+    await service.record({
+      statement: "Old fix that predates the second tag.",
+      reasoning: "Should be excluded from --since v0.2.0 compilation.",
+      consequences: ["Guarded the calculation."],
+      scope: ["checkout"],
+      keywords: ["bugfix"],
+      relatedWork: [],
+      kind: "bugfix",
+    });
+
+    // Ensure the tag commit's timestamp is strictly later than the first
+    // decision's createdAt (git timestamps have 1-second resolution).
+    await new Promise((resolve) => setTimeout(resolve, 1100));
+
+    await execFileAsync("git", ["add", "-A"], { cwd: projectRoot });
+    await execFileAsync(
+      "git",
+      [
+        "commit",
+        "-q",
+        "-m",
+        "before second tag",
+        "--no-verify",
+        "--allow-empty",
+      ],
+      { cwd: projectRoot },
+    );
+    await execFileAsync("git", ["tag", "v0.2.0"], { cwd: projectRoot });
+
+    // Ensure the second decision has a strictly later createdAt than the tag commit.
+    await new Promise((resolve) => setTimeout(resolve, 1100));
+
+    await service.record({
+      statement: "New fix that postdates the second tag.",
+      reasoning: "Should be included in --since v0.2.0 compilation.",
+      consequences: ["Guarded the calculation."],
+      scope: ["checkout"],
+      keywords: ["bugfix"],
+      relatedWork: [],
+      kind: "bugfix",
+    });
+
+    const output = { stdout: vi.fn(), stderr: vi.fn() };
+
+    await expect(
+      runChangelogCommand({
+        args: ["compile", "--since", "v0.2.0"],
+        output,
+        startDirectory: projectRoot,
+      }),
+    ).resolves.toBe(EXIT_CODE.success);
+
+    const changelog = await readFile(
+      path.join(projectRoot, "CHANGELOG.md"),
+      "utf8",
+    );
+    expect(changelog).toContain("New fix that postdates the second tag.");
+    expect(changelog).not.toContain("Old fix that predates the second tag.");
+  });
+
+  it("returns invalidState with an 'Unknown git tag' message for a bogus --since tag, leaving CHANGELOG.md unchanged", async () => {
+    const { projectRoot } = await createFixture();
+    const before = await readFile(
+      path.join(projectRoot, "CHANGELOG.md"),
+      "utf8",
+    );
+    const output = { stdout: vi.fn(), stderr: vi.fn() };
+
+    await expect(
+      runChangelogCommand({
+        args: ["compile", "--since", "v9.9.9-does-not-exist"],
+        output,
+        startDirectory: projectRoot,
+      }),
+    ).resolves.toBe(EXIT_CODE.invalidState);
+
+    expect(output.stderr).toHaveBeenCalledWith(
+      expect.stringContaining("Unknown git tag"),
+    );
+
+    const after = await readFile(
+      path.join(projectRoot, "CHANGELOG.md"),
+      "utf8",
+    );
+    expect(after).toBe(before);
+  });
+
   it("reports invalidState when no CHANGELOG.md exists", async () => {
     const { projectRoot } = await createFixture();
     await rm(path.join(projectRoot, "CHANGELOG.md"));

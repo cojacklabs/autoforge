@@ -57,7 +57,7 @@ export function upsertChangelogSection(
   const after = existingChangelog.slice(endIndex);
   const body =
     compiledSection.trim().length > 0
-      ? `\n${compiledSection.trim()}\n\n`
+      ? `\n\n${compiledSection.trim()}\n\n`
       : "\n";
   return `${before}${body}${after}`;
 }

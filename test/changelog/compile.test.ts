@@ -82,6 +82,48 @@ describe("compileChangelogSection", () => {
   });
 });
 
+describe("compileChangelogSection (exact-match golden test)", () => {
+  it("produces the exact expected multi-line output for a realistic set of decisions", () => {
+    const section = compileChangelogSection({
+      decisions: [
+        decision({
+          id: "decision.fix-enoent",
+          statement: "Stores now resolve null instead of throwing ENOENT.",
+          kind: "bugfix",
+          createdAt: "2026-08-22T10:00:00.000Z",
+        }),
+        decision({
+          id: "decision.fix-race-condition",
+          statement: "Serialize concurrent writes to the decision store.",
+          kind: "bugfix",
+          createdAt: "2026-08-22T10:30:00.000Z",
+        }),
+        decision({
+          id: "decision.add-changelog-compile",
+          statement: "Add automatic changelog compilation from decisions.",
+          kind: "feature-note",
+          createdAt: "2026-08-22T11:00:00.000Z",
+        }),
+      ],
+      sinceTimestamp: "2026-08-22T00:00:00.000Z",
+    });
+
+    expect(section).toBe(
+      [
+        "### Added",
+        "",
+        "- Add automatic changelog compilation from decisions. (decision.add-changelog-compile)",
+        "",
+        "### Fixed",
+        "",
+        "- Stores now resolve null instead of throwing ENOENT. (decision.fix-enoent)",
+        "- Serialize concurrent writes to the decision store. (decision.fix-race-condition)",
+        "",
+      ].join("\n"),
+    );
+  });
+});
+
 describe("upsertChangelogSection", () => {
   const existing = [
     "# Changelog",
@@ -131,5 +173,54 @@ describe("upsertChangelogSection", () => {
     expect(twice).toContain("- Second fix.");
     // The section appears exactly once, not duplicated:
     expect(twice.split("### Fixed").length - 1).toBe(1);
+  });
+
+  it("produces the exact expected output including a blank line after the start marker (exact-match golden test)", () => {
+    const compiledSection = compileChangelogSection({
+      decisions: [
+        decision({
+          id: "decision.fix-enoent",
+          statement: "Stores now resolve null instead of throwing ENOENT.",
+          kind: "bugfix",
+          createdAt: "2026-08-22T10:00:00.000Z",
+        }),
+        decision({
+          id: "decision.add-changelog-compile",
+          statement: "Add automatic changelog compilation from decisions.",
+          kind: "feature-note",
+          createdAt: "2026-08-22T11:00:00.000Z",
+        }),
+      ],
+      sinceTimestamp: "2026-08-22T00:00:00.000Z",
+    });
+
+    const result = upsertChangelogSection(existing, compiledSection);
+
+    expect(result).toBe(
+      [
+        "# Changelog",
+        "",
+        "All notable changes to this project will be documented in this file.",
+        "",
+        "<!-- autoforge:changelog:start -->",
+        "",
+        "### Added",
+        "",
+        "- Add automatic changelog compilation from decisions. (decision.add-changelog-compile)",
+        "",
+        "### Fixed",
+        "",
+        "- Stores now resolve null instead of throwing ENOENT. (decision.fix-enoent)",
+        "",
+        "<!-- autoforge:changelog:end -->",
+        "",
+        "## [0.6.0] - 2026-08-16",
+        "",
+        "### Major Features",
+        "",
+        "- Old entry that must be preserved.",
+        "",
+      ].join("\n"),
+    );
   });
 });
