@@ -106,6 +106,23 @@ export async function createStorageBundle(
   });
 }
 
+export async function importStorageBundle(
+  bundle: unknown,
+  canonicalPath: string,
+  homeDirectory?: string,
+): Promise<StorageManifest> {
+  const validated = storageBundleSchema.parse(bundle);
+  const resolvedPath = path.resolve(canonicalPath);
+  if (
+    validated.manifest.canonicalPath !== resolvedPath ||
+    validated.manifest.projectId !== projectStorageId(resolvedPath)
+  ) {
+    throw new Error("Storage bundle does not match the target project");
+  }
+  const store = new StorageManifestStore(resolvedPath, homeDirectory);
+  return store.write(new Date(validated.manifest.updatedAt));
+}
+
 async function measureDirectory(directory: string): Promise<{
   bytes: number;
   files: number;
