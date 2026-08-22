@@ -56,6 +56,32 @@ export const globalWorkspaceConfigSchema = z
 export type GlobalWorkspaceConfig = z.infer<typeof globalWorkspaceConfigSchema>;
 export type ProjectMetadata = z.infer<typeof projectMetadataSchema>;
 
+export function normalizeProjectMetadata(
+  metadata: ProjectMetadata,
+): ProjectMetadata {
+  return projectMetadataSchema.parse({
+    ...metadata,
+    aliases: metadata.aliases ?? [],
+    lifecycle: metadata.lifecycle ?? "active",
+  });
+}
+
+export function migrateGlobalWorkspaceConfig(
+  config: GlobalWorkspaceConfig,
+): GlobalWorkspaceConfig {
+  return globalWorkspaceConfigSchema.parse({
+    ...config,
+    projectMetadata: config.projectMetadata
+      ? Object.fromEntries(
+          Object.entries(config.projectMetadata).map(([project, metadata]) => [
+            project,
+            normalizeProjectMetadata(metadata),
+          ]),
+        )
+      : config.projectMetadata,
+  });
+}
+
 export class GlobalWorkspaceStore {
   private readonly directory: string;
   private readonly filePath: string;
