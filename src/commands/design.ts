@@ -17,6 +17,10 @@ import {
   type DesignSpecificationType,
 } from "../specifications/schemas.js";
 import { SpecificationFileStore } from "../specifications/store.js";
+import {
+  evaluateSpecificationFreshness,
+  type SpecificationFreshness,
+} from "../specifications/freshness.js";
 
 export interface DesignCommandOptions {
   args: readonly string[];
@@ -190,17 +194,41 @@ export async function runDesignCommand(
       return usage("Design check does not accept arguments.", options.output);
     }
     const diagnostics = await registry.relationshipDiagnostics();
-    if (diagnostics.length === 0) {
+    const freshness: Array<{
+      id: string;
+      status: SpecificationFreshness;
+    }> = [];
+    for (const specification of await registry.list()) {
+      const sourcePath = specification.provenance?.sourcePath;
+      if (!sourcePath) continue;
+      const resolved = await resolveContainedProjectPath(
+        project.path,
+        sourcePath,
+      );
+      const source = await readFile(resolved.absolutePath, "utf8");
+      freshness.push({
+        id: specification.id,
+        status: evaluateSpecificationFreshness(specification, source),
+      });
+    }
+    const stale = freshness.filter(({ status }) => status === "stale");
+    if (diagnostics.length === 0 && stale.length === 0) {
       options.output.stdout("Design relationships: valid.");
       return EXIT_CODE.success;
     }
     options.output.stderr(
       [
-        `Design relationships: ${diagnostics.length} missing target(s).`,
+        ...(diagnostics.length > 0
+          ? [`Design relationships: ${diagnostics.length} missing target(s).`]
+          : []),
         ...diagnostics.map(
           (diagnostic) =>
             `${diagnostic.sourceId} --${diagnostic.relationship}--> ${diagnostic.targetId}`,
         ),
+        ...(stale.length > 0
+          ? [`Design freshness: ${stale.length} stale source(s).`]
+          : []),
+        ...stale.map(({ id }) => `${id} has changed since it was imported.`),
       ].join("\n"),
     );
     return EXIT_CODE.invalidState;

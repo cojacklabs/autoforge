@@ -11,6 +11,7 @@ import { serializeSpecificationMarkdown } from "../src/specifications/codec.js";
 import { designSpecificationSchema } from "../src/specifications/schemas.js";
 import { SpecificationRegistry } from "../src/specifications/registry.js";
 import { SpecificationFileStore } from "../src/specifications/store.js";
+import { sourceHash } from "../src/specifications/freshness.js";
 
 const temporaryDirectories: string[] = [];
 
@@ -209,6 +210,44 @@ describe("design command", () => {
     ).resolves.toBe(EXIT_CODE.success);
     await expect(registry.read("token.spacing-compact")).resolves.toMatchObject(
       { description: "Spacing for compact dashboard layouts." },
+    );
+  });
+
+  it("reports stale provenance sources during design checks", async () => {
+    const projectRoot = await createProject();
+    const sourcePath = path.join(projectRoot, "source.md");
+    await writeFile(sourcePath, "original source");
+    const registry = new SpecificationRegistry(
+      new SpecificationFileStore(projectRoot),
+    );
+    await registry.register({
+      id: "screen.source-backed",
+      type: "screen",
+      name: "Source backed",
+      description: "A source-backed screen.",
+      relationships: {},
+      tags: ["design"],
+      source: "source.md",
+      content: "# Source backed",
+      provenance: {
+        sourceKind: "import",
+        sourcePath: "source.md",
+        sourceHash: sourceHash("original source"),
+        capturedAt: "2026-08-20T18:00:00.000Z",
+      },
+      design: { kind: "screen", regions: ["main"] },
+    });
+    await writeFile(sourcePath, "changed source");
+    const output = { stdout: vi.fn(), stderr: vi.fn() };
+    await expect(
+      runDesignCommand({
+        args: ["check"],
+        output,
+        startDirectory: projectRoot,
+      }),
+    ).resolves.toBe(EXIT_CODE.invalidState);
+    expect(output.stderr).toHaveBeenCalledWith(
+      expect.stringContaining("stale source"),
     );
   });
 
