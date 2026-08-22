@@ -29,6 +29,7 @@ Commands:
   assets     List global templates and doctrines
   bootstrap  Inspect project readiness for structured initialization
   migrate    Back up and migrate a legacy AutoForge installation
+  update     Check, preview, or apply a global AutoForge update
   recap      Summarize current work and session state
   start      Start a task or issue and open a session
   tui        Open the terminal UI or print a view snapshot
