@@ -1,7 +1,5 @@
 # AutoForge CLI Reference
 
-This document describes the supported v0.16 command surface. Run `autoforge help` for the installed binary's authoritative syntax.
-
 ## Project Targeting
 
 ```bash
@@ -72,6 +70,8 @@ Canonical agent IDs are `codex`, `claude`, `cursor`, `gemini`, `grok`, and `gene
 autoforge design validate <file>
 autoforge design import <file>
 autoforge design list
+autoforge design search <query>
+autoforge design check
 autoforge design show <id>
 autoforge workflow start <id> <kind>
 autoforge workflow list

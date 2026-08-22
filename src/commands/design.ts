@@ -27,7 +27,7 @@ export interface DesignCommandOptions {
 function usage(message: string, output: LogWriter): ExitCode {
   output.stderr(message);
   output.stderr(
-    "Usage: autoforge design <validate|import> <file> [--intent <intent-id>] | autoforge design list [--type <type>] | autoforge design show <id>",
+    "Usage: autoforge design <validate|import> <file> [--intent <intent-id>] | autoforge design list [--type <type>] | autoforge design search <query> | autoforge design check | autoforge design show <id>",
   );
   return EXIT_CODE.usage;
 }
@@ -170,8 +170,40 @@ export async function runDesignCommand(
     return EXIT_CODE.success;
   }
 
+  if (action === "search") {
+    if (!subject || rest.length > 0) {
+      return usage("Design search requires exactly one query.", options.output);
+    }
+    const specifications = designSpecifications(
+      await registry.search({ query: subject }),
+    );
+    options.output.stdout(formatList(specifications));
+    return EXIT_CODE.success;
+  }
+
+  if (action === "check") {
+    if (subject !== undefined || rest.length > 0) {
+      return usage("Design check does not accept arguments.", options.output);
+    }
+    const diagnostics = await registry.relationshipDiagnostics();
+    if (diagnostics.length === 0) {
+      options.output.stdout("Design relationships: valid.");
+      return EXIT_CODE.success;
+    }
+    options.output.stderr(
+      [
+        `Design relationships: ${diagnostics.length} missing target(s).`,
+        ...diagnostics.map(
+          (diagnostic) =>
+            `${diagnostic.sourceId} --${diagnostic.relationship}--> ${diagnostic.targetId}`,
+        ),
+      ].join("\n"),
+    );
+    return EXIT_CODE.invalidState;
+  }
+
   return usage(
-    "Design command requires validate, import, list, or show.",
+    "Design command requires validate, import, list, search, check, or show.",
     options.output,
   );
 }

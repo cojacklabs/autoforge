@@ -81,6 +81,8 @@ Design context:
   autoforge design validate <file>
   autoforge design import <file>
   autoforge design list [--type <screen|component|token|flow|state|responsive>]
+  autoforge design search <query>
+  autoforge design check
   autoforge design show <id>
 
 Intent assessment:

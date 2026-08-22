@@ -134,6 +134,49 @@ describe("design command", () => {
     expect(output.stderr).not.toHaveBeenCalled();
   });
 
+  it("searches design specifications and checks relationships", async () => {
+    const projectRoot = await createProject();
+    await new SpecificationRegistry(
+      new SpecificationFileStore(projectRoot),
+    ).register({
+      id: "screen.dashboard",
+      type: "screen",
+      name: "Dashboard",
+      description: "Shows jobs.",
+      relationships: { uses: ["component.missing"] },
+      tags: ["dashboard"],
+      source: "manual",
+      content: "# Dashboard\n\nShows jobs.",
+      design: {
+        kind: "screen",
+        regions: ["main"],
+        entryState: undefined,
+      },
+    });
+    const output = { stdout: vi.fn(), stderr: vi.fn() };
+
+    await expect(
+      runDesignCommand({
+        args: ["search", "jobs"],
+        output,
+        startDirectory: projectRoot,
+      }),
+    ).resolves.toBe(EXIT_CODE.success);
+    expect(output.stdout).toHaveBeenLastCalledWith(
+      expect.stringContaining("screen.dashboard [screen]"),
+    );
+    await expect(
+      runDesignCommand({
+        args: ["check"],
+        output,
+        startDirectory: projectRoot,
+      }),
+    ).resolves.toBe(EXIT_CODE.invalidState);
+    expect(output.stderr).toHaveBeenLastCalledWith(
+      expect.stringContaining("component.missing"),
+    );
+  });
+
   it("rejects untyped design files, invalid types, and malformed actions", async () => {
     const projectRoot = await createProject();
     await writeFile(
