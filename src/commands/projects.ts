@@ -10,7 +10,7 @@ export interface ProjectsCommandOptions {
 }
 function usage(output: LogWriter): ExitCode {
   output.stderr(
-    "Usage: autoforge projects [list | show <path> [--json] | storage <path> [--json] | update <path> [--name <name>] [--alias <alias>] [--lifecycle <state>] | archive <path> | restore <path> | register <path> | prune [--dry-run]]",
+    "Usage: autoforge projects [list | show <path> [--json] | storage <path> [--json] | update <path> [--name <name>] [--alias <alias>] [--lifecycle <state>] [--retention-days <n>] | archive <path> | restore <path> | register <path> | prune [--dry-run]]",
   );
   return EXIT_CODE.usage;
 }
@@ -104,6 +104,7 @@ export async function runProjectsCommand(
       name?: string;
       aliases?: string[];
       lifecycle?: "active" | "paused" | "archived" | "inaccessible";
+      retentionDays?: number;
     } = {};
     for (let index = 2; index < options.args.length; index += 2) {
       const flag = options.args[index];
@@ -120,7 +121,12 @@ export async function runProjectsCommand(
           typeof updates.lifecycle,
           undefined
         >;
-      else return usage(options.output);
+      else if (flag === "--retention-days") {
+        const days = Number(value);
+        if (!Number.isInteger(days) || days < 1 || days > 3_650)
+          return usage(options.output);
+        updates.retentionDays = days;
+      } else return usage(options.output);
     }
     if (Object.keys(updates).length === 0) return usage(options.output);
     try {

@@ -111,4 +111,23 @@ describe("projects command", () => {
       projectMetadata: { [project]: { lifecycle: "active" } },
     });
   });
+
+  it("stores a bounded retention policy", async () => {
+    const home = await mkdtemp(path.join(os.tmpdir(), "autoforge-projects-"));
+    roots.push(home);
+    const project = path.join(home, "project");
+    const store = new GlobalWorkspaceStore(home);
+    await store.registerProject(project);
+    const output = { stdout: vi.fn(), stderr: vi.fn() };
+    await expect(
+      runProjectsCommand({
+        args: ["update", project, "--retention-days", "90"],
+        output,
+        homeDirectory: home,
+      }),
+    ).resolves.toBe(0);
+    await expect(store.read()).resolves.toMatchObject({
+      projectMetadata: { [project]: { retentionDays: 90 } },
+    });
+  });
 });

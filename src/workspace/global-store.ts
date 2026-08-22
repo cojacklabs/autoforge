@@ -35,6 +35,7 @@ export const projectMetadataSchema = z
     schemaVersions: z.record(z.string(), z.string().min(1)).optional(),
     capabilities: z.array(z.string().min(1)).optional(),
     lastValidated: z.string().datetime().optional(),
+    retentionDays: z.number().int().min(1).max(3_650).optional(),
   })
   .strict();
 

@@ -112,7 +112,7 @@ Intent assessment:
   autoforge projects storage <path> [--json]
   autoforge projects archive <path>
   autoforge projects restore <path>
-  autoforge projects update <path> [--name <name>] [--alias <alias>] [--lifecycle <state>]
+  autoforge projects update <path> [--name <name>] [--alias <alias>] [--lifecycle <state>] [--retention-days <n>]
   autoforge projects register <path>
   autoforge projects prune [--dry-run]
   autoforge attach <path>
