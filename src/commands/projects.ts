@@ -3,7 +3,10 @@ import { EXIT_CODE, type ExitCode } from "../core/errors.js";
 import type { LogWriter } from "../core/logger.js";
 import { GlobalWorkspaceStore } from "../workspace/global-store.js";
 import { inspectProjectStorage } from "../workspace/storage.js";
-import { inspectProjectInventory } from "../workspace/inventory.js";
+import {
+  inspectProjectInventory,
+  inspectProjectSummary,
+} from "../workspace/inventory.js";
 import {
   createStorageBundle,
   inspectGlobalStorage,
@@ -85,10 +88,16 @@ export async function runProjectsCommand(
       if (!resolvedPath) return usage(options.output);
       const metadata = config.projectMetadata?.[resolvedPath];
       const inventory = await inspectProjectInventory(resolvedPath);
+      const summary = await inspectProjectSummary(resolvedPath);
       if (json) {
         options.output.stdout(
           JSON.stringify(
-            { path: resolvedPath, metadata: metadata ?? null, inventory },
+            {
+              path: resolvedPath,
+              metadata: metadata ?? null,
+              inventory,
+              summary,
+            },
             null,
             2,
           ),
@@ -103,6 +112,9 @@ export async function runProjectsCommand(
               .map(([category, count]) => `${category}=${count}`)
               .join(", ")}`,
             `Highlights: ${inventory.highlights.join(", ") || "(none)"}`,
+            `Work: features=${summary.work.features}, phases=${summary.work.phases}, tasks=${summary.work.tasks}, issues=${summary.work.issues}`,
+            `Decisions: ${summary.decisions}; designs: ${summary.designs}; planning files: ${summary.planningFiles}`,
+            `Active work: ${summary.activeWork ? `${summary.activeWork.kind} ${summary.activeWork.id}` : "none"}`,
             ...(metadata
               ? Object.entries(metadata).map(
                   ([key, value]) =>
