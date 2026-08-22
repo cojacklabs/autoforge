@@ -113,6 +113,7 @@ Intent assessment:
   autoforge bootstrap inspect|scaffold|status|gates|vision|vision-amend|vision-check <idea>|vision-approve <idea>|discovery-questions <json-file>|discover <json-file>
   autoforge constitution init|list|show <id>|check <objective>
   autoforge domain init|list|show <id>|check
+  autoforge update [--check|--dry-run|--apply]
 
 Options:
   -h, --help       Show this command reference

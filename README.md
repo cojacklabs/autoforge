@@ -82,7 +82,17 @@ npx autoforge migrate --dry-run
 npx autoforge migrate
 ```
 
-Upgrade the package with your package manager, then run `npx autoforge doctor`.
+Upgrade the package with your package manager, then run `autoforge doctor`.
+
+To check or safely preview a global update:
+
+```bash
+autoforge update --check
+autoforge update --dry-run
+autoforge update --apply
+```
+
+`--apply` is the only mode that changes the global installation. Verify the result with `autoforge version` and `autoforge doctor`.
 
 ## Supported Commands
 

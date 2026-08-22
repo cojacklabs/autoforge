@@ -1,6 +1,6 @@
 # 📖 AutoForge CLI Command Reference & Manual
 
-> **Package:** `@cojacklabs/autoforge` | **Version:** `0.5.0` | **License:** MIT  
+> **Package:** `@cojacklabs/autoforge` | **Version:** `0.16.x` | **License:** MIT  
 > **Scope:** Canonical reference for all CLI subcommands, flags, exit codes, and workflows.
 
 ---
@@ -30,6 +30,8 @@
 ---
 
 ## 🛠️ Detailed Command Reference
+
+> **Current command note:** The supported v0.16 CLI is discoverable with `autoforge help`. Historical commands in this document are retained for reference only; use the current README and `autoforge help` as the authoritative command surface.
 
 ### 1. `autoforge init`
 
