@@ -120,6 +120,7 @@ Intent assessment:
   autoforge update
   trace      Record and inspect traceability links and impact
   evidence   Inspect persisted validation evidence and readiness
+  twin       Generate and query the project digital twin
   autoforge update
   autoforge trace add <source> <relationship> <target>
   autoforge trace list
@@ -127,6 +128,9 @@ Intent assessment:
   autoforge trace impact <artifact> [--depth <n>] [--direction <forward|reverse|both>]
   autoforge evidence list [--json]
   autoforge evidence summary [--json]
+  autoforge twin generate [--json]
+  autoforge twin show [--json]
+  autoforge twin query [--type <type>] [--relationship <name>] [--depth <n>] [--limit <n>] [--json]
 
 Options:
   -h, --help       Show this command reference

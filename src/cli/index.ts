@@ -31,6 +31,7 @@ import { runDomainCommand } from "../commands/domain.js";
 import { runUpdateCommand } from "../commands/update.js";
 import { runTraceabilityCommand } from "../commands/traceability.js";
 import { runEvidenceCommand } from "../commands/evidence.js";
+import { runTwinCommand } from "../commands/twin.js";
 import { runMigrateCommand } from "../commands/migrate.js";
 import { runRecapCommand } from "../commands/recap.js";
 import { runStartCommand } from "../commands/start.js";
@@ -249,6 +250,8 @@ export async function main(
           }),
         evidence: (commandArgs) =>
           runEvidenceCommand({ args: commandArgs, output, startDirectory }),
+        twin: (commandArgs) =>
+          runTwinCommand({ args: commandArgs, output, startDirectory }),
         migrate: (commandArgs) =>
           runMigrateCommand({
             args: commandArgs,

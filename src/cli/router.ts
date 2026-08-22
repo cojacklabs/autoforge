@@ -35,6 +35,7 @@ export interface CliDependencies {
     update?(args: readonly string[]): Promise<ExitCode>;
     trace?(args: readonly string[]): Promise<ExitCode>;
     evidence?(args: readonly string[]): Promise<ExitCode>;
+    twin?(args: readonly string[]): Promise<ExitCode>;
     migrate(args: readonly string[]): Promise<ExitCode>;
     recap(args: readonly string[]): Promise<ExitCode>;
     start(args: readonly string[]): Promise<ExitCode>;
@@ -137,6 +138,11 @@ export async function runCli(
     case "evidence":
       return dependencies.commands.evidence
         ? dependencies.commands.evidence(commandArgs)
+        : EXIT_CODE.usage;
+
+    case "twin":
+      return dependencies.commands.twin
+        ? dependencies.commands.twin(commandArgs)
         : EXIT_CODE.usage;
 
     case "workflow":
