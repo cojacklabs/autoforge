@@ -1,6 +1,7 @@
 import { EXIT_CODE, type ExitCode } from "../core/errors.js";
 import type { LogWriter } from "../core/logger.js";
 import { ValidationEvidenceStore } from "../quality/evidence.js";
+import { evaluateReadiness } from "../quality/readiness.js";
 
 export interface EvidenceCommandOptions {
   args: readonly string[];
@@ -41,28 +42,17 @@ export async function runEvidenceCommand(
     return EXIT_CODE.success;
   }
   if (action === "summary") {
+    const readiness = evaluateReadiness(state.evidence);
     const summary = {
-      total: state.evidence.length,
-      passed: state.evidence.filter((evidence) => evidence.status === "passed")
-        .length,
-      failed: state.evidence.filter((evidence) => evidence.status === "failed")
-        .length,
-      skipped: state.evidence.filter(
-        (evidence) => evidence.status === "skipped",
-      ).length,
-      requiredFailures: state.evidence.filter(
-        (evidence) =>
-          evidence.status === "failed" && evidence.severity === "required",
-      ).length,
+      ...readiness,
+      requiredFailures: readiness.blockers.length,
     };
     if (json) options.output.stdout(JSON.stringify(summary, null, 2));
     else
       options.output.stdout(
         `Validation evidence: ${summary.passed} passed, ${summary.failed} failed, ${summary.skipped} skipped.`,
       );
-    return summary.requiredFailures > 0
-      ? EXIT_CODE.invalidState
-      : EXIT_CODE.success;
+    return readiness.ready ? EXIT_CODE.success : EXIT_CODE.invalidState;
   }
   return usage(options.output);
 }
