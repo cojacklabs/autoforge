@@ -6,4 +6,4 @@
 - `autoforge evidence list` and `evidence summary` expose persisted results, including JSON output.
 - Readiness evaluation combines evidence into deterministic release blockers.
 
-Next: add a validation-evidence CLI query and readiness summary.
+Next: prepare the v0.19 release checkpoint after broader foundation validation.
