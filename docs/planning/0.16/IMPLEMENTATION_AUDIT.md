@@ -22,3 +22,11 @@
 The v0.16 implementation preserves the repository as canonical truth and uses v0.15 governance as the enforcement boundary. Code generation, richer domain inference, and change-impact traversal remain future work for later roadmap phases.
 
 No remote publication is authorized by this audit.
+
+## Release-Candidate Rerun
+
+- Contract aliases `antigravity` and `agy` normalize to `gemini`.
+- Generated contracts use `autoforge --project "$PWD" context --explain`.
+- Full foundation suite passes: 100 files and 448 tests.
+- Legacy suite passes: 17 tests.
+- Package dry-run passes for `@cojacklabs/autoforge@0.16.0` with launcher and bundled CLI contents.
