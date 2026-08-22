@@ -10,7 +10,7 @@ export interface ProjectsCommandOptions {
 }
 function usage(output: LogWriter): ExitCode {
   output.stderr(
-    "Usage: autoforge projects [list | show <path> [--json] | storage <path> [--json] | update <path> [--name <name>] [--alias <alias>] [--lifecycle <state>] | register <path> | prune [--dry-run]]",
+    "Usage: autoforge projects [list | show <path> [--json] | storage <path> [--json] | update <path> [--name <name>] [--alias <alias>] [--lifecycle <state>] | archive <path> | restore <path> | register <path> | prune [--dry-run]]",
   );
   return EXIT_CODE.usage;
 }
@@ -135,6 +135,21 @@ export async function runProjectsCommand(
       return usage(options.output);
     }
   }
+  if (action === "archive" || action === "restore") {
+    if (!projectPath || options.args.length !== 2) return usage(options.output);
+    try {
+      const lifecycle = action === "archive" ? "archived" : "active";
+      await new GlobalWorkspaceStore(
+        options.homeDirectory,
+      ).updateProjectMetadata(projectPath, { lifecycle });
+      options.output.stdout(
+        `${action === "archive" ? "Archived" : "Restored"} project metadata.`,
+      );
+      return EXIT_CODE.success;
+    } catch {
+      return usage(options.output);
+    }
+  }
   if (action === "storage") {
     if (!projectPath || (flag !== undefined && !json))
       return usage(options.output);
@@ -155,7 +170,9 @@ export async function runProjectsCommand(
       ? !projectPath || options.args.length !== 2
       : action === "prune"
         ? options.args.length > 2
-        : options.args.length !== 1
+        : action === "archive" || action === "restore"
+          ? !projectPath || options.args.length !== 2
+          : options.args.length !== 1
   )
     return usage(options.output);
   try {

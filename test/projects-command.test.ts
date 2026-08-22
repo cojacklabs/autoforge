@@ -85,4 +85,30 @@ describe("projects command", () => {
       "Prune preview: 1 inaccessible project(s).",
     );
   });
+
+  it("archives and restores a registered project", async () => {
+    const home = await mkdtemp(path.join(os.tmpdir(), "autoforge-projects-"));
+    roots.push(home);
+    const project = path.join(home, "project");
+    const store = new GlobalWorkspaceStore(home);
+    await store.registerProject(project);
+    const output = { stdout: vi.fn(), stderr: vi.fn() };
+    await expect(
+      runProjectsCommand({
+        args: ["archive", project],
+        output,
+        homeDirectory: home,
+      }),
+    ).resolves.toBe(0);
+    await expect(
+      runProjectsCommand({
+        args: ["restore", project],
+        output,
+        homeDirectory: home,
+      }),
+    ).resolves.toBe(0);
+    await expect(store.read()).resolves.toMatchObject({
+      projectMetadata: { [project]: { lifecycle: "active" } },
+    });
+  });
 });
