@@ -6,36 +6,6 @@ AutoForge is a task-specific context and control plane for AI-assisted software 
 
 - **0.15.0** — Adds the project constitution and governance foundation, deterministic constitution checks, governance-aware context and agent directives, release guidance, and removes the unused `@piotrjura/pm` dependency.
 
-- **0.14.0** — Adds atomic knowledge artifacts, relationship-aware context resolution, project persistence, and the vendor-neutral context protocol.
-
-- **0.13.0** — Adds the vision and discovery engine with canonical vision documents, amendments, conflict checks, refinement questions, and approval records.
-
-- **0.12.0** — Adds the bootstrap engine for project inspection, discovery capture, legacy migration readiness, artifact scaffolding, and acceptance gates.
-
-- **0.11.11** — Fixes npm executable packaging by mapping `autoforge` to the included launcher.
-- **0.11.10** — Certifies the v0.11 foundation for v0.12 bootstrap development.
-- **0.11.9** — Completes the full foundation release-matrix validation.
-- **0.11.8** — Confirms roadmap and planning-bundle synchronization for the foundation release.
-- **0.11.7** — Verifies cross-agent adapter capabilities and contract conformance.
-- **0.11.6** — Validates clean npm tarball contents and executable package entrypoints.
-- **0.11.5** — Cleans failed global registry write temporary files.
-- **0.11.4** — Rejects ambiguous duplicate project aliases deterministically.
-- **0.11.3** — Adds explicit project-targeting isolation coverage.
-- **0.11.2** — Adds end-to-end coverage for direct and npm-style symlinked CLI execution.
-- **0.11.1** — Formatting and release-quality patch for the v0.11 global workspace foundation.
-- **0.11.0** — Global workspace registry, project attach/detach workflows, explicit project targeting, adapter capability snapshots, and scoped global assets.
-
-- **0.9.0** — Workflow orchestration with persisted runs, conditional stages, automatic handoffs, workflow-aware context propagation, and symlink-safe CLI execution.
-
-- **0.8.2** — Bug-fix release with deterministic workflow recommendations and planning handoff validation.
-
-- **0.8.1** — Maintenance release with CI formatting and GitHub Actions runtime hardening.
-
-- **0.8.0** — Intent and research knowledge contracts, deterministic triage and readiness, planning artifacts, knowledge/planning CLI commands, golden fixtures, and Planning Bundle synchronization.
-
-- **0.7.1** — Corrective packaging release. Restores the published `bin/autoforge.js` launcher and keeps it aligned with the rewritten v0.7 CLI.
-- **0.7.0** — Rewrite release with durable work state, decision memory, doctrines, typed specifications, explainable context packets, guardrails, migrations, adapters, TUI support, and Virdua dogfood validation.
-
 ## Install
 
 ```bash
