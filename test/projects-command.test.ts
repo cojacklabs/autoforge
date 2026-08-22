@@ -31,4 +31,22 @@ describe("projects command", () => {
       expect.stringContaining('"name": "project"'),
     );
   });
+
+  it("lists projects as JSON", async () => {
+    const home = await mkdtemp(path.join(os.tmpdir(), "autoforge-projects-"));
+    roots.push(home);
+    const project = path.join(home, "project");
+    await new GlobalWorkspaceStore(home).registerProject(project);
+    const output = { stdout: vi.fn(), stderr: vi.fn() };
+    await expect(
+      runProjectsCommand({
+        args: ["list", "--json"],
+        output,
+        homeDirectory: home,
+      }),
+    ).resolves.toBe(0);
+    expect(output.stdout).toHaveBeenCalledWith(
+      expect.stringContaining('"path":'),
+    );
+  });
 });

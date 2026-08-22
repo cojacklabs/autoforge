@@ -17,8 +17,8 @@ export async function runProjectsCommand(
   options: ProjectsCommandOptions,
 ): Promise<ExitCode> {
   const [action, projectPath, flag] = options.args;
-  const json = flag === "--json";
-  if (!action) {
+  const json = flag === "--json" || projectPath === "--json";
+  if (!action || (action === "list" && (projectPath === "--json" || json))) {
     try {
       const store = new GlobalWorkspaceStore(options.homeDirectory);
       const config = await store.read().catch(() => ({
@@ -26,17 +26,33 @@ export async function runProjectsCommand(
         projects: [],
         projectMetadata: {},
       }));
-      options.output.stdout(
-        config.projects
-          .map((project) => {
-            const metadata = (
-              config.projectMetadata as
-                Record<string, { name: string; lastSeen: string }> | undefined
-            )?.[project];
-            return metadata ? `${metadata.name}\t${project}` : project;
-          })
-          .join("\n"),
-      );
+      if (json) {
+        options.output.stdout(
+          JSON.stringify(
+            config.projects.map((project) => ({
+              path: project,
+              metadata:
+                (
+                  config.projectMetadata as Record<string, unknown> | undefined
+                )?.[project] ?? null,
+            })),
+            null,
+            2,
+          ),
+        );
+      } else {
+        options.output.stdout(
+          config.projects
+            .map((project) => {
+              const metadata = (
+                config.projectMetadata as
+                  Record<string, { name: string }> | undefined
+              )?.[project];
+              return metadata ? `${metadata.name}\t${project}` : project;
+            })
+            .join("\n"),
+        );
+      }
       return EXIT_CODE.success;
     } catch {
       return usage(options.output);
@@ -143,15 +159,28 @@ export async function runProjectsCommand(
         projectMetadata: {},
       }));
       options.output.stdout(
-        config.projects
-          .map((project) => {
-            const metadata = (
-              config.projectMetadata as
-                Record<string, { name: string; lastSeen: string }> | undefined
-            )?.[project];
-            return metadata ? `${metadata.name}\t${project}` : project;
-          })
-          .join("\n"),
+        json
+          ? JSON.stringify(
+              config.projects.map((project) => ({
+                path: project,
+                metadata:
+                  (
+                    config.projectMetadata as
+                      Record<string, unknown> | undefined
+                  )?.[project] ?? null,
+              })),
+              null,
+              2,
+            )
+          : config.projects
+              .map((project) => {
+                const metadata = (
+                  config.projectMetadata as
+                    Record<string, { name: string }> | undefined
+                )?.[project];
+                return metadata ? `${metadata.name}\t${project}` : project;
+              })
+              .join("\n"),
       );
     } else return usage(options.output);
     return EXIT_CODE.success;
