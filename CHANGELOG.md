@@ -7,6 +7,9 @@ All notable changes to this project will be documented in this file.
 > rather than in this file. See those directories and git tags
 > (`v0.7.0`–`v0.21.0`) for that history.
 
+<!-- autoforge:changelog:start -->
+<!-- autoforge:changelog:end -->
+
 ## [0.21.1] - 2026-08-22
 
 ### Fixed
