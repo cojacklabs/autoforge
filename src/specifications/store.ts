@@ -6,6 +6,7 @@ import {
   readdir,
   rename,
   rm,
+  writeFile,
 } from "node:fs/promises";
 import type { FileHandle } from "node:fs/promises";
 import path from "node:path";
@@ -153,6 +154,36 @@ export class SpecificationFileStore {
           await rm(lockPath, { force: true });
         }
       }
+    }
+  }
+
+  async update(specification: Specification): Promise<string> {
+    await this.assertInitialized();
+    const validated = specificationSchema.parse(specification);
+    const relativePath = this.relativePath(validated.id);
+    const destinationPath = await this.resolve(relativePath);
+    if (!(await pathExists(destinationPath))) {
+      throw specificationError(
+        "INVALID_ARGUMENT",
+        `Specification ${validated.id} is not registered`,
+        {
+          id: validated.id,
+          path: relativePath,
+        },
+      );
+    }
+    const temporaryPath = `${destinationPath}.${this.temporaryId()}.tmp`;
+    await mkdir(path.dirname(destinationPath), { recursive: true });
+    try {
+      await writeFile(
+        temporaryPath,
+        serializeSpecificationMarkdown(validated),
+        "utf8",
+      );
+      await rename(temporaryPath, destinationPath);
+      return relativePath;
+    } finally {
+      await rm(temporaryPath, { force: true });
     }
   }
 

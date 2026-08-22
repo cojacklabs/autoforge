@@ -76,7 +76,7 @@ export async function runDesignCommand(
     new SpecificationFileStore(project.path),
   );
 
-  if (action === "validate" || action === "import") {
+  if (action === "validate" || action === "import" || action === "update") {
     if (!subject || (action === "validate" && rest.length > 0)) {
       return usage(
         `Design ${action} requires exactly one file.`,
@@ -115,7 +115,11 @@ export async function runDesignCommand(
         );
       }
     }
-    const result = await registry.register({
+    const register =
+      action === "update"
+        ? registry.update.bind(registry)
+        : registry.register.bind(registry);
+    const result = await register({
       ...input,
       design,
       relationships: intentId
@@ -124,7 +128,7 @@ export async function runDesignCommand(
       ...(knowledge === undefined ? {} : { knowledge }),
     });
     options.output.stdout(
-      `Imported design specification ${result.specification.id} to ${result.path}`,
+      `${action === "update" ? "Updated" : "Imported"} design specification ${result.specification.id} to ${result.path}`,
     );
     return EXIT_CODE.success;
   }

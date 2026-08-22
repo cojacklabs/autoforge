@@ -100,6 +100,22 @@ export class SpecificationRegistry {
     return { specification: result.data, path };
   }
 
+  async update(
+    input: RegisterSpecificationInput,
+  ): Promise<RegisterSpecificationResult> {
+    const result = specificationSchema.safeParse({
+      ...input,
+      updatedAt: this.now().toISOString(),
+    });
+    if (!result.success) {
+      throw invalidInput("Invalid specification update", {
+        issues: result.error.issues,
+      });
+    }
+    const path = await this.store.update(result.data);
+    return { specification: result.data, path };
+  }
+
   read(id: string): Promise<Specification> {
     return this.store.read(id);
   }

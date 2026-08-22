@@ -69,6 +69,7 @@ Canonical agent IDs are `codex`, `claude`, `cursor`, `gemini`, `grok`, and `gene
 ```bash
 autoforge design validate <file>
 autoforge design import <file>
+autoforge design update <file>
 autoforge design list
 autoforge design search <query>
 autoforge design check
@@ -99,6 +100,7 @@ autoforge bootstrap inspect
 autoforge bootstrap status
 autoforge bootstrap scaffold
 autoforge migrate --dry-run
+autoforge update
 autoforge update --check
 autoforge update --dry-run
 autoforge update --apply

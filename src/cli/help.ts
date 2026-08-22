@@ -80,6 +80,7 @@ Quality gates:
 Design context:
   autoforge design validate <file>
   autoforge design import <file>
+  autoforge design update <file>
   autoforge design list [--type <screen|component|token|flow|state|responsive>]
   autoforge design search <query>
   autoforge design check
@@ -116,6 +117,7 @@ Intent assessment:
   autoforge bootstrap inspect|scaffold|status|gates|vision|vision-amend|vision-check <idea>|vision-approve <idea>|discovery-questions <json-file>|discover <json-file>
   autoforge constitution init|list|show <id>|check <objective>
   autoforge domain init|list|show <id>|check
+  autoforge update
   autoforge update [--check|--dry-run|--apply]
 
 Options:

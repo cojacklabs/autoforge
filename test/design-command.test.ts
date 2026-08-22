@@ -177,6 +177,41 @@ describe("design command", () => {
     );
   });
 
+  it("updates an existing repository-native design specification", async () => {
+    const projectRoot = await createProject();
+    const registry = new SpecificationRegistry(
+      new SpecificationFileStore(projectRoot),
+    );
+    await registry.register({
+      id: "token.spacing-compact",
+      type: "token",
+      name: "Compact spacing",
+      description: "Original spacing.",
+      relationships: {},
+      tags: ["spacing"],
+      source: "manual",
+      content: "# Original",
+      design: {
+        kind: "token",
+        category: "spacing",
+        value: "0.5rem",
+        modes: {},
+      },
+    });
+    const output = { stdout: vi.fn(), stderr: vi.fn() };
+    await writeFile(path.join(projectRoot, "updated.md"), tokenMarkdown());
+    await expect(
+      runDesignCommand({
+        args: ["update", "updated.md"],
+        output,
+        startDirectory: projectRoot,
+      }),
+    ).resolves.toBe(EXIT_CODE.success);
+    await expect(registry.read("token.spacing-compact")).resolves.toMatchObject(
+      { description: "Spacing for compact dashboard layouts." },
+    );
+  });
+
   it("rejects untyped design files, invalid types, and malformed actions", async () => {
     const projectRoot = await createProject();
     await writeFile(
