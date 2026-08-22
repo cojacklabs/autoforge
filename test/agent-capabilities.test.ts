@@ -19,10 +19,10 @@ describe("agent capabilities", () => {
   it("covers every supported agent adapter", () => {
     for (const agentId of [
       "codex",
-      "claude-code",
+      "claude",
       "cursor",
       "gemini",
-      "antigravity",
+      "grok",
       "generic",
     ]) {
       expect(assertAgentContractCompatibility(agentId).agentId).toBe(agentId);

@@ -19,7 +19,7 @@ const capabilities: readonly AgentCapability[] = [
     handoffPersistence: true,
   },
   {
-    agentId: "claude-code",
+    agentId: "claude",
     contextPackets: true,
     contractValidation: true,
     handoffPersistence: true,
@@ -37,7 +37,7 @@ const capabilities: readonly AgentCapability[] = [
     handoffPersistence: true,
   },
   {
-    agentId: "antigravity",
+    agentId: "grok",
     contextPackets: true,
     contractValidation: true,
     handoffPersistence: true,

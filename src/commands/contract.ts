@@ -52,7 +52,11 @@ export async function runContractCommand(
       options.output.stdout("Agent contract is valid.");
     else return usage(options.output);
     return EXIT_CODE.success;
-  } catch {
+  } catch (error) {
+    if (action === "generate" && error instanceof Error) {
+      options.output.stderr(error.message);
+      return EXIT_CODE.notFound;
+    }
     return usage(options.output);
   }
 }

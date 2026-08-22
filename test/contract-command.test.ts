@@ -65,6 +65,9 @@ describe("contract command", () => {
         output,
         startDirectory: projectRoot,
       }),
-    ).resolves.toBe(EXIT_CODE.usage);
+    ).resolves.toBe(EXIT_CODE.notFound);
+    expect(output.stderr.mock.calls[0]?.[0]).toContain(
+      "Agent unknown cannot satisfy",
+    );
   });
 });
