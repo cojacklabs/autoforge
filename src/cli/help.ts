@@ -55,7 +55,7 @@ Doctrines:
 Work lifecycle:
   autoforge start <task|issue> <id>
   autoforge recap
-  autoforge done
+  autoforge done [--no-decision "<reason>"]
 
 Context packets:
   autoforge context
