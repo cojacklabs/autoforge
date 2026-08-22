@@ -67,4 +67,22 @@ describe("projects command", () => {
       expect.stringContaining('"exists": false'),
     );
   });
+
+  it("previews inaccessible projects without removing them", async () => {
+    const home = await mkdtemp(path.join(os.tmpdir(), "autoforge-projects-"));
+    roots.push(home);
+    const project = path.join(home, "missing");
+    await new GlobalWorkspaceStore(home).registerProject(project);
+    const output = { stdout: vi.fn(), stderr: vi.fn() };
+    await expect(
+      runProjectsCommand({
+        args: ["prune", "--dry-run"],
+        output,
+        homeDirectory: home,
+      }),
+    ).resolves.toBe(0);
+    expect(output.stdout).toHaveBeenCalledWith(
+      "Prune preview: 1 inaccessible project(s).",
+    );
+  });
 });

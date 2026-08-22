@@ -10,7 +10,7 @@ export interface ProjectsCommandOptions {
 }
 function usage(output: LogWriter): ExitCode {
   output.stderr(
-    "Usage: autoforge projects [list | show <path> [--json] | storage <path> [--json] | update <path> [--name <name>] [--alias <alias>] [--lifecycle <state>] | register <path> | prune]",
+    "Usage: autoforge projects [list | show <path> [--json] | storage <path> [--json] | update <path> [--name <name>] [--alias <alias>] [--lifecycle <state>] | register <path> | prune [--dry-run]]",
   );
   return EXIT_CODE.usage;
 }
@@ -153,7 +153,9 @@ export async function runProjectsCommand(
   if (
     action === "register"
       ? !projectPath || options.args.length !== 2
-      : options.args.length !== 1
+      : action === "prune"
+        ? options.args.length > 2
+        : options.args.length !== 1
   )
     return usage(options.output);
   try {
@@ -164,10 +166,20 @@ export async function runProjectsCommand(
         `Registered project. Total projects: ${config.projects.length}.`,
       );
     } else if (action === "prune") {
-      const config = await store.pruneProjects();
-      options.output.stdout(
-        `Pruned registry. Total projects: ${config.projects.length}.`,
-      );
+      if (projectPath !== undefined && projectPath !== "--dry-run") {
+        return usage(options.output);
+      }
+      const inaccessible = await store.findInaccessibleProjects();
+      if (projectPath === "--dry-run") {
+        options.output.stdout(
+          `Prune preview: ${inaccessible.length} inaccessible project(s).`,
+        );
+      } else {
+        const config = await store.pruneProjects();
+        options.output.stdout(
+          `Pruned registry. Total projects: ${config.projects.length}.`,
+        );
+      }
     } else if (action === "list") {
       const config = await store.read().catch(() => ({
         version: "0.11.0" as const,

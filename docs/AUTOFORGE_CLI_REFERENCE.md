@@ -90,7 +90,7 @@ autoforge projects show <path> [--json]
 autoforge projects storage <path> [--json]
 autoforge projects update <path> [--name <name>] [--alias <alias>] [--lifecycle <state>]
 autoforge projects register <path>
-autoforge projects prune
+autoforge projects prune [--dry-run]
 autoforge attach <path>
 autoforge detach <path>
 autoforge assets list templates

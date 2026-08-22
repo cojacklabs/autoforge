@@ -213,15 +213,10 @@ export class GlobalWorkspaceStore {
       projects: [],
       projectMetadata: {},
     }));
-    const projects: string[] = [];
-    for (const project of current.projects) {
-      try {
-        await access(project);
-        projects.push(project);
-      } catch {
-        // Remove inaccessible paths from the registry.
-      }
-    }
+    const inaccessible = await this.findInaccessibleProjects(current);
+    const projects = current.projects.filter(
+      (project) => !inaccessible.includes(project),
+    );
     const updated = globalWorkspaceConfigSchema.parse({
       ...current,
       projects,
@@ -233,6 +228,21 @@ export class GlobalWorkspaceStore {
     });
     await this.write(updated);
     return updated;
+  }
+
+  async findInaccessibleProjects(
+    config?: GlobalWorkspaceConfig,
+  ): Promise<string[]> {
+    const resolvedConfig = config ?? (await this.read());
+    const inaccessible: string[] = [];
+    for (const project of resolvedConfig.projects) {
+      try {
+        await access(project);
+      } catch {
+        inaccessible.push(project);
+      }
+    }
+    return inaccessible;
   }
 
   async recordAgentCapabilities(
