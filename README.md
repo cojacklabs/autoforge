@@ -46,11 +46,13 @@ npx autoforge doctor
 
 ## Starting From Scratch
 
-For a new project, ask your coding agent to set up AutoForge with this one-liner:
+For a new project, an existing project, an AutoForge upgrade, or a newly assigned agent, use this canonical one-liner:
 
 ```text
-Set up and use AutoForge for this repository: review `AGENTS.md` and the AutoForge agent guidance, run `npx --no-install autoforge doctor`, initialize only if this project is not already initialized, then inspect `npx --no-install autoforge context --explain`; summarize the detected project structure, active work, governing rules, and validation steps before making changes.
+Use the globally installed AutoForge CLI for this repository: run `autoforge version`, `autoforge --project "$PWD" doctor`, and `autoforge --project "$PWD" bootstrap status`; review `AGENTS.md` when present and inspect `.autoforge/`, initialize or attach the project only when needed, refresh your understanding after AutoForge updates, and when active work exists run `autoforge --project "$PWD" context --explain`; summarize the project structure, active work, governance rules, relevant decisions, and validation requirements before making changes.
 ```
+
+Use this prompt at initialization, after upgrading AutoForge, and whenever a new agent joins the project. It ensures agents use the current global CLI rather than a stale local bundle.
 
 ### Project Constitution (v0.15)
 
@@ -86,14 +88,6 @@ npx autoforge context --explain
 npx autoforge check --path src/checkout.ts
 npx autoforge gate check
 npx autoforge done
-```
-
-## Agent Review Prompt
-
-Copy and paste this one-liner into any supported agent before starting work:
-
-```text
-Review the repository's AutoForge instructions and current project infrastructure, bring your understanding up to date using `AGENTS.md`, `npx autoforge doctor`, and `npx autoforge context --explain`, then summarize the governing rules, active work, relevant decisions, and validation requirements before proceeding.
 ```
 
 ## Memory and Design
