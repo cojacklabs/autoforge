@@ -118,7 +118,11 @@ Intent assessment:
   autoforge constitution init|list|show <id>|check <objective>
   autoforge domain init|list|show <id>|check
   autoforge update
+  trace      Record and inspect traceability links and impact
   autoforge update
+  autoforge trace add <source> <relationship> <target>
+  autoforge trace list
+  autoforge trace impact <artifact> [--depth <n>] [--direction <forward|reverse|both>]
 
 Options:
   -h, --help       Show this command reference

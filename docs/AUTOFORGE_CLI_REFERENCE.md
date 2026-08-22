@@ -101,6 +101,9 @@ autoforge bootstrap status
 autoforge bootstrap scaffold
 autoforge migrate --dry-run
 autoforge update
+autoforge trace add <source> <relationship> <target>
+autoforge trace list
+autoforge trace impact <artifact> [--depth <n>] [--direction <forward|reverse|both>]
 autoforge update
 autoforge version
 ```

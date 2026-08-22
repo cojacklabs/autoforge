@@ -29,6 +29,7 @@ import { runBootstrapCommand } from "../commands/bootstrap.js";
 import { runConstitutionCommand } from "../commands/constitution.js";
 import { runDomainCommand } from "../commands/domain.js";
 import { runUpdateCommand } from "../commands/update.js";
+import { runTraceabilityCommand } from "../commands/traceability.js";
 import { runMigrateCommand } from "../commands/migrate.js";
 import { runRecapCommand } from "../commands/recap.js";
 import { runStartCommand } from "../commands/start.js";
@@ -238,6 +239,12 @@ export async function main(
             globalInstall: !path
               .resolve(path.dirname(fileURLToPath(import.meta.url)), "..")
               .startsWith(path.resolve(startDirectory)),
+          }),
+        trace: (commandArgs) =>
+          runTraceabilityCommand({
+            args: commandArgs,
+            output,
+            startDirectory,
           }),
         migrate: (commandArgs) =>
           runMigrateCommand({
