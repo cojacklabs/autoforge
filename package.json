@@ -1,6 +1,6 @@
 {
   "name": "@cojacklabs/autoforge",
-  "version": "0.16.3",
+  "version": "0.17.0",
   "type": "module",
   "private": false,
   "license": "MIT",

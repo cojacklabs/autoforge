@@ -1,4 +1,4 @@
-# v0.17 Release Readiness
+# v0.17.0 Release Readiness
 
 ## Acceptance Review
 

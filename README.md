@@ -1,4 +1,4 @@
-# AutoForge 0.16.3
+# AutoForge 0.17.0
 
 AutoForge is a task-specific context and control plane for AI-assisted software development. It gives Codex, Claude Code, Gemini/Antigravity, Grok Build, Cursor, and generic agents durable project memory, governed work lifecycle, scoped edits, and explainable build packets.
 
@@ -83,6 +83,7 @@ Upgrade the package with your package manager, then run `autoforge doctor`.
 To check for a newer release or safely preview a global update:
 
 ```bash
+autoforge update
 autoforge update --check
 autoforge update --dry-run
 autoforge update --apply
