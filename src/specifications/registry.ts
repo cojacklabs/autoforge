@@ -9,6 +9,7 @@ import {
   type KnowledgeMetadata,
   type SpecificationRelationshipEdge,
   type SpecificationRelationships,
+  type SpecificationProvenance,
   type SpecificationType,
 } from "./schemas.js";
 
@@ -23,6 +24,7 @@ export interface RegisterSpecificationInput {
   content: string;
   design?: DesignMetadata;
   knowledge?: KnowledgeMetadata;
+  provenance?: SpecificationProvenance | undefined;
 }
 
 export interface RegisterSpecificationResult {

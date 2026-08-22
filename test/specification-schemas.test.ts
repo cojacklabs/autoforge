@@ -33,6 +33,21 @@ describe("specification schemas", () => {
     });
   });
 
+  it("accepts validated provenance for freshness tracking", () => {
+    expect(
+      specificationSchema.parse(
+        specification({
+          provenance: {
+            sourceKind: "import",
+            sourcePath: "designs/job-card.md",
+            sourceHash: "a".repeat(64),
+            capturedAt: TIMESTAMP,
+          },
+        }),
+      ).provenance,
+    ).toMatchObject({ sourceKind: "import", sourceHash: "a".repeat(64) });
+  });
+
   it("requires IDs to match a supported type", () => {
     expect(
       specificationSchema.safeParse(

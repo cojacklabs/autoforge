@@ -33,6 +33,18 @@ const canonicalTagSchema = z
   .max(100)
   .regex(/^[a-z0-9][a-z0-9._/-]*$/, "Expected a canonical lowercase tag");
 
+export const specificationProvenanceSchema = z
+  .object({
+    sourceKind: z.enum(["manual", "import", "generated", "external"]),
+    sourcePath: z.string().trim().min(1).max(1_000).optional(),
+    sourceHash: z
+      .string()
+      .regex(/^[a-f0-9]{64}$/, "Expected a SHA-256 source hash")
+      .optional(),
+    capturedAt: z.string().datetime({ offset: true }),
+  })
+  .strict();
+
 export const specificationTypeSchema = z.enum(SPECIFICATION_TYPES);
 export const designSpecificationTypeSchema = z.enum(DESIGN_SPECIFICATION_TYPES);
 
@@ -351,6 +363,7 @@ const specificationFrontmatterFields = {
   tags: z.array(canonicalTagSchema),
   source: z.string().trim().min(1).max(500),
   updatedAt: timestampSchema,
+  provenance: specificationProvenanceSchema.optional(),
   design: designMetadataSchema.optional(),
   knowledge: knowledgeMetadataSchema.optional(),
 };
@@ -452,6 +465,9 @@ export type DesignMetadata = z.infer<typeof designMetadataSchema>;
 export type KnowledgeMetadata = z.infer<typeof knowledgeMetadataSchema>;
 export type SpecificationRelationships = z.infer<
   typeof specificationRelationshipsSchema
+>;
+export type SpecificationProvenance = z.infer<
+  typeof specificationProvenanceSchema
 >;
 export type Specification = z.infer<typeof specificationSchema>;
 export type DesignSpecification = z.infer<typeof designSpecificationSchema>;
