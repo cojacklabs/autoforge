@@ -66,6 +66,9 @@ describe("projects command", () => {
     expect(output.stdout).toHaveBeenCalledWith(
       expect.stringContaining('"exists": false'),
     );
+    expect(output.stdout).toHaveBeenCalledWith(
+      expect.stringContaining('"lifecycle": "active"'),
+    );
   });
 
   it("previews inaccessible projects without removing them", async () => {

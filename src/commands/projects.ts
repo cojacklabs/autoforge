@@ -161,10 +161,19 @@ export async function runProjectsCommand(
       return usage(options.output);
     try {
       const report = await inspectProjectStorage(projectPath);
+      const config = await new GlobalWorkspaceStore(
+        options.homeDirectory,
+      ).read();
+      const metadata = config.projectMetadata?.[report.projectPath];
+      const enriched = {
+        ...report,
+        lifecycle: metadata?.lifecycle ?? "active",
+        retentionDays: metadata?.retentionDays ?? null,
+      };
       options.output.stdout(
         json
-          ? JSON.stringify(report, null, 2)
-          : `Storage: ${report.bytes} bytes across ${report.files} files (${report.exists ? "present" : "missing"}).`,
+          ? JSON.stringify(enriched, null, 2)
+          : `Storage: ${report.bytes} bytes across ${report.files} files (${report.exists ? "present" : "missing"}); lifecycle=${enriched.lifecycle}; retention=${enriched.retentionDays ?? "default"} days.`,
       );
       return EXIT_CODE.success;
     } catch {
