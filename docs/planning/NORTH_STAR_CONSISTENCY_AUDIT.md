@@ -10,7 +10,7 @@ The revised post-v0.14 roadmap and its dependency narrative now follow this orde
 
 ## Remaining Drift
 
-`dev/AUTOFORGE_ULTIMATE_NORTH_STAR_v0.8-v0.25.md` contains legacy detailed sections that still label v0.24 as Product Strategy and v0.25 as Continuous Product Evolution. Its sequencing amendment is correct, but those detailed sections need a later editorial rewrite to match the authoritative revised roadmap.
+Earlier phase labels and historical numbering remain in portions of the ultimate guide, but its v0.23–v0.25 milestone sections and dependency chain now match the authoritative revised roadmap.
 
 ## Implementation Rule
 
@@ -18,4 +18,4 @@ Planning and implementation decisions must use `dev/AUTOFORGE_NORTH_STAR_REVISED
 
 ## Result
 
-The milestone dependency is conceptually approved, but the roadmap set is not yet documentation-clean. No v0.24 or v0.25 implementation should begin until the remaining drift is resolved.
+The v0.23–v0.25 milestone dependency is now documentation-consistent. Historical phase labels should be treated as archival context rather than implementation targets.

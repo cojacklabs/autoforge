@@ -1004,7 +1004,7 @@ AutoForge can distinguish assumptions from observed evidence.
 
 ---
 
-## v0.24.0 --- Product Strategy & Prioritization Engine
+## v0.23.0 --- Product Strategy & Prioritization Engine
 
 ### Mission
 
@@ -1042,7 +1042,7 @@ isolated prompts.
 
 ---
 
-## v0.25.0 --- Continuous Product Evolution Engine
+## v0.24.0 --- Continuous Product Evolution Engine
 
 ### Mission
 
@@ -1092,6 +1092,22 @@ This is the integration milestone for the complete architecture.
 
 ---
 
+## v0.25.0 --- Interactive CLI Experience
+
+### Mission
+
+Provide the richer human-facing cockpit over the mature v0.24 lifecycle services.
+
+### Architectural Boundary
+
+The interactive CLI is a presentation and orchestration surface. It must reuse shared application services and must not own governance, graph, context, validation, evidence, or agent logic.
+
+### Dependency
+
+Requires the v0.24 continuous lifecycle to be complete and operable through the regular CLI, agentic controllers, and CI.
+
+---
+
 # 9. Dependency-Aware Roadmap
 
 The roadmap should not be interpreted as twenty isolated feature
@@ -1130,11 +1146,13 @@ DIGITAL TWIN (0.21)
         ↓
 MULTI-AGENT ORCHESTRATION (0.22)
         ↓
-EVIDENCE (0.23)
+EVIDENCE (0.22)
         ↓
-STRATEGY SUPPORT (0.24)
+STRATEGY SUPPORT (0.23)
         ↓
-CONTINUOUS EVOLUTION (0.25)
+CONTINUOUS EVOLUTION (0.24)
+        ↓
+INTERACTIVE CLI (0.25)
 ```
 
 Important architectural interpretation:
