@@ -23,6 +23,8 @@ export interface CliDependencies {
     knowledge?(args: readonly string[]): Promise<ExitCode>;
     planning?(args: readonly string[]): Promise<ExitCode>;
     workflow?(args: readonly string[]): Promise<ExitCode>;
+    orchestrate?(args: readonly string[]): Promise<ExitCode>;
+    schemas?(args: readonly string[]): Promise<ExitCode>;
     contract?(args: readonly string[]): Promise<ExitCode>;
     projects?(args: readonly string[]): Promise<ExitCode>;
     attach?(args: readonly string[]): Promise<ExitCode>;
@@ -148,6 +150,16 @@ export async function runCli(
     case "workflow":
       return dependencies.commands.workflow
         ? dependencies.commands.workflow(commandArgs)
+        : EXIT_CODE.usage;
+
+    case "orchestrate":
+      return dependencies.commands.orchestrate
+        ? dependencies.commands.orchestrate(commandArgs)
+        : EXIT_CODE.usage;
+
+    case "schemas":
+      return dependencies.commands.schemas
+        ? dependencies.commands.schemas(commandArgs)
         : EXIT_CODE.usage;
 
     case "contract":

@@ -1,4 +1,5 @@
 import { readFile } from "node:fs/promises";
+import { reportCommandError } from "../cli/command-error.js";
 
 import { EXIT_CODE, type ExitCode } from "../core/errors.js";
 import type { LogWriter } from "../core/logger.js";
@@ -69,8 +70,8 @@ export async function runPlanningCommand(
         `Created task ${result.entity.id} from ${subject}.`,
       );
       return EXIT_CODE.success;
-    } catch {
-      return usage(options.output);
+    } catch (error) {
+      return reportCommandError(error, options.output);
     }
   }
   if (action !== "list" && action !== "show") return usage(options.output);

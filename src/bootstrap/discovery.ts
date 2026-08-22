@@ -2,7 +2,7 @@ import { mkdir, readFile, writeFile } from "node:fs/promises";
 import path from "node:path";
 import { z } from "zod";
 
-const discoverySchema = z
+export const discoverySchema = z
   .object({
     approved: z.literal(true),
     vision: z.string().trim().min(1),

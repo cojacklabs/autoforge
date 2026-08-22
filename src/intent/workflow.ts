@@ -34,10 +34,28 @@ export function recommendWorkflow(
     stages.push("clarification");
     rationale.push("Resolve missing intent evidence before execution.");
   }
-  if (labels.includes("RESEARCH_REQUIRED")) stages.push("research");
-  if (labels.includes("ARCHITECTURE_REQUIRED")) stages.push("architecture");
-  if (labels.includes("DESIGN_REQUIRED")) stages.push("design");
-  if (labels.includes("PLANNING_REQUIRED")) stages.push("planning");
+  if (labels.includes("RESEARCH_REQUIRED")) {
+    stages.push("research");
+    rationale.push(
+      "Research-required evidence must be resolved before execution.",
+    );
+  }
+  if (labels.includes("ARCHITECTURE_REQUIRED")) {
+    stages.push("architecture");
+    rationale.push(
+      "Architecture-required evidence calls for system design work.",
+    );
+  }
+  if (labels.includes("DESIGN_REQUIRED")) {
+    stages.push("design");
+    rationale.push("Design-required evidence calls for UI or UX definition.");
+  }
+  if (labels.includes("PLANNING_REQUIRED")) {
+    stages.push("planning");
+    rationale.push(
+      "Planning-required evidence calls for bounded work decomposition.",
+    );
+  }
   if (readiness === "ready" && !labels.includes("DEFERRED")) {
     stages.push("implementation", "validation");
     rationale.push(

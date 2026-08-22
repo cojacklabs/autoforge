@@ -1,14 +1,7 @@
 import { z } from "zod";
+import { WORKFLOW_KINDS } from "../core/vocabularies.js";
 
-export const workflowKindSchema = z.enum([
-  "feature-development",
-  "bug-fix",
-  "research",
-  "design-create",
-  "design-critique",
-  "architecture-change",
-  "validation",
-]);
+export const workflowKindSchema = z.enum(WORKFLOW_KINDS);
 
 export const workflowStageDefinitionSchema = z
   .object({

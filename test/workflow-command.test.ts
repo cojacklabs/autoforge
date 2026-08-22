@@ -164,6 +164,66 @@ describe("workflow command", () => {
         output,
         startDirectory: projectRoot,
       }),
+    ).resolves.toBe(EXIT_CODE.notFound);
+    expect(output.stderr).toHaveBeenCalledWith(
+      expect.stringContaining("Error:"),
+    );
+  });
+
+  it("normalizes intent work-kind aliases for workflow starts", async () => {
+    const projectRoot = await mkdtemp(
+      path.join(os.tmpdir(), "autoforge-workflow-alias-"),
+    );
+    directories.push(projectRoot);
+    await mkdir(path.join(projectRoot, ".git"));
+    await initializeProject({ projectRoot });
+    await new AgentContractStore(projectRoot).write(
+      generateAgentContract({
+        agentId: "generic",
+        projectRoot,
+        validationCommands: ["npm test"],
+      }),
+    );
+    const output = { stdout: vi.fn(), stderr: vi.fn() };
+    await expect(
+      runWorkflowCommand({
+        args: ["start", "architecture-v1", "architecture"],
+        output,
+        startDirectory: projectRoot,
+      }),
+    ).resolves.toBe(EXIT_CODE.success);
+    expect(JSON.parse(output.stdout.mock.calls[0]?.[0] ?? "{}").kind).toBe(
+      "architecture-change",
+    );
+  });
+
+  it("reports valid workflow kinds for an invalid value", async () => {
+    const projectRoot = await mkdtemp(
+      path.join(os.tmpdir(), "autoforge-workflow-invalid-kind-"),
+    );
+    directories.push(projectRoot);
+    await mkdir(path.join(projectRoot, ".git"));
+    await initializeProject({ projectRoot });
+    await new AgentContractStore(projectRoot).write(
+      generateAgentContract({
+        agentId: "generic",
+        projectRoot,
+        validationCommands: ["npm test"],
+      }),
+    );
+    const output = { stdout: vi.fn(), stderr: vi.fn() };
+    await expect(
+      runWorkflowCommand({
+        args: ["start", "invalid-v1", "nonsense"],
+        output,
+        startDirectory: projectRoot,
+      }),
     ).resolves.toBe(EXIT_CODE.usage);
+    expect(output.stderr).toHaveBeenCalledWith(
+      'Error: "nonsense" is not a valid workflow kind.',
+    );
+    expect(output.stderr).toHaveBeenCalledWith(
+      expect.stringContaining("architecture-change"),
+    );
   });
 });

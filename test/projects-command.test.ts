@@ -1,9 +1,20 @@
-import { mkdtemp, rm } from "node:fs/promises";
+import {
+  access,
+  mkdir,
+  mkdtemp,
+  rename,
+  rm,
+  writeFile,
+} from "node:fs/promises";
 import os from "node:os";
 import path from "node:path";
 import { afterEach, describe, expect, it, vi } from "vitest";
 import { runProjectsCommand } from "../src/commands/projects.js";
 import { GlobalWorkspaceStore } from "../src/workspace/global-store.js";
+import {
+  projectStorageDirectory,
+  StorageManifestStore,
+} from "../src/workspace/tiered-storage.js";
 
 const roots: string[] = [];
 
@@ -132,5 +143,80 @@ describe("projects command", () => {
     await expect(store.read()).resolves.toMatchObject({
       projectMetadata: { [project]: { retentionDays: 90 } },
     });
+  });
+
+  it("records a planned relocation without changing the active path", async () => {
+    const home = await mkdtemp(path.join(os.tmpdir(), "autoforge-projects-"));
+    roots.push(home);
+    const project = path.join(home, "current-project");
+    const destination = path.join(home, "future-project");
+    const store = new GlobalWorkspaceStore(home);
+    await store.registerProject(project);
+    const output = { stdout: vi.fn(), stderr: vi.fn() };
+
+    await expect(
+      runProjectsCommand({
+        args: ["relocate", project, destination, "--planned"],
+        output,
+        homeDirectory: home,
+      }),
+    ).resolves.toBe(0);
+    await expect(store.read()).resolves.toMatchObject({
+      projects: [project],
+      projectMetadata: {
+        [project]: {
+          relocation: {
+            from: project,
+            to: destination,
+            status: "planned",
+            completedAt: null,
+          },
+        },
+      },
+    });
+  });
+
+  it("relocates registry metadata and path-derived global storage", async () => {
+    const home = await mkdtemp(path.join(os.tmpdir(), "autoforge-projects-"));
+    roots.push(home);
+    const project = path.join(home, "current-project");
+    const destination = path.join(home, "moved-project");
+    const projectId = "123e4567-e89b-42d3-a456-426614174000";
+    await mkdir(path.join(project, ".autoforge"), { recursive: true });
+    await writeFile(
+      path.join(project, ".autoforge", "config.json"),
+      JSON.stringify({ projectId }),
+    );
+    const store = new GlobalWorkspaceStore(home);
+    await store.registerProject(project);
+    await new StorageManifestStore(project, home).write(
+      new Date("2026-08-22T12:00:00.000Z"),
+    );
+    await rename(project, destination);
+    const output = { stdout: vi.fn(), stderr: vi.fn() };
+
+    await expect(
+      runProjectsCommand({
+        args: ["move", project, destination],
+        output,
+        homeDirectory: home,
+      }),
+    ).resolves.toBe(0);
+    await expect(store.read()).resolves.toMatchObject({
+      projects: [destination],
+      projectMetadata: {
+        [destination]: {
+          projectId,
+          previousPaths: [project],
+          relocation: { status: "completed" },
+        },
+      },
+    });
+    await expect(
+      new StorageManifestStore(destination, home).read(),
+    ).resolves.toMatchObject({ canonicalPath: destination });
+    await expect(
+      access(projectStorageDirectory(project, home)),
+    ).rejects.toThrow();
   });
 });

@@ -152,7 +152,7 @@ describe("planning command", () => {
     );
   });
 
-  it("rejects missing artifacts and invalid phases", async () => {
+  it("reports a missing handoff artifact as not found", async () => {
     const projectRoot = await mkdtemp(
       path.join(os.tmpdir(), "autoforge-planning-handoff-errors-"),
     );
@@ -173,6 +173,9 @@ describe("planning command", () => {
         output,
         startDirectory: projectRoot,
       }),
-    ).resolves.toBe(EXIT_CODE.usage);
+    ).resolves.toBe(EXIT_CODE.notFound);
+    expect(output.stderr).toHaveBeenCalledWith(
+      expect.stringContaining("Error:"),
+    );
   });
 });

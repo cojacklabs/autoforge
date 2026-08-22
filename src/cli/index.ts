@@ -19,6 +19,8 @@ import { runResearchCommand } from "../commands/research.js";
 import { runKnowledgeCommand } from "../commands/knowledge.js";
 import { runPlanningCommand } from "../commands/planning.js";
 import { runWorkflowCommand } from "../commands/workflow.js";
+import { runOrchestrateCommand } from "../commands/orchestrate.js";
+import { runSchemasCommand } from "../commands/schemas.js";
 import { runContractCommand } from "../commands/contract.js";
 import { runProjectsCommand } from "../commands/projects.js";
 import { runAttachCommand } from "../commands/attach.js";
@@ -223,6 +225,14 @@ export async function main(
             output,
             startDirectory,
           }),
+        orchestrate: (commandArgs) =>
+          runOrchestrateCommand({
+            args: commandArgs,
+            output,
+            startDirectory,
+          }),
+        schemas: (commandArgs) =>
+          runSchemasCommand({ args: commandArgs, output }),
         contract: (commandArgs) =>
           runContractCommand({
             args: commandArgs,

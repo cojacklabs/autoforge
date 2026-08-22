@@ -20,4 +20,16 @@ describe("workflow recommendation", () => {
     const result = recommendWorkflow([], "not-ready");
     expect(result.stages).toEqual(["planning"]);
   });
+
+  it("explains every label-driven stage even when work is deferred", () => {
+    const result = recommendWorkflow(
+      ["ARCHITECTURE_REQUIRED", "DESIGN_REQUIRED", "DEFERRED"],
+      "ready",
+    );
+    expect(result.stages).toEqual(["architecture", "design"]);
+    expect(result.rationale).toEqual([
+      "Architecture-required evidence calls for system design work.",
+      "Design-required evidence calls for UI or UX definition.",
+    ]);
+  });
 });

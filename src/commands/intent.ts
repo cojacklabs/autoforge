@@ -14,6 +14,8 @@ import { SpecificationRegistry } from "../specifications/registry.js";
 import { SpecificationFileStore } from "../specifications/store.js";
 import { specificationSchema } from "../specifications/schemas.js";
 import { registerKnowledgeSpecification } from "./knowledge.js";
+import { inputSchemaJson } from "../input-schemas/catalog.js";
+import { reportCommandError } from "../cli/command-error.js";
 
 export interface IntentCommandOptions {
   args: readonly string[];
@@ -32,6 +34,12 @@ export async function runIntentCommand(
   options: IntentCommandOptions,
 ): Promise<ExitCode> {
   const [action, file, ...flags] = options.args;
+  if (action === "assess" && file === "--schema" && flags.length === 0) {
+    options.output.stdout(
+      JSON.stringify(inputSchemaJson("intent-assess"), null, 2),
+    );
+    return EXIT_CODE.success;
+  }
   if (action === "register") {
     if (!file || flags.length > 0) return usage(options.output);
     const project = await discoverProjectRoot({
@@ -44,8 +52,8 @@ export async function runIntentCommand(
         "intent",
       );
       options.output.stdout(`Registered ${result.id} to ${result.path}`);
-    } catch {
-      return usage(options.output);
+    } catch (error) {
+      return reportCommandError(error, options.output);
     }
     return EXIT_CODE.success;
   }

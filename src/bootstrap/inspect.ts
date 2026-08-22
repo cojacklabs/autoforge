@@ -3,6 +3,7 @@ import path from "node:path";
 
 import { discoverProjectRoot, type ProjectMarker } from "../core/project.js";
 import { inspectInstallation } from "../commands/init.js";
+import { BOOTSTRAP_ARTIFACT_IDS, bootstrapManifestSchema } from "./manifest.js";
 
 export interface BootstrapReport {
   projectRoot: string;
@@ -17,22 +18,6 @@ export interface BootstrapReport {
     reason?: string;
   };
 }
-
-const BOOTSTRAP_ARTIFACTS = [
-  "vision",
-  "problem",
-  "users",
-  "use-cases",
-  "user-stories",
-  "flows",
-  "research",
-  "architecture",
-  "design",
-  "data",
-  "security",
-  "development-plan",
-  "tasks",
-] as const;
 
 const MANIFESTS = [
   "package.json",
@@ -153,11 +138,14 @@ export async function scaffoldBootstrapManifest(
   await writeFile(
     manifestPath,
     `${JSON.stringify(
-      {
+      bootstrapManifestSchema.parse({
         version: "0.12.0",
         report,
-        artifacts: BOOTSTRAP_ARTIFACTS.map((id) => ({ id, status: "planned" })),
-      },
+        artifacts: BOOTSTRAP_ARTIFACT_IDS.map((id) => ({
+          id,
+          status: "planned",
+        })),
+      }),
       null,
       2,
     )}\n`,

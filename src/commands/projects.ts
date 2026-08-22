@@ -11,7 +11,9 @@ import {
   createStorageBundle,
   inspectGlobalStorage,
   importStorageBundle,
+  relocateProjectStorage,
 } from "../workspace/tiered-storage.js";
+import { reportCommandError } from "../cli/command-error.js";
 
 export interface ProjectsCommandOptions {
   args: readonly string[];
@@ -20,7 +22,7 @@ export interface ProjectsCommandOptions {
 }
 function usage(output: LogWriter): ExitCode {
   output.stderr(
-    "Usage: autoforge projects [list [--json] | show <path|project_name> [--json] | storage <path> [--json] | global-storage <path> [--json] | global-export <path> [--json] | global-import <path> <bundle> [--json] | update <path> [--name <name>] [--alias <alias>] [--lifecycle <state>] [--retention-days <n>] | archive <path> | restore <path> | register <path> | prune [--dry-run]]",
+    "Usage: autoforge projects [list [--json] | show <path|project_name> [--json] | relocate <path|project_name> <new-path> [--planned] | move <path|project_name> <new-path> [--planned] | storage <path> [--json] | global-storage <path> [--json] | global-export <path> [--json] | global-import <path> <bundle> [--json] | update <path> [--name <name>] [--alias <alias>] [--lifecycle <state>] [--retention-days <n>] | archive <path> | restore <path> | register <path> | prune [--dry-run]]",
   );
   return EXIT_CODE.usage;
 }
@@ -66,8 +68,8 @@ export async function runProjectsCommand(
         );
       }
       return EXIT_CODE.success;
-    } catch {
-      return usage(options.output);
+    } catch (error) {
+      return reportCommandError(error, options.output);
     }
   }
   if (action === "show") {
@@ -125,8 +127,56 @@ export async function runProjectsCommand(
         );
       }
       return EXIT_CODE.success;
-    } catch {
+    } catch (error) {
+      return reportCommandError(error, options.output);
+    }
+  }
+  if (action === "relocate" || action === "move") {
+    const destination = options.args[2];
+    const planned = options.args[3] === "--planned";
+    if (
+      !projectPath ||
+      !destination ||
+      options.args.length < 3 ||
+      options.args.length > 4 ||
+      (options.args.length === 4 && !planned)
+    )
       return usage(options.output);
+    try {
+      const store = new GlobalWorkspaceStore(options.homeDirectory);
+      if (planned) {
+        await store.planProjectRelocation(projectPath, destination);
+        options.output.stdout(
+          `Planned project relocation to ${destination}. Run the command again after moving the project to complete registration.`,
+        );
+      } else {
+        const source = await store.resolveProject(projectPath);
+        if (!source)
+          throw new Error(`Project is not registered: ${projectPath}`);
+        const storageMoved = await relocateProjectStorage(
+          source,
+          destination,
+          options.homeDirectory,
+        );
+        try {
+          const result = await store.relocateProject(projectPath, destination);
+          options.output.stdout(
+            `Relocated project registry from ${result.source} to ${result.destination}${storageMoved ? " and migrated global storage" : ""}.`,
+          );
+        } catch (error) {
+          if (storageMoved) {
+            await relocateProjectStorage(
+              destination,
+              source,
+              options.homeDirectory,
+            ).catch(() => undefined);
+          }
+          throw error;
+        }
+      }
+      return EXIT_CODE.success;
+    } catch (error) {
+      return reportCommandError(error, options.output);
     }
   }
   if (action === "update") {
@@ -168,8 +218,8 @@ export async function runProjectsCommand(
         `Updated project metadata. Total projects: ${config.projects.length}.`,
       );
       return EXIT_CODE.success;
-    } catch {
-      return usage(options.output);
+    } catch (error) {
+      return reportCommandError(error, options.output);
     }
   }
   if (action === "archive" || action === "restore") {
@@ -183,8 +233,8 @@ export async function runProjectsCommand(
         `${action === "archive" ? "Archived" : "Restored"} project metadata.`,
       );
       return EXIT_CODE.success;
-    } catch {
-      return usage(options.output);
+    } catch (error) {
+      return reportCommandError(error, options.output);
     }
   }
   if (action === "storage") {
@@ -207,8 +257,8 @@ export async function runProjectsCommand(
           : `Storage: ${report.bytes} bytes across ${report.files} files (${report.exists ? "present" : "missing"}); lifecycle=${enriched.lifecycle}; retention=${enriched.retentionDays ?? "default"} days.`,
       );
       return EXIT_CODE.success;
-    } catch {
-      return usage(options.output);
+    } catch (error) {
+      return reportCommandError(error, options.output);
     }
   }
   if (action === "global-storage") {
@@ -230,8 +280,8 @@ export async function runProjectsCommand(
               .join("\n"),
       );
       return EXIT_CODE.success;
-    } catch {
-      return usage(options.output);
+    } catch (error) {
+      return reportCommandError(error, options.output);
     }
   }
   if (action === "global-export") {
@@ -244,8 +294,8 @@ export async function runProjectsCommand(
       );
       options.output.stdout(JSON.stringify(bundle, null, 2));
       return EXIT_CODE.success;
-    } catch {
-      return usage(options.output);
+    } catch (error) {
+      return reportCommandError(error, options.output);
     }
   }
   if (action === "global-import") {
@@ -270,8 +320,8 @@ export async function runProjectsCommand(
           : `Imported storage manifest for ${manifest.projectId}.`,
       );
       return EXIT_CODE.success;
-    } catch {
-      return usage(options.output);
+    } catch (error) {
+      return reportCommandError(error, options.output);
     }
   }
   if (
@@ -341,7 +391,7 @@ export async function runProjectsCommand(
       );
     } else return usage(options.output);
     return EXIT_CODE.success;
-  } catch {
-    return usage(options.output);
+  } catch (error) {
+    return reportCommandError(error, options.output);
   }
 }

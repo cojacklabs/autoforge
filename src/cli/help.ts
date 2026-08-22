@@ -20,6 +20,8 @@ Commands:
   knowledge  List and show intent and research artifacts
   planning   Inspect generated planning artifacts and freshness
   workflow   Start, inspect, and advance workflow runs
+  orchestrate Coordinate concurrent agent assignments and scoped leases
+  schemas    List and inspect JSON input schemas
   contract   Generate and validate the agent execution contract
   projects   List and register globally known projects
   attach     Initialize and register a project
@@ -88,9 +90,11 @@ Design context:
 
 Intent assessment:
   autoforge intent assess <json-file> --kind <implementation|research|architecture|design|planning> [--artifact <kind>]
+  autoforge intent assess --schema
   intent assess also returns deterministic workflow stages and rationale
   autoforge intent register <json-file>
   autoforge research register <json-file>
+  autoforge research register --schema
   autoforge knowledge list [--type <intent|research>]
   autoforge knowledge show <id>
   autoforge knowledge extract <file>
@@ -103,12 +107,26 @@ Intent assessment:
   autoforge workflow show <id>
   autoforge workflow advance <id> [--skip-optional]
   autoforge workflow handoff <json-file>
+  autoforge workflow handoff --schema
+  autoforge orchestrate plan [json-file]
+  autoforge orchestrate status
+  autoforge orchestrate ready
+  autoforge orchestrate claim <work-id> --agent <id> [--role <role>] [--read-only] [--ttl <minutes>]
+  autoforge orchestrate handoff <assignment-id> <json-file>
+  autoforge orchestrate release <assignment-id>
+  autoforge orchestrate approve <gate-id> [--by <actor>]
+  autoforge orchestrate prioritize <work-id> <0-100>
+  autoforge orchestrate explain <work-id>
+  autoforge schemas list
+  autoforge schemas show <id>
   autoforge contract generate <agent-id>
   autoforge contract show
   autoforge contract validate
   autoforge projects list [--json]
   autoforge projects list --json
   autoforge projects show <path|project_name> [--json]
+  autoforge projects relocate <path|project_name> <new-path> [--planned]
+  autoforge projects move <path|project_name> <new-path> [--planned]
   autoforge projects storage <path> [--json]
   autoforge projects global-storage <path> [--json]
   autoforge projects global-export <path> [--json]
@@ -123,7 +141,8 @@ Intent assessment:
   autoforge use <project-name> <command>
   autoforge agents list
   autoforge assets list templates|doctrines
-  autoforge bootstrap inspect|scaffold|status|gates|vision|vision-amend|vision-check <idea>|vision-approve <idea>|discovery-questions <json-file>|discover <json-file>
+  autoforge bootstrap inspect|scaffold|status|gates|vision|vision-amend|vision-check <idea>|vision-approve <idea>|discovery-questions <json-file>|discover <json-file>|approve <artifact-id> [--evidence <path|workflow-id>]
+  autoforge bootstrap approve <artifact-id> [--evidence <path|workflow-id>]
   autoforge constitution init|list|show <id>|check <objective>
   autoforge domain init|list|show <id>|check
   autoforge update

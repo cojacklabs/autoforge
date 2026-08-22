@@ -1,4 +1,4 @@
-# AutoForge 0.20.3
+# AutoForge 0.21.0
 
 AutoForge is a task-specific context and control plane for AI-assisted software development. It gives Codex, Claude Code, Gemini/Antigravity, Grok Build, Cursor, and generic agents durable project memory, governed work lifecycle, scoped edits, and explainable build packets.
 
@@ -36,6 +36,19 @@ npx autoforge constitution check "<objective>"
 See `docs/AUTOFORGE_AGENT_SETUP_GUIDE.md` for the complete safe setup procedure.
 Agent behavior and long-prompt handling are documented in `docs/AUTOFORGE_AGENTIC_AI_GUIDE.md`.
 
+### Bootstrap Artifacts and Gates
+
+Bootstrap tracks required artifacts while the intent, workflow, planning,
+design, and research commands produce them. Connect completed work back to the
+bootstrap manifest with evidence-backed approval:
+
+```bash
+autoforge bootstrap approve architecture --evidence architecture-v1
+autoforge bootstrap gates
+```
+
+See `docs/BOOTSTRAP_PIPELINE.md` for the complete end-to-end flow.
+
 After initialization, generate and validate the agent contract:
 
 ```bash
@@ -56,6 +69,33 @@ npx autoforge gate check
 npx autoforge done
 ```
 
+## Multi-Agent Orchestration
+
+For parallel planning, design, implementation, testing, and validation, create
+a dependency-aware orchestration plan instead of starting multiple agents
+against the same checkout:
+
+```bash
+autoforge orchestrate plan orchestration-plan.json
+autoforge orchestrate ready
+autoforge orchestrate claim <work-id> --agent codex --role backend
+autoforge orchestrate status
+autoforge orchestrate explain <work-id>
+autoforge orchestrate prioritize <work-id> 100
+autoforge orchestrate handoff <assignment-id> handoff.json
+```
+
+Mutating assignments receive isolated Git worktrees under the global
+AutoForge home, and overlapping write scopes are rejected. Read-only research
+sessions may run concurrently. High-risk architecture, security, and release
+work must pass explicit approval gates before it becomes ready.
+
+Every claim compiles a role-aware context packet from canonical AutoForge work,
+doctrines, decisions, specifications, and the configured context budget. Run
+`autoforge orchestrate explain <work-id>` before continuing an assignment; a
+`stale` context result means canonical sources changed and the work should be
+released and reclaimed before editing continues.
+
 ## Memory and Design
 
 ```bash
@@ -68,6 +108,27 @@ npx autoforge design import dev/design/screen.md
 ```
 
 Use `autoforge recap` for handoffs, `autoforge tui --snapshot` for automation, and `autoforge doctor` for installation health.
+
+When a registered project changes location, preserve its global history with:
+
+```bash
+autoforge projects relocate <path|project_name> <new-path> --planned
+# Move the directory, then complete the registry and storage migration:
+autoforge projects relocate <path|project_name> <new-path>
+```
+
+`autoforge projects move` is an equivalent alias.
+
+## JSON Input Schemas
+
+Commands that accept JSON files expose their runtime schemas directly:
+
+```bash
+autoforge schemas list
+autoforge schemas show intent-assess
+autoforge intent assess --schema
+autoforge workflow handoff --schema
+```
 
 ## Migration and Upgrade
 

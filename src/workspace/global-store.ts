@@ -36,6 +36,18 @@ export const projectMetadataSchema = z
     capabilities: z.array(z.string().min(1)).optional(),
     lastValidated: z.string().datetime().optional(),
     retentionDays: z.number().int().min(1).max(3_650).optional(),
+    projectId: z.string().uuid().optional(),
+    relocation: z
+      .object({
+        from: z.string().min(1),
+        to: z.string().min(1),
+        status: z.enum(["planned", "completed"]),
+        requestedAt: z.string().datetime(),
+        completedAt: z.string().datetime().nullable(),
+      })
+      .strict()
+      .optional(),
+    previousPaths: z.array(z.string().min(1)).optional(),
   })
   .strict();
 
@@ -144,11 +156,13 @@ export class GlobalWorkspaceStore {
     }));
     const project = path.resolve(projectRoot);
     const projects = [...new Set([...current.projects, project])].sort();
+    const projectId = await readProjectId(project);
     const projectMetadata = {
       ...(current.projectMetadata ?? {}),
       [project]: {
         name: path.basename(project),
         lastSeen: new Date().toISOString(),
+        ...(projectId ? { projectId } : {}),
       },
     };
     const updated = globalWorkspaceConfigSchema.parse({
@@ -158,6 +172,116 @@ export class GlobalWorkspaceStore {
     });
     await this.write(updated);
     return updated;
+  }
+
+  async resolveProject(reference: string): Promise<string | undefined> {
+    const current = await this.read();
+    const absolute = path.resolve(reference);
+    return current.projects.find((project) => {
+      const metadata = current.projectMetadata?.[project];
+      return (
+        project === absolute ||
+        metadata?.name === reference ||
+        metadata?.aliases?.includes(reference)
+      );
+    });
+  }
+
+  async planProjectRelocation(
+    reference: string,
+    destination: string,
+  ): Promise<GlobalWorkspaceConfig> {
+    const current = await this.read();
+    const source = await this.resolveProject(reference);
+    if (!source) throw new Error(`Project is not registered: ${reference}`);
+    const target = path.resolve(destination);
+    if (source === target)
+      throw new Error("Project is already registered at the destination path");
+    if (current.projects.includes(target))
+      throw new Error(`Destination is already registered: ${target}`);
+    const requestedAt = new Date().toISOString();
+    const existing = current.projectMetadata?.[source] ?? {
+      name: path.basename(source),
+      lastSeen: requestedAt,
+    };
+    const updated = globalWorkspaceConfigSchema.parse({
+      ...current,
+      projectMetadata: {
+        ...(current.projectMetadata ?? {}),
+        [source]: {
+          ...existing,
+          relocation: {
+            from: source,
+            to: target,
+            status: "planned",
+            requestedAt,
+            completedAt: null,
+          },
+        },
+      },
+    });
+    await this.write(updated);
+    return updated;
+  }
+
+  async relocateProject(
+    reference: string,
+    destination: string,
+  ): Promise<{
+    config: GlobalWorkspaceConfig;
+    source: string;
+    destination: string;
+  }> {
+    const current = await this.read();
+    const source = await this.resolveProject(reference);
+    if (!source) throw new Error(`Project is not registered: ${reference}`);
+    const target = path.resolve(destination);
+    if (source === target)
+      throw new Error("Project is already registered at the destination path");
+    if (current.projects.includes(target))
+      throw new Error(`Destination is already registered: ${target}`);
+    const projectId = await readProjectId(target);
+    if (!projectId)
+      throw new Error(
+        `Destination is not an initialized AutoForge project: ${target}`,
+      );
+    const existing = current.projectMetadata?.[source] ?? {
+      name: path.basename(source),
+      lastSeen: new Date().toISOString(),
+    };
+    if (existing.projectId && existing.projectId !== projectId) {
+      throw new Error(
+        "Destination AutoForge project identity does not match the registered project",
+      );
+    }
+    const completedAt = new Date().toISOString();
+    const metadata = {
+      ...existing,
+      lastSeen: completedAt,
+      projectId,
+      relocation: {
+        from: source,
+        to: target,
+        status: "completed" as const,
+        requestedAt: existing.relocation?.requestedAt ?? completedAt,
+        completedAt,
+      },
+      previousPaths: [...new Set([...(existing.previousPaths ?? []), source])],
+    };
+    const updated = globalWorkspaceConfigSchema.parse({
+      ...current,
+      projects: current.projects
+        .map((project) => (project === source ? target : project))
+        .sort(),
+      projectMetadata: Object.fromEntries([
+        ...Object.entries(current.projectMetadata ?? {}).filter(
+          ([project]) => project !== source,
+        ),
+        [target, metadata],
+      ]),
+    });
+    await this.write(updated);
+    return { config: updated, source, destination: target };
   }
 
   async unregisterProject(projectRoot: string): Promise<GlobalWorkspaceConfig> {
@@ -260,5 +384,19 @@ export class GlobalWorkspaceStore {
     });
     await this.write(updated);
     return updated;
+  }
+}
+
+async function readProjectId(projectRoot: string): Promise<string | undefined> {
+  try {
+    const config = JSON.parse(
+      await readFile(
+        path.join(projectRoot, ".autoforge", "config.json"),
+        "utf8",
+      ),
+    ) as { projectId?: unknown };
+    return typeof config.projectId === "string" ? config.projectId : undefined;
+  } catch {
+    return undefined;
   }
 }

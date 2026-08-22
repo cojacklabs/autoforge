@@ -84,7 +84,7 @@ describe("bundled foundation CLI", () => {
     ).resolves.toMatchObject({
       exitCode: 0,
       stderr: "",
-      stdout: "AutoForge 0.20.3\n",
+      stdout: "AutoForge 0.21.0\n",
     });
   });
 
@@ -111,7 +111,7 @@ describe("bundled foundation CLI", () => {
     ).resolves.toMatchObject({
       exitCode: 0,
       stderr: "",
-      stdout: "AutoForge 0.20.3\n",
+      stdout: "AutoForge 0.21.0\n",
     });
   });
 
@@ -127,7 +127,7 @@ describe("bundled foundation CLI", () => {
     ).resolves.toMatchObject({
       exitCode: 0,
       stderr: "",
-      stdout: "AutoForge 0.20.3\n",
+      stdout: "AutoForge 0.21.0\n",
     });
   });
 
@@ -185,6 +185,157 @@ describe("bundled foundation CLI", () => {
     expect(doctor.stdout).toContain(
       "[PASS] AutoForge installation is current.",
     );
+  });
+
+  it("coordinates a read-only assignment through the bundled CLI", async () => {
+    const projectRoot = await createProject();
+    await runBundledCli(projectRoot, ["init"]);
+    await runBundledCli(projectRoot, [
+      "add",
+      "feature",
+      "--name",
+      "Parallel Work",
+      "--description",
+      "Coordinate parallel work.",
+    ]);
+    await runBundledCli(projectRoot, [
+      "add",
+      "phase",
+      "--name",
+      "Research",
+      "--description",
+      "Research parallel implementation.",
+      "--feature",
+      "feature.parallel-work",
+    ]);
+    await runBundledCli(projectRoot, [
+      "add",
+      "task",
+      "--name",
+      "Parallel Research",
+      "--description",
+      "Research the parallel implementation path.",
+      "--phase",
+      "phase.research",
+      "--include",
+      "docs/**",
+    ]);
+    await writeFile(
+      path.join(projectRoot, "orchestration-plan.json"),
+      JSON.stringify({
+        nodes: [
+          {
+            workId: "task.parallel-research",
+            objective: "Research the parallel implementation path.",
+            acceptanceCriteria: ["Findings are attached to the handoff."],
+            stage: "research",
+            role: "research",
+            dependencies: [],
+            priority: 75,
+            releaseCritical: false,
+            risk: "low",
+            scope: { include: ["docs/**"], exclude: [] },
+            requiredCapabilities: ["contextPackets"],
+          },
+        ],
+      }),
+    );
+
+    await expect(
+      runBundledCli(projectRoot, [
+        "orchestrate",
+        "plan",
+        "orchestration-plan.json",
+      ]),
+    ).resolves.toMatchObject({ exitCode: 0, stderr: "" });
+    const ready = await runBundledCli(projectRoot, ["orchestrate", "ready"]);
+    expect(ready).toMatchObject({ exitCode: 0, stderr: "" });
+    expect(JSON.parse(ready.stdout)[0].workId).toBe("task.parallel-research");
+    const claimed = await runBundledCli(projectRoot, [
+      "orchestrate",
+      "claim",
+      "task.parallel-research",
+      "--agent",
+      "codex",
+      "--role",
+      "research",
+      "--read-only",
+    ]);
+    expect(claimed).toMatchObject({ exitCode: 0, stderr: "" });
+    expect(JSON.parse(claimed.stdout)).toMatchObject({
+      workId: "task.parallel-research",
+      agentId: "codex",
+      mode: "read",
+      worktree: null,
+    });
+  });
+
+  it("completes the bootstrap intent workflow and evidence approval pipeline", async () => {
+    const projectRoot = await createProject();
+    await runBundledCli(projectRoot, ["init"]);
+    await runBundledCli(projectRoot, ["bootstrap", "scaffold"]);
+    await writeFile(
+      path.join(projectRoot, "architecture-intent.json"),
+      JSON.stringify({
+        raw: "Design the account architecture now. Email can be added in a later, additive channel. Never create matches without evidence.",
+        objective: "Define the account matching architecture.",
+        requirements: ["Specify the matching API."],
+        assumptions: ["Email is related but separately scoped."],
+        unknowns: [],
+        constraints: ["Preserve deterministic matching."],
+        acceptanceCriteria: ["The architecture is validated."],
+      }),
+    );
+
+    const assessed = await runBundledCli(projectRoot, [
+      "intent",
+      "assess",
+      "architecture-intent.json",
+      "--kind",
+      "architecture",
+      "--persist",
+    ]);
+    expect(assessed).toMatchObject({ exitCode: 0, stderr: "" });
+    const assessment = JSON.parse(assessed.stdout);
+    expect(assessment.triage.labels).not.toContain("DEFERRED");
+    expect(assessment.triage.labels).not.toContain("CONFLICT_DETECTED");
+    expect(assessment.workflow.rationale.length).toBeGreaterThan(0);
+
+    await runBundledCli(projectRoot, ["contract", "generate", "generic"]);
+    const started = await runBundledCli(projectRoot, [
+      "workflow",
+      "start",
+      "architecture-v1",
+      "architecture",
+    ]);
+    expect(JSON.parse(started.stdout).kind).toBe("architecture-change");
+    await runBundledCli(projectRoot, [
+      "workflow",
+      "advance",
+      "architecture-v1",
+    ]);
+    await runBundledCli(projectRoot, [
+      "workflow",
+      "advance",
+      "architecture-v1",
+    ]);
+    const completed = await runBundledCli(projectRoot, [
+      "workflow",
+      "advance",
+      "architecture-v1",
+    ]);
+    expect(JSON.parse(completed.stdout).status).toBe("completed");
+
+    const approved = await runBundledCli(projectRoot, [
+      "bootstrap",
+      "approve",
+      "architecture",
+      "--evidence",
+      "architecture-v1",
+    ]);
+    expect(approved).toMatchObject({ exitCode: 0, stderr: "" });
+    const gates = await runBundledCli(projectRoot, ["bootstrap", "gates"]);
+    expect(JSON.parse(gates.stdout).gates.architecture).toBe("approved");
   });
 
   it("prints a TUI dashboard snapshot without a terminal", async () => {

@@ -22,10 +22,17 @@ Do not immediately translate a long prompt into code. First:
 2. Extract the objective, requirements, assumptions, unknowns, constraints, and acceptance criteria.
 3. Run `autoforge --project "$PWD" intent assess <intent.json> --kind <work-kind>`.
 4. Follow the recommended workflow stages.
-5. Create or update research, design, planning, and work artifacts as needed.
-6. Resolve context before editing files.
-7. Respect the active contract, scope, prohibited actions, and validation requirements.
-8. Persist durable decisions and stage handoffs before completion.
+5. When `.autoforge/orchestration/state.json` exists, run
+   `autoforge --project "$PWD" orchestrate status` and claim only work reported
+   by `autoforge --project "$PWD" orchestrate ready`.
+6. After claiming, inspect `orchestrate explain <work-id>` and stop when its
+   `contextFreshness` is `stale` or `unavailable`.
+7. Use the role-scoped context embedded in the assignment packet; do not replace
+   it with an unbounded repository scan.
+8. Create or update research, design, planning, and work artifacts as needed.
+9. Resolve context before editing files.
+10. Respect the active contract, scope, prohibited actions, and validation requirements.
+11. Persist durable decisions and stage handoffs before completion.
 
 ## Initialization
 
@@ -38,6 +45,18 @@ autoforge --project "$PWD" contract validate
 ```
 
 Never delete or replace existing `.autoforge/` state without explicit approval.
+
+## Bootstrap Production and Approval
+
+Treat the bootstrap manifest as the readiness index, not the artifact authoring
+tool. Use `intent`, `workflow`, `planning`, `design`, and `research` to produce
+the backing work, then run `autoforge bootstrap approve <artifact-id>
+--evidence <path|workflow-id>` to connect validated evidence to the manifest.
+Never edit `manifest.json` manually.
+
+Before creating any JSON input, run `autoforge schemas list` and inspect the
+relevant contract with `autoforge schemas show <id>` or the command's
+`--schema` flag.
 
 ## Remote and Local Documentation
 

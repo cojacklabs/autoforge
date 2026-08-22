@@ -79,7 +79,46 @@ autoforge workflow list
 autoforge workflow show <id>
 autoforge workflow advance <id> [--skip-optional]
 autoforge workflow handoff <json-file>
+autoforge workflow handoff --schema
 ```
+
+Intent aliases are accepted by `workflow start`: `architecture` maps to
+`architecture-change`, `design` to `design-create`, and `implementation` or
+`planning` to `feature-development`. Invalid values print every canonical kind
+and supported alias.
+
+## Multi-Agent Orchestration
+
+```bash
+autoforge orchestrate plan [json-file]
+autoforge orchestrate status
+autoforge orchestrate ready
+autoforge orchestrate claim <work-id> --agent <id> [--role <role>] [--read-only] [--ttl <minutes>]
+autoforge orchestrate handoff <assignment-id> <json-file>
+autoforge orchestrate release <assignment-id>
+autoforge orchestrate approve <gate-id> [--by <actor>]
+autoforge orchestrate prioritize <work-id> <0-100>
+autoforge orchestrate explain <work-id>
+```
+
+`plan` imports an explicit dependency graph when a JSON file is supplied. With
+no file, it compiles the current incomplete AutoForge tasks and issues into a
+default implementation queue. `ready` is deterministically ordered by human
+pinning, release impact, downstream unlocks, risk, explicit priority, and age.
+
+Write claims receive exclusive scope leases and isolated Git worktrees.
+Read-only claims do not block writers. Assignment packets and handoffs persist
+under `.autoforge/orchestration/` and are generated runtime state rather than
+source documentation.
+
+Claims require a matching canonical task or issue. Their assignment packets
+contain role-aware, budgeted context plus selection reasons and a source
+fingerprint. `orchestrate explain` returns `contextFreshness` as `fresh`,
+`stale`, or `unavailable` for active assignments.
+
+Applicable constitution rules are embedded in canonical context. Required and
+prohibited actions derive from governance plus the selected agent contract, and
+validation requirements derive from configured project quality gates.
 
 ## Global Workspace
 
@@ -87,6 +126,8 @@ autoforge workflow handoff <json-file>
 autoforge projects list [--json]
 autoforge projects list --json
 autoforge projects show <path|project_name> [--json]
+autoforge projects relocate <path|project_name> <new-path> [--planned]
+autoforge projects move <path|project_name> <new-path> [--planned]
 autoforge projects storage <path> [--json]
 autoforge projects global-storage <path> [--json]
 autoforge projects global-export <path> [--json]
@@ -102,12 +143,19 @@ autoforge assets list templates
 autoforge assets list doctrines
 ```
 
+`relocate` updates a registered project's canonical path after the directory has
+been moved and migrates path-derived global storage. The destination must be an
+initialized AutoForge project with the same project identity. Use `--planned`
+before moving the directory to record the intended destination without changing
+the active registry path. `move` is an alias for `relocate`.
+
 ## Bootstrap, Migration, and Updates
 
 ```bash
 autoforge bootstrap inspect
 autoforge bootstrap status
 autoforge bootstrap scaffold
+autoforge bootstrap approve <artifact-id> [--evidence <path|workflow-id>]
 autoforge migrate --dry-run
 autoforge update
 autoforge trace add <source> <relationship> <target>
@@ -122,6 +170,26 @@ autoforge twin query [--type <type>] [--relationship <name>] [--depth <n>] [--li
 autoforge update
 autoforge version
 ```
+
+Bootstrap approvals update `.autoforge/bootstrap/manifest.json` atomically and
+record approval time and evidence. Completed workflow IDs are accepted as
+evidence; active workflow runs are rejected.
+
+## JSON Input Schemas
+
+```bash
+autoforge schemas list
+autoforge schemas show <id>
+autoforge bootstrap discover --schema
+autoforge intent assess --schema
+autoforge research register --schema
+autoforge workflow handoff --schema
+autoforge orchestrate plan --schema
+autoforge orchestrate handoff --schema
+```
+
+Schema output uses JSON Schema Draft 2020-12 generated from the same Zod
+contracts that validate runtime input.
 
 The command installs the exact version returned by npm and uses `--global` for global installations. Verify with `autoforge version` and `autoforge doctor`.
 

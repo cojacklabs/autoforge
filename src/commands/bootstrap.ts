@@ -1,6 +1,3 @@
-import { readFile } from "node:fs/promises";
-import path from "node:path";
-
 import { EXIT_CODE, type ExitCode } from "../core/errors.js";
 import type { LogWriter } from "../core/logger.js";
 import {
@@ -13,6 +10,13 @@ import { checkVisionConflict } from "../bootstrap/vision-check.js";
 import { identifyDiscoveryQuestions } from "../bootstrap/questions.js";
 import { recordVisionApproval } from "../bootstrap/approvals.js";
 import {
+  approveBootstrapArtifact,
+  bootstrapArtifactIdSchema,
+  readBootstrapManifest,
+} from "../bootstrap/manifest.js";
+import { reportCommandError } from "../cli/command-error.js";
+import { inputSchemaJson } from "../input-schemas/catalog.js";
+import {
   amendVisionDocument,
   generateVisionDocument,
 } from "../bootstrap/vision.js";
@@ -22,6 +26,24 @@ export async function runBootstrapCommand(options: {
   output: LogWriter;
   startDirectory: string;
 }): Promise<ExitCode> {
+  if (
+    options.args.length === 2 &&
+    options.args[1] === "--schema" &&
+    ["discover", "discovery-questions"].includes(options.args[0] ?? "")
+  ) {
+    options.output.stdout(
+      JSON.stringify(
+        inputSchemaJson(
+          options.args[0] === "discover"
+            ? "bootstrap-discover"
+            : "bootstrap-discovery-questions",
+        ),
+        null,
+        2,
+      ),
+    );
+    return EXIT_CODE.success;
+  }
   if (
     options.args.length === 0 ||
     ![
@@ -35,6 +57,7 @@ export async function runBootstrapCommand(options: {
       "discovery-questions",
       "vision-approve",
       "discover",
+      "approve",
     ].includes(options.args[0] ?? "") ||
     ([
       "discover",
@@ -44,22 +67,43 @@ export async function runBootstrapCommand(options: {
       "vision-approve",
     ].includes(options.args[0] ?? "") &&
       options.args.length !== 2) ||
+    (options.args[0] === "approve" &&
+      !(
+        options.args.length === 2 ||
+        (options.args.length === 4 && options.args[2] === "--evidence")
+      )) ||
     (![
       "discover",
       "vision-amend",
       "vision-check",
       "discovery-questions",
       "vision-approve",
+      "approve",
     ].includes(options.args[0] ?? "") &&
       options.args.length !== 1)
   ) {
     options.output.stderr(
-      "Usage: autoforge bootstrap inspect|scaffold|status|gates|vision|vision-amend|vision-check <idea>|vision-approve <idea>|discovery-questions <json-file>|discover <json-file>",
+      "Usage: autoforge bootstrap inspect|scaffold|status|gates|vision|vision-amend|vision-check <idea>|vision-approve <idea>|discovery-questions <json-file>|discover <json-file>|approve <artifact-id> [--evidence <path|workflow-id>]",
     );
     return EXIT_CODE.usage;
   }
   try {
-    if (options.args[0] === "vision-approve") {
+    if (options.args[0] === "approve") {
+      const manifest = await approveBootstrapArtifact(
+        options.startDirectory,
+        bootstrapArtifactIdSchema.parse(options.args[1]),
+        options.args[3] ? { evidence: options.args[3] } : {},
+      );
+      options.output.stdout(
+        JSON.stringify(
+          manifest.artifacts.find(
+            (artifact) => artifact.id === options.args[1],
+          ),
+          null,
+          2,
+        ),
+      );
+    } else if (options.args[0] === "vision-approve") {
       const approvalPath = await recordVisionApproval(
         options.startDirectory,
         options.args[1]!,
@@ -105,13 +149,13 @@ export async function runBootstrapCommand(options: {
       );
       options.output.stdout(`Recorded bootstrap discovery at ${discoveryPath}`);
     } else if (options.args[0] === "status") {
-      const manifestPath = path.join(
-        options.startDirectory,
-        ".autoforge",
-        "bootstrap",
-        "manifest.json",
+      options.output.stdout(
+        JSON.stringify(
+          await readBootstrapManifest(options.startDirectory),
+          null,
+          2,
+        ),
       );
-      options.output.stdout(await readFile(manifestPath, "utf8"));
     } else if (options.args[0] === "scaffold") {
       const manifestPath = await scaffoldBootstrapManifest(
         options.startDirectory,
@@ -122,8 +166,7 @@ export async function runBootstrapCommand(options: {
       options.output.stdout(JSON.stringify(report, null, 2));
     }
     return EXIT_CODE.success;
-  } catch {
-    options.output.stderr("Unable to inspect project bootstrap readiness.");
-    return EXIT_CODE.notFound;
+  } catch (error) {
+    return reportCommandError(error, options.output);
   }
 }

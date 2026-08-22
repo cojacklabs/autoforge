@@ -1,5 +1,4 @@
-import { readFile } from "node:fs/promises";
-import path from "node:path";
+import { readBootstrapManifest } from "./manifest.js";
 
 export const BOOTSTRAP_GATES = [
   "architecture",
@@ -19,18 +18,10 @@ export interface BootstrapGateReport {
 export async function evaluateBootstrapGates(
   projectRoot: string,
 ): Promise<BootstrapGateReport> {
-  const manifestPath = path.join(
-    path.resolve(projectRoot),
-    ".autoforge",
-    "bootstrap",
-    "manifest.json",
-  );
-  const manifest = JSON.parse(await readFile(manifestPath, "utf8")) as {
-    artifacts?: Array<{ id?: string; status?: string }>;
-  };
+  const manifest = await readBootstrapManifest(projectRoot);
   const gates = Object.fromEntries(
     BOOTSTRAP_GATES.map((id) => {
-      const artifact = manifest.artifacts?.find(
+      const artifact = manifest.artifacts.find(
         (candidate) => candidate.id === id,
       );
       return [id, artifact?.status === "approved" ? "approved" : "pending"];

@@ -1,14 +1,9 @@
 import { z } from "zod";
 
 import { triageIntentSchema, type TriageIntent } from "./triage.js";
+import { READINESS_WORK_KINDS } from "../core/vocabularies.js";
 
-export const readinessWorkKindSchema = z.enum([
-  "implementation",
-  "research",
-  "architecture",
-  "design",
-  "planning",
-]);
+export const readinessWorkKindSchema = z.enum(READINESS_WORK_KINDS);
 
 export const readinessLevelSchema = z.enum([
   "not-ready",

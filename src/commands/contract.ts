@@ -6,6 +6,7 @@ import {
   generateAgentContract,
 } from "../contract/generator.js";
 import { assertAgentContractCompatibility } from "../contract/capabilities.js";
+import { reportCommandError } from "../cli/command-error.js";
 
 export interface ContractCommandOptions {
   args: readonly string[];
@@ -35,7 +36,14 @@ export async function runContractCommand(
     });
     const store = new AgentContractStore(project.path);
     if (action === "generate") {
-      assertAgentContractCompatibility(agentId!);
+      try {
+        assertAgentContractCompatibility(agentId!);
+      } catch (error) {
+        options.output.stderr(
+          `Error: ${error instanceof Error ? error.message : String(error)}`,
+        );
+        return EXIT_CODE.notFound;
+      }
       const contract = generateAgentContract({
         agentId: agentId!,
         projectRoot: project.path,
@@ -53,10 +61,6 @@ export async function runContractCommand(
     else return usage(options.output);
     return EXIT_CODE.success;
   } catch (error) {
-    if (action === "generate" && error instanceof Error) {
-      options.output.stderr(error.message);
-      return EXIT_CODE.notFound;
-    }
-    return usage(options.output);
+    return reportCommandError(error, options.output);
   }
 }

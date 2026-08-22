@@ -107,6 +107,73 @@ describe("bootstrap command", () => {
     );
   });
 
+  it("approves a bootstrap artifact and updates gate readiness", async () => {
+    const project = await mkdtemp(
+      path.join(os.tmpdir(), "autoforge-bootstrap-approve-"),
+    );
+    directories.push(project);
+    await mkdir(path.join(project, ".git"));
+    await scaffoldBootstrapManifest(project);
+    const output = { stdout: vi.fn(), stderr: vi.fn() };
+
+    await expect(
+      runBootstrapCommand({
+        args: ["approve", "architecture"],
+        output,
+        startDirectory: project,
+      }),
+    ).resolves.toBe(0);
+    await runBootstrapCommand({
+      args: ["gates"],
+      output,
+      startDirectory: project,
+    });
+    expect(output.stdout).toHaveBeenCalledWith(
+      expect.stringContaining('"architecture": "approved"'),
+    );
+    await expect(
+      readFile(
+        path.join(project, ".autoforge", "bootstrap", "manifest.json"),
+        "utf8",
+      ),
+    ).resolves.toContain('"approvedAt"');
+  });
+
+  it("rejects incomplete workflow evidence for bootstrap approval", async () => {
+    const project = await mkdtemp(
+      path.join(os.tmpdir(), "autoforge-bootstrap-evidence-"),
+    );
+    directories.push(project);
+    await mkdir(path.join(project, ".git"));
+    await scaffoldBootstrapManifest(project);
+    await mkdir(path.join(project, ".autoforge", "workflows"), {
+      recursive: true,
+    });
+    await writeFile(
+      path.join(project, ".autoforge", "workflows", "architecture-v1.json"),
+      JSON.stringify({
+        id: "architecture-v1",
+        kind: "architecture-change",
+        currentStage: "planning",
+        completedStages: ["research"],
+        status: "active",
+        updatedAt: "2026-08-22T00:00:00.000Z",
+      }),
+    );
+    const output = { stdout: vi.fn(), stderr: vi.fn() };
+
+    await expect(
+      runBootstrapCommand({
+        args: ["approve", "architecture", "--evidence", "architecture-v1"],
+        output,
+        startDirectory: project,
+      }),
+    ).resolves.toBe(5);
+    expect(output.stderr).toHaveBeenCalledWith(
+      "Error: Workflow architecture-v1 is not completed",
+    );
+  });
+
   it("validates the complete bootstrap workflow", async () => {
     const project = await mkdtemp(
       path.join(os.tmpdir(), "autoforge-bootstrap-e2e-"),
@@ -179,6 +246,8 @@ describe("bootstrap command", () => {
       }),
     );
     const output = { stdout: vi.fn(), stderr: vi.fn() };
+    await mkdir(path.join(project, ".git"));
+    await scaffoldBootstrapManifest(project);
     await runBootstrapCommand({
       args: ["discover", source],
       output,
@@ -241,6 +310,12 @@ describe("bootstrap command", () => {
         "utf8",
       ),
     ).resolves.toContain('"approved": true');
+    await expect(
+      readFile(
+        path.join(project, ".autoforge", "bootstrap", "manifest.json"),
+        "utf8",
+      ),
+    ).resolves.toContain('"status": "approved"');
   });
 
   it("returns targeted questions for incomplete discovery", async () => {

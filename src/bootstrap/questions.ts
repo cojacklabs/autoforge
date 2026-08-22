@@ -1,5 +1,16 @@
 import { readFile } from "node:fs/promises";
 import path from "node:path";
+import { z } from "zod";
+
+export const discoveryQuestionInputSchema = z
+  .object({
+    approved: z.boolean().optional(),
+    vision: z.string().optional(),
+    problem: z.string().optional(),
+    users: z.array(z.string()).optional(),
+    useCases: z.array(z.string()).optional(),
+  })
+  .passthrough();
 
 export interface DiscoveryQuestionReport {
   complete: boolean;
@@ -16,9 +27,9 @@ const QUESTIONS: Record<string, string> = {
 export async function identifyDiscoveryQuestions(
   sourcePath: string,
 ): Promise<DiscoveryQuestionReport> {
-  const input = JSON.parse(
-    await readFile(path.resolve(sourcePath), "utf8"),
-  ) as Record<string, unknown>;
+  const input = discoveryQuestionInputSchema.parse(
+    JSON.parse(await readFile(path.resolve(sourcePath), "utf8")) as unknown,
+  );
   const missing = Object.keys(QUESTIONS).filter((key) => {
     const value = input[key];
     return !value || (Array.isArray(value) && value.length === 0);

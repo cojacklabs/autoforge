@@ -60,4 +60,31 @@ describe("deterministic intent triage", () => {
     expect(result.labels).toEqual(["DEFERRED", "CONFLICT_DETECTED"]);
     expect(result.conflict).toBe(true);
   });
+
+  it("does not defer a current intent for a later additive extension", () => {
+    const result = triageIntent({
+      raw: "Build account matching now. Email can be added in a later, additive channel.",
+      objective: "Implement deterministic account matching.",
+      requirements: ["Match verified accounts."],
+      assumptions: [],
+      unknowns: [],
+      constraints: [],
+      acceptanceCriteria: ["Matching tests pass."],
+    });
+    expect(result.labels).not.toContain("DEFERRED");
+  });
+
+  it("does not detect conflicts across unrelated sentences or fields", () => {
+    const result = triageIntent({
+      raw: "Never produce a match record without verified evidence.",
+      objective: "Implement deterministic account matching.",
+      requirements: ["Reject unverified candidates."],
+      assumptions: ["Email is related but separately scoped."],
+      unknowns: [],
+      constraints: [],
+      acceptanceCriteria: ["No unverified match is persisted."],
+    });
+    expect(result.labels).not.toContain("CONFLICT_DETECTED");
+    expect(result.conflict).toBe(false);
+  });
 });

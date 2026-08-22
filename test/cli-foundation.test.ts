@@ -24,6 +24,8 @@ function createDependencies() {
       gate: vi.fn(async () => EXIT_CODE.success),
       init: vi.fn(async () => EXIT_CODE.success),
       projects: vi.fn(async () => EXIT_CODE.success),
+      orchestrate: vi.fn(async () => EXIT_CODE.success),
+      schemas: vi.fn(async () => EXIT_CODE.success),
       migrate: vi.fn(async () => EXIT_CODE.success),
       recap: vi.fn(async () => EXIT_CODE.success),
       start: vi.fn(async () => EXIT_CODE.success),
@@ -108,6 +110,24 @@ describe("foundation CLI router", () => {
       EXIT_CODE.success,
     );
     expect(dependencies.commands.projects).toHaveBeenCalledWith(args);
+  });
+
+  it("routes orchestration arguments to its injected command", async () => {
+    const dependencies = createDependencies();
+    const args = ["ready"];
+
+    await expect(runCli(["orchestrate", ...args], dependencies)).resolves.toBe(
+      EXIT_CODE.success,
+    );
+    expect(dependencies.commands.orchestrate).toHaveBeenCalledWith(args);
+  });
+
+  it("routes schema arguments to its injected command", async () => {
+    const dependencies = createDependencies();
+    await expect(runCli(["schemas", "list"], dependencies)).resolves.toBe(
+      EXIT_CODE.success,
+    );
+    expect(dependencies.commands.schemas).toHaveBeenCalledWith(["list"]);
   });
 
   it("routes done to its injected command", async () => {
@@ -254,6 +274,6 @@ describe("foundation CLI router", () => {
 
 describe("foundation CLI entry", () => {
   it("discovers the repository package version", () => {
-    expect(findPackageVersion()).toBe("0.20.3");
+    expect(findPackageVersion()).toBe("0.21.0");
   });
 });

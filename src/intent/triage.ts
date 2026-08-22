@@ -44,29 +44,36 @@ const KEYWORDS = {
   architecture: /\b(architect|architecture|system design|integration|api)\b/i,
   design: /\b(design|screen|component|visual|ui|ux|responsive)\b/i,
   planning: /\b(plan|planning|roadmap|break down|user stor(?:y|ies))\b/i,
-  deferred: /\b(later|defer|deferred|someday|backlog)\b/i,
-  conflict: /\b(always|never)\b.*\b(?:unless|except|but)\b/i,
+  deferred:
+    /\b(defer|deferred|someday|backlog)\b|\b(?:address|handle|implement|consider|revisit|schedule|move|leave|save)\b(?:\W+\w+){0,8}\W+later\b|\blater\b(?:\W+\w+){0,5}\W+\b(?:phase|release|version|milestone|backlog)\b/i,
+  conflict: /\b(always|never)\b(?:\W+\w+){0,12}\W+\b(?:unless|except|but)\b/i,
 };
 
-function searchableText(intent: TriageIntent): string {
+function textSegments(intent: TriageIntent): string[] {
   return [
     intent.raw,
-    intent.objective ?? "",
+    ...(intent.objective ? [intent.objective] : []),
     ...intent.requirements,
     ...intent.assumptions,
     ...intent.unknowns,
     ...intent.constraints,
     ...intent.acceptanceCriteria,
-  ].join(" ");
+  ].flatMap((value) =>
+    value
+      .split(/(?<=[.!?])\s+|\n+/)
+      .map((segment) => segment.trim())
+      .filter(Boolean),
+  );
 }
 
 export function triageIntent(input: TriageIntent): TriageResult {
   const intent = triageIntentSchema.parse(input);
-  const text = searchableText(intent);
+  const segments = textSegments(intent);
+  const text = segments.join(" ");
   const labels: TriageLabel[] = [];
   const evidence: string[] = [];
 
-  if (KEYWORDS.deferred.test(text)) {
+  if (segments.some((segment) => KEYWORDS.deferred.test(segment))) {
     labels.push("DEFERRED");
     evidence.push("Intent contains an explicit defer or later signal.");
   }
@@ -94,7 +101,7 @@ export function triageIntent(input: TriageIntent): TriageResult {
     labels.push("DESIGN_REQUIRED");
     evidence.push("Intent contains design, UI, screen, or component language.");
   }
-  if (KEYWORDS.conflict.test(text)) {
+  if (segments.some((segment) => KEYWORDS.conflict.test(segment))) {
     labels.push("CONFLICT_DETECTED");
     evidence.push(
       "Intent contains contradictory absolute and exception language.",

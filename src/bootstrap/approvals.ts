@@ -1,5 +1,6 @@
-import { mkdir, readFile, writeFile } from "node:fs/promises";
+import { access, mkdir, readFile, writeFile } from "node:fs/promises";
 import path from "node:path";
+import { approveBootstrapArtifact, bootstrapManifestPath } from "./manifest.js";
 
 export interface VisionApproval {
   idea: string;
@@ -33,5 +34,28 @@ export async function recordVisionApproval(
     `${JSON.stringify(approvals, null, 2)}\n`,
     "utf8",
   );
+  try {
+    await access(bootstrapManifestPath(projectRoot));
+    const visionPath = path.join(path.resolve(projectRoot), "VISION.md");
+    let evidence: string | undefined;
+    try {
+      await access(visionPath);
+      evidence = "VISION.md";
+    } catch {
+      // Legacy vision approvals may not have a generated VISION.md.
+    }
+    await approveBootstrapArtifact(projectRoot, "vision", {
+      ...(evidence ? { evidence } : {}),
+      now,
+    });
+  } catch (error) {
+    if (!(
+      error instanceof Error &&
+      "code" in error &&
+      error.code === "ENOENT"
+    )) {
+      throw error;
+    }
+  }
   return approvalPath;
 }

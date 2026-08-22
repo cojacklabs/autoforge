@@ -868,7 +868,7 @@ code exists.
 
 ---
 
-## v0.21.0 --- Product Digital Twin
+## v0.20.0 --- Product Digital Twin
 
 ### Mission
 
@@ -910,7 +910,7 @@ repository into an agent.
 
 ---
 
-## v0.22.0 --- Multi-Agent Orchestration Engine
+## v0.21.0 --- Multi-Agent Orchestration Engine
 
 ### Mission
 
@@ -960,7 +960,7 @@ instruction file for one agent.
 
 ---
 
-## v0.23.0 --- Learning & Evidence Engine
+## v0.22.0 --- Learning & Evidence Engine
 
 ### Mission
 
@@ -1142,9 +1142,9 @@ TRACEABILITY (0.19)
         ↓
 VALIDATION (0.20)
         ↓
-DIGITAL TWIN (0.21)
+DIGITAL TWIN (0.20)
         ↓
-MULTI-AGENT ORCHESTRATION (0.22)
+MULTI-AGENT ORCHESTRATION (0.21)
         ↓
 EVIDENCE (0.22)
         ↓
@@ -1159,8 +1159,8 @@ Important architectural interpretation:
 
 - v0.14 provides the graph primitive.
 - v0.19 enriches that graph with end-to-end product traceability.
-- v0.21 exposes the connected graph/state as the product digital twin.
-- v0.22 uses the mature context/governance model to coordinate
+- v0.20 exposes the connected graph/state as the product digital twin.
+- v0.21 uses the mature context/governance model to coordinate
   multiple agents.
 - v0.25 integrates the full loop.
 
@@ -1367,10 +1367,10 @@ For every milestone:
 12. update the roadmap/architecture docs when implementation reality
     changes.
 
-Do not prematurely build v0.21's digital twin as a separate database if
+Do not prematurely build v0.20's digital twin as a separate database if
 the knowledge graph can already represent the required state.
 
-Do not prematurely build v0.22's multi-agent system until a single
+Do not prematurely build v0.21's multi-agent system until a single
 context packet can be interpreted consistently by multiple independent
 agents.
 

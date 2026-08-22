@@ -6,6 +6,7 @@
 .autoforge/state/decisions.json
 .autoforge/agent-contract.json
 .autoforge/state/*.json.bak
+.autoforge/orchestration/
 **/logs/deployments/*
 **/logs/mastermind/*
 **/logs/security/*

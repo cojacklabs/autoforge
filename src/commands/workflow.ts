@@ -6,6 +6,12 @@ import { workflowKindSchema } from "../workflows/definitions.js";
 import { WorkflowStateStore } from "../workflows/state.js";
 import { AgentContractStore } from "../contract/generator.js";
 import { workflowHandoffSchema } from "../workflows/handoff.js";
+import {
+  normalizeWorkflowKind,
+  workflowKindHelp,
+} from "../core/vocabularies.js";
+import { reportCommandError } from "../cli/command-error.js";
+import { inputSchemaJson } from "../input-schemas/catalog.js";
 
 export interface WorkflowCommandOptions {
   args: readonly string[];
@@ -16,11 +22,22 @@ function usage(output: LogWriter): ExitCode {
   output.stderr(
     "Usage: autoforge workflow list | workflow start <id> <kind> | workflow show <id> | workflow advance <id> [--skip-optional] | workflow handoff <json-file>",
   );
+  output.stderr(workflowKindHelp());
   return EXIT_CODE.usage;
 }
 export async function runWorkflowCommand(
   options: WorkflowCommandOptions,
 ): Promise<ExitCode> {
+  if (
+    options.args.length === 2 &&
+    options.args[0] === "handoff" &&
+    options.args[1] === "--schema"
+  ) {
+    options.output.stdout(
+      JSON.stringify(inputSchemaJson("workflow-handoff"), null, 2),
+    );
+    return EXIT_CODE.success;
+  }
   const [action, id, kind] = options.args;
   const skipOptional = options.args.includes("--skip-optional");
   if (
@@ -58,9 +75,15 @@ export async function runWorkflowCommand(
       );
       return EXIT_CODE.success;
     }
+    const normalizedKind = kind ? normalizeWorkflowKind(kind) : undefined;
+    if (action === "start" && !normalizedKind) {
+      options.output.stderr(`Error: "${kind}" is not a valid workflow kind.`);
+      options.output.stderr(workflowKindHelp());
+      return EXIT_CODE.usage;
+    }
     const run =
       action === "start"
-        ? await store.create(id!, workflowKindSchema.parse(kind))
+        ? await store.create(id!, workflowKindSchema.parse(normalizedKind))
         : action === "show"
           ? await store.read(id!)
           : action === "advance"
@@ -69,8 +92,8 @@ export async function runWorkflowCommand(
     if (!run) return usage(options.output);
     options.output.stdout(JSON.stringify(run, null, 2));
     return EXIT_CODE.success;
-  } catch {
-    return usage(options.output);
+  } catch (error) {
+    return reportCommandError(error, options.output);
   }
 }
 import { readFile } from "node:fs/promises";

@@ -1,5 +1,6 @@
 import { createHash } from "node:crypto";
 import {
+  access,
   mkdir,
   readFile,
   readdir,
@@ -121,6 +122,57 @@ export async function importStorageBundle(
   }
   const store = new StorageManifestStore(resolvedPath, homeDirectory);
   return store.write(new Date(validated.manifest.updatedAt));
+}
+
+export async function relocateProjectStorage(
+  sourcePath: string,
+  destinationPath: string,
+  homeDirectory?: string,
+): Promise<boolean> {
+  const source = projectStorageDirectory(sourcePath, homeDirectory);
+  const destination = projectStorageDirectory(destinationPath, homeDirectory);
+  try {
+    await access(source);
+  } catch {
+    return false;
+  }
+  try {
+    await access(destination);
+    throw new Error(
+      `Destination global storage already exists: ${destination}`,
+    );
+  } catch (error) {
+    if (!(
+      error instanceof Error &&
+      "code" in error &&
+      error.code === "ENOENT"
+    )) {
+      throw error;
+    }
+  }
+  await mkdir(path.dirname(destination), { recursive: true });
+  await rename(source, destination);
+  const manifestPath = path.join(destination, "metadata", "manifest.json");
+  try {
+    const previous = storageManifestSchema.parse(
+      JSON.parse(await readFile(manifestPath, "utf8")) as unknown,
+    );
+    const updated = storageManifestSchema.parse({
+      ...previous,
+      projectId: projectStorageId(destinationPath),
+      canonicalPath: path.resolve(destinationPath),
+      updatedAt: new Date().toISOString(),
+    });
+    await writeFile(
+      manifestPath,
+      `${JSON.stringify(updated, null, 2)}\n`,
+      "utf8",
+    );
+  } catch (error) {
+    await rename(destination, source).catch(() => undefined);
+    throw error;
+  }
+  return true;
 }
 
 async function measureDirectory(directory: string): Promise<{

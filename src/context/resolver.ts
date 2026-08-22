@@ -11,6 +11,7 @@ import type {
 } from "../specifications/schemas.js";
 import type { WorkState } from "../work/schemas.js";
 import type { WorkflowRun } from "../workflows/state.js";
+import type { GovernanceEvaluation } from "../governance/schemas.js";
 import {
   CharacterTokenEstimator,
   type ContextTokenEstimator,
@@ -65,6 +66,9 @@ export interface ResolveContextInput {
   specifications: ContextSpecificationRegistry;
   config: Pick<AutoForgeConfig, "contextBudget">;
   taskDescription?: string;
+  preferredSpecificationTypes?: readonly string[];
+  governance?: readonly GovernanceEvaluation[];
+  contract?: ContextSelection["contract"];
   workflow?: Pick<WorkflowRun, "kind" | "currentStage" | "status"> & {
     handoffIds: string[];
   };
@@ -515,6 +519,8 @@ function applyBudget(
   specificationRefs: SpecificationRef[],
   exclusions: ContextExclusion[],
   workflow?: ResolveContextInput["workflow"],
+  governance: readonly GovernanceEvaluation[] = [],
+  contract?: ContextSelection["contract"],
 ): ContextSelection {
   const queues: BudgetCandidate[][] = [
     doctrineRefs.map((reference) => ({ kind: "doctrine", reference })),
@@ -582,7 +588,9 @@ function applyBudget(
       remainingTokens: Math.max(0, maxTokens - usedTokens),
       exceeded: usedTokens > maxTokens,
     },
+    governance,
     ...(workflow ? { workflow } : {}),
+    ...(contract ? { contract } : {}),
   });
 }
 
@@ -615,12 +623,15 @@ export class ContextResolver {
       work.objective,
       work.item.scope.include,
       this.estimator,
-      input.workflow
-        ? getWorkflowContextPolicy(
-            input.workflow.kind,
-            input.workflow.currentStage,
-          ).preferredTypes
-        : [],
+      [
+        ...(input.workflow
+          ? getWorkflowContextPolicy(
+              input.workflow.kind,
+              input.workflow.currentStage,
+            ).preferredTypes
+          : []),
+        ...(input.preferredSpecificationTypes ?? []),
+      ],
     );
     return applyBudget(
       work,
@@ -634,6 +645,8 @@ export class ContextResolver {
         ...specification.exclusions,
       ],
       input.workflow,
+      input.governance,
+      input.contract,
     );
   }
 }
