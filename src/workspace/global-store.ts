@@ -12,15 +12,38 @@ import path from "node:path";
 
 import { z } from "zod";
 
+export const projectLifecycleSchema = z.enum([
+  "active",
+  "paused",
+  "archived",
+  "inaccessible",
+]);
+
+export const projectMetadataSchema = z
+  .object({
+    name: z.string().min(1),
+    lastSeen: z.string().datetime(),
+    aliases: z.array(z.string().min(1)).optional(),
+    lifecycle: projectLifecycleSchema.optional(),
+    repositoryType: z.string().min(1).optional(),
+    defaultBranch: z.string().min(1).optional(),
+    packageManager: z.string().min(1).optional(),
+    runtime: z.string().min(1).optional(),
+    autoforgeVersion: z.string().min(1).optional(),
+    contractVersion: z.string().min(1).optional(),
+    governanceProfile: z.string().min(1).optional(),
+    schemaVersions: z.record(z.string(), z.string().min(1)).optional(),
+    capabilities: z.array(z.string().min(1)).optional(),
+    lastValidated: z.string().datetime().optional(),
+  })
+  .strict();
+
 export const globalWorkspaceConfigSchema = z
   .object({
     version: z.literal("0.11.0"),
     projects: z.array(z.string().min(1)),
     projectMetadata: z
-      .record(
-        z.string().min(1),
-        z.object({ name: z.string().min(1), lastSeen: z.string().datetime() }),
-      )
+      .record(z.string().min(1), projectMetadataSchema)
       .optional(),
     agentCapabilities: z
       .record(z.string(), z.record(z.string(), z.unknown()))
@@ -31,6 +54,7 @@ export const globalWorkspaceConfigSchema = z
   .strict();
 
 export type GlobalWorkspaceConfig = z.infer<typeof globalWorkspaceConfigSchema>;
+export type ProjectMetadata = z.infer<typeof projectMetadataSchema>;
 
 export class GlobalWorkspaceStore {
   private readonly directory: string;
