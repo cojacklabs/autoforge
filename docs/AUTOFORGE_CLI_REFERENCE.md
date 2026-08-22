@@ -107,6 +107,9 @@ autoforge trace check
 autoforge trace impact <artifact> [--depth <n>] [--direction <forward|reverse|both>]
 autoforge evidence list [--json]
 autoforge evidence summary [--json]
+autoforge twin generate [--json]
+autoforge twin show [--json]
+autoforge twin query [--type <type>] [--relationship <name>] [--depth <n>] [--limit <n>] [--json]
 autoforge update
 autoforge version
 ```
