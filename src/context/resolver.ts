@@ -174,6 +174,9 @@ function rankSpecification(
     score += matches.length * SPECIFICATION_FIELD_WEIGHTS[field];
     reasons.push(`${field}: ${matches.join(", ")}`);
   }
+  if (specification.provenance !== undefined) {
+    reasons.push(`provenance: ${specification.provenance.sourceKind}`);
+  }
   if (score === 0) {
     return undefined;
   }

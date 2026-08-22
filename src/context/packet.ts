@@ -308,6 +308,18 @@ function renderSpecifications(selection: ContextSelection): string[] {
       "",
       `**Source:** ${inlineText(specification.source)}`,
       "",
+      ...(specification.provenance
+        ? [
+            `**Provenance:** ${specification.provenance.sourceKind}`,
+            `**Captured:** ${specification.provenance.capturedAt}`,
+            ...(specification.provenance.sourcePath
+              ? [
+                  `**Source path:** ${code(specification.provenance.sourcePath)}`,
+                ]
+              : []),
+            "",
+          ]
+        : []),
       ...renderKnowledgeMetadata(specification.knowledge),
       ...renderDesignMetadata(specification.design),
       ...renderRelationships(specification.relationships),

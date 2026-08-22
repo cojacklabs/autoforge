@@ -98,6 +98,10 @@ function selection() {
           tags: ["context", "architecture"],
           source: "project",
           updatedAt: TIMESTAMP,
+          provenance: {
+            sourceKind: "manual",
+            capturedAt: TIMESTAMP,
+          },
           knowledge: {
             kind: "architecture",
             summary: "Context is compiled from a bounded selection.",
@@ -189,6 +193,7 @@ describe("context packet compiler", () => {
       packet.content.indexOf("## Relevant Specifications"),
     );
     expect(packet.content).toContain("Keep context scoped to active work.");
+    expect(packet.content).toContain("**Provenance:** manual");
     expect(packet.content).toContain("## Active Workflow");
     expect(packet.content).toContain("feature.checkout-research-to-planning");
     expect(packet.content).toContain("## Agent Contract");
