@@ -2,6 +2,8 @@
 
 ## Unified Roadmap: v0.8.0 → v0.25.0
 
+> **Sequencing amendment:** v0.24 is now Continuous Product Evolution and v0.25 is the Interactive CLI Experience. The continuous lifecycle must be complete before the richer human-facing interface is implemented.
+
 ### Phase 1 Foundation + Phase 2 Product Intelligence
 
 **Date:** August 21, 2026\
