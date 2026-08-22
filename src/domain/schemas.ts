@@ -67,7 +67,37 @@ export const domainInvariantSchema = z
   })
   .strict();
 
+export const domainArtifactSchema = z
+  .object({
+    id: z.string().regex(/^domain-artifact\.[a-z0-9]+(?:[.-][a-z0-9]+)*$/),
+    concepts: z.array(domainConceptSchema).default([]),
+    relationships: z.array(domainRelationshipSchema).default([]),
+    invariants: z.array(domainInvariantSchema).default([]),
+    updatedAt: z.string().datetime({ offset: true }),
+  })
+  .strict()
+  .superRefine((artifact, context) => {
+    const conceptIds = new Set(artifact.concepts.map((concept) => concept.id));
+    for (const relationship of artifact.relationships) {
+      if (!conceptIds.has(relationship.sourceId)) {
+        context.addIssue({
+          code: "custom",
+          message: `Unknown relationship source ${relationship.sourceId}`,
+          path: ["relationships"],
+        });
+      }
+      if (!conceptIds.has(relationship.targetId)) {
+        context.addIssue({
+          code: "custom",
+          message: `Unknown relationship target ${relationship.targetId}`,
+          path: ["relationships"],
+        });
+      }
+    }
+  });
+
 export type DomainProvenance = z.infer<typeof domainProvenanceSchema>;
 export type DomainConcept = z.infer<typeof domainConceptSchema>;
 export type DomainRelationship = z.infer<typeof domainRelationshipSchema>;
 export type DomainInvariant = z.infer<typeof domainInvariantSchema>;
+export type DomainArtifact = z.infer<typeof domainArtifactSchema>;
