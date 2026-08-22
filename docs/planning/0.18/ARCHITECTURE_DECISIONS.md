@@ -37,3 +37,7 @@ Before v0.18 release, the implementation must provide typed trace schemas, repos
 ## Deferred
 
 Automatic code ownership inference, remote analytics, hosted graph storage, and autonomous impact remediation remain outside v0.18.
+
+## Context Integration
+
+`autoforge context --explain` may surface bounded trace impact for the active work item. Normal context packets remain unchanged until trace evidence is explicitly selected and budgeted.

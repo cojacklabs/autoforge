@@ -11,6 +11,8 @@ import type { ContextSelection } from "../context/schemas.js";
 import { ContextPacketStore } from "../context/store.js";
 import { SpecificationRegistry } from "../specifications/registry.js";
 import { SpecificationFileStore } from "../specifications/store.js";
+import { TraceabilityStore } from "../traceability/store.js";
+import { traceImpact } from "../traceability/impact.js";
 import { inspectInstallation } from "./init.js";
 
 export interface ContextCommandOptions {
@@ -90,10 +92,24 @@ export async function runContextCommand(
   await new ContextPacketStore(project.path, {
     ...(options.temporaryId ? { temporaryId: options.temporaryId } : {}),
   }).write(packet);
+  if (!parsed.explain) {
+    options.output.stdout(packet.content);
+    return EXIT_CODE.success;
+  }
+  const traceGraph = await new TraceabilityStore(project.path).read();
+  const impact = traceImpact(traceGraph.links, selection.work.item.id, {
+    direction: "both",
+    maxDepth: 2,
+  });
+  const traceExplanation =
+    impact.length === 0
+      ? "Trace impact: none recorded."
+      : [
+          "Trace impact:",
+          ...impact.map((path) => `- ${path.artifactId} (depth ${path.depth})`),
+        ].join("\n");
   options.output.stdout(
-    parsed.explain
-      ? `${packet.content}\n\n---\n\n${formatContextExplanation(selection, packet)}`
-      : packet.content,
+    `${packet.content}\n\n---\n\n${formatContextExplanation(selection, packet)}\n\n${traceExplanation}`,
   );
   return EXIT_CODE.success;
 }
