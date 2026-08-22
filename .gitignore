@@ -2,6 +2,9 @@
 .autoforge/context/
 .autoforge/state/session.json
 .autoforge/state/doctrine-session.json
+.autoforge/state/work.json
+.autoforge/state/decisions.json
+.autoforge/agent-contract.json
 .autoforge/state/*.json.bak
 **/logs/deployments/*
 **/logs/mastermind/*
