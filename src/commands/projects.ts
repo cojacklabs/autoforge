@@ -2,6 +2,7 @@ import { EXIT_CODE, type ExitCode } from "../core/errors.js";
 import type { LogWriter } from "../core/logger.js";
 import { GlobalWorkspaceStore } from "../workspace/global-store.js";
 import { inspectProjectStorage } from "../workspace/storage.js";
+import { inspectGlobalStorage } from "../workspace/tiered-storage.js";
 
 export interface ProjectsCommandOptions {
   args: readonly string[];
@@ -10,7 +11,7 @@ export interface ProjectsCommandOptions {
 }
 function usage(output: LogWriter): ExitCode {
   output.stderr(
-    "Usage: autoforge projects [list | show <path> [--json] | storage <path> [--json] | update <path> [--name <name>] [--alias <alias>] [--lifecycle <state>] [--retention-days <n>] | archive <path> | restore <path> | register <path> | prune [--dry-run]]",
+    "Usage: autoforge projects [list | show <path> [--json] | storage <path> [--json] | global-storage <path> [--json] | update <path> [--name <name>] [--alias <alias>] [--lifecycle <state>] [--retention-days <n>] | archive <path> | restore <path> | register <path> | prune [--dry-run]]",
   );
   return EXIT_CODE.usage;
 }
@@ -174,6 +175,29 @@ export async function runProjectsCommand(
         json
           ? JSON.stringify(enriched, null, 2)
           : `Storage: ${report.bytes} bytes across ${report.files} files (${report.exists ? "present" : "missing"}); lifecycle=${enriched.lifecycle}; retention=${enriched.retentionDays ?? "default"} days.`,
+      );
+      return EXIT_CODE.success;
+    } catch {
+      return usage(options.output);
+    }
+  }
+  if (action === "global-storage") {
+    if (!projectPath || (flag !== undefined && !json))
+      return usage(options.output);
+    try {
+      const tierUsage = await inspectGlobalStorage(
+        projectPath,
+        options.homeDirectory,
+      );
+      options.output.stdout(
+        json
+          ? JSON.stringify(tierUsage, null, 2)
+          : tierUsage
+              .map(
+                (entry) =>
+                  `${entry.tier}: ${entry.bytes} bytes across ${entry.files} files`,
+              )
+              .join("\n"),
       );
       return EXIT_CODE.success;
     } catch {

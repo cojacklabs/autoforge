@@ -5,6 +5,7 @@ import path from "node:path";
 import {
   projectStorageId,
   projectStorageTierPath,
+  inspectGlobalStorage,
   StorageManifestStore,
 } from "../src/workspace/tiered-storage.js";
 
@@ -22,6 +23,9 @@ describe("tiered global storage", () => {
       const manifest = await store.write(new Date("2026-08-22T12:00:00.000Z"));
       expect(manifest.projectId).toBe(projectStorageId(project));
       expect(await store.read()).toEqual(manifest);
+      await expect(inspectGlobalStorage(project, home)).resolves.toHaveLength(
+        5,
+      );
     } finally {
       await rm(home, { recursive: true, force: true });
     }

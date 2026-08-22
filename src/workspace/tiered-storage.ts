@@ -1,5 +1,12 @@
 import { createHash } from "node:crypto";
-import { mkdir, readFile, rename, writeFile } from "node:fs/promises";
+import {
+  mkdir,
+  readFile,
+  readdir,
+  rename,
+  stat,
+  writeFile,
+} from "node:fs/promises";
 import os from "node:os";
 import path from "node:path";
 import { z } from "zod";
@@ -17,6 +24,12 @@ export const storageManifestSchema = z
 export type StorageManifest = z.infer<typeof storageManifestSchema>;
 export type StorageTier =
   "metadata" | "active" | "history" | "artifacts" | "cache";
+export interface StorageTierUsage {
+  tier: StorageTier;
+  path: string;
+  bytes: number;
+  files: number;
+}
 
 export function projectStorageId(canonicalPath: string): string {
   return `project.${createHash("sha256").update(path.resolve(canonicalPath)).digest("hex").slice(0, 16)}`;
@@ -40,6 +53,53 @@ export function projectStorageTierPath(
   homeDirectory?: string,
 ): string {
   return path.join(projectStorageDirectory(canonicalPath, homeDirectory), tier);
+}
+
+export async function inspectGlobalStorage(
+  canonicalPath: string,
+  homeDirectory?: string,
+): Promise<StorageTierUsage[]> {
+  return Promise.all(
+    (["metadata", "active", "history", "artifacts", "cache"] as const).map(
+      async (tier) => {
+        const tierPath = projectStorageTierPath(
+          canonicalPath,
+          tier,
+          homeDirectory,
+        );
+        const usage = await measureDirectory(tierPath);
+        return { tier, path: tierPath, ...usage };
+      },
+    ),
+  );
+}
+
+async function measureDirectory(directory: string): Promise<{
+  bytes: number;
+  files: number;
+}> {
+  try {
+    const entries = await readdir(directory, { withFileTypes: true });
+    let bytes = 0;
+    let files = 0;
+    for (const entry of entries) {
+      const entryPath = path.join(directory, entry.name);
+      if (entry.isDirectory()) {
+        const nested = await measureDirectory(entryPath);
+        bytes += nested.bytes;
+        files += nested.files;
+      } else if (entry.isFile()) {
+        bytes += (await stat(entryPath)).size;
+        files += 1;
+      }
+    }
+    return { bytes, files };
+  } catch (error) {
+    if (error instanceof Error && "code" in error && error.code === "ENOENT") {
+      return { bytes: 0, files: 0 };
+    }
+    throw error;
+  }
 }
 
 export class StorageManifestStore {
