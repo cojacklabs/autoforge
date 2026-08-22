@@ -70,4 +70,24 @@ describe("contract command", () => {
       "Agent unknown cannot satisfy",
     );
   });
+
+  it.each(["antigravity", "agy"])(
+    "generates aliases for %s",
+    async (agentId) => {
+      const projectRoot = await mkdtemp(
+        path.join(os.tmpdir(), "autoforge-contract-alias-"),
+      );
+      directories.push(projectRoot);
+      await mkdir(path.join(projectRoot, ".git"));
+      await initializeProject({ projectRoot });
+      const output = { stdout: vi.fn(), stderr: vi.fn() };
+      await expect(
+        runContractCommand({
+          args: ["generate", agentId],
+          output,
+          startDirectory: projectRoot,
+        }),
+      ).resolves.toBe(EXIT_CODE.success);
+    },
+  );
 });

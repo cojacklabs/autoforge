@@ -39,4 +39,16 @@ describe("agent contract generator", () => {
     );
     await expect(store.read()).resolves.toEqual(contract);
   });
+
+  it.each(["antigravity", "agy"])("normalizes %s to gemini", (agentId) => {
+    const contract = generateAgentContract({
+      agentId,
+      projectRoot: "/tmp/project",
+      validationCommands: ["npm test"],
+    });
+    expect(contract.agentId).toBe("gemini");
+    expect(contract.contextCommand).toBe(
+      'autoforge --project "$PWD" context --explain',
+    );
+  });
 });

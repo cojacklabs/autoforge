@@ -2,6 +2,7 @@ import { mkdir, readFile, rename, writeFile } from "node:fs/promises";
 import path from "node:path";
 
 import { agentContractSchema, type AgentContract } from "./schema.js";
+import { normalizeAgentId } from "./capabilities.js";
 
 export interface AgentContractInput {
   agentId: string;
@@ -15,9 +16,11 @@ export interface AgentContractInput {
 export function generateAgentContract(
   input: AgentContractInput,
 ): AgentContract {
+  const agentId = normalizeAgentId(input.agentId);
   return agentContractSchema.parse({
     version: "0.11.0",
     ...input,
+    agentId,
     requiredActions: [
       "Read AGENTS.md and the current AutoForge context.",
       "Respect the active work scope and workflow stage.",
@@ -28,7 +31,7 @@ export function generateAgentContract(
       "Delete durable project memory without approval.",
       "Silently skip required validation.",
     ],
-    contextCommand: "npx --no-install autoforge context --explain",
+    contextCommand: 'autoforge --project "$PWD" context --explain',
     completionRequirements: [
       "Run the declared validation commands.",
       "Persist durable decisions and handoffs when required.",

@@ -50,10 +50,20 @@ const capabilities: readonly AgentCapability[] = [
   },
 ];
 
+const agentAliases: Readonly<Record<string, string>> = {
+  antigravity: "gemini",
+  agy: "gemini",
+};
+
+export function normalizeAgentId(agentId: string): string {
+  return agentAliases[agentId] ?? agentId;
+}
+
 export function getAgentCapability(
   agentId: string,
 ): AgentCapability | undefined {
-  return capabilities.find((capability) => capability.agentId === agentId);
+  const canonicalId = normalizeAgentId(agentId);
+  return capabilities.find((capability) => capability.agentId === canonicalId);
 }
 
 export function assertAgentContractCompatibility(
