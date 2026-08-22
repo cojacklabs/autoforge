@@ -122,6 +122,7 @@ Intent assessment:
   autoforge update
   autoforge trace add <source> <relationship> <target>
   autoforge trace list
+  autoforge trace check
   autoforge trace impact <artifact> [--depth <n>] [--direction <forward|reverse|both>]
 
 Options:

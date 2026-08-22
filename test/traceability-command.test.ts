@@ -37,4 +37,25 @@ describe("trace command", () => {
     ).resolves.toBe(0);
     expect(output.stdout).toHaveBeenLastCalledWith("design.a (depth 1)");
   });
+
+  it("reports unresolved specification targets", async () => {
+    const root = await mkdtemp(
+      path.join(os.tmpdir(), "autoforge-trace-check-"),
+    );
+    roots.push(root);
+    await mkdir(path.join(root, ".git"));
+    await initializeProject({ projectRoot: root });
+    const output = { stdout: vi.fn(), stderr: vi.fn() };
+    await runTraceabilityCommand({
+      args: ["add", "intent.missing", "drives", "design.missing"],
+      output,
+      startDirectory: root,
+    });
+    await expect(
+      runTraceabilityCommand({ args: ["check"], output, startDirectory: root }),
+    ).resolves.toBe(4);
+    expect(output.stderr).toHaveBeenCalledWith(
+      expect.stringContaining("unresolved specification"),
+    );
+  });
 });

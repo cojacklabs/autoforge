@@ -2,6 +2,8 @@ import { EXIT_CODE, type ExitCode } from "../core/errors.js";
 import type { LogWriter } from "../core/logger.js";
 import { traceImpact } from "../traceability/impact.js";
 import { TraceabilityStore } from "../traceability/store.js";
+import { SpecificationFileStore } from "../specifications/store.js";
+import { SpecificationRegistry } from "../specifications/registry.js";
 
 export interface TraceabilityCommandOptions {
   args: readonly string[];
@@ -34,6 +36,27 @@ export async function runTraceabilityCommand(
             .join("\n"),
     );
     return EXIT_CODE.success;
+  }
+  if (action === "check" && args.length === 0) {
+    const graph = await store.read();
+    const specifications = await new SpecificationRegistry(
+      new SpecificationFileStore(options.startDirectory),
+    ).list();
+    const known = new Set(
+      specifications.map((specification) => specification.id),
+    );
+    const issues = graph.links.flatMap((link) => {
+      const targets = [link.sourceId, link.targetId];
+      return targets
+        .filter((id) => id.includes(".") && !known.has(id))
+        .map((id) => `${link.id}: unresolved specification ${id}`);
+    });
+    if (issues.length === 0) {
+      options.output.stdout("Trace links: valid.");
+      return EXIT_CODE.success;
+    }
+    options.output.stderr(issues.join("\n"));
+    return EXIT_CODE.invalidState;
   }
   if (action === "add" && args.length === 3) {
     const [sourceId, relationship, targetId] = args as [string, string, string];
