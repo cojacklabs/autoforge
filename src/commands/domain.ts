@@ -18,6 +18,11 @@ function usage(output: LogWriter): ExitCode {
   return EXIT_CODE.usage;
 }
 
+function notInitialized(output: LogWriter): ExitCode {
+  output.stderr("No domain artifact found. Run `domain init` first.");
+  return EXIT_CODE.invalidState;
+}
+
 function defaultDomain(): DomainArtifact {
   return {
     id: "domain-artifact.project",
@@ -46,6 +51,7 @@ export async function runDomainCommand(
     return EXIT_CODE.success;
   }
   const artifact = await store.load();
+  if (!artifact) return notInitialized(options.output);
   if (action === "list" && !subject) {
     options.output.stdout(
       artifact.concepts

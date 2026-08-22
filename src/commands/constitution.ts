@@ -18,6 +18,13 @@ function usage(output: LogWriter): ExitCode {
   return EXIT_CODE.usage;
 }
 
+function notInitialized(output: LogWriter): ExitCode {
+  output.stderr(
+    "No project constitution found. Run `constitution init` first.",
+  );
+  return EXIT_CODE.invalidState;
+}
+
 function defaultConstitution(): ConstitutionArtifact {
   return {
     id: "constitution.project.default",
@@ -56,6 +63,7 @@ export async function runConstitutionCommand(
   }
   if (action === "list" && !subject) {
     const constitution = await store.load();
+    if (!constitution) return notInitialized(options.output);
     options.output.stdout(
       constitution.rules
         .map((rule) => `${rule.id} [${rule.enforcement}] — ${rule.title}`)
@@ -65,6 +73,7 @@ export async function runConstitutionCommand(
   }
   if (action === "show" && subject) {
     const constitution = await store.load();
+    if (!constitution) return notInitialized(options.output);
     const rule = constitution.rules.find(
       (candidate) => candidate.id === subject,
     );
@@ -74,6 +83,7 @@ export async function runConstitutionCommand(
   }
   if (action === "check" && subject) {
     const constitution = await store.load();
+    if (!constitution) return notInitialized(options.output);
     const evaluations = evaluateGovernance(constitution, {
       objective: subject,
     });

@@ -28,9 +28,20 @@ export class ConstitutionStore {
     return this.filePath;
   }
 
-  async load(): Promise<ConstitutionArtifact> {
-    return constitutionArtifactSchema.parse(
-      JSON.parse(await readFile(this.filePath, "utf8")) as unknown,
-    );
+  async load(): Promise<ConstitutionArtifact | null> {
+    try {
+      return constitutionArtifactSchema.parse(
+        JSON.parse(await readFile(this.filePath, "utf8")) as unknown,
+      );
+    } catch (error) {
+      if (
+        error instanceof Error &&
+        "code" in error &&
+        error.code === "ENOENT"
+      ) {
+        return null;
+      }
+      throw error;
+    }
   }
 }

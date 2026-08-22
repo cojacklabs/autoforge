@@ -167,17 +167,7 @@ export class ProjectOrchestrationContextProvider implements OrchestrationContext
       },
       previous: [],
     });
-    const constitution = await new ConstitutionStore(this.projectRoot)
-      .load()
-      .catch((error: unknown) => {
-        if (
-          error instanceof Error &&
-          "code" in error &&
-          error.code === "ENOENT"
-        )
-          return null;
-        throw error;
-      });
+    const constitution = await new ConstitutionStore(this.projectRoot).load();
     const governance = constitution
       ? evaluateGovernance(constitution, {
           objective: input.node.objective,

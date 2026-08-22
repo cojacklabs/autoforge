@@ -47,4 +47,25 @@ describe("constitution command", () => {
       await rm(project, { recursive: true, force: true });
     }
   });
+
+  it("reports a friendly not-initialized message instead of throwing", async () => {
+    const project = await mkdtemp(
+      path.join(os.tmpdir(), "autoforge-constitution-"),
+    );
+    try {
+      await mkdir(path.join(project, ".git"));
+      const output = { stdout: vi.fn(), stderr: vi.fn() };
+      const result = await runConstitutionCommand({
+        args: ["list"],
+        output,
+        startDirectory: project,
+      });
+      expect(result).toBe(4);
+      expect(output.stderr).toHaveBeenCalledWith(
+        "No project constitution found. Run `constitution init` first.",
+      );
+    } finally {
+      await rm(project, { recursive: true, force: true });
+    }
+  });
 });

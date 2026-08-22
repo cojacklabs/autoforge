@@ -35,4 +35,16 @@ describe("domain store", () => {
       await rm(projectRoot, { recursive: true, force: true });
     }
   });
+
+  it("returns null when no domain artifact has been initialized", async () => {
+    const projectRoot = await mkdtemp(
+      path.join(os.tmpdir(), "autoforge-domain-"),
+    );
+    try {
+      const store = new DomainStore(projectRoot);
+      await expect(store.load()).resolves.toBeNull();
+    } finally {
+      await rm(projectRoot, { recursive: true, force: true });
+    }
+  });
 });

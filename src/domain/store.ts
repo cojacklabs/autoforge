@@ -25,9 +25,20 @@ export class DomainStore {
     return this.filePath;
   }
 
-  async load(): Promise<DomainArtifact> {
-    return domainArtifactSchema.parse(
-      JSON.parse(await readFile(this.filePath, "utf8")) as unknown,
-    );
+  async load(): Promise<DomainArtifact | null> {
+    try {
+      return domainArtifactSchema.parse(
+        JSON.parse(await readFile(this.filePath, "utf8")) as unknown,
+      );
+    } catch (error) {
+      if (
+        error instanceof Error &&
+        "code" in error &&
+        error.code === "ENOENT"
+      ) {
+        return null;
+      }
+      throw error;
+    }
   }
 }

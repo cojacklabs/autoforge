@@ -42,4 +42,16 @@ describe("constitution store", () => {
       await rm(project, { recursive: true, force: true });
     }
   });
+
+  it("returns null when no constitution has been initialized", async () => {
+    const project = await mkdtemp(
+      path.join(os.tmpdir(), "autoforge-governance-"),
+    );
+    try {
+      const store = new ConstitutionStore(project);
+      await expect(store.load()).resolves.toBeNull();
+    } finally {
+      await rm(project, { recursive: true, force: true });
+    }
+  });
 });

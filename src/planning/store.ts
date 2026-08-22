@@ -34,10 +34,21 @@ export class PlanningArtifactStore {
       .replaceAll(path.sep, "/");
   }
 
-  async read(kind: PlanningArtifact["kind"]): Promise<PlanningArtifact> {
-    return planningArtifactSchema.parse(
-      JSON.parse(await readFile(this.filePath(kind), "utf8")) as unknown,
-    );
+  async read(kind: PlanningArtifact["kind"]): Promise<PlanningArtifact | null> {
+    try {
+      return planningArtifactSchema.parse(
+        JSON.parse(await readFile(this.filePath(kind), "utf8")) as unknown,
+      );
+    } catch (error) {
+      if (
+        error instanceof Error &&
+        "code" in error &&
+        error.code === "ENOENT"
+      ) {
+        return null;
+      }
+      throw error;
+    }
   }
 
   async isFresh(
@@ -45,6 +56,6 @@ export class PlanningArtifactStore {
     sourceFingerprint: string,
   ): Promise<boolean> {
     const artifact = await this.read(kind);
-    return artifact.sourceFingerprint === sourceFingerprint;
+    return artifact?.sourceFingerprint === sourceFingerprint;
   }
 }

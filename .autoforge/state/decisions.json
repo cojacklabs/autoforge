@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
-  "revision": 19,
-  "updatedAt": "2026-08-20T18:38:56.736Z",
+  "revision": 22,
+  "updatedAt": "2026-08-22T21:02:15.449Z",
   "data": {
     "decisions": [
       {
@@ -410,6 +410,77 @@
         "status": "active",
         "createdAt": "2026-08-20T18:38:56.711Z",
         "updatedAt": "2026-08-20T18:38:56.711Z"
+      },
+      {
+        "id": "decision.antigravity-and-agy-are-aliases-for-the-canonical-gemini-agent-contract",
+        "statement": "Antigravity and agy are aliases for the canonical gemini agent contract",
+        "reasoning": "The Gemini adapter already delivers both Gemini CLI and Antigravity instructions, while maintaining separate capability IDs would create drift. Aliases preserve user-facing terminology without duplicating contracts.",
+        "consequences": [
+          "Normalize antigravity and agy to gemini when generating contracts; keep gemini as the canonical agentId and capability definition."
+        ],
+        "scope": [
+          "v0.16",
+          "agents"
+        ],
+        "keywords": [
+          "antigravity",
+          "agy",
+          "aliases",
+          "contracts"
+        ],
+        "relatedWork": [],
+        "supersedes": null,
+        "status": "active",
+        "createdAt": "2026-08-22T02:14:31.728Z",
+        "updatedAt": "2026-08-22T02:14:31.728Z"
+      },
+      {
+        "id": "decision.every-implementation-change-must-update-the-relevant-documentation-before-comple",
+        "statement": "Every implementation change must update the relevant documentation before completion",
+        "reasoning": "AutoForge is used by multiple agentic AIs and users; undocumented behavior creates drift between the CLI, contracts, workflows, and actual implementation.",
+        "consequences": [
+          "Each task must identify affected documentation, update it within scope, and include documentation validation in its completion evidence."
+        ],
+        "scope": [
+          "engineering",
+          "documentation",
+          "agents"
+        ],
+        "keywords": [
+          "docs",
+          "synchronization",
+          "implementation"
+        ],
+        "relatedWork": [],
+        "supersedes": null,
+        "status": "active",
+        "createdAt": "2026-08-22T02:26:44.881Z",
+        "updatedAt": "2026-08-22T02:26:44.881Z"
+      },
+      {
+        "id": "decision.project-scoped-single-file-stores-must-resolve-null-instead-of-throwing-enoent-b",
+        "statement": "Project-scoped single-file stores must resolve null instead of throwing ENOENT before initialization",
+        "reasoning": "Constitution, domain, and planning stores crashed with raw uncaught ENOENT stack traces when read before init, unlike the twin store's graceful null-return convention discovered during a north-star roadmap coverage audit. Every command using these stores must handle a null result.",
+        "consequences": [
+          "ConstitutionStore.load(), DomainStore.load(), and PlanningArtifactStore.read()/isFresh() now return null/false on a missing file; new callers must null-check before use.",
+          "CLI commands report a friendly EXIT_CODE.invalidState message naming the init command instead of an unhandled exception."
+        ],
+        "scope": [
+          "v0.21.1",
+          "governance",
+          "domain",
+          "planning"
+        ],
+        "keywords": [
+          "enoent",
+          "empty-state",
+          "store-contract"
+        ],
+        "relatedWork": [],
+        "supersedes": null,
+        "status": "active",
+        "createdAt": "2026-08-22T21:02:15.426Z",
+        "updatedAt": "2026-08-22T21:02:15.426Z"
       }
     ]
   }

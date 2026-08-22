@@ -2,6 +2,23 @@
 
 All notable changes to this project will be documented in this file.
 
+> **Note:** Entries between 0.7.0 and 0.21.0 were tracked in
+> `docs/planning/<version>/` release-readiness and validation documents
+> rather than in this file. See those directories and git tags
+> (`v0.7.0`–`v0.21.0`) for that history.
+
+## [0.21.1] - 2026-08-22
+
+### Fixed
+
+- **Store empty-state handling**: `constitution`, `domain`, and `planning`
+  commands no longer crash with raw uncaught `ENOENT` stack traces when run
+  before their underlying store has been initialized. `ConstitutionStore`,
+  `DomainStore`, and `PlanningArtifactStore` now resolve `null` (matching
+  the existing `TwinProjectionStore` convention) and the CLI reports a
+  friendly `invalidState` message with the command needed to initialize.
+  See `docs/planning/0.21/V0.21.1_ENOENT_HARDENING.md`.
+
 ## [0.6.0] - 2026-08-16
 
 ### Major Features & Compliance Hardening

@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
-  "revision": 79,
-  "updatedAt": "2026-08-20T19:33:34.375Z",
+  "revision": 175,
+  "updatedAt": "2026-08-22T21:02:25.102Z",
   "data": {
     "features": [
       {
@@ -35,6 +35,14 @@
         "createdAt": "2026-08-20T18:38:32.376Z",
         "updatedAt": "2026-08-20T18:38:32.376Z",
         "id": "feature.v0-8-intent-and-knowledge"
+      },
+      {
+        "name": "Project Constitution and Governance",
+        "description": "Define durable governance rules, scopes, severities, evaluations, and conflict reporting for v0.15.",
+        "status": "planned",
+        "createdAt": "2026-08-21T21:20:18.317Z",
+        "updatedAt": "2026-08-21T21:20:18.317Z",
+        "id": "feature.project-constitution-and-governance"
       }
     ],
     "phases": [
@@ -66,6 +74,16 @@
         "updatedAt": "2026-08-20T18:38:32.688Z",
         "id": "phase.schema-decisions",
         "featureId": "feature.v0-8-intent-and-knowledge",
+        "sequence": 1
+      },
+      {
+        "name": "Governance Domain",
+        "description": "Define constitution and governance contracts.",
+        "status": "planned",
+        "createdAt": "2026-08-21T21:20:46.889Z",
+        "updatedAt": "2026-08-21T21:20:46.889Z",
+        "id": "phase.governance-domain",
+        "featureId": "feature.project-constitution-and-governance",
         "sequence": 1
       }
     ],
@@ -462,9 +480,579 @@
           ],
           "exclude": []
         }
+      },
+      {
+        "name": "Define governance schemas",
+        "description": "Create ConstitutionArtifact, GovernanceRule, scope, severity, evaluation, and conflict schemas with persistence contracts.",
+        "status": "completed",
+        "createdAt": "2026-08-21T21:21:16.042Z",
+        "updatedAt": "2026-08-21T21:23:32.747Z",
+        "id": "task.define-governance-schemas",
+        "phaseId": "phase.governance-domain",
+        "scope": {
+          "include": [
+            "src/knowledge",
+            "src/governance",
+            "test"
+          ],
+          "exclude": []
+        }
+      },
+      {
+        "name": "Define governance schemas (scoped)",
+        "description": "Create ConstitutionArtifact, GovernanceRule, scope, severity, evaluation, and conflict schemas with persistence contracts.",
+        "status": "completed",
+        "createdAt": "2026-08-21T21:23:50.433Z",
+        "updatedAt": "2026-08-21T21:24:23.623Z",
+        "id": "task.define-governance-schemas-scoped",
+        "phaseId": "phase.governance-domain",
+        "scope": {
+          "include": [
+            "src/governance/**",
+            "test/governance-schemas.test.ts"
+          ],
+          "exclude": []
+        }
+      },
+      {
+        "name": "Persist constitution artifacts",
+        "description": "Persist and reload constitution artifacts through the project-scoped governance store without creating a parallel policy graph.",
+        "status": "completed",
+        "createdAt": "2026-08-21T21:24:57.802Z",
+        "updatedAt": "2026-08-21T21:25:54.445Z",
+        "id": "task.persist-constitution-artifacts",
+        "phaseId": "phase.governance-domain",
+        "scope": {
+          "include": [
+            "src/governance/**",
+            "test/governance-store.test.ts"
+          ],
+          "exclude": []
+        }
+      },
+      {
+        "name": "Evaluate applicable governance rules",
+        "description": "Select scoped constitution rules and evaluate work objectives with explainable pass, warning, conflict, and blocked outcomes.",
+        "status": "completed",
+        "createdAt": "2026-08-21T21:26:21.725Z",
+        "updatedAt": "2026-08-21T21:27:33.554Z",
+        "id": "task.evaluate-applicable-governance-rules",
+        "phaseId": "phase.governance-domain",
+        "scope": {
+          "include": [
+            "src/governance/**",
+            "test/governance-evaluation.test.ts"
+          ],
+          "exclude": []
+        }
+      },
+      {
+        "name": "Integrate governance into context",
+        "description": "Include only applicable governance evaluations in context packets and expose them to agent contracts without creating a second policy or packet system.",
+        "status": "completed",
+        "createdAt": "2026-08-21T21:30:32.145Z",
+        "updatedAt": "2026-08-21T21:32:22.654Z",
+        "id": "task.integrate-governance-into-context",
+        "phaseId": "phase.governance-domain",
+        "scope": {
+          "include": [
+            "src/governance/**",
+            "src/context/**",
+            "src/agents/**",
+            "test/governance-context.test.ts"
+          ],
+          "exclude": []
+        }
+      },
+      {
+        "name": "Deliver governance through agent contracts",
+        "description": "Expose selected governance evaluations to agent contracts and verify advisory warnings, hard blocks, and identical delivery across adapters.",
+        "status": "completed",
+        "createdAt": "2026-08-21T21:32:46.862Z",
+        "updatedAt": "2026-08-21T21:33:48.105Z",
+        "id": "task.deliver-governance-through-agent-contracts",
+        "phaseId": "phase.governance-domain",
+        "scope": {
+          "include": [
+            "src/agents/**",
+            "src/governance/**",
+            "test/governance-agent-contract.test.ts"
+          ],
+          "exclude": []
+        }
+      },
+      {
+        "name": "Add constitution CLI and golden conflicts",
+        "description": "Expose constitution init/list/show/check commands and verify advisory warnings, hard blocks, release-scope conflicts, persistence, and context budgets.",
+        "status": "completed",
+        "createdAt": "2026-08-21T21:34:10.977Z",
+        "updatedAt": "2026-08-21T21:35:30.688Z",
+        "id": "task.add-constitution-cli-and-golden-conflicts",
+        "phaseId": "phase.governance-domain",
+        "scope": {
+          "include": [
+            "src/commands/**",
+            "src/cli/**",
+            "src/governance/**",
+            "test/constitution-command.test.ts"
+          ],
+          "exclude": []
+        }
+      },
+      {
+        "name": "audit-v0-15-governance-foundation",
+        "description": "Audit the v0.15 governance foundation, verify documentation and end-to-end contracts, and record remaining gaps before v0.16.",
+        "status": "completed",
+        "createdAt": "2026-08-21T21:37:01.585Z",
+        "updatedAt": "2026-08-21T21:38:44.888Z",
+        "id": "task.audit-v0-15-governance-foundation",
+        "phaseId": "phase.governance-domain",
+        "scope": {
+          "include": [
+            "src/governance/**",
+            "src/context/**",
+            "src/agents/**",
+            "src/commands/**",
+            "src/cli/**",
+            "docs/planning/0.15/**",
+            "test/**"
+          ],
+          "exclude": []
+        }
+      },
+      {
+        "name": "document-v0-15-release-guidance",
+        "description": "Document the v0.15 governance foundation, migration considerations, and operator workflow before release.",
+        "status": "completed",
+        "createdAt": "2026-08-21T21:39:35.785Z",
+        "updatedAt": "2026-08-21T21:43:41.658Z",
+        "id": "task.document-v0-15-release-guidance",
+        "phaseId": "phase.governance-domain",
+        "scope": {
+          "include": [
+            "docs/planning/0.15/**",
+            "README.md"
+          ],
+          "exclude": []
+        }
+      },
+      {
+        "name": "validate-v0-15-release-readiness",
+        "description": "Run the final v0.15 release-readiness checks, verify package contents and governance behavior, and record any blockers without publishing.",
+        "status": "completed",
+        "createdAt": "2026-08-21T21:46:37.679Z",
+        "updatedAt": "2026-08-21T21:49:54.789Z",
+        "id": "task.validate-v0-15-release-readiness",
+        "phaseId": "phase.governance-domain",
+        "scope": {
+          "include": [
+            "src/**",
+            "test/**",
+            "docs/planning/0.15/**",
+            "README.md",
+            "package.json",
+            "scripts/**"
+          ],
+          "exclude": []
+        }
+      },
+      {
+        "name": "remove-unused-pm-dependency",
+        "description": "Remove the unused @piotrjura/pm dependency and refresh package metadata without changing AutoForge task storage behavior.",
+        "status": "completed",
+        "createdAt": "2026-08-21T21:55:44.385Z",
+        "updatedAt": "2026-08-21T21:57:35.623Z",
+        "id": "task.remove-unused-pm-dependency",
+        "phaseId": "phase.governance-domain",
+        "scope": {
+          "include": [
+            "package.json",
+            "package-lock.json",
+            "pnpm-lock.yaml",
+            "pnpm-workspace.yaml",
+            "src/**",
+            "test/**",
+            "docs/planning/0.15/**"
+          ],
+          "exclude": []
+        }
+      },
+      {
+        "name": "update-canonical-agent-onboarding-prompt",
+        "description": "Embed the canonical global AutoForge synchronization prompt in README for initialization, upgrades, and new agent onboarding.",
+        "status": "completed",
+        "createdAt": "2026-08-22T01:11:27.850Z",
+        "updatedAt": "2026-08-22T01:11:52.194Z",
+        "id": "task.update-canonical-agent-onboarding-prompt",
+        "phaseId": "phase.governance-domain",
+        "scope": {
+          "include": [
+            "README.md"
+          ],
+          "exclude": []
+        }
+      },
+      {
+        "name": "synchronize-agent-facing-autoforge-guides",
+        "description": "Synchronize canonical agent setup, review, and AI guidance with the global AutoForge CLI onboarding prompt.",
+        "status": "completed",
+        "createdAt": "2026-08-22T01:16:20.575Z",
+        "updatedAt": "2026-08-22T01:17:25.253Z",
+        "id": "task.synchronize-agent-facing-autoforge-guides",
+        "phaseId": "phase.governance-domain",
+        "scope": {
+          "include": [
+            "docs/AUTOFORGE_AGENT_SETUP_GUIDE.md",
+            "docs/AUTOFORGE_AGENT_REVIEW_PROMPT.md",
+            "docs/AUTOFORGE_AGENTIC_AI_GUIDE.md"
+          ],
+          "exclude": []
+        }
+      },
+      {
+        "name": "simplify-readme-release-history",
+        "description": "Keep README release history focused on the current AutoForge release instead of the full historical backlog.",
+        "status": "completed",
+        "createdAt": "2026-08-22T01:20:00.938Z",
+        "updatedAt": "2026-08-22T01:20:53.151Z",
+        "id": "task.simplify-readme-release-history",
+        "phaseId": "phase.governance-domain",
+        "scope": {
+          "include": [
+            "README.md"
+          ],
+          "exclude": []
+        }
+      },
+      {
+        "name": "prepare-v0-15-1-release",
+        "description": "Bump AutoForge version metadata and current documentation to v0.15.1 for the next release checkpoint.",
+        "status": "completed",
+        "createdAt": "2026-08-22T01:22:00.410Z",
+        "updatedAt": "2026-08-22T01:26:00.862Z",
+        "id": "task.prepare-v0-15-1-release",
+        "phaseId": "phase.governance-domain",
+        "scope": {
+          "include": [
+            "package.json",
+            "package-lock.json",
+            "pnpm-lock.yaml",
+            "README.md",
+            "docs/planning/0.15/**"
+          ],
+          "exclude": []
+        }
+      },
+      {
+        "name": "define-v0-16-domain-architecture-decisions",
+        "description": "Record v0.16 domain intelligence architecture decisions for concepts, relationships, invariants, governance integration, and future consumers.",
+        "status": "completed",
+        "createdAt": "2026-08-22T01:34:50.125Z",
+        "updatedAt": "2026-08-22T01:36:59.358Z",
+        "id": "task.define-v0-16-domain-architecture-decisions",
+        "phaseId": "phase.governance-domain",
+        "scope": {
+          "include": [
+            "docs/planning/0.16/**"
+          ],
+          "exclude": []
+        }
+      },
+      {
+        "name": "implement-v0-16-domain-schemas",
+        "description": "Implement typed domain concept, relationship, and invariant schemas with explicit provenance and lifecycle states.",
+        "status": "completed",
+        "createdAt": "2026-08-22T01:37:17.509Z",
+        "updatedAt": "2026-08-22T01:38:10.025Z",
+        "id": "task.implement-v0-16-domain-schemas",
+        "phaseId": "phase.governance-domain",
+        "scope": {
+          "include": [
+            "src/domain/**",
+            "test/domain-*.test.ts",
+            "test/domain/**"
+          ],
+          "exclude": []
+        }
+      },
+      {
+        "name": "persist-v0-16-domain-artifacts",
+        "description": "Persist domain concepts, relationships, and invariants using the existing project knowledge architecture with validation and round-trip tests.",
+        "status": "completed",
+        "createdAt": "2026-08-22T01:46:05.206Z",
+        "updatedAt": "2026-08-22T01:47:27.215Z",
+        "id": "task.persist-v0-16-domain-artifacts",
+        "phaseId": "phase.governance-domain",
+        "scope": {
+          "include": [
+            "src/domain/**",
+            "test/domain-*.test.ts",
+            "test/domain/**"
+          ],
+          "exclude": []
+        }
+      },
+      {
+        "name": "evaluate-v0-16-domain-relationships",
+        "description": "Add deterministic domain relationship traversal and invariant evaluation with explicit unknown and violation outcomes.",
+        "status": "completed",
+        "createdAt": "2026-08-22T01:47:49.251Z",
+        "updatedAt": "2026-08-22T01:48:37.165Z",
+        "id": "task.evaluate-v0-16-domain-relationships",
+        "phaseId": "phase.governance-domain",
+        "scope": {
+          "include": [
+            "src/domain/**",
+            "test/domain-*.test.ts",
+            "test/domain/**"
+          ],
+          "exclude": []
+        }
+      },
+      {
+        "name": "integrate-v0-16-domain-context",
+        "description": "Integrate domain concepts, relationships, and invariant evaluations into governed context packets and agent directives.",
+        "status": "completed",
+        "createdAt": "2026-08-22T01:49:00.516Z",
+        "updatedAt": "2026-08-22T01:51:51.521Z",
+        "id": "task.integrate-v0-16-domain-context",
+        "phaseId": "phase.governance-domain",
+        "scope": {
+          "include": [
+            "src/domain/**",
+            "src/context/**",
+            "src/agents/**",
+            "test/domain-context.test.ts",
+            "test/domain-agent.test.ts"
+          ],
+          "exclude": []
+        }
+      },
+      {
+        "name": "add-v0-16-domain-cli",
+        "description": "Add deterministic domain CLI commands for initializing, listing, showing, and checking domain artifacts.",
+        "status": "completed",
+        "createdAt": "2026-08-22T01:53:34.962Z",
+        "updatedAt": "2026-08-22T01:55:34.603Z",
+        "id": "task.add-v0-16-domain-cli",
+        "phaseId": "phase.governance-domain",
+        "scope": {
+          "include": [
+            "src/domain/**",
+            "src/commands/**",
+            "src/cli/**",
+            "test/domain-command.test.ts"
+          ],
+          "exclude": []
+        }
+      },
+      {
+        "name": "audit-v0-16-domain-intelligence",
+        "description": "Audit the v0.16 domain intelligence implementation, record evidence and gaps, and validate the full foundation before release preparation.",
+        "status": "completed",
+        "createdAt": "2026-08-22T01:58:15.238Z",
+        "updatedAt": "2026-08-22T02:02:22.484Z",
+        "id": "task.audit-v0-16-domain-intelligence",
+        "phaseId": "phase.governance-domain",
+        "scope": {
+          "include": [
+            "docs/planning/0.16/**",
+            "src/domain/**",
+            "src/context/**",
+            "src/agents/**",
+            "src/commands/**",
+            "src/cli/**",
+            "test/**"
+          ],
+          "exclude": []
+        }
+      },
+      {
+        "name": "prepare-v0-16-release",
+        "description": "Prepare v0.16.0 release metadata and guidance, validate the package, and stage a local release checkpoint without publishing.",
+        "status": "completed",
+        "createdAt": "2026-08-22T02:04:04.162Z",
+        "updatedAt": "2026-08-22T02:04:46.449Z",
+        "id": "task.prepare-v0-16-release",
+        "phaseId": "phase.governance-domain",
+        "scope": {
+          "include": [
+            "package.json",
+            "package-lock.json",
+            "pnpm-lock.yaml",
+            "README.md",
+            "docs/planning/0.16/**"
+          ],
+          "exclude": []
+        }
+      },
+      {
+        "name": "update-v0-16-version-assertions",
+        "description": "Update CLI version assertions for v0.16.0 and verify the complete foundation and legacy suites.",
+        "status": "completed",
+        "createdAt": "2026-08-22T02:04:52.775Z",
+        "updatedAt": "2026-08-22T02:06:48.002Z",
+        "id": "task.update-v0-16-version-assertions",
+        "phaseId": "phase.governance-domain",
+        "scope": {
+          "include": [
+            "test/cli-foundation.test.ts",
+            "test/cli-integration.test.ts"
+          ],
+          "exclude": []
+        }
+      },
+      {
+        "name": "fix-agent-contract-capability-alignment",
+        "description": "Align contract generation with the canonical agent registry IDs and surface unsupported-agent errors distinctly from usage errors.",
+        "status": "completed",
+        "createdAt": "2026-08-22T02:11:07.044Z",
+        "updatedAt": "2026-08-22T02:11:52.753Z",
+        "id": "task.fix-agent-contract-capability-alignment",
+        "phaseId": "phase.governance-domain",
+        "scope": {
+          "include": [
+            "src/contract/**",
+            "src/commands/contract.ts",
+            "test/agent-capabilities.test.ts",
+            "test/contract-command.test.ts"
+          ],
+          "exclude": []
+        }
+      },
+      {
+        "name": "normalize-antigravity-contract-aliases",
+        "description": "Normalize antigravity and agy to canonical gemini contracts and update generated commands to the global project-scoped CLI.",
+        "status": "completed",
+        "createdAt": "2026-08-22T02:16:10.115Z",
+        "updatedAt": "2026-08-22T02:17:14.432Z",
+        "id": "task.normalize-antigravity-contract-aliases",
+        "phaseId": "phase.governance-domain",
+        "scope": {
+          "include": [
+            "src/contract/**",
+            "src/commands/contract.ts",
+            "test/agent-contract-generator.test.ts",
+            "test/contract-command.test.ts"
+          ],
+          "exclude": []
+        }
+      },
+      {
+        "name": "validate-v0-16-release-candidate",
+        "description": "Run final v0.16 release-candidate validation after agent alias changes, including full tests, package contents, and contract generation checks.",
+        "status": "completed",
+        "createdAt": "2026-08-22T02:18:20.743Z",
+        "updatedAt": "2026-08-22T02:19:53.050Z",
+        "id": "task.validate-v0-16-release-candidate",
+        "phaseId": "phase.governance-domain",
+        "scope": {
+          "include": [
+            "src/**",
+            "test/**",
+            "package.json",
+            "package-lock.json",
+            "README.md",
+            "docs/planning/0.16/**"
+          ],
+          "exclude": []
+        }
+      },
+      {
+        "name": "implement-v0-16-1-update-command-docs",
+        "description": "Implement safe update, update check, and dry-run CLI workflows, and document all supported AutoForge v0.16 commands.",
+        "status": "completed",
+        "createdAt": "2026-08-22T02:24:04.959Z",
+        "updatedAt": "2026-08-22T02:25:56.844Z",
+        "id": "task.implement-v0-16-1-update-command-docs",
+        "phaseId": "phase.governance-domain",
+        "scope": {
+          "include": [
+            "src/commands/**",
+            "src/cli/**",
+            "test/update-command.test.ts",
+            "docs/AUTOFORGE_CLI_REFERENCE.md",
+            "README.md"
+          ],
+          "exclude": []
+        }
+      },
+      {
+        "name": "reconcile-v0-16-cli-reference",
+        "description": "Replace stale CLI reference content with accurate v0.16 commands, workflows, and update guidance.",
+        "status": "completed",
+        "createdAt": "2026-08-22T02:28:09.947Z",
+        "updatedAt": "2026-08-22T02:29:31.428Z",
+        "id": "task.reconcile-v0-16-cli-reference",
+        "phaseId": "phase.governance-domain",
+        "scope": {
+          "include": [
+            "docs/AUTOFORGE_CLI_REFERENCE.md",
+            "README.md"
+          ],
+          "exclude": []
+        }
+      },
+      {
+        "name": "validate-v0-16-1-update-workflow",
+        "description": "Validate the v0.16.1 update workflow across formatting, typechecking, full tests, and package dry-run.",
+        "status": "completed",
+        "createdAt": "2026-08-22T02:31:49.810Z",
+        "updatedAt": "2026-08-22T02:34:11.753Z",
+        "id": "task.validate-v0-16-1-update-workflow",
+        "phaseId": "phase.governance-domain",
+        "scope": {
+          "include": [
+            "src/**",
+            "test/**",
+            "package.json",
+            "package-lock.json",
+            "README.md",
+            "docs/**"
+          ],
+          "exclude": []
+        }
       }
     ],
-    "issues": [],
+    "issues": [
+      {
+        "name": "projects-list-json-output",
+        "description": "Add an optional JSON output mode to projects list for automation and agent tooling.",
+        "status": "planned",
+        "createdAt": "2026-08-22T01:46:01.049Z",
+        "updatedAt": "2026-08-22T01:46:01.049Z",
+        "id": "issue.projects-list-json-output",
+        "scope": {
+          "include": [
+            "src/commands/projects.ts",
+            "test/projects-command.test.ts"
+          ],
+          "exclude": []
+        }
+      },
+      {
+        "name": "fix-governance-domain-store-enoent-handling",
+        "description": "Governance and domain stores throw uncaught ENOENT errors on list/show/check before init has run, unlike the twin store's graceful empty-state handling. Add matching ENOENT catches and pre-init tests, then prepare a v0.21.1 patch release.",
+        "status": "completed",
+        "createdAt": "2026-08-22T20:49:40.500Z",
+        "updatedAt": "2026-08-22T21:02:24.995Z",
+        "id": "issue.fix-governance-domain-store-enoent-handling",
+        "scope": {
+          "include": [
+            "src/governance/store.ts",
+            "src/domain/store.ts",
+            "test/governance-store.test.ts",
+            "test/domain-store.test.ts",
+            "package.json",
+            "package-lock.json",
+            "README.md",
+            "docs/planning/0.21/**",
+            "CHANGELOG.md"
+          ],
+          "exclude": []
+        }
+      }
+    ],
     "activeWork": null
   }
 }

@@ -152,7 +152,7 @@ describe("planning command", () => {
     );
   });
 
-  it("reports a missing handoff artifact as not found", async () => {
+  it("reports a missing handoff artifact with a not-initialized message", async () => {
     const projectRoot = await mkdtemp(
       path.join(os.tmpdir(), "autoforge-planning-handoff-errors-"),
     );
@@ -173,9 +173,33 @@ describe("planning command", () => {
         output,
         startDirectory: projectRoot,
       }),
-    ).resolves.toBe(EXIT_CODE.notFound);
+    ).resolves.toBe(EXIT_CODE.invalidState);
     expect(output.stderr).toHaveBeenCalledWith(
-      expect.stringContaining("Error:"),
+      expect.stringContaining(
+        "No feature-brief planning artifact found. Run `intent assess` with --artifact feature-brief first.",
+      ),
+    );
+  });
+
+  it("reports a missing show artifact with a not-initialized message", async () => {
+    const projectRoot = await mkdtemp(
+      path.join(os.tmpdir(), "autoforge-planning-show-errors-"),
+    );
+    directories.push(projectRoot);
+    await mkdir(path.join(projectRoot, ".git"));
+    await initializeProject({ projectRoot });
+    const output = { stdout: vi.fn(), stderr: vi.fn() };
+    await expect(
+      runPlanningCommand({
+        args: ["show", "feature-brief"],
+        output,
+        startDirectory: projectRoot,
+      }),
+    ).resolves.toBe(EXIT_CODE.invalidState);
+    expect(output.stderr).toHaveBeenCalledWith(
+      expect.stringContaining(
+        "No feature-brief planning artifact found. Run `intent assess` with --artifact feature-brief first.",
+      ),
     );
   });
 });

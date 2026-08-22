@@ -44,3 +44,14 @@
 - Validation and filesystem errors are no longer collapsed into generic usage.
 - JSON-file commands expose generated Draft 2020-12 schemas through the CLI.
 - The bootstrap-to-intent-to-workflow-to-approval lifecycle is documented.
+
+## v0.21.1 Patch — Store Empty-State Hardening
+
+A full north-star roadmap coverage audit found that `constitution`, `domain`,
+and `planning` commands crashed with raw uncaught `ENOENT` errors when run
+before their store had ever been initialized, unlike the `twin` store's
+graceful null-return convention. Fixed and documented in
+`docs/planning/0.21/V0.21.1_ENOENT_HARDENING.md` — read that file before
+touching `src/governance/store.ts`, `src/domain/store.ts`, or
+`src/planning/store.ts`; their `load()`/`read()` methods now resolve `null`
+instead of throwing, and every caller must null-check.

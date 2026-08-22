@@ -47,4 +47,16 @@ describe("planning artifact store", () => {
       false,
     );
   });
+
+  it("returns null when an artifact kind has not been generated", async () => {
+    const projectRoot = await mkdtemp(
+      path.join(os.tmpdir(), "autoforge-planning-store-"),
+    );
+    directories.push(projectRoot);
+    const store = new PlanningArtifactStore(projectRoot);
+    await expect(store.read("feature-brief")).resolves.toBeNull();
+    await expect(store.isFresh("feature-brief", "0".repeat(64))).resolves.toBe(
+      false,
+    );
+  });
 });

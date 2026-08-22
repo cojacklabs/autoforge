@@ -58,6 +58,12 @@ export async function runPlanningCommand(
       const artifact = await new PlanningArtifactStore(project.path).read(
         planningArtifactKindSchema.parse(subject),
       );
+      if (!artifact) {
+        options.output.stderr(
+          `No ${subject} planning artifact found. Run \`intent assess\` with --artifact ${subject} first.`,
+        );
+        return EXIT_CODE.invalidState;
+      }
       const result = await new WorkService(
         createWorkStateStore(project.path),
       ).createTask({
@@ -111,6 +117,12 @@ export async function runPlanningCommand(
   if (action === "show") {
     const kind = planningArtifactKindSchema.parse(subject);
     const artifact = await store.read(kind);
+    if (!artifact) {
+      options.output.stderr(
+        `No ${kind} planning artifact found. Run \`intent assess\` with --artifact ${kind} first.`,
+      );
+      return EXIT_CODE.invalidState;
+    }
     options.output.stdout(
       JSON.stringify(
         {
@@ -127,18 +139,15 @@ export async function runPlanningCommand(
   }
   const artifacts = [];
   for (const kind of KINDS) {
-    try {
-      const artifact = await store.read(kind);
-      artifacts.push({
-        kind,
-        generatedAt: artifact.generatedAt,
-        fresh: intent
-          ? await store.isFresh(kind, artifact.sourceFingerprint)
-          : null,
-      });
-    } catch {
-      continue;
-    }
+    const artifact = await store.read(kind);
+    if (!artifact) continue;
+    artifacts.push({
+      kind,
+      generatedAt: artifact.generatedAt,
+      fresh: intent
+        ? await store.isFresh(kind, artifact.sourceFingerprint)
+        : null,
+    });
   }
   options.output.stdout(JSON.stringify(artifacts, null, 2));
   return EXIT_CODE.success;
