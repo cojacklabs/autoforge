@@ -232,7 +232,11 @@ export async function main(
         domain: (commandArgs) =>
           runDomainCommand({ args: commandArgs, output, startDirectory }),
         update: (commandArgs) =>
-          runUpdateCommand({ args: commandArgs, output }),
+          runUpdateCommand({
+            args: commandArgs,
+            output,
+            currentVersion: findPackageVersion(),
+          }),
         migrate: (commandArgs) =>
           runMigrateCommand({
             args: commandArgs,

@@ -9,6 +9,7 @@ const packageName = "@cojacklabs/autoforge";
 export interface UpdateCommandOptions {
   args: readonly string[];
   output: LogWriter;
+  currentVersion?: string;
   packageManager?: "npm" | "pnpm";
 }
 
@@ -24,10 +25,17 @@ function manager(options: UpdateCommandOptions): "npm" | "pnpm" {
   );
 }
 
-function updateArgs(packageManager: "npm" | "pnpm"): string[] {
+function updateArgs(packageManager: "npm" | "pnpm", version: string): string[] {
   return packageManager === "pnpm"
-    ? ["add", "-g", `${packageName}@latest`]
-    : ["install", "-g", `${packageName}@latest`];
+    ? ["add", "-g", `${packageName}@${version}`]
+    : ["install", "-g", `${packageName}@${version}`];
+}
+
+async function latestVersion(): Promise<string> {
+  const result = await execFileAsync("npm", ["view", packageName, "version"]);
+  const version = result.stdout.trim();
+  if (!version) throw new Error("npm returned an empty version");
+  return version;
 }
 
 export async function runUpdateCommand(
@@ -41,29 +49,35 @@ export async function runUpdateCommand(
     return usage(options.output);
   }
   const packageManager = manager(options);
-  const args = updateArgs(packageManager);
   if (mode === "--dry-run") {
-    options.output.stdout(`${packageManager} ${args.join(" ")}`);
+    options.output.stdout(
+      `${packageManager} ${updateArgs(packageManager, "latest").join(" ")}`,
+    );
     return EXIT_CODE.success;
   }
+  let version: string;
+  try {
+    version = await latestVersion();
+  } catch {
+    options.output.stderr("Unable to check the npm registry.");
+    return EXIT_CODE.unexpected;
+  }
   if (mode === "--check") {
-    try {
-      const result = await execFileAsync("npm", [
-        "view",
-        packageName,
-        "version",
-      ]);
-      options.output.stdout(`Latest ${packageName}: ${result.stdout.trim()}`);
-      return EXIT_CODE.success;
-    } catch {
-      options.output.stderr("Unable to check the npm registry.");
-      return EXIT_CODE.unexpected;
+    if (options.currentVersion && options.currentVersion !== version) {
+      options.output.stdout(
+        `Update available: AutoForge ${options.currentVersion} → ${version}. Run \`autoforge update --apply\` to install it.`,
+      );
+    } else {
+      options.output.stdout(`AutoForge is up to date (${version}).`);
     }
+    return EXIT_CODE.success;
   }
   try {
-    await execFileAsync(packageManager, args, { env: process.env });
+    await execFileAsync(packageManager, updateArgs(packageManager, version), {
+      env: process.env,
+    });
     options.output.stdout(
-      "AutoForge updated. Run `autoforge version` and `autoforge doctor` to verify.",
+      `AutoForge updated to ${version}. Run \`autoforge version\` and \`autoforge doctor\` to verify.`,
     );
     return EXIT_CODE.success;
   } catch {
