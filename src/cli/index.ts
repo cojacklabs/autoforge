@@ -27,6 +27,7 @@ import { runAgentsCommand } from "../commands/agents.js";
 import { runAssetsCommand } from "../commands/assets.js";
 import { runBootstrapCommand } from "../commands/bootstrap.js";
 import { runConstitutionCommand } from "../commands/constitution.js";
+import { runDomainCommand } from "../commands/domain.js";
 import { runMigrateCommand } from "../commands/migrate.js";
 import { runRecapCommand } from "../commands/recap.js";
 import { runStartCommand } from "../commands/start.js";
@@ -227,6 +228,8 @@ export async function main(
           runBootstrapCommand({ args: commandArgs, output, startDirectory }),
         constitution: (commandArgs) =>
           runConstitutionCommand({ args: commandArgs, output, startDirectory }),
+        domain: (commandArgs) =>
+          runDomainCommand({ args: commandArgs, output, startDirectory }),
         migrate: (commandArgs) =>
           runMigrateCommand({
             args: commandArgs,
