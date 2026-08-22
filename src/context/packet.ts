@@ -331,6 +331,19 @@ function renderGovernance(selection: ContextSelection): string[] {
   ];
 }
 
+function renderDomain(selection: ContextSelection): string[] {
+  const concepts = selection.domain ?? [];
+  if (concepts.length === 0) return [];
+  return [
+    "## Domain Concepts",
+    ...concepts.map(
+      (concept) =>
+        `- **${concept.id}** — ${concept.name}: ${concept.description}`,
+    ),
+    "",
+  ];
+}
+
 function renderPacket(selection: ContextSelection): string {
   const packetId = `packet.${selection.work.item.id}`;
   return [
@@ -345,6 +358,7 @@ function renderPacket(selection: ContextSelection): string {
     ...renderContract(selection),
     ...renderDoctrines(selection),
     ...renderGovernance(selection),
+    ...renderDomain(selection),
     "",
     ...renderDecisions(selection),
     "",

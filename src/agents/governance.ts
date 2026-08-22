@@ -1,4 +1,5 @@
 import type { GovernanceEvaluation } from "../governance/schemas.js";
+import type { DomainInvariantEvaluation } from "../domain/evaluate.js";
 
 export interface AgentGovernanceDirectives {
   requiredActions: string[];
@@ -21,6 +22,30 @@ export function createAgentGovernanceDirectives(
   return {
     requiredActions,
     prohibitedActions,
+    evaluations: evaluations.map((evaluation) => ({ ...evaluation })),
+  };
+}
+
+export function createAgentDomainDirectives(
+  evaluations: readonly DomainInvariantEvaluation[],
+): {
+  requiredActions: string[];
+  prohibitedActions: string[];
+  evaluations: DomainInvariantEvaluation[];
+} {
+  return {
+    requiredActions: evaluations
+      .filter((evaluation) => evaluation.status === "verified")
+      .map(
+        (evaluation) =>
+          `Preserve invariant ${evaluation.invariantId}: ${evaluation.reason}`,
+      ),
+    prohibitedActions: evaluations
+      .filter((evaluation) => evaluation.status === "violated")
+      .map(
+        (evaluation) =>
+          `Stop and resolve invariant ${evaluation.invariantId}: ${evaluation.reason}`,
+      ),
     evaluations: evaluations.map((evaluation) => ({ ...evaluation })),
   };
 }
