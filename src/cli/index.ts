@@ -30,6 +30,7 @@ import { runConstitutionCommand } from "../commands/constitution.js";
 import { runDomainCommand } from "../commands/domain.js";
 import { runUpdateCommand } from "../commands/update.js";
 import { runTraceabilityCommand } from "../commands/traceability.js";
+import { runEvidenceCommand } from "../commands/evidence.js";
 import { runMigrateCommand } from "../commands/migrate.js";
 import { runRecapCommand } from "../commands/recap.js";
 import { runStartCommand } from "../commands/start.js";
@@ -246,6 +247,8 @@ export async function main(
             output,
             startDirectory,
           }),
+        evidence: (commandArgs) =>
+          runEvidenceCommand({ args: commandArgs, output, startDirectory }),
         migrate: (commandArgs) =>
           runMigrateCommand({
             args: commandArgs,

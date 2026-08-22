@@ -105,6 +105,8 @@ autoforge trace add <source> <relationship> <target>
 autoforge trace list
 autoforge trace check
 autoforge trace impact <artifact> [--depth <n>] [--direction <forward|reverse|both>]
+autoforge evidence list [--json]
+autoforge evidence summary [--json]
 autoforge update
 autoforge version
 ```
