@@ -1,6 +1,8 @@
 # v0.17 Validation Checkpoint
 
 - TypeScript typecheck passes.
+- Full foundation suite passes: 101 files and 457 tests.
+- Legacy suite passes: 17 tests.
 - Design command tests pass, including import, search, update, and relationship checks.
 - Specification schema, codec, store, and registry tests pass.
 - Bundled CLI integration passes for design import, search, update, check, and context delivery.
