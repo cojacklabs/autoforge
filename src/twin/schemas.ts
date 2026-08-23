@@ -19,6 +19,8 @@ export const twinNodeTypeSchema = z.enum([
   "test",
   "decision",
   "risk",
+  "hypothesis",
+  "experiment",
   "evidence",
   "work",
 ]);

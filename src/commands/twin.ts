@@ -3,6 +3,9 @@ import { EXIT_CODE, type ExitCode } from "../core/errors.js";
 import type { LogWriter } from "../core/logger.js";
 import { discoverProjectRoot } from "../core/project.js";
 import { createDecisionStore } from "../decisions/store.js";
+import { EvidenceStore } from "../learning/evidence-store.js";
+import { ExperimentStore } from "../learning/experiment-store.js";
+import { HypothesisStore } from "../learning/hypothesis-store.js";
 import { createWorkStateStore } from "../state/kernel.js";
 import { projectStateToTwin } from "../twin/from-state.js";
 import { buildTwinProjection } from "../twin/projection.js";
@@ -40,9 +43,26 @@ export async function runTwinCommand(
   if (action === "generate") {
     if (remaining.length > 0) return usage(options.output);
     const generatedAt = (options.now ?? (() => new Date()))().toISOString();
-    const [{ state: work }, { state: decisions }] = await Promise.all([
+    const hypothesisStore = new HypothesisStore(project.path);
+    const experimentStore = new ExperimentStore(project.path);
+    const evidenceStore = new EvidenceStore(project.path);
+    await Promise.all([
+      hypothesisStore.ensure(),
+      experimentStore.ensure(),
+      evidenceStore.ensure(),
+    ]);
+    const [
+      { state: work },
+      { state: decisions },
+      { state: hypotheses },
+      { state: experiments },
+      { state: evidence },
+    ] = await Promise.all([
       createWorkStateStore(project.path).read(),
       createDecisionStore(project.path).read(),
+      hypothesisStore.state.read(),
+      experimentStore.state.read(),
+      evidenceStore.state.read(),
     ]);
     const projection = await store.write(
       projectStateToTwin({
@@ -50,6 +70,9 @@ export async function runTwinCommand(
         generatedAt,
         work: work.data,
         decisions: decisions.data,
+        hypotheses: hypotheses.data,
+        experiments: experiments.data,
+        evidence: evidence.data,
       }),
     );
     options.output.stdout(

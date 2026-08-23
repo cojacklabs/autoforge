@@ -1,6 +1,7 @@
 import { describe, expect, it } from "vitest";
 import {
   twinEdgeSchema,
+  twinNodeTypeSchema,
   twinProjectionSchema,
   twinQuerySchema,
 } from "../src/twin/schemas.js";
@@ -39,5 +40,11 @@ describe("digital twin schemas", () => {
       }),
     ).toThrow();
     expect(() => twinQuerySchema.parse({ maxDepth: 21 })).toThrow();
+  });
+
+  it("accepts hypothesis, experiment, and evidence node types", () => {
+    expect(() => twinNodeTypeSchema.parse("hypothesis")).not.toThrow();
+    expect(() => twinNodeTypeSchema.parse("experiment")).not.toThrow();
+    expect(() => twinNodeTypeSchema.parse("evidence")).not.toThrow();
   });
 });

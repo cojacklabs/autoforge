@@ -1,4 +1,7 @@
 import type { DecisionMemory } from "../decisions/schemas.js";
+import type { EvidenceMemory } from "../learning/evidence-schemas.js";
+import type { ExperimentMemory } from "../learning/experiment-schemas.js";
+import type { HypothesisMemory } from "../learning/hypothesis-schemas.js";
 import type { WorkState } from "../work/schemas.js";
 import { buildTwinProjection } from "./projection.js";
 import type { TwinProjection } from "./schemas.js";
@@ -8,6 +11,9 @@ export interface TwinStateInput {
   generatedAt: string;
   work: WorkState;
   decisions: DecisionMemory;
+  hypotheses: HypothesisMemory;
+  experiments: ExperimentMemory;
+  evidence: EvidenceMemory;
 }
 
 export function projectStateToTwin(input: TwinStateInput): TwinProjection {
@@ -22,6 +28,27 @@ export function projectStateToTwin(input: TwinStateInput): TwinProjection {
       title: decision.statement,
       source: ".autoforge/state/decisions.json",
       updatedAt: decision.updatedAt,
+    })),
+    ...input.hypotheses.hypotheses.map((hypothesis) => ({
+      id: hypothesis.id,
+      type: "hypothesis" as const,
+      title: hypothesis.statement,
+      source: ".autoforge/learning/hypotheses.json",
+      updatedAt: hypothesis.updatedAt,
+    })),
+    ...input.experiments.experiments.map((experiment) => ({
+      id: experiment.id,
+      type: "experiment" as const,
+      title: `${experiment.method} (${experiment.status})`,
+      source: ".autoforge/learning/experiments.json",
+      updatedAt: experiment.updatedAt,
+    })),
+    ...input.evidence.evidence.map((record) => ({
+      id: record.id,
+      type: "evidence" as const,
+      title: record.summary,
+      source: ".autoforge/learning/evidence.json",
+      updatedAt: record.capturedAt,
     })),
   ];
   const edges = [
@@ -51,6 +78,49 @@ export function projectStateToTwin(input: TwinStateInput): TwinProjection {
           ]
         : []),
     ]),
+    ...input.experiments.experiments.flatMap((experiment) =>
+      experiment.hypothesisIds.map((hypothesisId) => ({
+        sourceId: experiment.id,
+        targetId: hypothesisId,
+        relationship: "tests",
+      })),
+    ),
+    ...input.evidence.evidence.flatMap((record) => {
+      const links: {
+        sourceId: string;
+        targetId: string;
+        relationship: string;
+      }[] = [];
+      if (record.experimentId) {
+        links.push({
+          sourceId: record.id,
+          targetId: record.experimentId,
+          relationship: "produced-by",
+        });
+      }
+      if (record.hypothesisId) {
+        links.push({
+          sourceId: record.id,
+          targetId: record.hypothesisId,
+          relationship: "informs",
+        });
+      }
+      if (record.relatedWork) {
+        links.push({
+          sourceId: record.id,
+          targetId: record.relatedWork,
+          relationship: "informs",
+        });
+      }
+      if (record.resultingDecision) {
+        links.push({
+          sourceId: record.id,
+          targetId: record.resultingDecision,
+          relationship: "resulted-in",
+        });
+      }
+      return links;
+    }),
   ];
 
   return buildTwinProjection({
