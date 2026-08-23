@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
-  "revision": 23,
-  "updatedAt": "2026-08-22T23:02:44.748Z",
+  "revision": 24,
+  "updatedAt": "2026-08-23T01:54:45.101Z",
   "data": {
     "decisions": [
       {
@@ -530,6 +530,30 @@
         "kind": "feature-note",
         "createdAt": "2026-08-22T23:02:44.719Z",
         "updatedAt": "2026-08-22T23:02:44.719Z"
+      },
+      {
+        "id": "decision.added-dedicated-data-and-security-work-kinds-to-the-shared-intent-workflow-vocab",
+        "statement": "Added dedicated data and security work kinds to the shared intent/workflow vocabulary",
+        "reasoning": "Bootstrap's gate list requires data and security artifacts but no correctly-labeled intent or workflow kind existed for either; users had to mislabel this work as architecture.",
+        "consequences": [
+          "READINESS_WORK_KINDS and WORKFLOW_KINDS gained data/data-change and security/security-change; both have dedicated workflow definitions with research(optional)->planning->implementation->validation(required) stages."
+        ],
+        "scope": [
+          "intent",
+          "workflow"
+        ],
+        "keywords": [
+          "data",
+          "security"
+        ],
+        "relatedWork": [
+          "issue.add-data-and-security-work-kinds-to-intent-and-workflow"
+        ],
+        "supersedes": null,
+        "status": "active",
+        "kind": "bugfix",
+        "createdAt": "2026-08-23T01:54:45.076Z",
+        "updatedAt": "2026-08-23T01:54:45.076Z"
       }
     ]
   }

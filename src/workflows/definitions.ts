@@ -85,6 +85,29 @@ const definitions: readonly WorkflowDefinition[] = [
     ],
   },
   {
+    kind: "data-change",
+    version: "0.9.0",
+    description: "Design, migrate, and validate a data model or schema change.",
+    stages: [
+      { id: "research", label: "Research", required: false },
+      { id: "planning", label: "Planning", required: true },
+      { id: "implementation", label: "Implementation", required: true },
+      { id: "validation", label: "Validation", required: true },
+    ],
+  },
+  {
+    kind: "security-change",
+    version: "0.9.0",
+    description:
+      "Design, implement, and validate a security or authorization change.",
+    stages: [
+      { id: "research", label: "Research", required: false },
+      { id: "planning", label: "Planning", required: true },
+      { id: "implementation", label: "Implementation", required: true },
+      { id: "validation", label: "Validation", required: true },
+    ],
+  },
+  {
     kind: "validation",
     version: "0.9.0",
     description: "Run a focused validation workflow.",

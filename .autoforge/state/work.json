@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
-  "revision": 187,
-  "updatedAt": "2026-08-22T23:02:57.908Z",
+  "revision": 189,
+  "updatedAt": "2026-08-23T01:54:49.145Z",
   "data": {
     "features": [
       {
@@ -1112,9 +1112,9 @@
       {
         "name": "add-data-and-security-work-kinds-to-intent-and-workflow",
         "description": "readinessWorkKindSchema (intent assess --kind) only has implementation/research/architecture/design/planning - no data or security value exists at all. workflowKindSchema (workflow start <kind>) has no data/security-flavored value either (closest available is architecture-change). But bootstrap's own manifest treats data and security as 2 of exactly 4 gated artifacts (BOOTSTRAP_GATES = [architecture, design, data, security]). There is no supported way to run a properly-labeled data or security intent assessment or workflow. We worked around this on the Virdua project by passing --kind architecture for both a data-schema/retention intent and an authn/authz intent - readiness scoring came back reasonable in both cases (ready, confidence 100), but the workKind field in every output is now misleadingly labeled architecture for what is actually data-modeling or security work, and the workaround will need to be repeated by every future user closing these same two gates. This is a genuine capability gap, not just cosmetic naming drift: 2 of bootstrap's 4 gated artifacts cannot be assessed through their own vocabulary. Fix: extend readinessWorkKindSchema and workflowKindSchema to include data and security as first-class work kinds, ideally as part of the broader shared-vocabulary fix (see the intent/workflow enum unification issue), so all 4 gated artifacts have a real, correctly-labeled path through intent assess -> workflow start/advance.",
-        "status": "planned",
+        "status": "completed",
         "createdAt": "2026-08-22T22:24:27.328Z",
-        "updatedAt": "2026-08-22T22:24:27.328Z",
+        "updatedAt": "2026-08-23T01:54:49.060Z",
         "id": "issue.add-data-and-security-work-kinds-to-intent-and-workflow",
         "scope": {
           "include": [

@@ -40,6 +40,8 @@ const PROFILES: Record<ReadinessWorkKind, readonly EvidenceField[]> = {
   architecture: ["objective", "requirements", "constraints"],
   design: ["objective", "requirements", "acceptanceCriteria"],
   planning: ["objective", "requirements"],
+  data: ["objective", "requirements", "constraints"],
+  security: ["objective", "requirements", "constraints"],
 };
 
 const FIELD_LABELS: Record<EvidenceField, string> = {
