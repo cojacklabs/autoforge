@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
-  "revision": 189,
-  "updatedAt": "2026-08-23T01:54:49.145Z",
+  "revision": 191,
+  "updatedAt": "2026-08-23T02:08:45.202Z",
   "data": {
     "features": [
       {
@@ -1141,9 +1141,9 @@
       {
         "name": "namespace-persisted-planning-artifacts-to-avoid-silent-overwrite",
         "description": "intent assess --artifact <kind> --persist writes to a fixed path .autoforge/planning/<kind>.json, derived from the artifact kind alone - no run id, timestamp, or source-intent name in the path. Running --artifact technical-plan --persist a second time for unrelated work that also happens to produce a technical-plan-kind artifact silently overwrites the first file, with no warning, confirmation prompt, or diff. Reproduced 4 times in a row on the Virdua project: persisting a technical-plan artifact for the design, data, security, and development-plan bootstrap gates each clobbered the previous gate's technical-plan.json in place. We only recovered the earlier content because it had already been committed to git (git show HEAD~1:.autoforge/planning/technical-plan.json); a user who ran two passes before committing, or who doesn't use git at all, would lose the first artifact permanently and silently. This is a 100% reproduction rate across every applicable run this session, not an edge case. Fix: namespace persisted artifacts by more than kind alone - e.g. .autoforge/planning/<kind>/<source-fingerprint-or-intent-basename>.json - or at minimum refuse to overwrite an existing file without --force, and print a diff or confirmation when a write would clobber one. The sourceFingerprint value already computed and embedded in each artifact's JSON body is exactly what should be part of the persisted path.",
-        "status": "planned",
+        "status": "completed",
         "createdAt": "2026-08-22T22:25:17.293Z",
-        "updatedAt": "2026-08-22T22:25:17.293Z",
+        "updatedAt": "2026-08-23T02:08:45.099Z",
         "id": "issue.namespace-persisted-planning-artifacts-to-avoid-silent-overwrite",
         "scope": {
           "include": [

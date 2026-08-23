@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
-  "revision": 24,
-  "updatedAt": "2026-08-23T01:54:45.101Z",
+  "revision": 25,
+  "updatedAt": "2026-08-23T02:08:40.553Z",
   "data": {
     "decisions": [
       {
@@ -554,6 +554,29 @@
         "kind": "bugfix",
         "createdAt": "2026-08-23T01:54:45.076Z",
         "updatedAt": "2026-08-23T01:54:45.076Z"
+      },
+      {
+        "id": "decision.persisted-planning-artifacts-are-now-namespaced-by-source-fingerprint-instead-of",
+        "statement": "Persisted planning artifacts are now namespaced by source fingerprint instead of a flat kind-only path",
+        "reasoning": "intent assess --artifact <kind> --persist previously wrote to a fixed .autoforge/planning/<kind>.json path, silently overwriting any prior artifact of the same kind with no warning.",
+        "consequences": [
+          "PlanningArtifactStore stores artifacts at .autoforge/planning/<kind>/<sourceFingerprint>.json; read(kind) with no fingerprint returns the most recent version; a new listVersions(kind) method and updated planning list surface every stored version."
+        ],
+        "scope": [
+          "planning"
+        ],
+        "keywords": [
+          "namespacing",
+          "data-loss"
+        ],
+        "relatedWork": [
+          "issue.namespace-persisted-planning-artifacts-to-avoid-silent-overwrite"
+        ],
+        "supersedes": null,
+        "status": "active",
+        "kind": "bugfix",
+        "createdAt": "2026-08-23T02:08:40.527Z",
+        "updatedAt": "2026-08-23T02:08:40.527Z"
       }
     ]
   }

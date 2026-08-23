@@ -139,15 +139,17 @@ export async function runPlanningCommand(
   }
   const artifacts = [];
   for (const kind of KINDS) {
-    const artifact = await store.read(kind);
-    if (!artifact) continue;
-    artifacts.push({
-      kind,
-      generatedAt: artifact.generatedAt,
-      fresh: intent
-        ? await store.isFresh(kind, artifact.sourceFingerprint)
-        : null,
-    });
+    const versions = await store.listVersions(kind);
+    for (const artifact of versions) {
+      artifacts.push({
+        kind,
+        sourceFingerprint: artifact.sourceFingerprint,
+        generatedAt: artifact.generatedAt,
+        fresh: intent
+          ? await store.isFresh(kind, artifact.sourceFingerprint)
+          : null,
+      });
+    }
   }
   options.output.stdout(JSON.stringify(artifacts, null, 2));
   return EXIT_CODE.success;
