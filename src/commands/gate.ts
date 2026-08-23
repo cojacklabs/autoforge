@@ -4,6 +4,7 @@ import { discoverProjectRoot } from "../core/project.js";
 import { runQualityGate } from "../quality/service.js";
 import type { QualityGateReport } from "../quality/schemas.js";
 import { ValidationEvidenceStore } from "../quality/evidence.js";
+import { createWorkStateStore } from "../state/kernel.js";
 
 export interface GateCommandOptions {
   args: readonly string[];
@@ -110,6 +111,9 @@ export async function runGateCommand(
   });
   const evidenceStore = new ValidationEvidenceStore(project.path);
   const capturedAt = new Date().toISOString();
+  const workState = (await createWorkStateStore(project.path).read()).state
+    .data;
+  const activeWorkId = workState.activeWork?.id;
   for (const check of report.checks) {
     await evidenceStore.record({
       id: `evidence.${check.id}.${Date.now()}`,
@@ -121,6 +125,7 @@ export async function runGateCommand(
             ? "skipped"
             : "failed",
       severity: check.status === "warning" ? "advisory" : "required",
+      ...(activeWorkId ? { workId: activeWorkId } : {}),
       traceIds: [],
       reason: check.message,
       capturedAt,

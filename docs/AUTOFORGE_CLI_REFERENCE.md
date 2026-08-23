@@ -224,13 +224,16 @@ evidence; active workflow runs are rejected.
 
 The digital twin includes governance, domain, design, strategy, and
 traceability data alongside work, decisions, and evidence — `twin query
---type constitution`, `--type domain`, `--type strategy`, `--type
-validation-evidence`, and `--type trace-link` are all queryable once the
-corresponding domain has data. Specification types with a direct twin
-counterpart (`architecture`, `screen`, `component`, `flow`, `api`, `domain`)
-project as that node type; the remaining specification types (`design`,
-`token`, `state`, `responsive`, `product`, `research`, `intent`) project as
-the generic `--type specification` node.
+--type constitution`, `--type domain`, `--type strategy`, and `--type
+validation-evidence` are all queryable once the corresponding domain has
+data. Specification types with a direct twin counterpart (`architecture`,
+`screen`, `component`, `flow`, `api`, `domain`) project as that node type;
+the remaining specification types (`design`, `token`, `state`, `responsive`,
+`product`, `research`, `intent`) project as the generic `--type
+specification` node. Traceability links project as edges only (their
+relationship name is the link's `relationship`, e.g. `implements`,
+`verifies`) — there is no separate `trace-link` node to query by type;
+find them with `twin query --relationship <name>` or `twin show`.
 
 ## JSON Input Schemas
 

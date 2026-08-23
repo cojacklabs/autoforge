@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
-  "revision": 250,
-  "updatedAt": "2026-08-23T21:03:14.201Z",
+  "revision": 253,
+  "updatedAt": "2026-08-23T23:29:42.346Z",
   "data": {
     "features": [
       {
@@ -1498,6 +1498,21 @@
             "README.md",
             "docs/AUTOFORGE_AGENT_SETUP_GUIDE.md",
             "docs/QUICKSTART.md"
+          ],
+          "exclude": []
+        }
+      },
+      {
+        "name": "Gate check omits active work id from evidence",
+        "description": "autoforge gate check never attached the active work item's id to recorded validation evidence, so the v0.24 why-integration (Task 6) could never surface a Validation line in practice; the twin's trace-link node type was also undocumented as edge-only, misleading the CLI reference.",
+        "status": "completed",
+        "createdAt": "2026-08-23T23:29:25.145Z",
+        "updatedAt": "2026-08-23T23:29:42.211Z",
+        "id": "issue.gate-check-omits-active-work-id-from-evidence",
+        "scope": {
+          "include": [
+            "src/commands/gate.ts",
+            "docs/AUTOFORGE_CLI_REFERENCE.md"
           ],
           "exclude": []
         }

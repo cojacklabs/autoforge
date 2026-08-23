@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
-  "revision": 49,
-  "updatedAt": "2026-08-23T21:02:56.674Z",
+  "revision": 50,
+  "updatedAt": "2026-08-23T23:29:37.614Z",
   "data": {
     "decisions": [
       {
@@ -1210,6 +1210,30 @@
         "kind": "feature-note",
         "createdAt": "2026-08-23T21:02:56.648Z",
         "updatedAt": "2026-08-23T21:02:56.648Z"
+      },
+      {
+        "id": "decision.gate-check-now-stamps-recorded-evidence-with-the-active-work-item-s-id",
+        "statement": "gate check now stamps recorded evidence with the active work item's id",
+        "reasoning": "Live end-to-end audit of the v0.24 continuous product evolution loop found gate check never attached workId, so why's validation surfacing (Task 6) was dead in practice despite passing all unit tests. Fixed by reading activeWork from WorkState and attaching its id when present.",
+        "consequences": [
+          "Validation gate results now correctly flow through to autoforge why for any decision linked to the active work item; evidence recorded with no active work correctly omits workId."
+        ],
+        "scope": [
+          "quality"
+        ],
+        "keywords": [
+          "gate",
+          "validation-evidence",
+          "twin"
+        ],
+        "relatedWork": [
+          "issue.gate-check-omits-active-work-id-from-evidence"
+        ],
+        "supersedes": null,
+        "status": "active",
+        "kind": "bugfix",
+        "createdAt": "2026-08-23T23:29:37.582Z",
+        "updatedAt": "2026-08-23T23:29:37.582Z"
       }
     ]
   }

@@ -6,7 +6,11 @@ import { afterEach, describe, expect, it, vi } from "vitest";
 
 import { runGateCommand } from "../src/commands/gate.js";
 import { initializeProject } from "../src/commands/init.js";
+import { runStartCommand } from "../src/commands/start.js";
 import { EXIT_CODE } from "../src/core/errors.js";
+import { ValidationEvidenceStore } from "../src/quality/evidence.js";
+import { createWorkStateStore } from "../src/state/kernel.js";
+import { WorkService } from "../src/work/service.js";
 
 const PROJECT_ID = "f45b8e3d-e9d8-465b-8489-3bc5e5e5a4dd";
 const temporaryDirectories: string[] = [];
@@ -73,6 +77,58 @@ describe("gate command", () => {
     expect(JSON.stringify(output.stderr.mock.calls)).not.toContain(
       "abcdefghijklmnop",
     );
+  });
+
+  it("stamps recorded evidence with the active work item's id", async () => {
+    const projectRoot = await createProject();
+    const workStore = createWorkStateStore(projectRoot);
+    const workService = new WorkService(workStore);
+    const issue = await workService.createIssue({
+      name: "Slow index",
+      description: "Indexing is slow.",
+      scope: { include: ["src/search/**"], exclude: [] },
+    });
+
+    const startOutput = { stdout: () => {}, stderr: () => {} };
+    await runStartCommand({
+      args: ["issue", issue.entity.id],
+      output: startOutput,
+      startDirectory: projectRoot,
+    });
+
+    const output = { stdout: vi.fn(), stderr: vi.fn() };
+    await expect(
+      runGateCommand({
+        args: ["check"],
+        output,
+        startDirectory: projectRoot,
+      }),
+    ).resolves.toBe(EXIT_CODE.success);
+
+    const evidenceState = await new ValidationEvidenceStore(projectRoot).read();
+    expect(evidenceState.evidence.length).toBeGreaterThan(0);
+    for (const record of evidenceState.evidence) {
+      expect(record.workId).toBe(issue.entity.id);
+    }
+  });
+
+  it("records evidence with no work id when no work item is active", async () => {
+    const projectRoot = await createProject();
+    const output = { stdout: vi.fn(), stderr: vi.fn() };
+
+    await expect(
+      runGateCommand({
+        args: ["check"],
+        output,
+        startDirectory: projectRoot,
+      }),
+    ).resolves.toBe(EXIT_CODE.success);
+
+    const evidenceState = await new ValidationEvidenceStore(projectRoot).read();
+    expect(evidenceState.evidence.length).toBeGreaterThan(0);
+    for (const record of evidenceState.evidence) {
+      expect(record.workId).toBeUndefined();
+    }
   });
 
   it.each([
