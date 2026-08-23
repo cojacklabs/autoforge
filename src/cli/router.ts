@@ -36,6 +36,7 @@ export interface CliDependencies {
     domain?(args: readonly string[]): Promise<ExitCode>;
     changelog?(args: readonly string[]): Promise<ExitCode>;
     learning?(args: readonly string[]): Promise<ExitCode>;
+    strategy?(args: readonly string[]): Promise<ExitCode>;
     update?(args: readonly string[]): Promise<ExitCode>;
     trace?(args: readonly string[]): Promise<ExitCode>;
     evidence?(args: readonly string[]): Promise<ExitCode>;
@@ -137,6 +138,11 @@ export async function runCli(
     case "learning":
       return dependencies.commands.learning
         ? dependencies.commands.learning(commandArgs)
+        : EXIT_CODE.usage;
+
+    case "strategy":
+      return dependencies.commands.strategy
+        ? dependencies.commands.strategy(commandArgs)
         : EXIT_CODE.usage;
 
     case "update":

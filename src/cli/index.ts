@@ -41,6 +41,7 @@ import { runRecapCommand } from "../commands/recap.js";
 import { runStartCommand } from "../commands/start.js";
 import { runTuiCommand } from "../commands/tui.js";
 import { runWhyCommand } from "../commands/why.js";
+import { runStrategyCommand } from "../commands/strategy.js";
 import { GlobalWorkspaceStore } from "../workspace/global-store.js";
 import { projectMutationBlocked } from "../workspace/lifecycle.js";
 import { runCli, type CliOutput } from "./router.js";
@@ -261,6 +262,8 @@ export async function main(
           runChangelogCommand({ args: commandArgs, output, startDirectory }),
         learning: (commandArgs) =>
           runLearningCommand({ args: commandArgs, output, startDirectory }),
+        strategy: (commandArgs) =>
+          runStrategyCommand({ args: commandArgs, output, startDirectory }),
         update: (commandArgs) =>
           runUpdateCommand({
             args: commandArgs,
