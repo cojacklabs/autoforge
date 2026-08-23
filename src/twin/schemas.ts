@@ -9,6 +9,9 @@ export const twinNodeTypeSchema = z.enum([
   "release",
   "domain",
   "feature",
+  "phase",
+  "task",
+  "issue",
   "story",
   "flow",
   "screen",
@@ -18,11 +21,12 @@ export const twinNodeTypeSchema = z.enum([
   "permission",
   "test",
   "decision",
-  "risk",
   "hypothesis",
   "experiment",
   "evidence",
-  "work",
+  "strategy",
+  "validation-evidence",
+  "trace-link",
 ]);
 
 export const twinNodeSchema = z

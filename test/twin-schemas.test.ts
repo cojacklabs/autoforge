@@ -47,4 +47,15 @@ describe("digital twin schemas", () => {
     expect(() => twinNodeTypeSchema.parse("experiment")).not.toThrow();
     expect(() => twinNodeTypeSchema.parse("evidence")).not.toThrow();
   });
+
+  it("accepts the new v0.24 node types and rejects the old work/risk stand-ins", () => {
+    expect(() => twinNodeTypeSchema.parse("phase")).not.toThrow();
+    expect(() => twinNodeTypeSchema.parse("task")).not.toThrow();
+    expect(() => twinNodeTypeSchema.parse("issue")).not.toThrow();
+    expect(() => twinNodeTypeSchema.parse("strategy")).not.toThrow();
+    expect(() => twinNodeTypeSchema.parse("validation-evidence")).not.toThrow();
+    expect(() => twinNodeTypeSchema.parse("trace-link")).not.toThrow();
+    expect(() => twinNodeTypeSchema.parse("risk")).toThrow();
+    expect(() => twinNodeTypeSchema.parse("work")).toThrow();
+  });
 });
