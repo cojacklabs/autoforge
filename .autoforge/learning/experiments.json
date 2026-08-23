@@ -1,0 +1,21 @@
+{
+  "schemaVersion": 1,
+  "revision": 2,
+  "updatedAt": "2026-08-23T13:09:51.916Z",
+  "data": {
+    "experiments": [
+      {
+        "id": "experiment.self-hosted-dogfooding-across-v0-21-1-and-v0-21-2",
+        "hypothesisIds": [
+          "hypothesis.a-documentation-gate-with-a-real-changelog-compile-improves-release-hygiene"
+        ],
+        "method": "Self-hosted dogfooding across v0.21.1 and v0.21.2",
+        "status": "completed",
+        "startedAt": "2026-08-23T13:08:45.840Z",
+        "endedAt": "2026-08-23T13:09:51.893Z",
+        "createdAt": "2026-08-23T13:08:45.840Z",
+        "updatedAt": "2026-08-23T13:09:51.893Z"
+      }
+    ]
+  }
+}

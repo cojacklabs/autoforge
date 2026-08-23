@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
-  "revision": 202,
-  "updatedAt": "2026-08-23T02:27:44.246Z",
+  "revision": 205,
+  "updatedAt": "2026-08-23T13:11:03.909Z",
   "data": {
     "features": [
       {
@@ -1226,6 +1226,27 @@
             "test/**",
             "CHANGELOG.md",
             "docs/planning/**"
+          ],
+          "exclude": []
+        }
+      },
+      {
+        "name": "implement-v0-22-learning-evidence-engine",
+        "description": "Add hypothesis, experiment, and evidence domains, close the loop via decide --evidence, and expose all three through the digital twin, per docs/superpowers/specs/2026-08-22-v0-22-learning-evidence-design.md.",
+        "status": "completed",
+        "createdAt": "2026-08-23T13:08:15.821Z",
+        "updatedAt": "2026-08-23T13:11:03.811Z",
+        "id": "issue.implement-v0-22-learning-evidence-engine",
+        "scope": {
+          "include": [
+            "src/learning/**",
+            "src/commands/learning*.ts",
+            "src/decisions/service.ts",
+            "src/commands/decide.ts",
+            "src/twin/**",
+            "src/commands/twin.ts",
+            "src/cli/**",
+            "test/**"
           ],
           "exclude": []
         }

@@ -1,0 +1,20 @@
+{
+  "schemaVersion": 1,
+  "revision": 2,
+  "updatedAt": "2026-08-23T13:10:22.548Z",
+  "data": {
+    "evidence": [
+      {
+        "id": "evidence.v0-21-1-and-v0-21-2-both-shipped-with-accurate-auto-compiled-changelog-md-entrie",
+        "kind": "ai-evaluation",
+        "summary": "v0.21.1 and v0.21.2 both shipped with accurate, auto-compiled CHANGELOG.md entries; the documentation gate has not been bypassed without an audited reason since it shipped.",
+        "source": "This session's own release history",
+        "experimentId": "experiment.self-hosted-dogfooding-across-v0-21-1-and-v0-21-2",
+        "hypothesisId": null,
+        "relatedWork": null,
+        "resultingDecision": "decision.the-documentation-gate-genuinely-improved-release-hygiene-across-v0-21-1-and-v0",
+        "capturedAt": "2026-08-23T13:10:01.720Z"
+      }
+    ]
+  }
+}

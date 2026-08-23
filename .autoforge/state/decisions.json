@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
-  "revision": 32,
-  "updatedAt": "2026-08-23T02:27:40.130Z",
+  "revision": 33,
+  "updatedAt": "2026-08-23T13:10:22.482Z",
   "data": {
     "decisions": [
       {
@@ -802,6 +802,30 @@
         "kind": "bugfix",
         "createdAt": "2026-08-23T02:27:40.106Z",
         "updatedAt": "2026-08-23T02:27:40.106Z"
+      },
+      {
+        "id": "decision.the-documentation-gate-genuinely-improved-release-hygiene-across-v0-21-1-and-v0",
+        "statement": "The documentation gate genuinely improved release hygiene across v0.21.1 and v0.21.2",
+        "reasoning": "Both releases shipped with accurate CHANGELOG.md entries auto-compiled from linked decisions, closing the exact gap that motivated the documentation-gate feature.",
+        "consequences": [
+          "Confirms the hypothesis; no further changes needed to the documentation gate itself."
+        ],
+        "scope": [
+          "learning",
+          "release-hygiene"
+        ],
+        "keywords": [
+          "v0-22",
+          "dogfooding"
+        ],
+        "relatedWork": [
+          "issue.implement-v0-22-learning-evidence-engine"
+        ],
+        "supersedes": null,
+        "status": "active",
+        "kind": "feature-note",
+        "createdAt": "2026-08-23T13:10:22.456Z",
+        "updatedAt": "2026-08-23T13:10:22.456Z"
       }
     ]
   }
