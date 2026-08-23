@@ -3,10 +3,17 @@ import { EXIT_CODE, type ExitCode } from "../core/errors.js";
 import type { LogWriter } from "../core/logger.js";
 import { discoverProjectRoot } from "../core/project.js";
 import { createDecisionStore } from "../decisions/store.js";
+import { ConstitutionStore } from "../governance/store.js";
+import { DomainStore } from "../domain/store.js";
 import { EvidenceStore } from "../learning/evidence-store.js";
 import { ExperimentStore } from "../learning/experiment-store.js";
 import { HypothesisStore } from "../learning/hypothesis-store.js";
+import { ValidationEvidenceStore } from "../quality/evidence.js";
+import { SpecificationRegistry } from "../specifications/registry.js";
+import { SpecificationFileStore } from "../specifications/store.js";
 import { createWorkStateStore } from "../state/kernel.js";
+import { StrategyStore } from "../strategy/strategy-store.js";
+import { TraceabilityStore } from "../traceability/store.js";
 import { projectStateToTwin } from "../twin/from-state.js";
 import { buildTwinProjection } from "../twin/projection.js";
 import { queryTwin } from "../twin/query.js";
@@ -46,23 +53,44 @@ export async function runTwinCommand(
     const hypothesisStore = new HypothesisStore(project.path);
     const experimentStore = new ExperimentStore(project.path);
     const evidenceStore = new EvidenceStore(project.path);
+    const strategyStore = new StrategyStore(project.path);
     await Promise.all([
       hypothesisStore.ensure(),
       experimentStore.ensure(),
       evidenceStore.ensure(),
+      strategyStore.ensure(),
     ]);
+    const constitutionStore = new ConstitutionStore(project.path);
+    const domainStore = new DomainStore(project.path);
+    const specifications = new SpecificationRegistry(
+      new SpecificationFileStore(project.path),
+    );
+    const traceabilityStore = new TraceabilityStore(project.path);
+    const validationEvidenceStore = new ValidationEvidenceStore(project.path);
     const [
       { state: work },
       { state: decisions },
       { state: hypotheses },
       { state: experiments },
       { state: evidence },
+      { state: strategy },
+      constitution,
+      domain,
+      specificationList,
+      traceGraph,
+      validationEvidenceState,
     ] = await Promise.all([
       createWorkStateStore(project.path).read(),
       createDecisionStore(project.path).read(),
       hypothesisStore.state.read(),
       experimentStore.state.read(),
       evidenceStore.state.read(),
+      strategyStore.state.read(),
+      constitutionStore.load(),
+      domainStore.load(),
+      specifications.list(),
+      traceabilityStore.read(),
+      validationEvidenceStore.read(),
     ]);
     const projection = await store.write(
       projectStateToTwin({
@@ -73,6 +101,12 @@ export async function runTwinCommand(
         hypotheses: hypotheses.data,
         experiments: experiments.data,
         evidence: evidence.data,
+        constitution,
+        domain,
+        specifications: specificationList,
+        strategy: strategy.data,
+        traceability: traceGraph,
+        validationEvidence: validationEvidenceState,
       }),
     );
     options.output.stdout(

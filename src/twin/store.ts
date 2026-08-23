@@ -12,10 +12,9 @@ export class TwinProjectionStore {
   }
 
   async read(): Promise<TwinProjection | null> {
+    let raw: string;
     try {
-      return twinProjectionSchema.parse(
-        JSON.parse(await readFile(this.filePath, "utf8")),
-      );
+      raw = await readFile(this.filePath, "utf8");
     } catch (error) {
       if (
         error instanceof Error &&
@@ -26,6 +25,15 @@ export class TwinProjectionStore {
       }
       throw error;
     }
+    const parsed = twinProjectionSchema.safeParse(JSON.parse(raw));
+    if (!parsed.success) {
+      // A cache written by an older AutoForge version can use a node-type
+      // enum this version no longer accepts. Treat it as absent rather than
+      // crashing — the caller's usual "run twin generate first" guidance
+      // is the correct recovery path.
+      return null;
+    }
+    return parsed.data;
   }
 
   async write(projection: TwinProjection): Promise<TwinProjection> {
