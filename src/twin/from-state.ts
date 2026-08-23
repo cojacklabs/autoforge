@@ -1,4 +1,7 @@
 import type { DecisionMemory } from "../decisions/schemas.js";
+import type { DomainArtifact } from "../domain/schemas.js";
+import { selectApplicableRules } from "../governance/evaluate.js";
+import type { ConstitutionArtifact } from "../governance/schemas.js";
 import type { EvidenceMemory } from "../learning/evidence-schemas.js";
 import type { ExperimentMemory } from "../learning/experiment-schemas.js";
 import type { HypothesisMemory } from "../learning/hypothesis-schemas.js";
@@ -14,10 +17,74 @@ export interface TwinStateInput {
   hypotheses: HypothesisMemory;
   experiments: ExperimentMemory;
   evidence: EvidenceMemory;
+  constitution?: ConstitutionArtifact | null;
+  domain?: DomainArtifact | null;
 }
 
 export function projectStateToTwin(input: TwinStateInput): TwinProjection {
+  const allWorkKinds: Record<string, string> = {
+    ...Object.fromEntries(
+      input.work.features.map((item) => [item.id, "feature"]),
+    ),
+    ...Object.fromEntries(input.work.phases.map((item) => [item.id, "phase"])),
+    ...Object.fromEntries(input.work.tasks.map((item) => [item.id, "task"])),
+    ...Object.fromEntries(input.work.issues.map((item) => [item.id, "issue"])),
+  };
+
+  const constitutionNodes = (input.constitution?.rules ?? []).map((rule) => ({
+    id: rule.id,
+    type: "constitution" as const,
+    title: rule.title,
+    source: ".autoforge/governance/constitution.json",
+    updatedAt: input.constitution!.updatedAt,
+  }));
+  const constitutionEdges = (input.constitution?.rules ?? []).flatMap((rule) =>
+    Object.entries(allWorkKinds)
+      .filter(([, kind]) =>
+        selectApplicableRules(input.constitution!, {
+          objective: "",
+          workKind: kind,
+        }).some((applicable) => applicable.id === rule.id),
+      )
+      .map(([workId]) => ({
+        sourceId: rule.id,
+        targetId: workId,
+        relationship: "governs",
+      })),
+  );
+
+  const domainNodes = (input.domain?.concepts ?? []).map((concept) => ({
+    id: concept.id,
+    type: "domain" as const,
+    title: concept.name,
+    source: ".autoforge/domain/artifact.json",
+    updatedAt: input.domain!.updatedAt,
+  }));
+  const domainRelationshipEdges = (input.domain?.relationships ?? []).map(
+    (relationship) => ({
+      sourceId: relationship.sourceId,
+      targetId: relationship.targetId,
+      relationship: relationship.type,
+    }),
+  );
+  const domainProvenanceEdges = (input.domain?.concepts ?? []).flatMap(
+    (concept) =>
+      concept.provenance
+        .filter(
+          (entry) =>
+            entry.sourceType === "decision" ||
+            entry.sourceType === "specification",
+        )
+        .map((entry) => ({
+          sourceId: concept.id,
+          targetId: entry.sourceId,
+          relationship: "models",
+        })),
+  );
+
   const nodes = [
+    ...constitutionNodes,
+    ...domainNodes,
     ...input.work.features.map((item) => workNode(item, "feature")),
     ...input.work.phases.map((item) => workNode(item, "phase")),
     ...input.work.tasks.map((item) => workNode(item, "task")),
@@ -52,6 +119,9 @@ export function projectStateToTwin(input: TwinStateInput): TwinProjection {
     })),
   ];
   const edges = [
+    ...constitutionEdges,
+    ...domainRelationshipEdges,
+    ...domainProvenanceEdges,
     ...input.work.phases.map((phase) => ({
       sourceId: phase.id,
       targetId: phase.featureId,
