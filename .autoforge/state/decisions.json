@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
-  "revision": 22,
-  "updatedAt": "2026-08-22T21:02:15.449Z",
+  "revision": 23,
+  "updatedAt": "2026-08-22T23:02:44.748Z",
   "data": {
     "decisions": [
       {
@@ -24,6 +24,7 @@
         ],
         "supersedes": null,
         "status": "active",
+        "kind": "architecture",
         "createdAt": "2026-08-20T15:16:23.810Z",
         "updatedAt": "2026-08-20T15:16:23.810Z"
       },
@@ -47,6 +48,7 @@
         ],
         "supersedes": null,
         "status": "active",
+        "kind": "architecture",
         "createdAt": "2026-08-20T15:20:20.041Z",
         "updatedAt": "2026-08-20T15:20:20.041Z"
       },
@@ -70,6 +72,7 @@
         ],
         "supersedes": null,
         "status": "active",
+        "kind": "architecture",
         "createdAt": "2026-08-20T15:33:53.277Z",
         "updatedAt": "2026-08-20T15:33:53.277Z"
       },
@@ -93,6 +96,7 @@
         ],
         "supersedes": null,
         "status": "active",
+        "kind": "architecture",
         "createdAt": "2026-08-20T15:39:35.182Z",
         "updatedAt": "2026-08-20T15:39:35.182Z"
       },
@@ -114,6 +118,7 @@
         "relatedWork": [],
         "supersedes": null,
         "status": "active",
+        "kind": "architecture",
         "createdAt": "2026-08-20T18:09:51.239Z",
         "updatedAt": "2026-08-20T18:09:51.239Z"
       },
@@ -135,6 +140,7 @@
         "relatedWork": [],
         "supersedes": null,
         "status": "active",
+        "kind": "architecture",
         "createdAt": "2026-08-20T18:09:51.691Z",
         "updatedAt": "2026-08-20T18:09:51.691Z"
       },
@@ -156,6 +162,7 @@
         "relatedWork": [],
         "supersedes": null,
         "status": "active",
+        "kind": "architecture",
         "createdAt": "2026-08-20T18:09:52.174Z",
         "updatedAt": "2026-08-20T18:09:52.174Z"
       },
@@ -177,6 +184,7 @@
         "relatedWork": [],
         "supersedes": null,
         "status": "active",
+        "kind": "architecture",
         "createdAt": "2026-08-20T18:09:52.666Z",
         "updatedAt": "2026-08-20T18:09:52.666Z"
       },
@@ -198,6 +206,7 @@
         "relatedWork": [],
         "supersedes": null,
         "status": "active",
+        "kind": "architecture",
         "createdAt": "2026-08-20T18:09:53.178Z",
         "updatedAt": "2026-08-20T18:09:53.178Z"
       },
@@ -219,6 +228,7 @@
         "relatedWork": [],
         "supersedes": null,
         "status": "active",
+        "kind": "architecture",
         "createdAt": "2026-08-20T18:09:53.648Z",
         "updatedAt": "2026-08-20T18:09:53.648Z"
       },
@@ -240,6 +250,7 @@
         "relatedWork": [],
         "supersedes": null,
         "status": "active",
+        "kind": "architecture",
         "createdAt": "2026-08-20T18:14:29.632Z",
         "updatedAt": "2026-08-20T18:14:29.632Z"
       },
@@ -261,6 +272,7 @@
         "relatedWork": [],
         "supersedes": null,
         "status": "active",
+        "kind": "architecture",
         "createdAt": "2026-08-20T18:38:54.515Z",
         "updatedAt": "2026-08-20T18:38:54.515Z"
       },
@@ -282,6 +294,7 @@
         "relatedWork": [],
         "supersedes": null,
         "status": "active",
+        "kind": "architecture",
         "createdAt": "2026-08-20T18:38:54.819Z",
         "updatedAt": "2026-08-20T18:38:54.819Z"
       },
@@ -303,6 +316,7 @@
         "relatedWork": [],
         "supersedes": null,
         "status": "active",
+        "kind": "architecture",
         "createdAt": "2026-08-20T18:38:55.104Z",
         "updatedAt": "2026-08-20T18:38:55.104Z"
       },
@@ -324,6 +338,7 @@
         "relatedWork": [],
         "supersedes": null,
         "status": "active",
+        "kind": "architecture",
         "createdAt": "2026-08-20T18:38:55.417Z",
         "updatedAt": "2026-08-20T18:38:55.417Z"
       },
@@ -345,6 +360,7 @@
         "relatedWork": [],
         "supersedes": null,
         "status": "active",
+        "kind": "architecture",
         "createdAt": "2026-08-20T18:38:55.784Z",
         "updatedAt": "2026-08-20T18:38:55.784Z"
       },
@@ -366,6 +382,7 @@
         "relatedWork": [],
         "supersedes": null,
         "status": "active",
+        "kind": "architecture",
         "createdAt": "2026-08-20T18:38:56.112Z",
         "updatedAt": "2026-08-20T18:38:56.112Z"
       },
@@ -387,6 +404,7 @@
         "relatedWork": [],
         "supersedes": null,
         "status": "active",
+        "kind": "architecture",
         "createdAt": "2026-08-20T18:38:56.427Z",
         "updatedAt": "2026-08-20T18:38:56.427Z"
       },
@@ -408,6 +426,7 @@
         "relatedWork": [],
         "supersedes": null,
         "status": "active",
+        "kind": "architecture",
         "createdAt": "2026-08-20T18:38:56.711Z",
         "updatedAt": "2026-08-20T18:38:56.711Z"
       },
@@ -431,6 +450,7 @@
         "relatedWork": [],
         "supersedes": null,
         "status": "active",
+        "kind": "architecture",
         "createdAt": "2026-08-22T02:14:31.728Z",
         "updatedAt": "2026-08-22T02:14:31.728Z"
       },
@@ -454,6 +474,7 @@
         "relatedWork": [],
         "supersedes": null,
         "status": "active",
+        "kind": "architecture",
         "createdAt": "2026-08-22T02:26:44.881Z",
         "updatedAt": "2026-08-22T02:26:44.881Z"
       },
@@ -479,8 +500,36 @@
         "relatedWork": [],
         "supersedes": null,
         "status": "active",
+        "kind": "architecture",
         "createdAt": "2026-08-22T21:02:15.426Z",
         "updatedAt": "2026-08-22T21:02:15.426Z"
+      },
+      {
+        "id": "decision.issue-and-task-completion-requires-a-linked-decision-record-or-an-explicit-audit",
+        "statement": "Issue and task completion requires a linked decision record or an explicit, audited skip reason",
+        "reasoning": "CHANGELOG.md silently stopped tracking releases after v0.6.0 because documentation was advisory rather than enforced, and this was only discovered by manual audit across agent handoffs where no human was present to catch the omission.",
+        "consequences": [
+          "autoforge done blocks issue/task completion without a relatedWork-linked decision; autoforge done --no-decision <reason> bypasses it but records the reason as a skip-reason decision.",
+          "autoforge changelog compile renders bugfix/feature-note decisions since the last tag into CHANGELOG.md, closing the specific gap that motivated this change."
+        ],
+        "scope": [
+          "documentation",
+          "governance",
+          "cli"
+        ],
+        "keywords": [
+          "changelog",
+          "decision-gate",
+          "done-command"
+        ],
+        "relatedWork": [
+          "issue.implement-documentation-gate"
+        ],
+        "supersedes": null,
+        "status": "active",
+        "kind": "feature-note",
+        "createdAt": "2026-08-22T23:02:44.719Z",
+        "updatedAt": "2026-08-22T23:02:44.719Z"
       }
     ]
   }

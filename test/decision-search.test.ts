@@ -19,6 +19,7 @@ function decision(overrides: Partial<Decision>): Decision {
     relatedWork: [],
     supersedes: null,
     status: "active",
+    kind: "architecture",
     createdAt: TIMESTAMP,
     updatedAt: TIMESTAMP,
     ...overrides,

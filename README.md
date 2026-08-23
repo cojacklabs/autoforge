@@ -66,8 +66,15 @@ npx autoforge start task <task-id>
 npx autoforge context --explain
 npx autoforge check --path src/checkout.ts
 npx autoforge gate check
+npx autoforge decide --statement "..." --reasoning "..." --consequence "..." --scope checkout --keyword payments --work <task-id> --kind feature-note
 npx autoforge done
 ```
+
+`autoforge done` on a task or issue requires at least one decision whose
+`--work` links to the active work item — this is what makes the last two
+lines above ordered, not optional. Pass
+`autoforge done --no-decision "<reason>"` to bypass for trivial work; the
+reason is itself recorded as an auditable decision.
 
 ## Multi-Agent Orchestration
 
@@ -99,9 +106,10 @@ released and reclaimed before editing continues.
 ## Memory and Design
 
 ```bash
-npx autoforge decide --statement "..." --reasoning "..." --consequence "..." --scope payments --keyword checkout
+npx autoforge decide --statement "..." --reasoning "..." --consequence "..." --scope payments --keyword checkout --kind bugfix
 npx autoforge why --query checkout
 npx autoforge why --history
+npx autoforge changelog compile
 npx autoforge doctrine
 npx autoforge design validate dev/design/screen.md
 npx autoforge design import dev/design/screen.md

@@ -66,6 +66,19 @@ describe("done command", () => {
       sessionStore,
       workStore,
     } = await createFixture();
+    const { createDecisionStore } = await import("../src/decisions/store.js");
+    const { DecisionService } = await import("../src/decisions/service.js");
+    await new DecisionService(
+      createDecisionStore(projectRoot),
+      workStore,
+    ).record({
+      statement: "Document the nested-directory done fixture.",
+      reasoning: "Required by the documentation gate.",
+      consequences: ["Recorded for test coverage."],
+      scope: ["testing"],
+      keywords: ["done-command"],
+      relatedWork: [issue.entity.id],
+    });
     const nested = path.join(projectRoot, "packages", "app");
     await mkdir(nested, { recursive: true });
     const output = { stdout: vi.fn(), stderr: vi.fn() };
@@ -121,12 +134,25 @@ describe("done command", () => {
       }),
     ).resolves.toBe(EXIT_CODE.usage);
     expect(output.stderr).toHaveBeenCalledWith(
-      'Command "done" does not accept arguments.',
+      'Command "done" only accepts --no-decision "<reason>", or no arguments.',
     );
   });
 
   it("preserves the lifecycle conflict when nothing is active", async () => {
-    const { projectRoot } = await createFixture();
+    const { issue, projectRoot, workStore } = await createFixture();
+    const { createDecisionStore } = await import("../src/decisions/store.js");
+    const { DecisionService } = await import("../src/decisions/service.js");
+    await new DecisionService(
+      createDecisionStore(projectRoot),
+      workStore,
+    ).record({
+      statement: "Document the lifecycle-conflict done fixture.",
+      reasoning: "Required by the documentation gate.",
+      consequences: ["Recorded for test coverage."],
+      scope: ["testing"],
+      keywords: ["done-command"],
+      relatedWork: [issue.entity.id],
+    });
     const firstOutput = { stdout: vi.fn(), stderr: vi.fn() };
     await runDoneCommand({
       args: [],
@@ -141,5 +167,66 @@ describe("done command", () => {
         startDirectory: projectRoot,
       }),
     ).rejects.toMatchObject({ code: "STATE_CONFLICT" });
+  });
+
+  it("blocks completion of an issue with no linked decision", async () => {
+    const { projectRoot } = await createFixture();
+    const output = { stdout: vi.fn(), stderr: vi.fn() };
+
+    await expect(
+      runDoneCommand({ args: [], output, startDirectory: projectRoot }),
+    ).resolves.toBe(EXIT_CODE.invalidState);
+    expect(output.stderr).toHaveBeenCalledWith(
+      expect.stringContaining(
+        "before closing this issue, or pass --no-decision",
+      ),
+    );
+  });
+
+  it("completes an issue with a linked decision", async () => {
+    const { issue, projectRoot, workStore } = await createFixture();
+    const { createDecisionStore } = await import("../src/decisions/store.js");
+    const { DecisionService } = await import("../src/decisions/service.js");
+    await new DecisionService(
+      createDecisionStore(projectRoot),
+      workStore,
+    ).record({
+      statement: "Document the done-command fixture.",
+      reasoning: "Required by the documentation gate.",
+      consequences: ["Recorded for test coverage."],
+      scope: ["testing"],
+      keywords: ["done-command"],
+      relatedWork: [issue.entity.id],
+      kind: "bugfix",
+    });
+    const output = { stdout: vi.fn(), stderr: vi.fn() };
+
+    await expect(
+      runDoneCommand({ args: [], output, startDirectory: projectRoot }),
+    ).resolves.toBe(EXIT_CODE.success);
+  });
+
+  it("bypasses the gate with --no-decision and records the reason", async () => {
+    const { issue, projectRoot } = await createFixture();
+    const output = { stdout: vi.fn(), stderr: vi.fn() };
+
+    await expect(
+      runDoneCommand({
+        args: ["--no-decision", "Trivial fixture cleanup, no design decision."],
+        output,
+        startDirectory: projectRoot,
+      }),
+    ).resolves.toBe(EXIT_CODE.success);
+
+    const { createDecisionStore } = await import("../src/decisions/store.js");
+    const { state } = await createDecisionStore(projectRoot).read();
+    const skipDecision = state.data.decisions.find(
+      (decision) => decision.kind === "skip-reason",
+    );
+    expect(skipDecision).toBeDefined();
+    expect(skipDecision?.relatedWork).toContain(issue.entity.id);
+    expect(skipDecision?.reasoning).toContain(
+      "Trivial fixture cleanup, no design decision.",
+    );
   });
 });

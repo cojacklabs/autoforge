@@ -7,6 +7,14 @@ All notable changes to this project will be documented in this file.
 > rather than in this file. See those directories and git tags
 > (`v0.7.0`–`v0.21.0`) for that history.
 
+<!-- autoforge:changelog:start -->
+
+### Added
+
+- Issue and task completion requires a linked decision record or an explicit, audited skip reason (decision.issue-and-task-completion-requires-a-linked-decision-record-or-an-explicit-audit)
+
+<!-- autoforge:changelog:end -->
+
 ## [0.21.1] - 2026-08-22
 
 ### Fixed

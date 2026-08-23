@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
-  "revision": 186,
-  "updatedAt": "2026-08-22T22:26:11.426Z",
+  "revision": 187,
+  "updatedAt": "2026-08-22T23:02:57.908Z",
   "data": {
     "features": [
       {
@@ -1204,6 +1204,28 @@
         "scope": {
           "include": [
             "src/workspace/lifecycle.ts"
+          ],
+          "exclude": []
+        }
+      },
+      {
+        "name": "implement-documentation-gate",
+        "description": "Add decision-kind tagging, a done-time documentation gate for issues/tasks, and autoforge changelog compile, per docs/superpowers/specs/2026-08-22-documentation-gate-design.md.",
+        "status": "completed",
+        "createdAt": "2026-08-22T23:02:18.528Z",
+        "updatedAt": "2026-08-22T23:02:57.814Z",
+        "id": "issue.implement-documentation-gate",
+        "scope": {
+          "include": [
+            "src/decisions/**",
+            "src/commands/decide.ts",
+            "src/commands/done.ts",
+            "src/commands/changelog.ts",
+            "src/changelog/**",
+            "src/cli/**",
+            "test/**",
+            "CHANGELOG.md",
+            "docs/planning/**"
           ],
           "exclude": []
         }

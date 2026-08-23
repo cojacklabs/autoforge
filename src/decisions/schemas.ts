@@ -24,6 +24,10 @@ export const relatedWorkIdSchema = z
 
 export const decisionStatusSchema = z.enum(["active", "superseded", "revoked"]);
 
+export const decisionKindSchema = z
+  .enum(["architecture", "bugfix", "feature-note", "skip-reason"])
+  .default("architecture");
+
 export const decisionSchema = z
   .object({
     id: decisionIdSchema,
@@ -35,6 +39,7 @@ export const decisionSchema = z
     relatedWork: z.array(relatedWorkIdSchema),
     supersedes: decisionIdSchema.nullable(),
     status: decisionStatusSchema,
+    kind: decisionKindSchema,
     createdAt: timestampSchema,
     updatedAt: timestampSchema,
   })
@@ -159,5 +164,6 @@ export const decisionMemorySchema = z
   });
 
 export type DecisionStatus = z.infer<typeof decisionStatusSchema>;
+export type DecisionKind = z.infer<typeof decisionKindSchema>;
 export type Decision = z.infer<typeof decisionSchema>;
 export type DecisionMemory = z.infer<typeof decisionMemorySchema>;

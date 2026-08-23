@@ -758,6 +758,21 @@ describe("bundled foundation CLI", () => {
       "issue",
       "issue.complete-cli-work",
     ]);
+    await runBundledCli(projectRoot, [
+      "decide",
+      "--statement",
+      "Document the CLI done fixture",
+      "--reasoning",
+      "Required by the documentation gate",
+      "--consequence",
+      "Recorded for test coverage",
+      "--scope",
+      "testing",
+      "--keyword",
+      "done-command",
+      "--work",
+      "issue.complete-cli-work",
+    ]);
 
     const completed = await runBundledCli(projectRoot, ["done"]);
 

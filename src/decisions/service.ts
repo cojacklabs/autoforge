@@ -15,6 +15,7 @@ export interface RecordDecisionInput {
   keywords: string[];
   relatedWork: string[];
   supersedes?: string;
+  kind?: import("./schemas.js").DecisionKind;
 }
 
 export interface DecisionMutationResult {
@@ -138,6 +139,7 @@ export class DecisionService {
       relatedWork: input.relatedWork,
       supersedes: target?.id ?? null,
       status: "active",
+      kind: input.kind ?? "architecture",
       createdAt: timestamp,
       updatedAt: timestamp,
     });

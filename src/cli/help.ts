@@ -5,6 +5,7 @@ Usage:
 
 Commands:
   add        Create a feature, phase, task, or issue
+  changelog  Compile documented bugfix and feature-note decisions into CHANGELOG.md
   check      Evaluate work, session, context, and edit guardrails
   context    Generate the active work build packet
   decide     Record or supersede an architectural decision
@@ -45,7 +46,7 @@ Add work:
   autoforge add issue --name <name> --description <text> --include <pattern> [--include <pattern>] [--exclude <pattern>]
 
 Decision memory:
-  autoforge decide --statement <text> --reasoning <text> --consequence <text> --scope <tag> --keyword <tag> [--consequence <text>] [--scope <tag>] [--keyword <tag>] [--work <work-id>] [--supersedes <decision-id>]
+  autoforge decide --statement <text> --reasoning <text> --consequence <text> --scope <tag> --keyword <tag> [--consequence <text>] [--scope <tag>] [--keyword <tag>] [--work <work-id>] [--supersedes <decision-id>] [--kind <architecture|bugfix|feature-note>]
   autoforge why [--query <text>] [--work <work-id>] [--work <work-id>] [--history] [--limit <count>]
 
 Doctrines:
@@ -55,7 +56,7 @@ Doctrines:
 Work lifecycle:
   autoforge start <task|issue> <id>
   autoforge recap
-  autoforge done
+  autoforge done [--no-decision "<reason>"]
 
 Context packets:
   autoforge context
@@ -145,6 +146,7 @@ Intent assessment:
   autoforge bootstrap approve <artifact-id> [--evidence <path|workflow-id>]
   autoforge constitution init|list|show <id>|check <objective>
   autoforge domain init|list|show <id>|check
+  autoforge changelog compile [--since <git-tag>]
   autoforge update
   trace      Record and inspect traceability links and impact
   evidence   Inspect persisted validation evidence and readiness

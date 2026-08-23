@@ -30,6 +30,7 @@ import { runAssetsCommand } from "../commands/assets.js";
 import { runBootstrapCommand } from "../commands/bootstrap.js";
 import { runConstitutionCommand } from "../commands/constitution.js";
 import { runDomainCommand } from "../commands/domain.js";
+import { runChangelogCommand } from "../commands/changelog.js";
 import { runUpdateCommand } from "../commands/update.js";
 import { runTraceabilityCommand } from "../commands/traceability.js";
 import { runEvidenceCommand } from "../commands/evidence.js";
@@ -255,6 +256,8 @@ export async function main(
           runConstitutionCommand({ args: commandArgs, output, startDirectory }),
         domain: (commandArgs) =>
           runDomainCommand({ args: commandArgs, output, startDirectory }),
+        changelog: (commandArgs) =>
+          runChangelogCommand({ args: commandArgs, output, startDirectory }),
         update: (commandArgs) =>
           runUpdateCommand({
             args: commandArgs,
