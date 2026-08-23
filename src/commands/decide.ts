@@ -140,14 +140,16 @@ export async function runDecideCommand(
   const project = await discoverProjectRoot({
     startDirectory: options.startDirectory,
   });
+  const workStore = createWorkStateStore(project.path);
   const service = new DecisionService(
     createDecisionStore(project.path),
-    createWorkStateStore(project.path),
+    workStore,
     {
       evidenceService: new EvidenceService(
         new EvidenceStore(project.path),
         new ExperimentStore(project.path),
         new HypothesisStore(project.path),
+        workStore,
       ),
     },
   );

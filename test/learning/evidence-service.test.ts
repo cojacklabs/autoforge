@@ -14,6 +14,7 @@ import {
   createInitialWorkState,
   createWorkStateStore,
 } from "../../src/state/kernel.js";
+import { WorkService } from "../../src/work/service.js";
 
 const TIMESTAMP = "2026-08-22T06:00:00.000Z";
 const temporaryDirectories: string[] = [];
@@ -40,6 +41,12 @@ async function createFixture() {
     temporaryId: () => "test",
   });
   await workStore.initialize(createInitialWorkState());
+  const feature = await new WorkService(workStore, {
+    now: () => new Date(TIMESTAMP),
+  }).createFeature({
+    name: "Evidence Fixture Feature",
+    description: "Fixture feature for evidence-service tests.",
+  });
   const hypothesisStore = new HypothesisStore(projectRoot);
   await hypothesisStore.ensure();
   const hypothesisResult = await new HypothesisService(
@@ -67,10 +74,12 @@ async function createFixture() {
   return {
     hypothesis: hypothesisResult.hypothesis,
     experiment: experimentResult.experiment,
+    feature,
     service: new EvidenceService(
       evidenceStore,
       experimentStore,
       hypothesisStore,
+      workStore,
       { now: () => new Date(TIMESTAMP) },
     ),
     evidenceStore,
@@ -112,6 +121,29 @@ describe("evidence service", () => {
         experimentId: "experiment.does-not-exist",
       }),
     ).rejects.toMatchObject({ code: "INVALID_ARGUMENT" });
+  });
+
+  it("rejects an unknown relatedWork id", async () => {
+    const { service } = await createFixture();
+    await expect(
+      service.record({
+        kind: "bug-report",
+        summary: "Example.",
+        source: "Example.",
+        relatedWork: "issue.does-not-exist",
+      }),
+    ).rejects.toMatchObject({ code: "INVALID_ARGUMENT" });
+  });
+
+  it("records evidence linked to a real work item", async () => {
+    const { feature, service } = await createFixture();
+    const result = await service.record({
+      kind: "bug-report",
+      summary: "Example.",
+      source: "Example.",
+      relatedWork: feature.entity.id,
+    });
+    expect(result.evidence.relatedWork).toBe(feature.entity.id);
   });
 
   it("stamps resultingDecision on referenced evidence", async () => {

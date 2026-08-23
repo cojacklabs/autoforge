@@ -8,6 +8,7 @@ import { EvidenceService } from "../learning/evidence-service.js";
 import { EvidenceStore } from "../learning/evidence-store.js";
 import { ExperimentStore } from "../learning/experiment-store.js";
 import { HypothesisStore } from "../learning/hypothesis-store.js";
+import { createWorkStateStore } from "../state/kernel.js";
 
 export interface LearningEvidenceCommandOptions {
   args: readonly string[];
@@ -60,6 +61,7 @@ export async function runLearningEvidenceCommand(
     evidenceStore,
     experimentStore,
     hypothesisStore,
+    createWorkStateStore(project.path),
   );
 
   try {

@@ -193,10 +193,15 @@ describe("decision service", () => {
     );
     const evidenceStore = new EvidenceStore(projectRoot);
     await evidenceStore.ensure();
+    const evidenceWorkStore = createWorkStateStore(projectRoot, {
+      now: () => new Date(TIMESTAMP),
+      temporaryId: () => "test",
+    });
     const evidenceResult = await new EvidenceService(
       evidenceStore,
       new ExperimentStore(projectRoot),
       new HypothesisStore(projectRoot),
+      evidenceWorkStore,
     ).record({
       kind: "bug-report",
       summary: "Example bug report.",
@@ -217,6 +222,7 @@ describe("decision service", () => {
           evidenceStore,
           new ExperimentStore(projectRoot),
           new HypothesisStore(projectRoot),
+          workStore,
         ),
       },
     );
@@ -274,6 +280,7 @@ describe("decision service", () => {
           evidenceStore,
           new ExperimentStore(projectRoot),
           new HypothesisStore(projectRoot),
+          workStore,
         ),
       },
     );

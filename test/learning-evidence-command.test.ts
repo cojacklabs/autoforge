@@ -7,6 +7,8 @@ import { afterEach, describe, expect, it, vi } from "vitest";
 import { initializeProject } from "../src/commands/init.js";
 import { runLearningEvidenceCommand } from "../src/commands/learning-evidence.js";
 import { EXIT_CODE } from "../src/core/errors.js";
+import { createWorkStateStore } from "../src/state/kernel.js";
+import { WorkService } from "../src/work/service.js";
 
 const temporaryDirectories: string[] = [];
 
@@ -31,6 +33,11 @@ afterEach(async () => {
 describe("learning evidence command", () => {
   it("adds, lists, and shows evidence linked to related work", async () => {
     const { projectRoot } = await createFixture();
+    const workStore = createWorkStateStore(projectRoot);
+    const { entity: feature } = await new WorkService(workStore).createFeature({
+      name: "Onboarding drop off",
+      description: "Investigate onboarding drop off.",
+    });
     const output = { stdout: vi.fn(), stderr: vi.fn() };
     await expect(
       runLearningEvidenceCommand({
@@ -43,7 +50,7 @@ describe("learning evidence command", () => {
           "--source",
           "Beta cohort #3",
           "--work",
-          "issue.onboarding-drop-off",
+          feature.id,
         ],
         output,
         startDirectory: projectRoot,
@@ -84,7 +91,7 @@ describe("learning evidence command", () => {
     ).resolves.toBe(EXIT_CODE.success);
     expect(
       JSON.parse(showOutput.stdout.mock.calls[0]?.[0] ?? "{}").relatedWork,
-    ).toBe("issue.onboarding-drop-off");
+    ).toBe(feature.id);
   });
 
   it("rejects unknown subcommands", async () => {

@@ -1,4 +1,6 @@
 import { AutoForgeError, EXIT_CODE } from "../core/errors.js";
+import type { AtomicStateStore } from "../state/store.js";
+import type { WorkState } from "../work/schemas.js";
 import { evidenceSchema, type Evidence } from "./evidence-schemas.js";
 import type { EvidenceStore } from "./evidence-store.js";
 import type { ExperimentStore } from "./experiment-store.js";
@@ -43,6 +45,15 @@ function slugify(value: string): string {
   return slug || "evidence";
 }
 
+function workIds(state: WorkState): Set<string> {
+  return new Set([
+    ...state.features.map((item) => item.id),
+    ...state.phases.map((item) => item.id),
+    ...state.tasks.map((item) => item.id),
+    ...state.issues.map((item) => item.id),
+  ]);
+}
+
 function allocateEvidenceId(
   summary: string,
   existingIds: ReadonlySet<string>,
@@ -62,17 +73,20 @@ export class EvidenceService {
   private readonly evidenceStore: EvidenceStore;
   private readonly experimentStore: ExperimentStore;
   private readonly hypothesisStore: HypothesisStore;
+  private readonly workStore: AtomicStateStore<WorkState>;
   private readonly now: () => Date;
 
   constructor(
     evidenceStore: EvidenceStore,
     experimentStore: ExperimentStore,
     hypothesisStore: HypothesisStore,
+    workStore: AtomicStateStore<WorkState>,
     options: EvidenceServiceOptions = {},
   ) {
     this.evidenceStore = evidenceStore;
     this.experimentStore = experimentStore;
     this.hypothesisStore = hypothesisStore;
+    this.workStore = workStore;
     this.now = options.now ?? (() => new Date());
   }
 
@@ -103,6 +117,15 @@ export class EvidenceService {
       if (!known.has(input.hypothesisId)) {
         throw evidenceError("Evidence references unknown hypothesis", {
           hypothesisId: input.hypothesisId,
+        });
+      }
+    }
+    if (input.relatedWork) {
+      const { state: workState } = await this.workStore.read();
+      const known = workIds(workState.data);
+      if (!known.has(input.relatedWork)) {
+        throw evidenceError("Evidence references unknown work", {
+          relatedWork: input.relatedWork,
         });
       }
     }
