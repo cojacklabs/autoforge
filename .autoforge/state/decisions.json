@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
-  "revision": 43,
-  "updatedAt": "2026-08-23T20:02:45.457Z",
+  "revision": 49,
+  "updatedAt": "2026-08-23T21:02:56.674Z",
   "data": {
     "decisions": [
       {
@@ -1068,6 +1068,148 @@
         "kind": "bugfix",
         "createdAt": "2026-08-23T20:02:45.431Z",
         "updatedAt": "2026-08-23T20:02:45.431Z"
+      },
+      {
+        "id": "decision.the-twin-node-type-schema-was-extended-and-renamed-for-v0-24",
+        "statement": "The twin node-type schema was extended and renamed for v0.24",
+        "reasoning": "The digital twin's node-type enum already anticipated constitution and domain but never gained dedicated types for phases/tasks/issues, strategy assessments, validation evidence, or traceability links, and reused the generic flow/work/risk labels as placeholders for work items -- colliding with specifications' own flow type once design specs would be projected.",
+        "consequences": [
+          "twinNodeTypeSchema now includes phase, task, issue, strategy, validation-evidence, and trace-link; risk and work were removed since they had no other use in the codebase."
+        ],
+        "scope": [
+          "twin"
+        ],
+        "keywords": [
+          "continuous-evolution",
+          "schema"
+        ],
+        "relatedWork": [
+          "task.twin-node-type-schema-rename-and-extension"
+        ],
+        "supersedes": null,
+        "status": "active",
+        "kind": "feature-note",
+        "createdAt": "2026-08-23T20:58:08.095Z",
+        "updatedAt": "2026-08-23T20:58:08.095Z"
+      },
+      {
+        "id": "decision.work-phases-tasks-and-issues-now-project-into-the-digital-twin-with-their-own-de",
+        "statement": "Work phases, tasks, and issues now project into the digital twin with their own dedicated node types",
+        "reasoning": "The twin previously reused the generic flow/work/risk node-type labels for phases/tasks/issues, which would have collided with specifications' own flow type once design specs were projected into the twin in a later task of this same milestone.",
+        "consequences": [
+          "projectStateToTwin now emits type: phase/task/issue for WorkState phases/tasks/issues; flow and risk are now free to mean exactly what the rest of the codebase already calls them."
+        ],
+        "scope": [
+          "twin"
+        ],
+        "keywords": [
+          "continuous-evolution",
+          "schema"
+        ],
+        "relatedWork": [
+          "task.twin-phase-task-issue-node-type-migration"
+        ],
+        "supersedes": null,
+        "status": "active",
+        "kind": "feature-note",
+        "createdAt": "2026-08-23T20:58:37.544Z",
+        "updatedAt": "2026-08-23T20:58:37.544Z"
+      },
+      {
+        "id": "decision.constitution-rules-and-domain-concepts-now-project-into-the-digital-twin",
+        "statement": "Constitution rules and domain concepts now project into the digital twin",
+        "reasoning": "The north-star's digital twin was always meant to include governance and domain, but the twin projection never populated nodes of those already-declared types. Closing this gap required reusing selectApplicableRules for governance-edge matching rather than evaluateGovernance, since the latter needs an objective string and computes pass/warning/conflict/blocked status that is unnecessary for a structural governs edge.",
+        "consequences": [
+          "projectStateToTwin projects constitution rules as constitution nodes with governs edges to matching work items, and domain concepts as domain nodes with edges from domain.relationships and models edges to decision/specification provenance."
+        ],
+        "scope": [
+          "twin"
+        ],
+        "keywords": [
+          "continuous-evolution",
+          "governance",
+          "domain"
+        ],
+        "relatedWork": [
+          "task.twin-governance-and-domain-projection"
+        ],
+        "supersedes": null,
+        "status": "active",
+        "kind": "feature-note",
+        "createdAt": "2026-08-23T20:59:18.063Z",
+        "updatedAt": "2026-08-23T20:59:18.063Z"
+      },
+      {
+        "id": "decision.design-specifications-active-strategy-assessments-traceability-links-and-validat",
+        "statement": "Design specifications, active strategy assessments, traceability links, and validation evidence now project into the digital twin",
+        "reasoning": "Closing the north-star's full-loop mandate for the twin required the remaining four data sources: specifications project using their own type field directly (safe only because the prior task freed flow from meaning a work phase), strategy assessments are filtered to active status only so superseded assessments never appear as stale current-state nodes, and traceability/validation-evidence edges rely entirely on buildTwinProjection's existing filter for edges referencing unmodeled nodes rather than reimplementing that check.",
+        "consequences": [
+          "projectStateToTwin now projects specifications by their own type, active strategy assessments with assesses/resulted-in edges, traceability links as traces edges, and validation evidence as validation-evidence nodes with validates/traces edges."
+        ],
+        "scope": [
+          "twin"
+        ],
+        "keywords": [
+          "continuous-evolution",
+          "strategy",
+          "traceability",
+          "validation"
+        ],
+        "relatedWork": [
+          "task.twin-specification-strategy-traceability-and-validation-evidence-projection"
+        ],
+        "supersedes": null,
+        "status": "active",
+        "kind": "feature-note",
+        "createdAt": "2026-08-23T21:00:54.029Z",
+        "updatedAt": "2026-08-23T21:00:54.029Z"
+      },
+      {
+        "id": "decision.autoforge-twin-generate-now-reads-all-six-new-domains-and-includes-them-in-the-g",
+        "statement": "autoforge twin generate now reads all six new domains and includes them in the generated projection",
+        "reasoning": "projectStateToTwin gained the ability to project governance, domain, specifications, strategy, traceability, and validation evidence, but nothing in the CLI actually read those stores yet.",
+        "consequences": [
+          "runTwinCommand's generate action now reads ConstitutionStore, DomainStore, SpecificationRegistry, StrategyStore, TraceabilityStore, and ValidationEvidenceStore in parallel alongside the existing five reads, passing everything through to projectStateToTwin. No new CLI flags or commands were added."
+        ],
+        "scope": [
+          "twin"
+        ],
+        "keywords": [
+          "continuous-evolution",
+          "cli"
+        ],
+        "relatedWork": [
+          "task.wire-new-domains-into-autoforge-twin-generate"
+        ],
+        "supersedes": null,
+        "status": "active",
+        "kind": "feature-note",
+        "createdAt": "2026-08-23T21:02:12.334Z",
+        "updatedAt": "2026-08-23T21:02:12.334Z"
+      },
+      {
+        "id": "decision.autoforge-why-now-surfaces-validation-gate-evidence-linked-to-a-matched-decision",
+        "statement": "autoforge why now surfaces validation-gate evidence linked to a matched decision's related work",
+        "reasoning": "autoforge gate check already recorded durable, structured evidence via ValidationEvidenceStore, but it was invisible to autoforge why -- closing the Validation to Observation to Evidence segment of the north-star's full loop required surfacing it in decision search, mirroring how learning-evidence is already surfaced.",
+        "consequences": [
+          "formatDecisionMatches gains a Validation: <gateId> (<status>) line beneath a matched decision when validation evidence references any of that decision's related work items, derived by matching workId rather than a stored foreign key. No new CLI flags."
+        ],
+        "scope": [
+          "twin",
+          "why"
+        ],
+        "keywords": [
+          "continuous-evolution",
+          "validation"
+        ],
+        "relatedWork": [
+          "task.surface-validation-evidence-in-autoforge-why"
+        ],
+        "supersedes": null,
+        "status": "active",
+        "kind": "feature-note",
+        "createdAt": "2026-08-23T21:02:56.648Z",
+        "updatedAt": "2026-08-23T21:02:56.648Z"
       }
     ]
   }

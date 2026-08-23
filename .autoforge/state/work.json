@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
-  "revision": 230,
-  "updatedAt": "2026-08-23T20:02:53.469Z",
+  "revision": 250,
+  "updatedAt": "2026-08-23T21:03:14.201Z",
   "data": {
     "features": [
       {
@@ -51,6 +51,14 @@
         "createdAt": "2026-08-23T17:58:56.548Z",
         "updatedAt": "2026-08-23T17:58:56.548Z",
         "id": "feature.product-strategy-and-prioritization-engine"
+      },
+      {
+        "name": "Continuous Product Evolution Engine",
+        "description": "v0.24 north-star milestone: close the full development loop by wiring governance, domain, design, strategy, and traceability into the digital twin, and surfacing validation evidence in autoforge why.",
+        "status": "planned",
+        "createdAt": "2026-08-23T20:56:24.530Z",
+        "updatedAt": "2026-08-23T20:56:24.530Z",
+        "id": "feature.continuous-product-evolution-engine"
       }
     ],
     "phases": [
@@ -102,6 +110,16 @@
         "updatedAt": "2026-08-23T17:59:04.586Z",
         "id": "phase.strategy-domain-implementation",
         "featureId": "feature.product-strategy-and-prioritization-engine",
+        "sequence": 1
+      },
+      {
+        "name": "Twin and why integration",
+        "description": "Wire every existing domain the north-star's digital twin was always meant to include, and surface validation-gate evidence in decision search.",
+        "status": "planned",
+        "createdAt": "2026-08-23T20:56:35.926Z",
+        "updatedAt": "2026-08-23T20:56:35.926Z",
+        "id": "phase.twin-and-why-integration",
+        "featureId": "feature.continuous-product-evolution-engine",
         "sequence": 1
       }
     ],
@@ -1097,6 +1115,102 @@
         "scope": {
           "include": [
             "docs/AUTOFORGE_CLI_REFERENCE.md"
+          ],
+          "exclude": []
+        }
+      },
+      {
+        "name": "Twin node-type schema rename and extension",
+        "description": "Extend twinNodeTypeSchema with phase/task/issue/strategy/validation-evidence/trace-link; remove risk/work.",
+        "status": "completed",
+        "createdAt": "2026-08-23T20:56:43.992Z",
+        "updatedAt": "2026-08-23T20:58:20.291Z",
+        "id": "task.twin-node-type-schema-rename-and-extension",
+        "phaseId": "phase.twin-and-why-integration",
+        "scope": {
+          "include": [
+            "src/twin/schemas.ts",
+            "test/twin-schemas.test.ts"
+          ],
+          "exclude": []
+        }
+      },
+      {
+        "name": "Twin phase/task/issue node-type migration",
+        "description": "Give WorkState phases/tasks/issues their own dedicated twin node types instead of reusing flow/work/risk.",
+        "status": "completed",
+        "createdAt": "2026-08-23T20:56:52.260Z",
+        "updatedAt": "2026-08-23T20:58:49.276Z",
+        "id": "task.twin-phase-task-issue-node-type-migration",
+        "phaseId": "phase.twin-and-why-integration",
+        "scope": {
+          "include": [
+            "src/twin/from-state.ts",
+            "test/twin-from-state.test.ts"
+          ],
+          "exclude": []
+        }
+      },
+      {
+        "name": "Twin governance and domain projection",
+        "description": "Project constitution rules and domain concepts/relationships into the digital twin.",
+        "status": "completed",
+        "createdAt": "2026-08-23T20:57:02.141Z",
+        "updatedAt": "2026-08-23T20:59:28.783Z",
+        "id": "task.twin-governance-and-domain-projection",
+        "phaseId": "phase.twin-and-why-integration",
+        "scope": {
+          "include": [
+            "src/twin/from-state.ts",
+            "test/twin-from-state.test.ts"
+          ],
+          "exclude": []
+        }
+      },
+      {
+        "name": "Twin specification, strategy, traceability, and validation-evidence projection",
+        "description": "Project design specifications, active strategy assessments, traceability links, and validation evidence into the digital twin.",
+        "status": "completed",
+        "createdAt": "2026-08-23T20:57:11.901Z",
+        "updatedAt": "2026-08-23T21:01:02.178Z",
+        "id": "task.twin-specification-strategy-traceability-and-validation-evidence-projection",
+        "phaseId": "phase.twin-and-why-integration",
+        "scope": {
+          "include": [
+            "src/twin/from-state.ts",
+            "test/twin-from-state.test.ts"
+          ],
+          "exclude": []
+        }
+      },
+      {
+        "name": "Wire new domains into autoforge twin generate",
+        "description": "Read constitution, domain, specifications, strategy, traceability, and validation evidence stores and pass them through to projectStateToTwin.",
+        "status": "completed",
+        "createdAt": "2026-08-23T20:57:27.022Z",
+        "updatedAt": "2026-08-23T21:02:27.196Z",
+        "id": "task.wire-new-domains-into-autoforge-twin-generate",
+        "phaseId": "phase.twin-and-why-integration",
+        "scope": {
+          "include": [
+            "src/commands/twin.ts",
+            "test/twin-command.test.ts"
+          ],
+          "exclude": []
+        }
+      },
+      {
+        "name": "Surface validation evidence in autoforge why",
+        "description": "formatDecisionMatches and runWhyCommand surface validation-gate evidence linked to a matched decision's related work.",
+        "status": "completed",
+        "createdAt": "2026-08-23T20:57:41.184Z",
+        "updatedAt": "2026-08-23T21:03:14.080Z",
+        "id": "task.surface-validation-evidence-in-autoforge-why",
+        "phaseId": "phase.twin-and-why-integration",
+        "scope": {
+          "include": [
+            "src/commands/why.ts",
+            "test/why.test.ts"
           ],
           "exclude": []
         }
