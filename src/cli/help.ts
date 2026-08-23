@@ -90,7 +90,7 @@ Design context:
   autoforge design show <id>
 
 Intent assessment:
-  autoforge intent assess <json-file> --kind <implementation|research|architecture|design|planning> [--artifact <kind>]
+  autoforge intent assess <json-file> --kind <implementation|research|architecture|design|planning|data|security> [--artifact <kind>]
   autoforge intent assess --schema
   intent assess also returns deterministic workflow stages and rationale
   autoforge intent register <json-file>
