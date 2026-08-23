@@ -222,6 +222,12 @@ Bootstrap approvals update `.autoforge/bootstrap/manifest.json` atomically and
 record approval time and evidence. Completed workflow IDs are accepted as
 evidence; active workflow runs are rejected.
 
+The digital twin includes governance, domain, design, strategy, and
+traceability data alongside work, decisions, and evidence — `twin query
+--type constitution`, `--type domain`, `--type strategy`, `--type
+validation-evidence`, and `--type trace-link` are all queryable once the
+corresponding domain has data.
+
 ## JSON Input Schemas
 
 ```bash
