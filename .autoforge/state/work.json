@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
-  "revision": 187,
-  "updatedAt": "2026-08-22T23:02:57.908Z",
+  "revision": 201,
+  "updatedAt": "2026-08-23T01:07:07.239Z",
   "data": {
     "features": [
       {
@@ -1055,9 +1055,9 @@
       {
         "name": "fix-recommend-workflow-empty-rationale-crash",
         "description": "intent assess throws an uncaught ZodError (rationale array must have >=1 items) whenever recommendWorkflow() pushes to stages via the ARCHITECTURE_REQUIRED/DESIGN_REQUIRED/RESEARCH_REQUIRED/PLANNING_REQUIRED label branches without also pushing a rationale string - those four branches never populate rationale, only the CLARIFICATION_REQUIRED and readiness===ready branches do. Repro: an intent with unknowns:[] and objective set, readiness came back ready/confidence 100/blockers:[], but triage also included DEFERRED (see the sibling deferred-keyword issue) alongside ARCHITECTURE_REQUIRED/DESIGN_REQUIRED. Because DEFERRED skipped the ready branch and CLARIFICATION_REQUIRED was absent, stages ended up non-empty ([architecture, design]) with rationale=[] , failing workflowRecommendationSchema and exiting 1 instead of returning a result. Reported by Virdua project via Claude Code, confirmed against installed dist/cli.js source. Fix: attach a rationale string to every stage-pushing branch (research/architecture/design/planning), not just the three special-cased ones.",
-        "status": "planned",
+        "status": "completed",
         "createdAt": "2026-08-22T22:23:49.068Z",
-        "updatedAt": "2026-08-22T22:23:49.068Z",
+        "updatedAt": "2026-08-23T00:57:42.401Z",
         "id": "issue.fix-recommend-workflow-empty-rationale-crash",
         "scope": {
           "include": [
@@ -1069,9 +1069,9 @@
       {
         "name": "fix-intent-triage-deferred-conflict-keyword-false-positives",
         "description": "The deferred and conflict KEYWORDS regexes in src/intent/triage.ts are matched against searchableText()'s single space-joined blob of raw+objective+every array field, with no field or sentence boundary. deferred: /\\b(later|defer|deferred|someday|backlog)\\b/i fires on any use of the common word later even in legitimate future-scope language (e.g. a later, additive channel), incorrectly setting DEFERRED. conflict: /\\b(always|never)\\b.*\\b(?:unless|except|but)\\b/i uses unbounded .* so it matches across the entire remaining document after the first always/never, flagging CONFLICT_DETECTED on completely unrelated sentences dozens of words apart (e.g. never in one requirement, but in an unrelated assumption several sentences later). Reproduced live across 5 separate Virdua intent drafts (architecture, design, data, security, development-plan gates) - every single one of them tripped one or both regexes on ordinary, non-contradictory prose, forcing manual rewording each time to work around it. This is high-frequency, not an edge case. Fix: drop later from the deferred list (keep defer/deferred/someday/backlog, which are much more deliberate signals), and scope conflict to a single sentence or bounded word-window rather than the full joined blob.",
-        "status": "planned",
+        "status": "completed",
         "createdAt": "2026-08-22T22:24:07.775Z",
-        "updatedAt": "2026-08-22T22:24:07.775Z",
+        "updatedAt": "2026-08-23T00:58:19.636Z",
         "id": "issue.fix-intent-triage-deferred-conflict-keyword-false-positives",
         "scope": {
           "include": [
@@ -1083,9 +1083,9 @@
       {
         "name": "add-bootstrap-approve-verb-for-manifest-artifacts",
         "description": "bootstrap gates and bootstrap status are a pure literal read of .autoforge/bootstrap/manifest.json's artifacts[].status field (BOOTSTRAP_GATES = [architecture, design, data, security], checking status === approved). Nothing else in the CLI ever writes approved into that file: bootstrap vision-approve only writes vision-approvals.json (not manifest.json); intent assess --persist writes to .autoforge/planning/; workflow start/advance writes to .autoforge/workflows/; design import/validate writes to the design store. None of them touch the manifest. We ran complete, genuine intent-assess + workflow-start/advance cycles (ending status: completed) for all four gated artifacts on the Virdua project, and bootstrap gates still reported everything pending throughout, because manifest.json literally never changes from bootstrap scaffold's initial all-planned output. We had to hand-edit manifest.json directly via a text editor to flip status to approved for each of the 6 artifacts we touched (architecture, design, data, security, development-plan, tasks) - fragile, unvalidated, and completely undiscoverable without reading dist/cli.js source. This makes the entire bootstrap-gates feature silently decorative once a project moves past bootstrap vision. Fix: add autoforge bootstrap approve <artifact-id> that validates the id, writes status: approved plus approvedAt into manifest.json, and optionally accepts --evidence <path> (a workflow run id or planning artifact path) to validate real backing work exists before approving.",
-        "status": "planned",
+        "status": "completed",
         "createdAt": "2026-08-22T22:24:08.247Z",
-        "updatedAt": "2026-08-22T22:24:08.247Z",
+        "updatedAt": "2026-08-23T01:05:38.488Z",
         "id": "issue.add-bootstrap-approve-verb-for-manifest-artifacts",
         "scope": {
           "include": [
@@ -1097,9 +1097,9 @@
       {
         "name": "unify-intent-and-workflow-kind-vocabularies",
         "description": "intent assess --kind uses readinessWorkKindSchema = enum([implementation, research, architecture, design, planning]), while workflow start <id> <kind> uses a completely different workflowKindSchema = enum([feature-development, bug-fix, research, design-create, design-critique, architecture-change, validation]). research is the only value shared between them. A user who just ran intent assess --kind architecture naturally tries workflow start my-run architecture next - it fails with a bare Usage: ... string, no indication of why or what the valid values are (the real value needed is architecture-change, an unrelated string). Every pairing (architecture<->architecture-change, design<->design-create/design-critique, planning<->nothing, implementation<->feature-development/bug-fix) requires the user to already know both schemas exist and differ. This is the second confirmed instance of the same enum-drift failure mode as the earlier agents-list-vs-contract-generate capability mismatch (fixed in 0.16.3) - worth a structural fix (single source-of-truth vocabulary module + a test asserting shared enums stay in sync or have an explicit mapping) rather than another one-off patch. Fix at minimum: on an invalid workflow <kind>, enumerate the actual valid values in the error message instead of the generic usage string.",
-        "status": "planned",
+        "status": "completed",
         "createdAt": "2026-08-22T22:24:26.851Z",
-        "updatedAt": "2026-08-22T22:24:26.851Z",
+        "updatedAt": "2026-08-23T01:05:49.084Z",
         "id": "issue.unify-intent-and-workflow-kind-vocabularies",
         "scope": {
           "include": [
@@ -1127,9 +1127,9 @@
       {
         "name": "surface-real-errors-instead-of-bare-catch-in-workflow-command",
         "description": "runWorkflowCommand in src/commands/workflow.ts wraps its entire action dispatch (start/show/advance/handoff) in a bare catch {} that discards any thrown error - including a fully diagnosable ZodError like workflowKindSchema.parse(kind) rejecting an invalid enum value - and converts it into the same generic usage string used for genuine argument-count/shape mistakes. This directly worsened the intent-vs-workflow kind-mismatch issue: the real error (Invalid enum value. Expected feature-development|bug-fix|...|architecture-change, received architecture) was fully descriptive but got thrown away in favor of a bare Usage: ... line giving zero indication the problem was specifically an invalid <kind> value. The same bare-catch/swallowed-error shape was previously implicated in a contract generate claude/grok bug report (a real thrown compatibility error became a generic exit-code-2 usage error). We also observed a similar unhelpful bare exit code 2 from autoforge use with no arguments (Project: '<alias>' - just exit 2, no message). Fix: distinguish ZodError and other domain errors with a real .message from genuine usage/arg-shape mistakes, and print the real error to stderr - either always or behind --verbose/AUTOFORGE_DEBUG=1. Audit for the same bare catch {} pattern in other command files (e.g. the use command entrypoint), since it appears to be a repeated idiom, not isolated to workflow.ts.",
-        "status": "planned",
+        "status": "completed",
         "createdAt": "2026-08-22T22:25:16.820Z",
-        "updatedAt": "2026-08-22T22:25:16.820Z",
+        "updatedAt": "2026-08-23T01:06:01.408Z",
         "id": "issue.surface-real-errors-instead-of-bare-catch-in-workflow-command",
         "scope": {
           "include": [
@@ -1169,9 +1169,9 @@
       {
         "name": "publish-introspectable-json-schemas-for-file-accepting-commands",
         "description": "Every command that takes a <json-file> argument (bootstrap discover, intent assess, intent register, research register, workflow handoff, design import, etc.) has an input schema that must be reverse-engineered by grepping the minified dist/cli.js bundle for z.object({...}) definitions near known strings, since none of it is documented in the GitHub repo README or docs/AUTOFORGE_AGENT_SETUP_GUIDE.md. We had to do this from source for discoverySchema, triageIntentSchema, and workflowHandoffSchema across this engagement. For a CLI whose primary interaction model for non-trivial commands is hand it a JSON file, this is a real and recurring onboarding cost - every new agent/session doing this kind of work re-derives the same schemas from source. Fix: ship a schemas/ directory in the published package (JSON Schema or raw Zod shape exported at build time) covering every file-accepting command, or add a --schema introspection flag, e.g. autoforge intent assess --schema prints the exact expected input shape.",
-        "status": "planned",
+        "status": "completed",
         "createdAt": "2026-08-22T22:26:09.967Z",
-        "updatedAt": "2026-08-22T22:26:09.967Z",
+        "updatedAt": "2026-08-23T01:06:47.631Z",
         "id": "issue.publish-introspectable-json-schemas-for-file-accepting-commands",
         "scope": {
           "include": [
@@ -1183,9 +1183,9 @@
       {
         "name": "document-bootstrap-to-intent-workflow-design-planning-relationship",
         "description": "bootstrap's tracked artifact list (vision, problem, users, use-cases, user-stories, flows, research, architecture, design, data, security, development-plan, tasks, per bootstrap status) strongly implies a pipeline meant to be advanced stage-by-stage through bootstrap itself, but the actual mechanism for advancing anything past vision is not in bootstrap at all - it's the separate intent assess / workflow start|advance / design import / planning show|handoff command families, which have no automatic linkage back to the bootstrap manifest (see the bootstrap-approve-verb issue). We had to infer the entire bootstrap defines what artifacts exist; intent/workflow/design/planning are how you produce and advance them; gates are a manually-maintained checklist over the result model purely from reading dist/cli.js source, since no doc walks through this relationship end-to-end. A new user following only the public docs would reasonably expect bootstrap itself to have subcommands for architecture/design/data/security (mirroring its vision-stage subcommands: vision-amend, vision-check, vision-approve) and would be confused to find it doesn't. Fix: a short How the bootstrap pipeline works end-to-end doc section explaining (1) bootstrap tracks artifact status only, (2) intent assess/workflow/design/planning are the actual production mechanisms for each artifact, (3) gates require manual approval today (or automatic approval once bootstrap approve lands) tying the two together.",
-        "status": "planned",
+        "status": "completed",
         "createdAt": "2026-08-22T22:26:10.681Z",
-        "updatedAt": "2026-08-22T22:26:10.681Z",
+        "updatedAt": "2026-08-23T01:07:07.130Z",
         "id": "issue.document-bootstrap-to-intent-workflow-design-planning-relationship",
         "scope": {
           "include": [

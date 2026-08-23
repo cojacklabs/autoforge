@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
-  "revision": 23,
-  "updatedAt": "2026-08-22T23:02:44.748Z",
+  "revision": 31,
+  "updatedAt": "2026-08-23T01:07:06.721Z",
   "data": {
     "decisions": [
       {
@@ -530,6 +530,185 @@
         "kind": "feature-note",
         "createdAt": "2026-08-22T23:02:44.719Z",
         "updatedAt": "2026-08-22T23:02:44.719Z"
+      },
+      {
+        "id": "decision.both-p0-issues-empty-rationale-crash-deferred-conflict-false-positives-were-alre",
+        "statement": "Both P0 issues (empty-rationale crash, deferred/conflict false positives) were already fixed in 0.21.x before being filed against a stale 0.20.3 install",
+        "reasoning": "Independently verified by pulling the published v0.20.3 tarball: recommendWorkflow in workflow.ts pushed to stages for RESEARCH_REQUIRED/ARCHITECTURE_REQUIRED/DESIGN_REQUIRED/PLANNING_REQUIRED with no matching rationale.push(), and triage.ts had no textSegments() sentence-boundary function, using bare word regexes and an unbounded conflict pattern against a flat-joined blob -- both exactly matching the filed bug reports. Both are fixed in current source (confirmed by direct execution against the described repro cases) and in the published v0.21.0 tarball. The reporting session was running a stale global pnpm install (v0.20.3) due to pnpm's minimumReleaseAgeExclude gate silently no-opping a plain 'pnpm add -g ...@latest'.",
+        "consequences": [
+          "Closed issue.fix-recommend-workflow-empty-rationale-crash and issue.fix-intent-triage-deferred-conflict-keyword-false-positives as already-fixed-in-0.21.x, not live defects.",
+          "Global pnpm autoforge install on this machine updated to 0.21.1 via --force; npm dist-tags confirmed latest correctly points to 0.21.1.",
+          "Worth a future advisory: recommend 'npx @cojacklabs/autoforge@latest' or 'autoforge update' over 'pnpm add -g ...@latest' for global installs, since pnpm's release-age gate can silently hold back updates without warning."
+        ],
+        "scope": [
+          "triage",
+          "release-hygiene"
+        ],
+        "keywords": [
+          "stale-install",
+          "pnpm",
+          "false-positive-report"
+        ],
+        "relatedWork": [],
+        "supersedes": null,
+        "status": "active",
+        "kind": "bugfix",
+        "createdAt": "2026-08-23T00:56:56.263Z",
+        "updatedAt": "2026-08-23T00:56:56.263Z"
+      },
+      {
+        "id": "decision.recommendworkflow-s-empty-rationale-crash-was-already-fixed-before-this-issue-wa",
+        "statement": "recommendWorkflow's empty-rationale crash was already fixed before this issue was filed",
+        "reasoning": "The reporting session ran a stale global pnpm install (v0.20.3), where RESEARCH_REQUIRED/ARCHITECTURE_REQUIRED/DESIGN_REQUIRED/PLANNING_REQUIRED pushed to stages with no matching rationale.push(). Verified fixed in current source and in the published v0.21.0 tarball by direct execution of the exact repro case.",
+        "consequences": [
+          "No code change required; global pnpm install corrected to 0.21.1."
+        ],
+        "scope": [
+          "triage"
+        ],
+        "keywords": [
+          "stale-install"
+        ],
+        "relatedWork": [
+          "issue.fix-recommend-workflow-empty-rationale-crash"
+        ],
+        "supersedes": null,
+        "status": "active",
+        "kind": "bugfix",
+        "createdAt": "2026-08-23T00:57:35.714Z",
+        "updatedAt": "2026-08-23T00:57:35.714Z"
+      },
+      {
+        "id": "decision.intent-triage-deferred-conflict-regex-false-positives-were-already-fixed-before",
+        "statement": "Intent triage deferred/conflict regex false positives were already fixed before this issue was filed",
+        "reasoning": "The reporting session ran a stale global pnpm install (v0.20.3), where textSegments() did not exist and deferred/conflict regexes matched an unbounded, unsegmented joined blob of all intent fields. Verified fixed in current source and in the published v0.21.0 tarball: textSegments() splits on sentence boundaries before matching, and both regexes are word/sentence-bounded. Tested the exact false-positive examples from the issue report directly; both correctly return false against current source.",
+        "consequences": [
+          "No code change required; global pnpm install corrected to 0.21.1."
+        ],
+        "scope": [
+          "triage"
+        ],
+        "keywords": [
+          "stale-install"
+        ],
+        "relatedWork": [
+          "issue.fix-intent-triage-deferred-conflict-keyword-false-positives"
+        ],
+        "supersedes": null,
+        "status": "active",
+        "kind": "bugfix",
+        "createdAt": "2026-08-23T00:58:08.037Z",
+        "updatedAt": "2026-08-23T00:58:08.037Z"
+      },
+      {
+        "id": "decision.bootstrap-approve-verb-was-already-implemented-before-this-issue-was-filed",
+        "statement": "bootstrap approve verb was already implemented before this issue was filed",
+        "reasoning": "approveBootstrapArtifact() and 'autoforge bootstrap approve <artifact-id> [--evidence <path|workflow-id>]' fully exist, writing status:approved plus approvedAt and validated evidence into manifest.json. Confirmed absent in the reporting session's stale v0.20.3 install.",
+        "consequences": [
+          "No code change required."
+        ],
+        "scope": [
+          "triage"
+        ],
+        "keywords": [
+          "stale-install"
+        ],
+        "relatedWork": [
+          "issue.add-bootstrap-approve-verb-for-manifest-artifacts"
+        ],
+        "supersedes": null,
+        "status": "active",
+        "kind": "bugfix",
+        "createdAt": "2026-08-23T01:05:38.028Z",
+        "updatedAt": "2026-08-23T01:05:38.028Z"
+      },
+      {
+        "id": "decision.intent-and-workflow-kind-vocabularies-were-already-unified-before-this-issue-was",
+        "statement": "Intent and workflow kind vocabularies were already unified before this issue was filed",
+        "reasoning": "src/core/vocabularies.ts is a shared single source-of-truth module: READINESS_WORK_KINDS, WORKFLOW_KINDS, INTENT_TO_WORKFLOW_KINDS mapping, normalizeWorkflowKind() aliasing, and workflowKindHelp() for actionable error text. Confirmed absent in the reporting session's stale v0.20.3 install.",
+        "consequences": [
+          "No code change required for this specific ask; data/security kinds remain a separate, still-live gap tracked as its own issue."
+        ],
+        "scope": [
+          "triage"
+        ],
+        "keywords": [
+          "stale-install"
+        ],
+        "relatedWork": [
+          "issue.unify-intent-and-workflow-kind-vocabularies"
+        ],
+        "supersedes": null,
+        "status": "active",
+        "kind": "bugfix",
+        "createdAt": "2026-08-23T01:05:48.645Z",
+        "updatedAt": "2026-08-23T01:05:48.645Z"
+      },
+      {
+        "id": "decision.workflow-command-already-surfaces-real-errors-instead-of-a-bare-catch-before-thi",
+        "statement": "workflow command already surfaces real errors instead of a bare catch before this issue was filed",
+        "reasoning": "runWorkflowCommand's catch block calls reportCommandError, which distinguishes ZodError, AutoForgeError, ENOENT, and generic errors with real messages, and invalid workflow kinds get an explicit message plus workflowKindHelp() text. Confirmed the bare catch {} described in the issue is absent in current source and was absent even in the reporting session's stale v0.20.3 install path for this specific function.",
+        "consequences": [
+          "No code change required for the described defect. Noted separately: a stray orphaned import statement after the function body in src/commands/workflow.ts is a minor cleanup candidate, unrelated to this issue's described defect."
+        ],
+        "scope": [
+          "triage"
+        ],
+        "keywords": [
+          "stale-install"
+        ],
+        "relatedWork": [
+          "issue.surface-real-errors-instead-of-bare-catch-in-workflow-command"
+        ],
+        "supersedes": null,
+        "status": "active",
+        "kind": "bugfix",
+        "createdAt": "2026-08-23T01:06:00.949Z",
+        "updatedAt": "2026-08-23T01:06:00.949Z"
+      },
+      {
+        "id": "decision.introspectable-json-schemas-for-file-accepting-commands-already-existed-before-t",
+        "statement": "Introspectable JSON schemas for file-accepting commands already existed before this issue was filed",
+        "reasoning": "The --schema flag exists on intent assess, research register, workflow handoff, bootstrap discover, and others; a dedicated autoforge schemas list and schemas show command covers nine schemas total. Confirmed absent in the reporting sessions stale v0.20.3 install.",
+        "consequences": [
+          "No code change required."
+        ],
+        "scope": [
+          "triage"
+        ],
+        "keywords": [
+          "stale-install"
+        ],
+        "relatedWork": [
+          "issue.publish-introspectable-json-schemas-for-file-accepting-commands"
+        ],
+        "supersedes": null,
+        "status": "active",
+        "kind": "bugfix",
+        "createdAt": "2026-08-23T01:06:32.996Z",
+        "updatedAt": "2026-08-23T01:06:32.996Z"
+      },
+      {
+        "id": "decision.the-bootstrap-to-intent-workflow-design-planning-relationship-was-already-docume",
+        "statement": "The bootstrap to intent/workflow/design/planning relationship was already documented before this issue was filed",
+        "reasoning": "docs/BOOTSTRAP_PIPELINE.md exists, is linked from README, and walks through exactly the relationship requested: bootstrap tracks artifact status only, intent/workflow/design/planning are the production mechanisms, and approvals connect completed work back to the manifest. Confirmed absent in the reporting sessions stale v0.20.3 install.",
+        "consequences": [
+          "No code change required."
+        ],
+        "scope": [
+          "triage"
+        ],
+        "keywords": [
+          "stale-install"
+        ],
+        "relatedWork": [
+          "issue.document-bootstrap-to-intent-workflow-design-planning-relationship"
+        ],
+        "supersedes": null,
+        "status": "active",
+        "kind": "bugfix",
+        "createdAt": "2026-08-23T01:07:06.697Z",
+        "updatedAt": "2026-08-23T01:07:06.697Z"
       }
     ]
   }
