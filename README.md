@@ -4,11 +4,30 @@ AutoForge is a task-specific context and control plane for AI-assisted software 
 
 ## Install
 
+Install AutoForge globally so every project on the machine shares one CLI,
+one global workspace registry, and one update path:
+
+```bash
+npm install --global @cojacklabs/autoforge
+# or: yarn global add @cojacklabs/autoforge
+# or: pnpm add --global @cojacklabs/autoforge
+
+autoforge init
+autoforge doctor
+```
+
+Install as a local dev dependency only for environments that cannot hold a
+persistent global install — a dedicated CI runner or container with only
+Node available and no retained global package cache:
+
 ```bash
 npm install --save-dev @cojacklabs/autoforge
 npx autoforge init
 npx autoforge doctor
 ```
+
+See `docs/QUICKSTART.md` for the full first-session walkthrough (adding
+work, running it, and querying project memory).
 
 ## Starting From Scratch
 
@@ -25,10 +44,10 @@ Use this prompt at initialization, after upgrading AutoForge, and whenever a new
 Projects can make governance explicit and reviewable through the constitution workflow:
 
 ```bash
-npx autoforge constitution init
-npx autoforge constitution list
-npx autoforge constitution show <rule-id>
-npx autoforge constitution check "<objective>"
+autoforge constitution init
+autoforge constitution list
+autoforge constitution show <rule-id>
+autoforge constitution check "<objective>"
 ```
 
 `constitution check` evaluates the objective against scoped governance rules and reports conflicts before implementation. Existing projects remain compatible; initialization is additive and stores the constitution under `.autoforge/governance/`.
@@ -52,22 +71,22 @@ See `docs/BOOTSTRAP_PIPELINE.md` for the complete end-to-end flow.
 After initialization, generate and validate the agent contract:
 
 ```bash
-npx autoforge contract generate generic
-npx autoforge contract validate
+autoforge contract generate generic
+autoforge contract validate
 ```
 
 ## Canonical Workflow
 
 ```bash
-npx autoforge add feature --name "Payments" --description "Add payment support"
-npx autoforge add phase --feature <feature-id> --name "Checkout" --description "Implement checkout"
-npx autoforge add task --phase <phase-id> --name "Create checkout" --description "..." --include "src/**"
-npx autoforge start task <task-id>
-npx autoforge context --explain
-npx autoforge check --path src/checkout.ts
-npx autoforge gate check
-npx autoforge decide --statement "..." --reasoning "..." --consequence "..." --scope checkout --keyword payments --work <task-id> --kind feature-note
-npx autoforge done
+autoforge add feature --name "Payments" --description "Add payment support"
+autoforge add phase --feature <feature-id> --name "Checkout" --description "Implement checkout"
+autoforge add task --phase <phase-id> --name "Create checkout" --description "..." --include "src/**"
+autoforge start task <task-id>
+autoforge context --explain
+autoforge check --path src/checkout.ts
+autoforge gate check
+autoforge decide --statement "..." --reasoning "..." --consequence "..." --scope checkout --keyword payments --work <task-id> --kind feature-note
+autoforge done
 ```
 
 `autoforge done` on a task or issue requires at least one decision whose
@@ -106,13 +125,13 @@ released and reclaimed before editing continues.
 ## Memory and Design
 
 ```bash
-npx autoforge decide --statement "..." --reasoning "..." --consequence "..." --scope payments --keyword checkout --kind bugfix
-npx autoforge why --query checkout
-npx autoforge why --history
-npx autoforge changelog compile
-npx autoforge doctrine
-npx autoforge design validate dev/design/screen.md
-npx autoforge design import dev/design/screen.md
+autoforge decide --statement "..." --reasoning "..." --consequence "..." --scope payments --keyword checkout --kind bugfix
+autoforge why --query checkout
+autoforge why --history
+autoforge changelog compile
+autoforge doctrine
+autoforge design validate dev/design/screen.md
+autoforge design import dev/design/screen.md
 ```
 
 Use `autoforge recap` for handoffs, `autoforge tui --snapshot` for automation, and `autoforge doctor` for installation health.
@@ -143,16 +162,13 @@ autoforge workflow handoff --schema
 For an existing 0.6 project, preview migration before changing state:
 
 ```bash
-npx autoforge migrate --dry-run
-npx autoforge migrate
+autoforge migrate --dry-run
+autoforge migrate
 ```
 
-Upgrade the package with your package manager, then run `autoforge doctor`.
-
-Update AutoForge to the version currently published on npm:
+Update a global installation to the version currently published on npm:
 
 ```bash
-autoforge update
 autoforge update
 ```
 

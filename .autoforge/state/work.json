@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
-  "revision": 224,
-  "updatedAt": "2026-08-23T18:01:08.069Z",
+  "revision": 227,
+  "updatedAt": "2026-08-23T18:52:21.486Z",
   "data": {
     "features": [
       {
@@ -1352,6 +1352,22 @@
             "src/commands/why.ts",
             "test/decision-search.test.ts",
             "test/why.test.ts"
+          ],
+          "exclude": []
+        }
+      },
+      {
+        "name": "global-install-primary-onboarding-path",
+        "description": "README, CONTRIBUTING, and QUICKSTART taught npm install --save-dev + npx as the primary install path, contradicting the already-current onboarding docs which assume a globally installed CLI. QUICKSTART.md also described an entirely different, older AutoForge product (autopilot/recipes/training-loop commands that don't exist).",
+        "status": "completed",
+        "createdAt": "2026-08-23T18:51:17.494Z",
+        "updatedAt": "2026-08-23T18:52:21.320Z",
+        "id": "issue.global-install-primary-onboarding-path",
+        "scope": {
+          "include": [
+            "README.md",
+            "CONTRIBUTING.md",
+            "docs/QUICKSTART.md"
           ],
           "exclude": []
         }

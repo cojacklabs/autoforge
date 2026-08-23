@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
-  "revision": 41,
-  "updatedAt": "2026-08-23T18:01:01.671Z",
+  "revision": 42,
+  "updatedAt": "2026-08-23T18:52:10.386Z",
   "data": {
     "decisions": [
       {
@@ -1018,6 +1018,31 @@
         "kind": "feature-note",
         "createdAt": "2026-08-23T18:01:01.646Z",
         "updatedAt": "2026-08-23T18:01:01.646Z"
+      },
+      {
+        "id": "decision.global-npm-yarn-pnpm-install-is-now-the-advertised-primary-onboarding-path",
+        "statement": "Global npm/yarn/pnpm install is now the advertised primary onboarding path",
+        "reasoning": "README's Install section taught npm install --save-dev + npx as the first and only method, directly contradicting the README's own Starting From Scratch section which already assumed a globally installed CLI, and contradicting update.ts's existing global-vs-local install detection which already supports this. AutoForge is a long-lived per-machine control plane (global workspace registry, global agent contracts, cross-project history) that fits a global install; local --save-dev is the correct fallback only for environments that cannot retain a persistent global install.",
+        "consequences": [
+          "README.md, CONTRIBUTING.md, and docs/QUICKSTART.md now lead with npm/yarn/pnpm --global install and bare autoforge commands, with local --save-dev + npx demoted to an explicitly-scoped fallback section. docs/QUICKSTART.md, which described an entirely different and no-longer-existing AutoForge product (autopilot levels, recipes, a training loop, and commands like autopilot/train/metrics/dryrun/upgrade/snapshot/status/load that are absent from autoforge help), was rewritten from scratch against the actual current command surface and linked from README so it is no longer orphaned. CONTRIBUTING.md's references to the also-nonexistent configure/validate/load/snapshot commands were replaced with the real gate check/typecheck/test equivalents."
+        ],
+        "scope": [
+          "docs",
+          "onboarding"
+        ],
+        "keywords": [
+          "install",
+          "global",
+          "documentation"
+        ],
+        "relatedWork": [
+          "issue.global-install-primary-onboarding-path"
+        ],
+        "supersedes": null,
+        "status": "active",
+        "kind": "feature-note",
+        "createdAt": "2026-08-23T18:52:10.329Z",
+        "updatedAt": "2026-08-23T18:52:10.329Z"
       }
     ]
   }

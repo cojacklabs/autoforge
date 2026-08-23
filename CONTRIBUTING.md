@@ -25,15 +25,13 @@ npm install
 npm run build
 ```
 
-AutoForge is designed to live inside another project under `./autoforge`. During development, most changes are documentation, prompts, or CLI code in this repo.
+Install the CLI globally to exercise it the way an end user would (`npm install --global @cojacklabs/autoforge`), or run it from this checkout via `node bin/autoforge.js <command>` while iterating. Most changes here are documentation, prompts, or CLI code in this repo.
 
 ## Working philosophy
 
-- Managed files: `ai/code_targets.yaml` and `ai/context_targets.yaml` are generated from `autoforge.config.json`. Do not hand‑edit them; instead:
-  - Edit `autoforge.config.json`
-  - Run `npx autoforge configure`
 - Planning‑first: Quality gates accept canonical docs under `docs/`, `api/`, `diagrams/` or planning stubs under `.autoforge/ai/reports/**`.
 - Shared progress: Keep `ai/AGENTS.md` updated (Progress & Next Steps, Lessons Learned, Rules) so work transfers across IDEs/CLIs.
+- Documentation currency: every implementation change must update the relevant documentation before completion — see `docs/AUTOFORGE_CLI_REFERENCE.md` for the canonical, currently-maintained command surface, and treat `autoforge help`'s own output as the source of truth for what commands actually exist today.
 
 ## Local checks
 
@@ -41,16 +39,10 @@ Before opening a PR, please run:
 
 ```bash
 npm run build              # refresh dist/
-npx autoforge configure    # regenerate managed YAML from config (if changed)
-npx autoforge validate     # run quality gates
+npm run typecheck          # tsc --noEmit
 npm run format:check       # ensure code style
-```
-
-Optional:
-
-```bash
-npx autoforge load         # generate the copy/paste context prompt for your AI
-npx autoforge snapshot     # write REPO.md (context snapshot) if relevant
+npm test                   # full test suite
+autoforge gate check       # run this repo's own retained quality gates, dogfooding the CLI
 ```
 
 ## Commit guidelines
@@ -62,9 +54,9 @@ npx autoforge snapshot     # write REPO.md (context snapshot) if relevant
 ## Pull request checklist
 
 - [ ] Change is scoped and focused
-- [ ] Docs updated (README, prompts, guides) when behavior changes
+- [ ] Docs updated (README, `docs/AUTOFORGE_CLI_REFERENCE.md`, guides) when behavior changes
 - [ ] `npm run build` passes; dist contains expected updates
-- [ ] `npx autoforge validate` passes (if applicable)
+- [ ] `npm test` and `autoforge gate check` pass
 - [ ] Linked to any related issue(s) or discussion
 
 ## Finding issues
