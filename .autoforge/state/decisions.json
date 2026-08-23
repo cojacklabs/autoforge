@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
-  "revision": 37,
-  "updatedAt": "2026-08-23T16:08:15.413Z",
+  "revision": 41,
+  "updatedAt": "2026-08-23T18:01:01.671Z",
   "data": {
     "decisions": [
       {
@@ -923,6 +923,101 @@
         "kind": "feature-note",
         "createdAt": "2026-08-23T16:08:15.377Z",
         "updatedAt": "2026-08-23T16:08:15.377Z"
+      },
+      {
+        "id": "decision.the-strategy-assessment-schema-atomic-file-store-and-service-are-implemented-and",
+        "statement": "The strategy assessment schema, atomic-file store, and service are implemented and tested",
+        "reasoning": "v0.23 (Product Strategy & Prioritization Engine) needed a durable, append-only record type for explainable multi-factor strategy judgments, persisted via the same lazy-init AtomicStateStore pattern as evidence/hypothesis/experiment, with a service layer that unconditionally links every assessment to a decision record.",
+        "consequences": [
+          "src/strategy/strategy-schemas.ts, strategy-store.ts, and strategy-service.ts exist with full test coverage (schema validation, store idempotency, service validation/supersede/linked-decision behavior); StrategyService.history() tiebreaks by array position on equal createdAt timestamps, a fix caught during implementation review and applied beyond the original plan text."
+        ],
+        "scope": [
+          "strategy"
+        ],
+        "keywords": [
+          "strategy",
+          "schema",
+          "service"
+        ],
+        "relatedWork": [
+          "task.strategy-schema-store-and-service"
+        ],
+        "supersedes": null,
+        "status": "active",
+        "kind": "feature-note",
+        "createdAt": "2026-08-23T17:59:55.091Z",
+        "updatedAt": "2026-08-23T17:59:55.091Z"
+      },
+      {
+        "id": "decision.autoforge-strategy-assess-list-show-history-is-implemented-and-registered-in-the",
+        "statement": "autoforge strategy assess/list/show/history is implemented and registered in the CLI",
+        "reasoning": "v0.23 needed a human-facing command surface to record and query strategy assessments, mirroring the argument-parsing and error conventions already established by autoforge decide and autoforge learning evidence.",
+        "consequences": [
+          "src/commands/strategy.ts implements all four actions; src/cli/index.ts, src/cli/help.ts, and src/cli/router.ts (the last not called out explicitly in the original plan, but required for the build to typecheck) register the command; 15 command-level tests cover valid assessment, invalid factor rejection, all 10 required-flag omissions, list filtering, show, and supersede/history ordering."
+        ],
+        "scope": [
+          "strategy"
+        ],
+        "keywords": [
+          "strategy",
+          "cli"
+        ],
+        "relatedWork": [
+          "task.strategy-cli-command"
+        ],
+        "supersedes": null,
+        "status": "active",
+        "kind": "feature-note",
+        "createdAt": "2026-08-23T18:00:17.462Z",
+        "updatedAt": "2026-08-23T18:00:17.462Z"
+      },
+      {
+        "id": "decision.the-active-work-item-s-active-strategy-assessment-is-surfaced-in-context-packets",
+        "statement": "The active work item's active strategy assessment is surfaced in context packets as an optional, non-budgeted field",
+        "reasoning": "An agent picking up work should see why it was (or wasn't) prioritized, matching the principle that relevant decisions are already surfaced in context. Strategy assessments are a deterministic single-lookup per work item, not a ranked candidate pool, so they were modeled after the existing optional workflow/contract fields rather than routed through the budgeted doctrines/decisions/specs candidate system.",
+        "consequences": [
+          "ContextSelection gained an optional strategy field (src/context/schemas.ts) excluded from the budget-consistency superRefine and uniqueness checks; renderStrategy (src/context/packet.ts) renders it unconditionally when present, including an assessment ID line added during implementation to satisfy the design's own worked example; compileProjectContext (src/commands/context.ts) looks up the active work item's active assessment directly, without modifying src/context/resolver.ts."
+        ],
+        "scope": [
+          "strategy",
+          "context"
+        ],
+        "keywords": [
+          "strategy",
+          "context"
+        ],
+        "relatedWork": [
+          "task.strategy-context-packet-integration"
+        ],
+        "supersedes": null,
+        "status": "active",
+        "kind": "feature-note",
+        "createdAt": "2026-08-23T18:00:40.208Z",
+        "updatedAt": "2026-08-23T18:00:40.208Z"
+      },
+      {
+        "id": "decision.the-strategy-command-family-is-documented-in-the-cli-reference",
+        "statement": "The strategy command family is documented in the CLI reference",
+        "reasoning": "docs/AUTOFORGE_CLI_REFERENCE.md is the canonical, currently-maintained command surface reference agents and users are pointed to at onboarding; undocumented commands create drift between the CLI and the reference.",
+        "consequences": [
+          "A new Strategy and Prioritization section was added directly after Memory and Planning, documenting all four strategy commands and the deliberate distinction from orchestrate prioritize. CHANGELOG.md was intentionally left untouched since its entries are compiler-generated from linked decisions at release time."
+        ],
+        "scope": [
+          "strategy",
+          "docs"
+        ],
+        "keywords": [
+          "strategy",
+          "documentation"
+        ],
+        "relatedWork": [
+          "task.strategy-documentation"
+        ],
+        "supersedes": null,
+        "status": "active",
+        "kind": "feature-note",
+        "createdAt": "2026-08-23T18:01:01.646Z",
+        "updatedAt": "2026-08-23T18:01:01.646Z"
       }
     ]
   }

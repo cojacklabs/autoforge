@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
-  "revision": 210,
-  "updatedAt": "2026-08-23T15:09:29.348Z",
+  "revision": 224,
+  "updatedAt": "2026-08-23T18:01:08.069Z",
   "data": {
     "features": [
       {
@@ -43,6 +43,14 @@
         "createdAt": "2026-08-21T21:20:18.317Z",
         "updatedAt": "2026-08-21T21:20:18.317Z",
         "id": "feature.project-constitution-and-governance"
+      },
+      {
+        "name": "Product Strategy and Prioritization Engine",
+        "description": "v0.23 north-star milestone: explainable, multi-factor strategy assessments with a human-assigned decision label, independent of orchestrate prioritize.",
+        "status": "planned",
+        "createdAt": "2026-08-23T17:58:56.548Z",
+        "updatedAt": "2026-08-23T17:58:56.548Z",
+        "id": "feature.product-strategy-and-prioritization-engine"
       }
     ],
     "phases": [
@@ -84,6 +92,16 @@
         "updatedAt": "2026-08-21T21:20:46.889Z",
         "id": "phase.governance-domain",
         "featureId": "feature.project-constitution-and-governance",
+        "sequence": 1
+      },
+      {
+        "name": "Strategy domain implementation",
+        "description": "Schema, store, service, CLI, and context integration for the strategy assessment domain.",
+        "status": "planned",
+        "createdAt": "2026-08-23T17:59:04.586Z",
+        "updatedAt": "2026-08-23T17:59:04.586Z",
+        "id": "phase.strategy-domain-implementation",
+        "featureId": "feature.product-strategy-and-prioritization-engine",
         "sequence": 1
       }
     ],
@@ -1009,6 +1027,76 @@
             "package-lock.json",
             "README.md",
             "docs/**"
+          ],
+          "exclude": []
+        }
+      },
+      {
+        "name": "Strategy schema, store, and service",
+        "description": "src/strategy/ module: schema, atomic-file store, and service with linked-decision writes.",
+        "status": "completed",
+        "createdAt": "2026-08-23T17:59:13.975Z",
+        "updatedAt": "2026-08-23T18:00:01.422Z",
+        "id": "task.strategy-schema-store-and-service",
+        "phaseId": "phase.strategy-domain-implementation",
+        "scope": {
+          "include": [
+            "src/strategy/**",
+            "test/strategy-schemas.test.ts",
+            "test/strategy-store.test.ts",
+            "test/strategy-service.test.ts"
+          ],
+          "exclude": []
+        }
+      },
+      {
+        "name": "Strategy CLI command",
+        "description": "autoforge strategy assess/list/show/history, registered in the CLI router and help text.",
+        "status": "completed",
+        "createdAt": "2026-08-23T17:59:21.398Z",
+        "updatedAt": "2026-08-23T18:00:22.937Z",
+        "id": "task.strategy-cli-command",
+        "phaseId": "phase.strategy-domain-implementation",
+        "scope": {
+          "include": [
+            "src/commands/strategy.ts",
+            "src/cli/index.ts",
+            "src/cli/help.ts",
+            "src/cli/router.ts",
+            "test/strategy-command.test.ts"
+          ],
+          "exclude": []
+        }
+      },
+      {
+        "name": "Strategy context packet integration",
+        "description": "Surface the active work item's active strategy assessment in context packets.",
+        "status": "completed",
+        "createdAt": "2026-08-23T17:59:30.862Z",
+        "updatedAt": "2026-08-23T18:00:45.839Z",
+        "id": "task.strategy-context-packet-integration",
+        "phaseId": "phase.strategy-domain-implementation",
+        "scope": {
+          "include": [
+            "src/context/schemas.ts",
+            "src/context/packet.ts",
+            "src/commands/context.ts",
+            "test/strategy-context.test.ts"
+          ],
+          "exclude": []
+        }
+      },
+      {
+        "name": "Strategy documentation",
+        "description": "Document the strategy command family in the CLI reference.",
+        "status": "completed",
+        "createdAt": "2026-08-23T17:59:38.393Z",
+        "updatedAt": "2026-08-23T18:01:07.966Z",
+        "id": "task.strategy-documentation",
+        "phaseId": "phase.strategy-domain-implementation",
+        "scope": {
+          "include": [
+            "docs/AUTOFORGE_CLI_REFERENCE.md"
           ],
           "exclude": []
         }

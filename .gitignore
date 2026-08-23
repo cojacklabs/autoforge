@@ -38,3 +38,4 @@ REPO*.md
 .superpowers/
 .autoforge/twin/
 .autoforge/quality/
+.claude/worktrees/
