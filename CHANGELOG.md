@@ -9,9 +9,41 @@ All notable changes to this project will be documented in this file.
 
 <!-- autoforge:changelog:start -->
 
+## [0.21.2] - 2026-08-23
+
 ### Added
 
-- Issue and task completion requires a linked decision record or an explicit, audited skip reason (decision.issue-and-task-completion-requires-a-linked-decision-record-or-an-explicit-audit)
+- **Data and security work kinds**: `autoforge intent assess --kind data|security`
+  are now first-class intent kinds, each with a dedicated `data-change`/
+  `security-change` workflow definition (research → planning →
+  implementation → validation stages).
+
+### Fixed
+
+- **Silent planning-artifact overwrite**: `intent assess --artifact <kind>
+--persist` previously wrote to a fixed `.autoforge/planning/<kind>.json`
+  path, silently clobbering any prior artifact of the same kind. Artifacts
+  are now namespaced by source fingerprint
+  (`.autoforge/planning/<kind>/<fingerprint>.json`); `planning list` now
+  shows every stored version, and `isFresh()` correctness was improved to
+  check the exact artifact rather than "the latest."
+- **Undiscoverable project lifecycle block**: a freshly registered project
+  had `lifecycle: undefined`, which `autoforge use` silently treated as
+  blocked for every mutating command while `projects list`/`show` still
+  displayed it as `active`. New registrations now default to
+  `lifecycle: active`, and the blocked-command error names the exact fix
+  (`autoforge projects update <path> --lifecycle active`).
+- **Low-quality generated user stories**: the `user-stories` planning
+  artifact no longer lowercases leading acronyms, no longer doubles
+  trailing punctuation, and states the shared objective once instead of
+  repeating it on every line.
+
+### Notes
+
+A backlog triage also confirmed six previously-filed issues were already
+fixed in 0.21.x, discovered by a reporting session running a stale global
+`pnpm` install (v0.20.3) rather than a live defect. See
+`.autoforge/state/decisions.json` for the individual audit records.
 
 <!-- autoforge:changelog:end -->
 

@@ -159,8 +159,7 @@ export class GlobalWorkspaceStore {
     const projectId = await readProjectId(project);
     const existing = (
       current.projectMetadata as
-        | GlobalWorkspaceConfig["projectMetadata"]
-        | undefined
+        GlobalWorkspaceConfig["projectMetadata"] | undefined
     )?.[project];
     const projectMetadata = {
       ...(current.projectMetadata ?? {}),
