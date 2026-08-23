@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
-  "revision": 42,
-  "updatedAt": "2026-08-23T18:52:10.386Z",
+  "revision": 43,
+  "updatedAt": "2026-08-23T20:02:45.457Z",
   "data": {
     "decisions": [
       {
@@ -1043,6 +1043,31 @@
         "kind": "feature-note",
         "createdAt": "2026-08-23T18:52:10.329Z",
         "updatedAt": "2026-08-23T18:52:10.329Z"
+      },
+      {
+        "id": "decision.onboarding-prompts-now-default-to-autoforge-attach-not-init-for-new-projects",
+        "statement": "Onboarding prompts now default to autoforge attach, not init, for new projects",
+        "reasoning": "autoforge init only creates local .autoforge/ state; it never calls GlobalWorkspaceStore.registerProject(). autoforge attach <path> is the command that does both in one step, confirmed by reading src/commands/attach.ts and init.ts directly. Every onboarding surface (README's canonical prompt, the agent setup guide, and QUICKSTART.md) told agents to run init as the default path, phrased attach as an optional alternative, and never explained the consequence -- so agents following the docs exactly produced projects invisible to autoforge projects list, exactly as the user reported observing.",
+        "consequences": [
+          "README.md, docs/AUTOFORGE_AGENT_SETUP_GUIDE.md, and docs/QUICKSTART.md now default new-project setup to autoforge attach \"$PWD\", explain that plain init does not register the project globally, and reserve init for a deliberately local-only install (e.g. a disposable CI container)."
+        ],
+        "scope": [
+          "docs",
+          "onboarding"
+        ],
+        "keywords": [
+          "attach",
+          "init",
+          "projects"
+        ],
+        "relatedWork": [
+          "issue.onboarding-prompts-default-to-init-not-attach"
+        ],
+        "supersedes": null,
+        "status": "active",
+        "kind": "bugfix",
+        "createdAt": "2026-08-23T20:02:45.431Z",
+        "updatedAt": "2026-08-23T20:02:45.431Z"
       }
     ]
   }

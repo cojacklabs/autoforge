@@ -27,12 +27,17 @@ one with `npx` instead if you installed locally.
 ## New project
 
 ```bash
-autoforge init
+autoforge attach "$PWD"
 autoforge doctor
 ```
 
-`init` scaffolds `.autoforge/` and `autoforge.config.json`. `doctor` verifies
-the installation is healthy before you start work.
+`attach` initializes `.autoforge/` and `autoforge.config.json` and registers
+the project in the global workspace in one step, so it appears in
+`autoforge projects list`. `doctor` verifies the installation is healthy
+before you start work. Use plain `autoforge init` instead only when you
+deliberately want a local-only install with no global registry entry (for
+example, a disposable CI container) — `init` alone does not register the
+project globally.
 
 ## Existing project on a new machine or with a new agent
 

@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
-  "revision": 227,
-  "updatedAt": "2026-08-23T18:52:21.486Z",
+  "revision": 230,
+  "updatedAt": "2026-08-23T20:02:53.469Z",
   "data": {
     "features": [
       {
@@ -1367,6 +1367,22 @@
           "include": [
             "README.md",
             "CONTRIBUTING.md",
+            "docs/QUICKSTART.md"
+          ],
+          "exclude": []
+        }
+      },
+      {
+        "name": "onboarding-prompts-default-to-init-not-attach",
+        "description": "The canonical onboarding prompt (README, agent setup guide) told agents to initialize or attach a project only when needed, phrased as an either/or. Agents reasonably ran autoforge init alone, which only creates local .autoforge/ state -- it never calls registerProject, so the project never appears in autoforge projects list. Reported by the user after observing this exact failure mode.",
+        "status": "completed",
+        "createdAt": "2026-08-23T20:02:15.781Z",
+        "updatedAt": "2026-08-23T20:02:53.359Z",
+        "id": "issue.onboarding-prompts-default-to-init-not-attach",
+        "scope": {
+          "include": [
+            "README.md",
+            "docs/AUTOFORGE_AGENT_SETUP_GUIDE.md",
             "docs/QUICKSTART.md"
           ],
           "exclude": []
