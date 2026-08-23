@@ -3,6 +3,7 @@ import { z } from "zod";
 import { decisionSchema } from "../decisions/schemas.js";
 import { doctrineSchema } from "../doctrine/schemas.js";
 import { specificationSchema } from "../specifications/schemas.js";
+import { strategyAssessmentSchema } from "../strategy/strategy-schemas.js";
 import {
   featureSchema,
   issueSchema,
@@ -57,6 +58,8 @@ export const specificationRefSchema = selectionMetadataSchema.extend({
   specification: specificationSchema,
 });
 
+export const strategyAssessmentRefSchema = strategyAssessmentSchema;
+
 export const contextExclusionSchema = z
   .object({
     kind: z.enum(["doctrine", "decision", "specification"]),
@@ -89,6 +92,7 @@ export const contextSelectionSchema = z
     specs: z.array(specificationRefSchema),
     governance: z.array(governanceEvaluationSchema).default([]),
     domain: z.array(domainConceptSchema).optional(),
+    strategy: strategyAssessmentRefSchema.optional(),
     exclusions: z.array(contextExclusionSchema),
     budget: contextBudgetSummarySchema,
     workflow: z
@@ -173,3 +177,4 @@ export type DecisionRef = z.infer<typeof decisionRefSchema>;
 export type SpecificationRef = z.infer<typeof specificationRefSchema>;
 export type ContextExclusion = z.infer<typeof contextExclusionSchema>;
 export type ContextSelection = z.infer<typeof contextSelectionSchema>;
+export type StrategyAssessmentRef = z.infer<typeof strategyAssessmentRefSchema>;

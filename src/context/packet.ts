@@ -356,6 +356,24 @@ function renderDomain(selection: ContextSelection): string[] {
   ];
 }
 
+function renderStrategy(selection: ContextSelection): string[] {
+  const assessment = selection.strategy;
+  if (!assessment) return [];
+  const factorLine = Object.entries(assessment.factors)
+    .map(([key, value]) => `${key}=${value}`)
+    .join(", ");
+  return [
+    "## Strategy Assessment",
+    "",
+    `- **ID:** ${code(assessment.id)}`,
+    `- **Decision:** ${assessment.decision}`,
+    `- **Factors:** ${factorLine}`,
+    `- **Rationale:** ${inlineText(assessment.rationale)}`,
+    `- **Evidence:** ${assessment.evidenceIds.join(", ") || "(none)"}`,
+    "",
+  ];
+}
+
 function renderPacket(selection: ContextSelection): string {
   const packetId = `packet.${selection.work.item.id}`;
   return [
@@ -371,6 +389,7 @@ function renderPacket(selection: ContextSelection): string {
     ...renderDoctrines(selection),
     ...renderGovernance(selection),
     ...renderDomain(selection),
+    ...renderStrategy(selection),
     "",
     ...renderDecisions(selection),
     "",
@@ -447,6 +466,7 @@ export function formatContextExplanation(
     "",
     `- **Workflow:** ${selection.workflow ? `${selection.workflow.kind} (${selection.workflow.currentStage})` : "(not provided)"}`,
     `- **Agent contract:** ${selection.contract ? selection.contract.agentId : "(not provided)"}`,
+    `- **Strategy assessment:** ${selection.strategy ? `${selection.strategy.id} (${selection.strategy.decision})` : "(not provided)"}`,
     "",
     "## Included",
     "",
