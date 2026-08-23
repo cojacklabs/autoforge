@@ -186,5 +186,39 @@ describe("compileProjectContext strategy wiring", () => {
     const { packet } = await compileProjectContext(projectRoot);
     expect(packet.content).toContain("## Strategy Assessment");
     expect(packet.content).toContain("now");
+
+    const firstAssessment = (await strategyService.history(issue.entity.id))[0];
+    if (!firstAssessment) {
+      throw new Error("Expected the first assessment to exist.");
+    }
+
+    await strategyService.assess({
+      workId: issue.entity.id,
+      factors: {
+        alignment: "low",
+        value: "low",
+        risk: "high",
+        cost: "high",
+        evidenceStrength: "uncertain",
+        dependencyPressure: "high",
+        complexity: "high",
+        releaseConstraint: "high",
+      },
+      decision: "backlog",
+      rationale: "New evidence reverses the earlier call.",
+      evidenceIds: [],
+      supersedes: firstAssessment.id,
+    });
+
+    const { packet: updatedPacket } = await compileProjectContext(projectRoot);
+    const strategySection = updatedPacket.content
+      .split("## Strategy Assessment")[1]
+      ?.split("## Relevant Decisions")[0];
+    expect(strategySection).toBeDefined();
+    expect(strategySection).toContain("backlog");
+    expect(strategySection).toContain(
+      "New evidence reverses the earlier call.",
+    );
+    expect(strategySection).not.toContain("Clear evidence, low risk.");
   });
 });

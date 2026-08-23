@@ -64,7 +64,7 @@ export const strategyAssessmentSchema = z
     factors: strategyFactorsSchema,
     decision: strategyDecisionSchema,
     rationale: z.string().trim().min(1).max(4_000),
-    evidenceIds: z.array(evidenceIdSchema),
+    evidenceIds: z.array(evidenceIdSchema).max(50),
     resultingDecision: decisionIdSchema.nullable(),
     supersedes: strategyIdSchema.nullable(),
     status: z.enum(["active", "superseded"]),

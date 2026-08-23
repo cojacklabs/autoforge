@@ -151,6 +151,89 @@ describe("strategy command", () => {
     expect(filteredOutput.stdout.mock.calls[0]?.[0]).toBe("");
   });
 
+  it("filters by --work, and combines --decision with --work", async () => {
+    const { feature, projectRoot } = await createFixture();
+    const secondFeature = await new WorkService(
+      createWorkStateStore(projectRoot),
+    ).createFeature({
+      name: "Onboarding Revamp",
+      description: "Improve the onboarding funnel.",
+    });
+
+    const firstAssessOutput = { stdout: vi.fn(), stderr: vi.fn() };
+    await runStrategyCommand({
+      args: assessArgs(feature.entity.id, [], { "--decision": "backlog" }),
+      output: firstAssessOutput,
+      startDirectory: projectRoot,
+    });
+
+    const secondAssessOutput = { stdout: vi.fn(), stderr: vi.fn() };
+    await runStrategyCommand({
+      args: assessArgs(secondFeature.entity.id, [], { "--decision": "now" }),
+      output: secondAssessOutput,
+      startDirectory: projectRoot,
+    });
+
+    const workFilteredOutput = { stdout: vi.fn(), stderr: vi.fn() };
+    await expect(
+      runStrategyCommand({
+        args: ["list", "--work", secondFeature.entity.id],
+        output: workFilteredOutput,
+        startDirectory: projectRoot,
+      }),
+    ).resolves.toBe(EXIT_CODE.success);
+    const workFilteredLine = workFilteredOutput.stdout.mock.calls[0]?.[0];
+    expect(workFilteredLine).toContain(secondFeature.entity.id);
+    expect(workFilteredLine).not.toContain(feature.entity.id);
+
+    const combinedMatchOutput = { stdout: vi.fn(), stderr: vi.fn() };
+    await runStrategyCommand({
+      args: ["list", "--decision", "now", "--work", secondFeature.entity.id],
+      output: combinedMatchOutput,
+      startDirectory: projectRoot,
+    });
+    expect(combinedMatchOutput.stdout.mock.calls[0]?.[0]).toContain(
+      secondFeature.entity.id,
+    );
+
+    const combinedMismatchOutput = { stdout: vi.fn(), stderr: vi.fn() };
+    await runStrategyCommand({
+      args: [
+        "list",
+        "--decision",
+        "backlog",
+        "--work",
+        secondFeature.entity.id,
+      ],
+      output: combinedMismatchOutput,
+      startDirectory: projectRoot,
+    });
+    expect(combinedMismatchOutput.stdout.mock.calls[0]?.[0]).toBe("");
+
+    const reversedOrderOutput = { stdout: vi.fn(), stderr: vi.fn() };
+    await runStrategyCommand({
+      args: ["list", "--work", secondFeature.entity.id, "--decision", "now"],
+      output: reversedOrderOutput,
+      startDirectory: projectRoot,
+    });
+    expect(reversedOrderOutput.stdout.mock.calls[0]?.[0]).toContain(
+      secondFeature.entity.id,
+    );
+  });
+
+  it("rejects an unknown flag to strategy list", async () => {
+    const { projectRoot } = await createFixture();
+    const output = { stdout: vi.fn(), stderr: vi.fn() };
+
+    await expect(
+      runStrategyCommand({
+        args: ["list", "--bogus", "x"],
+        output,
+        startDirectory: projectRoot,
+      }),
+    ).resolves.toBe(EXIT_CODE.usage);
+  });
+
   it("shows one assessment by id", async () => {
     const { feature, projectRoot } = await createFixture();
     const assessOutput = { stdout: vi.fn(), stderr: vi.fn() };

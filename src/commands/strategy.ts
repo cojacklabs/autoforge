@@ -13,6 +13,7 @@ import { createWorkStateStore } from "../state/kernel.js";
 import {
   strategyDecisionSchema,
   strategyFactorLevelSchema,
+  strategyFactorsSchema,
   type StrategyDecision,
   type StrategyFactors,
 } from "../strategy/strategy-schemas.js";
@@ -50,9 +51,46 @@ function usageError(output: LogWriter, message: string): undefined {
   return undefined;
 }
 
+const LIST_FLAGS = new Set(["--decision", "--work"]);
+
+interface ParsedListArguments {
+  decision?: string;
+  work?: string;
+}
+
+function parseListArguments(
+  rest: readonly string[],
+  output: LogWriter,
+): ParsedListArguments | undefined {
+  const singleValues = new Map<string, string>();
+  for (let index = 0; index < rest.length; index += 2) {
+    const flag = rest[index];
+    const value = rest[index + 1];
+    if (!flag || !LIST_FLAGS.has(flag)) {
+      return usageError(
+        output,
+        `Unknown strategy option: ${flag ?? "<missing>"}`,
+      );
+    }
+    if (!value || value.startsWith("--")) {
+      return usageError(output, `Option ${flag} requires a value.`);
+    }
+    if (singleValues.has(flag)) {
+      return usageError(output, `Option ${flag} may only be provided once.`);
+    }
+    singleValues.set(flag, value);
+  }
+  const decisionValue = singleValues.get("--decision");
+  const workValue = singleValues.get("--work");
+  return {
+    ...(decisionValue ? { decision: decisionValue } : {}),
+    ...(workValue ? { work: workValue } : {}),
+  };
+}
+
 interface ParsedAssessArguments {
   workId: string;
-  factors: Record<(typeof FACTOR_FLAGS)[keyof typeof FACTOR_FLAGS], string>;
+  factors: StrategyFactors;
   decision: string;
   rationale: string;
   evidenceIds: string[];
@@ -96,7 +134,7 @@ function parseAssessArguments(
     }
   }
 
-  const factors: Record<string, string> = {};
+  const rawFactors: Record<string, string> = {};
   for (const [flag, key] of Object.entries(FACTOR_FLAGS)) {
     const value = singleValues.get(flag);
     if (!value) {
@@ -109,8 +147,16 @@ function parseAssessArguments(
         `Option ${flag} must be one of: low, medium, high, uncertain.`,
       );
     }
-    factors[key] = parsedLevel.data;
+    rawFactors[key] = parsedLevel.data;
   }
+  const parsedFactors = strategyFactorsSchema.safeParse(rawFactors);
+  if (!parsedFactors.success) {
+    return usageError(
+      output,
+      parsedFactors.error.issues[0]?.message ?? "Invalid strategy factors.",
+    );
+  }
+  const factors = parsedFactors.data;
 
   const decision = singleValues.get("--decision");
   const rationale = singleValues.get("--rationale");
@@ -130,7 +176,7 @@ function parseAssessArguments(
   const supersedes = singleValues.get("--supersedes");
   return {
     workId,
-    factors: factors as ParsedAssessArguments["factors"],
+    factors,
     decision,
     rationale,
     evidenceIds: repeatableValues.get("--evidence") ?? [],
@@ -182,7 +228,7 @@ export async function runStrategyCommand(
         parsed;
       const result = await service.assess({
         workId,
-        factors: factors as unknown as StrategyFactors,
+        factors,
         decision: decision as StrategyDecision,
         rationale,
         evidenceIds,
@@ -195,10 +241,17 @@ export async function runStrategyCommand(
     }
 
     if (action === "list") {
+      const parsedList = parseListArguments(
+        target === undefined ? [] : [target, ...rest],
+        options.output,
+      );
+      if (!parsedList) {
+        return EXIT_CODE.usage;
+      }
+      const decisionFilter = parsedList.decision;
+      const workFilter = parsedList.work;
       await strategyStore.ensure();
       const { state } = await strategyStore.state.read();
-      const decisionFilter = target === "--decision" ? rest[0] : undefined;
-      const workFilter = target === "--work" ? rest[0] : undefined;
       const rows = state.data.assessments
         .filter((assessment) => assessment.status === "active")
         .filter(
