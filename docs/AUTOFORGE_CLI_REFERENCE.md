@@ -39,6 +39,25 @@ autoforge planning list --source <intent.json>
 autoforge planning handoff <kind> --phase <phase-id> --include "docs/**"
 ```
 
+## Strategy and Prioritization
+
+```bash
+autoforge strategy assess <work-id> --alignment <low|medium|high|uncertain> --value <low|medium|high|uncertain> --risk <low|medium|high|uncertain> --cost <low|medium|high|uncertain> --evidence-strength <low|medium|high|uncertain> --dependency-pressure <low|medium|high|uncertain> --complexity <low|medium|high|uncertain> --release-constraint <low|medium|high|uncertain> --decision <now|next|later|backlog> --rationale <text> [--evidence <evidence-id>] [--supersedes <strategy-id>]
+autoforge strategy list [--decision <now|next|later|backlog>] [--work <work-id>]
+autoforge strategy show <id>
+autoforge strategy history <work-id>
+```
+
+`strategy assess` records an explainable, multi-factor judgment on any
+feature, phase, task, or issue — no blended numeric score, only
+categorical factors and a human-assigned `now`/`next`/`later`/`backlog`
+decision label. Every assessment writes a linked decision record via
+`autoforge decide`'s underlying service, so `autoforge why` also
+surfaces strategy calls. `strategy assess` is independent from
+`autoforge orchestrate prioritize`, which remains a narrow 0-100
+scheduling tiebreaker for work already inside an active orchestration
+plan.
+
 ## Learning and Evidence
 
 ```bash
