@@ -7,6 +7,7 @@ import { EXIT_CODE, type ExitCode } from "../core/errors.js";
 import type { LogWriter } from "../core/logger.js";
 import { discoverProjectRoot } from "../core/project.js";
 import { EvidenceStore } from "../learning/evidence-store.js";
+import { ValidationEvidenceStore } from "../quality/evidence.js";
 
 export interface WhyCommandOptions {
   args: readonly string[];
@@ -88,6 +89,7 @@ function parseWhyArguments(
 export function formatDecisionMatches(
   matches: readonly DecisionSearchMatch[],
   evidenceByDecision?: ReadonlyMap<string, readonly string[]>,
+  validationByWorkId?: ReadonlyMap<string, readonly string[]>,
 ): string {
   if (matches.length === 0) {
     return "No matching decisions.";
@@ -114,6 +116,12 @@ export function formatDecisionMatches(
       const evidenceIds = evidenceByDecision?.get(decision.id);
       if (evidenceIds && evidenceIds.length > 0) {
         lines.push(`Evidence: ${evidenceIds.join(", ")}`);
+      }
+      const validationLines = decision.relatedWork.flatMap(
+        (workId) => validationByWorkId?.get(workId) ?? [],
+      );
+      if (validationLines.length > 0) {
+        lines.push(`Validation: ${validationLines.join(", ")}`);
       }
       return lines.join("\n");
     },
@@ -151,6 +159,25 @@ export async function runWhyCommand(
     }
   }
 
-  options.output.stdout(formatDecisionMatches(matches, evidenceByDecision));
+  const validationEvidenceState = await new ValidationEvidenceStore(
+    project.path,
+  ).read();
+  const validationByWorkId = new Map<string, string[]>();
+  for (const record of validationEvidenceState.evidence) {
+    if (!record.workId) {
+      continue;
+    }
+    const label = `${record.gateId} (${record.status})`;
+    const existing = validationByWorkId.get(record.workId);
+    if (existing) {
+      existing.push(label);
+    } else {
+      validationByWorkId.set(record.workId, [label]);
+    }
+  }
+
+  options.output.stdout(
+    formatDecisionMatches(matches, evidenceByDecision, validationByWorkId),
+  );
   return EXIT_CODE.success;
 }

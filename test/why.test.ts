@@ -127,8 +127,9 @@ describe("why command", () => {
 
   it("surfaces linked evidence beneath a matched decision", async () => {
     const { feature, projectRoot } = await createFixture();
-    const { runLearningEvidenceCommand } =
-      await import("../src/commands/learning-evidence.js");
+    const { runLearningEvidenceCommand } = await import(
+      "../src/commands/learning-evidence.js"
+    );
     const evidenceOutput = { stdout: vi.fn(), stderr: vi.fn() };
     await runLearningEvidenceCommand({
       args: [
@@ -192,6 +193,63 @@ describe("why command", () => {
       }),
     ).resolves.toBe(EXIT_CODE.success);
     expect(output.stdout.mock.calls[0]?.[0]).not.toContain("Evidence:");
+  });
+
+  it("surfaces validation evidence beneath a matched decision via related work", async () => {
+    const { feature, projectRoot } = await createFixture();
+    const decisions = new DecisionService(
+      createDecisionStore(projectRoot),
+      createWorkStateStore(projectRoot),
+      { now: () => new Date(TIMESTAMP) },
+    );
+    await decisions.record({
+      statement: "Ship the checkout redesign.",
+      reasoning: "Improves conversion.",
+      consequences: ["New checkout flow ships."],
+      scope: ["checkout"],
+      keywords: ["checkout", "redesign"],
+      relatedWork: [feature.entity.id],
+    });
+
+    const { ValidationEvidenceStore } = await import(
+      "../src/quality/evidence.js"
+    );
+    await new ValidationEvidenceStore(projectRoot).record({
+      id: "evidence.command.tests.1",
+      gateId: "command.tests",
+      status: "passed",
+      severity: "required",
+      workId: feature.entity.id,
+      traceIds: [],
+      reason: "Quality command tests exited with code 0.",
+      capturedAt: TIMESTAMP,
+    });
+
+    const output = { stdout: vi.fn(), stderr: vi.fn() };
+    await expect(
+      runWhyCommand({
+        args: ["--query", "checkout redesign"],
+        output,
+        startDirectory: projectRoot,
+      }),
+    ).resolves.toBe(EXIT_CODE.success);
+    expect(output.stdout.mock.calls[0]?.[0]).toContain(
+      "Validation: command.tests (passed)",
+    );
+  });
+
+  it("omits the validation line when no validation evidence references the decision's related work", async () => {
+    const { projectRoot } = await createFixture();
+    const output = { stdout: vi.fn(), stderr: vi.fn() };
+
+    await expect(
+      runWhyCommand({
+        args: ["--query", "determinism relevance"],
+        output,
+        startDirectory: projectRoot,
+      }),
+    ).resolves.toBe(EXIT_CODE.success);
+    expect(output.stdout.mock.calls[0]?.[0]).not.toContain("Validation:");
   });
 
   it.each([
