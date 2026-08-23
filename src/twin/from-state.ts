@@ -19,9 +19,9 @@ export interface TwinStateInput {
 export function projectStateToTwin(input: TwinStateInput): TwinProjection {
   const nodes = [
     ...input.work.features.map((item) => workNode(item, "feature")),
-    ...input.work.phases.map((item) => workNode(item, "flow")),
-    ...input.work.tasks.map((item) => workNode(item, "work")),
-    ...input.work.issues.map((item) => workNode(item, "risk")),
+    ...input.work.phases.map((item) => workNode(item, "phase")),
+    ...input.work.tasks.map((item) => workNode(item, "task")),
+    ...input.work.issues.map((item) => workNode(item, "issue")),
     ...input.decisions.decisions.map((decision) => ({
       id: decision.id,
       type: "decision" as const,
@@ -136,7 +136,7 @@ function workNode(
     WorkState["features"][number],
     "id" | "name" | "status" | "updatedAt"
   >,
-  type: "feature" | "flow" | "work" | "risk",
+  type: "feature" | "phase" | "task" | "issue",
 ) {
   return {
     id: item.id,

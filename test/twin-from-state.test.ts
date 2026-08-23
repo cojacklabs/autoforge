@@ -128,4 +128,73 @@ describe("project state digital twin adapter", () => {
       relationship: "produced-by",
     });
   });
+
+  it("projects phases, tasks, and issues with their own dedicated node types", () => {
+    const result = projectStateToTwin({
+      projectId: "project.example",
+      generatedAt: "2026-08-22T12:00:00.000Z",
+      work: {
+        features: [
+          {
+            id: "feature.search",
+            name: "Search",
+            description: "Search data",
+            status: "planned",
+            createdAt: "2026-08-22T12:00:00.000Z",
+            updatedAt: "2026-08-22T12:00:00.000Z",
+          },
+        ],
+        phases: [
+          {
+            id: "phase.index",
+            featureId: "feature.search",
+            sequence: 1,
+            name: "Index",
+            description: "Build the index.",
+            status: "planned",
+            createdAt: "2026-08-22T12:00:00.000Z",
+            updatedAt: "2026-08-22T12:00:00.000Z",
+          },
+        ],
+        tasks: [
+          {
+            id: "task.build-index",
+            phaseId: "phase.index",
+            name: "Build index",
+            description: "Build the search index.",
+            status: "planned",
+            scope: { include: ["src/search/**"], exclude: [] },
+            createdAt: "2026-08-22T12:00:00.000Z",
+            updatedAt: "2026-08-22T12:00:00.000Z",
+          },
+        ],
+        issues: [
+          {
+            id: "issue.slow-index",
+            name: "Slow index",
+            description: "Indexing is slow.",
+            status: "planned",
+            scope: { include: ["src/search/**"], exclude: [] },
+            createdAt: "2026-08-22T12:00:00.000Z",
+            updatedAt: "2026-08-22T12:00:00.000Z",
+          },
+        ],
+        activeWork: null,
+      },
+      decisions: { decisions: [] },
+      hypotheses: { hypotheses: [] },
+      experiments: { experiments: [] },
+      evidence: { evidence: [] },
+    });
+
+    expect(result.nodes.find((node) => node.id === "phase.index")?.type).toBe(
+      "phase",
+    );
+    expect(
+      result.nodes.find((node) => node.id === "task.build-index")?.type,
+    ).toBe("task");
+    expect(
+      result.nodes.find((node) => node.id === "issue.slow-index")?.type,
+    ).toBe("issue");
+  });
 });
