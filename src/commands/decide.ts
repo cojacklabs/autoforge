@@ -5,6 +5,10 @@ import { DecisionService } from "../decisions/service.js";
 import { EXIT_CODE, type ExitCode } from "../core/errors.js";
 import type { LogWriter } from "../core/logger.js";
 import { discoverProjectRoot } from "../core/project.js";
+import { EvidenceService } from "../learning/evidence-service.js";
+import { EvidenceStore } from "../learning/evidence-store.js";
+import { ExperimentStore } from "../learning/experiment-store.js";
+import { HypothesisStore } from "../learning/hypothesis-store.js";
 import { createWorkStateStore } from "../state/kernel.js";
 
 export interface DecideCommandOptions {
@@ -20,6 +24,7 @@ interface ParsedDecideArguments {
   scope: string[];
   keywords: string[];
   relatedWork: string[];
+  evidence: string[];
   supersedes?: string;
   kind?: string;
 }
@@ -35,6 +40,7 @@ const REPEATABLE_FLAGS = new Set([
   "--scope",
   "--keyword",
   "--work",
+  "--evidence",
 ]);
 
 function usageError(output: LogWriter, message: string): undefined {
@@ -117,6 +123,7 @@ function parseDecideArguments(
     scope,
     keywords,
     relatedWork: repeatableValues.get("--work") ?? [],
+    evidence: repeatableValues.get("--evidence") ?? [],
     ...(supersedes ? { supersedes } : {}),
     ...(kind ? { kind } : {}),
   };
@@ -136,6 +143,13 @@ export async function runDecideCommand(
   const service = new DecisionService(
     createDecisionStore(project.path),
     createWorkStateStore(project.path),
+    {
+      evidenceService: new EvidenceService(
+        new EvidenceStore(project.path),
+        new ExperimentStore(project.path),
+        new HypothesisStore(project.path),
+      ),
+    },
   );
   try {
     const { kind, ...rest } = parsed;

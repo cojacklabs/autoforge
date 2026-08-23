@@ -182,6 +182,59 @@ describe("decide command", () => {
     ).resolves.toBe(EXIT_CODE.usage);
   });
 
+  it("stamps resultingDecision when --evidence is provided", async () => {
+    const { feature, projectRoot } = await createFixture();
+    const { runLearningEvidenceCommand } = await import(
+      "../src/commands/learning-evidence.js"
+    );
+    const evidenceOutput = { stdout: vi.fn(), stderr: vi.fn() };
+    await runLearningEvidenceCommand({
+      args: [
+        "add",
+        "--kind",
+        "bug-report",
+        "--summary",
+        "Example bug report.",
+        "--source",
+        "Example.",
+        "--work",
+        feature.entity.id,
+      ],
+      output: evidenceOutput,
+      startDirectory: projectRoot,
+    });
+
+    const output = { stdout: vi.fn(), stderr: vi.fn() };
+    await expect(
+      runDecideCommand({
+        args: [...decisionArgs(), "--evidence", "evidence.example-bug-report"],
+        output,
+        startDirectory: projectRoot,
+      }),
+    ).resolves.toBe(EXIT_CODE.success);
+
+    const { EvidenceStore } = await import("../src/learning/evidence-store.js");
+    const evidenceStore = new EvidenceStore(projectRoot);
+    const { state } = await evidenceStore.state.read();
+    expect(
+      state.data.evidence.find(
+        (item) => item.id === "evidence.example-bug-report",
+      )?.resultingDecision,
+    ).toBe("decision.use-deterministic-search");
+  });
+
+  it("rejects an unknown --evidence id", async () => {
+    const { projectRoot } = await createFixture();
+    const output = { stdout: vi.fn(), stderr: vi.fn() };
+    await expect(
+      runDecideCommand({
+        args: [...decisionArgs(), "--evidence", "evidence.does-not-exist"],
+        output,
+        startDirectory: projectRoot,
+      }),
+    ).rejects.toMatchObject({ code: "INVALID_ARGUMENT" });
+  });
+
   it("returns usage for non-canonical metadata", async () => {
     const { projectRoot } = await createFixture();
     const output = { stdout: vi.fn(), stderr: vi.fn() };

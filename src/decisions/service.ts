@@ -1,4 +1,5 @@
 import { AutoForgeError, EXIT_CODE } from "../core/errors.js";
+import type { EvidenceService } from "../learning/evidence-service.js";
 import type { AtomicStateStore } from "../state/store.js";
 import type { WorkState } from "../work/schemas.js";
 import {
@@ -16,6 +17,7 @@ export interface RecordDecisionInput {
   relatedWork: string[];
   supersedes?: string;
   kind?: import("./schemas.js").DecisionKind;
+  evidence?: string[];
 }
 
 export interface DecisionMutationResult {
@@ -80,15 +82,19 @@ function workIds(state: WorkState): Set<string> {
 export class DecisionService {
   private readonly decisionStore: AtomicStateStore<DecisionMemory>;
   private readonly workStore: AtomicStateStore<WorkState>;
+  private readonly evidenceService: EvidenceService | undefined;
   private readonly now: () => Date;
 
   constructor(
     decisionStore: AtomicStateStore<DecisionMemory>,
     workStore: AtomicStateStore<WorkState>,
-    options: DecisionServiceOptions = {},
+    options: DecisionServiceOptions & {
+      evidenceService?: EvidenceService;
+    } = {},
   ) {
     this.decisionStore = decisionStore;
     this.workStore = workStore;
+    this.evidenceService = options.evidenceService;
     this.now = options.now ?? (() => new Date());
   }
 
@@ -161,6 +167,19 @@ export class DecisionService {
       { decisions },
       { expectedRevision: decisionState.revision },
     );
+    if (input.evidence && input.evidence.length > 0) {
+      if (!this.evidenceService) {
+        throw decisionError(
+          "Decision references evidence but no evidence service is configured",
+          { evidence: input.evidence },
+        );
+      }
+      await this.evidenceService.stampResultingDecision(
+        input.evidence,
+        decision.id,
+      );
+    }
+
     return { decision, revision: committed.revision };
   }
 }

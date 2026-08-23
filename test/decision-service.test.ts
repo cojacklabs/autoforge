@@ -179,6 +179,73 @@ describe("decision service", () => {
     expect(result.decision.kind).toBe("architecture");
   });
 
+  it("stamps resultingDecision on referenced evidence", async () => {
+    const { decisionStore } = await createFixture();
+    const { EvidenceStore } = await import("../src/learning/evidence-store.js");
+    const { EvidenceService } = await import(
+      "../src/learning/evidence-service.js"
+    );
+    const { ExperimentStore } = await import(
+      "../src/learning/experiment-store.js"
+    );
+    const { HypothesisStore } = await import(
+      "../src/learning/hypothesis-store.js"
+    );
+    const evidenceStore = new EvidenceStore(projectRoot);
+    await evidenceStore.ensure();
+    const evidenceResult = await new EvidenceService(
+      evidenceStore,
+      new ExperimentStore(projectRoot),
+      new HypothesisStore(projectRoot),
+    ).record({
+      kind: "bug-report",
+      summary: "Example bug report.",
+      source: "Example.",
+      relatedWork: "feature.decision-memory",
+    });
+
+    const workStore = createWorkStateStore(projectRoot, {
+      now: () => new Date(TIMESTAMP),
+      temporaryId: () => "test",
+    });
+    const decisionServiceWithEvidence = new DecisionService(
+      decisionStore,
+      workStore,
+      {
+        now: () => new Date(TIMESTAMP),
+        evidenceService: new EvidenceService(
+          evidenceStore,
+          new ExperimentStore(projectRoot),
+          new HypothesisStore(projectRoot),
+        ),
+      },
+    );
+
+    const result = await decisionServiceWithEvidence.record(
+      input({ evidence: [evidenceResult.evidence.id] }),
+    );
+
+    const { state } = await evidenceStore.state.read();
+    expect(
+      state.data.evidence.find((item) => item.id === evidenceResult.evidence.id)
+        ?.resultingDecision,
+    ).toBe(result.decision.id);
+  });
+
+  it("does not require evidenceService when no --evidence is provided", async () => {
+    const { service } = await createFixture();
+    await expect(service.record(input())).resolves.toMatchObject({
+      decision: { status: "active" },
+    });
+  });
+
+  it("rejects evidence references when no evidenceService is configured", async () => {
+    const { service } = await createFixture();
+    await expect(
+      service.record(input({ evidence: ["evidence.anything"] })),
+    ).rejects.toMatchObject({ code: "INVALID_ARGUMENT" });
+  });
+
   it("rejects missing or previously superseded targets", async () => {
     const { decisionStore, service } = await createFixture();
     await expect(

@@ -47,7 +47,7 @@ Add work:
   autoforge add issue --name <name> --description <text> --include <pattern> [--include <pattern>] [--exclude <pattern>]
 
 Decision memory:
-  autoforge decide --statement <text> --reasoning <text> --consequence <text> --scope <tag> --keyword <tag> [--consequence <text>] [--scope <tag>] [--keyword <tag>] [--work <work-id>] [--supersedes <decision-id>] [--kind <architecture|bugfix|feature-note>]
+  autoforge decide --statement <text> --reasoning <text> --consequence <text> --scope <tag> --keyword <tag> [--consequence <text>] [--scope <tag>] [--keyword <tag>] [--work <work-id>] [--supersedes <decision-id>] [--kind <architecture|bugfix|feature-note>] [--evidence <evidence-id>]
   autoforge why [--query <text>] [--work <work-id>] [--work <work-id>] [--history] [--limit <count>]
 
 Learning and evidence:
