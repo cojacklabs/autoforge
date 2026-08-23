@@ -2,7 +2,7 @@
 
 ## Canonical Startup Prompt
 
-> Use the globally installed AutoForge CLI for this repository: run `autoforge version`, `autoforge --project "$PWD" doctor`, and `autoforge --project "$PWD" bootstrap status`; review `AGENTS.md` when present and inspect `.autoforge/`, initialize or attach the project only when needed, refresh your understanding after AutoForge updates, and when active work exists run `autoforge --project "$PWD" context --explain`; summarize the project structure, active work, governance rules, relevant decisions, and validation requirements before making changes.
+> Use the globally installed AutoForge CLI for this repository: run `autoforge version`, `autoforge --project "$PWD" doctor`, and `autoforge --project "$PWD" bootstrap status`; review `AGENTS.md` when present and inspect `.autoforge/`, initialize or attach the project only when needed, refresh your understanding after AutoForge updates, and when active work exists run `autoforge --project "$PWD" context --explain`; read `docs/AUTOFORGE_CLI_REFERENCE.md` for the complete current command surface so you can govern, scaffold, categorize, organize, prioritize, and reorganize this project's work using the full AutoForge CLI; summarize the project structure, active work, governance rules, relevant decisions, and validation requirements before making changes.
 
 ## Required Procedure
 

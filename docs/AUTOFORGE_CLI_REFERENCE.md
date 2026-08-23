@@ -30,6 +30,7 @@ autoforge recap
 autoforge decide --statement "..." --reasoning "..." --consequence "..." --scope project --keyword architecture
 autoforge why --query "..."
 autoforge doctrine
+autoforge changelog compile [--since <git-tag>]
 autoforge intent assess <json-file> --kind implementation
 autoforge intent register <json-file>
 autoforge research register <json-file>
@@ -37,6 +38,33 @@ autoforge knowledge list
 autoforge planning list --source <intent.json>
 autoforge planning handoff <kind> --phase <phase-id> --include "docs/**"
 ```
+
+## Learning and Evidence
+
+```bash
+autoforge learning hypothesis add --statement <text> --expected-outcome <text> --metric <text> --target <text> [--work <work-id>]
+autoforge learning hypothesis list [--status <proposed|testing|confirmed|refuted>]
+autoforge learning hypothesis show <id>
+autoforge learning hypothesis status <id> --status <proposed|testing|confirmed|refuted>
+autoforge learning experiment add --hypothesis <id> [--hypothesis <id> ...] --method <text>
+autoforge learning experiment list [--status <planned|running|completed|abandoned>]
+autoforge learning experiment show <id>
+autoforge learning experiment complete <id>
+autoforge learning evidence add --kind <kind> --summary <text> --source <text> [--experiment <id>] [--hypothesis <id>] [--work <work-id>]
+autoforge learning evidence list [--kind <kind>]
+autoforge learning evidence show <id>
+autoforge decide --evidence <evidence-id> ...
+```
+
+`learning hypothesis` records a testable belief with a free-text `--metric`
+and `--target`. `learning experiment` may test multiple hypotheses at once
+via repeated `--hypothesis` flags. `learning evidence` accepts nine kinds
+(`analytics`, `beta-feedback`, `support-ticket`, `bug-report`,
+`usability-study`, `experiment-result`, `performance-metric`, `interview`,
+`ai-evaluation`) and links to an experiment, a hypothesis, and/or a work item
+simultaneously — the links are not mutually exclusive. Passing `--evidence
+<id>` to `autoforge decide` closes the loop: it stamps that decision back
+onto every referenced evidence record.
 
 ## Governance and Domain Intelligence
 
@@ -201,4 +229,4 @@ autoforge tui
 autoforge tui --snapshot --no-color
 ```
 
-Legacy commands not shown by `autoforge help` are not part of the supported v0.16 workflow.
+Legacy commands not shown by `autoforge help` are not part of the supported workflow.
