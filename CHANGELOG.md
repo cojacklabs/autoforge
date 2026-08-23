@@ -8,8 +8,71 @@ All notable changes to this project will be documented in this file.
 > (`v0.7.0`–`v0.21.0`) for that history.
 
 <!-- autoforge:changelog:start -->
-
 <!-- autoforge:changelog:end -->
+
+## [0.24.0] - 2026-08-23
+
+### Added
+
+- **Continuous Product Evolution Engine**: the digital twin now projects
+  every governance, domain, design, strategy, and traceability signal
+  alongside work, decisions, and evidence — closing the north-star's
+  v0.24 milestone by making `autoforge twin` a true whole-project graph
+  instead of a work/decision-only projection:
+  - The twin node-type schema was extended with `phase`, `task`, `issue`,
+    `strategy`, `validation-evidence`, and `specification` node types
+    (replacing the former collapsed `work`/`risk` types), so phases,
+    tasks, and issues each project with their own dedicated node type.
+  - Constitution rules now project as `constitution` nodes with `governs`
+    edges to every work item they apply to (via the same
+    `selectApplicableRules` matcher used elsewhere); domain concepts
+    project with `models` edges back to the decisions and specifications
+    that established them.
+  - Specifications, active strategy assessments, traceability links, and
+    validation evidence all project into the twin: specifications with a
+    direct twin counterpart (`architecture`, `screen`, `component`,
+    `flow`, `api`, `domain`) keep their own type, the rest project as a
+    generic `specification` node; only `active` strategy assessments
+    project, with `assesses`/`resulted-in` edges; traceability links
+    project as edges only (no separate node); validation evidence
+    projects with `validates`/`traces` edges.
+  - `autoforge twin generate` now reads all six additional domains in
+    parallel alongside the original five and includes them in the
+    generated projection.
+  - `autoforge why` now surfaces validation-gate evidence linked to a
+    matched decision's related work as a `Validation: <gateId> (<status>)`
+    line.
+  - Documented the full agentic-AI-facing capability surface — a new
+    "Full Capability Map" section in `docs/AUTOFORGE_AGENTIC_AI_GUIDE.md`
+    covering every domain (work lifecycle, memory, strategy, learning,
+    governance, design, orchestration, the digital twin, traceability,
+    and the global workspace) with when-to-use guidance for each.
+
+### Fixed
+
+- **`gate check` now stamps recorded evidence with the active work
+  item's id**: found during a live end-to-end audit of the Continuous
+  Product Evolution loop — `autoforge gate check` recorded validation
+  evidence but never attached the active work item's id, so the new
+  `autoforge why` validation surfacing had nothing to match against
+  outside of unit tests that injected the field manually. The loop now
+  closes in practice, not just in isolated tests.
+- **Twin generation no longer crashes on 7 of 13 specification types**:
+  an unchecked cast from `SpecificationType` to the twin's node-type enum
+  meant `design`, `token`, `state`, `responsive`, `product`, `research`,
+  and `intent` specifications threw an uncaught schema error inside
+  `autoforge twin generate`. Fixed with an exhaustive type mapping and a
+  generic `specification` fallback node type.
+- **Stale pre-v0.24 twin caches no longer crash `twin show`/`twin
+query`**: a cache written by an older AutoForge version using the
+  since-removed `work`/`risk` node types now degrades gracefully to "no
+  twin found, run generate" instead of throwing, since the twin cache is
+  gitignored and always regenerable.
+- **Onboarding prompts now default to `autoforge attach`, not `init`**,
+  for new projects: `init` alone never registers a project in the global
+  workspace, so agents following the README's copy/paste onboarding
+  prompt could initialize a project that then never appeared in
+  `autoforge projects list`.
 
 ## [0.23.0] - 2026-08-23
 
