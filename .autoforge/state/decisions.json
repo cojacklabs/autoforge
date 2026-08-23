@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
-  "revision": 31,
-  "updatedAt": "2026-08-23T01:07:06.721Z",
+  "revision": 32,
+  "updatedAt": "2026-08-23T02:27:40.130Z",
   "data": {
     "decisions": [
       {
@@ -597,8 +597,8 @@
         "supersedes": null,
         "status": "active",
         "kind": "bugfix",
-        "createdAt": "2026-08-23T00:58:08.037Z",
-        "updatedAt": "2026-08-23T00:58:08.037Z"
+        "createdAt": "2026-08-23T01:54:45.076Z",
+        "updatedAt": "2026-08-23T01:54:45.076Z"
       },
       {
         "id": "decision.bootstrap-approve-verb-was-already-implemented-before-this-issue-was-filed",
@@ -619,8 +619,8 @@
         "supersedes": null,
         "status": "active",
         "kind": "bugfix",
-        "createdAt": "2026-08-23T01:05:38.028Z",
-        "updatedAt": "2026-08-23T01:05:38.028Z"
+        "createdAt": "2026-08-23T02:08:40.527Z",
+        "updatedAt": "2026-08-23T02:08:40.527Z"
       },
       {
         "id": "decision.intent-and-workflow-kind-vocabularies-were-already-unified-before-this-issue-was",
@@ -641,8 +641,8 @@
         "supersedes": null,
         "status": "active",
         "kind": "bugfix",
-        "createdAt": "2026-08-23T01:05:48.645Z",
-        "updatedAt": "2026-08-23T01:05:48.645Z"
+        "createdAt": "2026-08-23T02:19:12.975Z",
+        "updatedAt": "2026-08-23T02:19:12.975Z"
       },
       {
         "id": "decision.workflow-command-already-surfaces-real-errors-instead-of-a-bare-catch-before-thi",
@@ -709,6 +709,99 @@
         "kind": "bugfix",
         "createdAt": "2026-08-23T01:07:06.697Z",
         "updatedAt": "2026-08-23T01:07:06.697Z"
+      },
+      {
+        "id": "decision.added-dedicated-data-and-security-work-kinds-to-the-shared-intent-workflow-vocab",
+        "statement": "Added dedicated data and security work kinds to the shared intent/workflow vocabulary",
+        "reasoning": "Bootstrap's gate list requires data and security artifacts but no correctly-labeled intent or workflow kind existed for either; users had to mislabel this work as architecture.",
+        "consequences": [
+          "READINESS_WORK_KINDS and WORKFLOW_KINDS gained data/data-change and security/security-change; both have dedicated workflow definitions with research(optional)->planning->implementation->validation(required) stages."
+        ],
+        "scope": [
+          "intent",
+          "workflow"
+        ],
+        "keywords": [
+          "data",
+          "security"
+        ],
+        "relatedWork": [
+          "issue.add-data-and-security-work-kinds-to-intent-and-workflow"
+        ],
+        "supersedes": null,
+        "status": "active",
+        "kind": "bugfix",
+        "createdAt": "2026-08-23T01:54:45.076Z",
+        "updatedAt": "2026-08-23T01:54:45.076Z"
+      },
+      {
+        "id": "decision.persisted-planning-artifacts-are-now-namespaced-by-source-fingerprint-instead-of",
+        "statement": "Persisted planning artifacts are now namespaced by source fingerprint instead of a flat kind-only path",
+        "reasoning": "intent assess --artifact <kind> --persist previously wrote to a fixed .autoforge/planning/<kind>.json path, silently overwriting any prior artifact of the same kind with no warning.",
+        "consequences": [
+          "PlanningArtifactStore stores artifacts at .autoforge/planning/<kind>/<sourceFingerprint>.json; read(kind) with no fingerprint returns the most recent version; a new listVersions(kind) method and updated planning list surface every stored version."
+        ],
+        "scope": [
+          "planning"
+        ],
+        "keywords": [
+          "namespacing",
+          "data-loss"
+        ],
+        "relatedWork": [
+          "issue.namespace-persisted-planning-artifacts-to-avoid-silent-overwrite"
+        ],
+        "supersedes": null,
+        "status": "active",
+        "kind": "bugfix",
+        "createdAt": "2026-08-23T02:08:40.527Z",
+        "updatedAt": "2026-08-23T02:08:40.527Z"
+      },
+      {
+        "id": "decision.newly-registered-projects-now-default-to-an-active-lifecycle-and-the-mutation-bl",
+        "statement": "Newly registered projects now default to an active lifecycle, and the mutation-blocked error names the exact fix command",
+        "reasoning": "registerProject left lifecycle undefined, which projectMutationBlocked treats as blocked while projects list/show already displayed it as active -- an undiscoverable, inconsistent trap that silently blocked every mutating use command against a freshly attached project.",
+        "consequences": [
+          "registerProject sets lifecycle: active on first registration (preserving an existing explicit lifecycle on re-registration); the blocked-command stderr message now includes the exact autoforge projects update --lifecycle active fix."
+        ],
+        "scope": [
+          "workspace"
+        ],
+        "keywords": [
+          "lifecycle",
+          "use-command"
+        ],
+        "relatedWork": [
+          "issue.clarify-use-command-project-lifecycle-mutation-gate"
+        ],
+        "supersedes": null,
+        "status": "active",
+        "kind": "bugfix",
+        "createdAt": "2026-08-23T02:19:12.975Z",
+        "updatedAt": "2026-08-23T02:19:12.975Z"
+      },
+      {
+        "id": "decision.generated-user-stories-artifacts-no-longer-mangle-acronyms-or-repeat-the-objecti",
+        "statement": "Generated user-stories artifacts no longer mangle acronyms or repeat the objective clause on every line",
+        "reasoning": "The prior template called toLowerCase() on the full requirement string, destroying leading acronyms/proper nouns, and appended a generic so the stated objective is achieved phrase verbatim to every single requirement line, producing barely grammatical boilerplate.",
+        "consequences": [
+          "The user-stories template now lowercases only a non-acronym leading word, strips redundant trailing punctuation before appending a period, and states the shared objective once in a header line instead of once per story. Actor extraction and compound-requirement splitting remain explicitly out of scope as a separate, harder NLP problem."
+        ],
+        "scope": [
+          "planning"
+        ],
+        "keywords": [
+          "user-stories",
+          "template-quality"
+        ],
+        "relatedWork": [
+          "issue.improve-generated-user-stories-artifact-quality"
+        ],
+        "supersedes": null,
+        "status": "active",
+        "kind": "bugfix",
+        "createdAt": "2026-08-23T02:27:40.106Z",
+        "updatedAt": "2026-08-23T02:27:40.106Z"
       }
     ]
   }

@@ -1,4 +1,4 @@
-import { mkdir, readFile, rename, writeFile } from "node:fs/promises";
+import { mkdir, readdir, readFile, rename, writeFile } from "node:fs/promises";
 import path from "node:path";
 
 import { planningArtifactSchema, type PlanningArtifact } from "./artifacts.js";
@@ -14,14 +14,25 @@ export class PlanningArtifactStore {
     this.directory = path.join(projectRoot, directory);
   }
 
-  private filePath(kind: PlanningArtifact["kind"]): string {
-    return path.join(this.directory, `${kind}.json`);
+  private kindDirectory(kind: PlanningArtifact["kind"]): string {
+    return path.join(this.directory, kind);
+  }
+
+  private filePath(
+    kind: PlanningArtifact["kind"],
+    sourceFingerprint: string,
+  ): string {
+    return path.join(this.kindDirectory(kind), `${sourceFingerprint}.json`);
   }
 
   async write(artifact: PlanningArtifact): Promise<string> {
     const validated = planningArtifactSchema.parse(artifact);
-    await mkdir(this.directory, { recursive: true });
-    const destination = this.filePath(validated.kind);
+    const kindDirectory = this.kindDirectory(validated.kind);
+    await mkdir(kindDirectory, { recursive: true });
+    const destination = this.filePath(
+      validated.kind,
+      validated.sourceFingerprint,
+    );
     const temporary = `${destination}.${process.pid}.${Date.now()}.tmp`;
     await writeFile(
       temporary,
@@ -34,28 +45,72 @@ export class PlanningArtifactStore {
       .replaceAll(path.sep, "/");
   }
 
-  async read(kind: PlanningArtifact["kind"]): Promise<PlanningArtifact | null> {
+  async listVersions(
+    kind: PlanningArtifact["kind"],
+  ): Promise<PlanningArtifact[]> {
+    let entries: string[];
     try {
-      return planningArtifactSchema.parse(
-        JSON.parse(await readFile(this.filePath(kind), "utf8")) as unknown,
-      );
+      entries = await readdir(this.kindDirectory(kind));
     } catch (error) {
       if (
         error instanceof Error &&
         "code" in error &&
         error.code === "ENOENT"
       ) {
-        return null;
+        return [];
       }
       throw error;
     }
+    const artifacts = await Promise.all(
+      entries
+        .filter((entry) => entry.endsWith(".json"))
+        .map(async (entry) =>
+          planningArtifactSchema.parse(
+            JSON.parse(
+              await readFile(
+                path.join(this.kindDirectory(kind), entry),
+                "utf8",
+              ),
+            ) as unknown,
+          ),
+        ),
+    );
+    return artifacts.sort(
+      (a, b) => Date.parse(b.generatedAt) - Date.parse(a.generatedAt),
+    );
+  }
+
+  async read(
+    kind: PlanningArtifact["kind"],
+    sourceFingerprint?: string,
+  ): Promise<PlanningArtifact | null> {
+    if (sourceFingerprint) {
+      try {
+        return planningArtifactSchema.parse(
+          JSON.parse(
+            await readFile(this.filePath(kind, sourceFingerprint), "utf8"),
+          ) as unknown,
+        );
+      } catch (error) {
+        if (
+          error instanceof Error &&
+          "code" in error &&
+          error.code === "ENOENT"
+        ) {
+          return null;
+        }
+        throw error;
+      }
+    }
+    const versions = await this.listVersions(kind);
+    return versions[0] ?? null;
   }
 
   async isFresh(
     kind: PlanningArtifact["kind"],
     sourceFingerprint: string,
   ): Promise<boolean> {
-    const artifact = await this.read(kind);
+    const artifact = await this.read(kind, sourceFingerprint);
     return artifact?.sourceFingerprint === sourceFingerprint;
   }
 }

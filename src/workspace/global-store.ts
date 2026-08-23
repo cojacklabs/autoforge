@@ -157,11 +157,17 @@ export class GlobalWorkspaceStore {
     const project = path.resolve(projectRoot);
     const projects = [...new Set([...current.projects, project])].sort();
     const projectId = await readProjectId(project);
+    const existing = (
+      current.projectMetadata as
+        | GlobalWorkspaceConfig["projectMetadata"]
+        | undefined
+    )?.[project];
     const projectMetadata = {
       ...(current.projectMetadata ?? {}),
       [project]: {
         name: path.basename(project),
         lastSeen: new Date().toISOString(),
+        lifecycle: existing?.lifecycle ?? ("active" as const),
         ...(projectId ? { projectId } : {}),
       },
     };

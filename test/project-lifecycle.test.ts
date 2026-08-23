@@ -22,4 +22,12 @@ describe("project lifecycle safeguards", () => {
       }),
     ).toBe(false);
   });
+
+  it("treats an undefined lifecycle as blocked, distinct from active", () => {
+    const metadata = {
+      name: "project",
+      lastSeen: "2026-08-22T12:00:00.000Z",
+    };
+    expect(projectMutationBlocked("add", metadata)).toBe(true);
+  });
 });

@@ -60,4 +60,28 @@ describe("explainable readiness", () => {
       known: ["Objective", "Research questions"],
     });
   });
+
+  it("uses a distinct evidence profile for data work", () => {
+    expect(
+      evaluateReadiness(
+        { ...base, constraints: ["Schema must be backward compatible."] },
+        "data",
+      ),
+    ).toMatchObject({
+      workKind: "data",
+      level: "ready",
+    });
+  });
+
+  it("uses a distinct evidence profile for security work", () => {
+    expect(
+      evaluateReadiness(
+        { ...base, constraints: ["Must pass a security review."] },
+        "security",
+      ),
+    ).toMatchObject({
+      workKind: "security",
+      level: "ready",
+    });
+  });
 });

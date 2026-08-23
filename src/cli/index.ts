@@ -128,7 +128,7 @@ export async function main(
       : undefined;
     if (projectMutationBlocked(cliArgs[0], projectMetadata)) {
       output.stderr(
-        `Project lifecycle is ${projectMetadata?.lifecycle}; mutating command "${cliArgs[0]}" is blocked.`,
+        `Project lifecycle is ${projectMetadata?.lifecycle}; mutating command "${cliArgs[0]}" is blocked. Run 'autoforge projects update ${startDirectory} --lifecycle active' to allow mutations.`,
       );
       return EXIT_CODE.invalidState;
     }

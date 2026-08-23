@@ -37,6 +37,19 @@ function list(values: readonly string[], empty = "- None recorded."): string {
     : empty;
 }
 
+function toStoryFragment(requirement: string): string {
+  const trimmed = requirement.trim().replace(/[.!?]+$/, "");
+  const [firstWord] = trimmed.split(/\s+/, 1);
+  const looksLikeAcronym =
+    firstWord !== undefined &&
+    firstWord.length > 1 &&
+    firstWord === firstWord.toUpperCase();
+  if (looksLikeAcronym || trimmed.length === 0) {
+    return trimmed;
+  }
+  return trimmed.charAt(0).toLowerCase() + trimmed.slice(1);
+}
+
 function render(kind: PlanningArtifactKind, intent: TriageIntent): string {
   const objective = intent.objective ?? "Objective not yet specified.";
   switch (kind) {
@@ -46,8 +59,18 @@ function render(kind: PlanningArtifactKind, intent: TriageIntent): string {
       return `# Technical Plan\n\n## Objective\n${objective}\n\n## Assumptions\n${list(intent.assumptions)}\n\n## Unknowns\n${list(intent.unknowns)}`;
     case "design-brief":
       return `# Design Brief\n\n## Objective\n${objective}\n\n## Requirements\n${list(intent.requirements)}\n\n## Constraints\n${list(intent.constraints)}`;
-    case "user-stories":
-      return `# User Stories\n\n${intent.requirements.length > 0 ? intent.requirements.map((requirement) => `- As a user, I want ${requirement.toLowerCase()} so the stated objective is achieved.`).join("\n") : "- User stories require structured requirements."}`;
+    case "user-stories": {
+      if (intent.requirements.length === 0) {
+        return "# User Stories\n\n- User stories require structured requirements.";
+      }
+      const stories = intent.requirements
+        .map(
+          (requirement) =>
+            `- As a user, I want ${toStoryFragment(requirement)}.`,
+        )
+        .join("\n");
+      return `# User Stories\n\nEach story below works toward: ${objective}\n\n${stories}`;
+    }
     case "acceptance-criteria":
       return `# Acceptance Criteria\n\n${list(intent.acceptanceCriteria, "- Acceptance criteria have not been defined.")}`;
   }

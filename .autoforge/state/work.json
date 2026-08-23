@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
-  "revision": 201,
-  "updatedAt": "2026-08-23T01:07:07.239Z",
+  "revision": 202,
+  "updatedAt": "2026-08-23T02:27:44.246Z",
   "data": {
     "features": [
       {
@@ -1112,9 +1112,9 @@
       {
         "name": "add-data-and-security-work-kinds-to-intent-and-workflow",
         "description": "readinessWorkKindSchema (intent assess --kind) only has implementation/research/architecture/design/planning - no data or security value exists at all. workflowKindSchema (workflow start <kind>) has no data/security-flavored value either (closest available is architecture-change). But bootstrap's own manifest treats data and security as 2 of exactly 4 gated artifacts (BOOTSTRAP_GATES = [architecture, design, data, security]). There is no supported way to run a properly-labeled data or security intent assessment or workflow. We worked around this on the Virdua project by passing --kind architecture for both a data-schema/retention intent and an authn/authz intent - readiness scoring came back reasonable in both cases (ready, confidence 100), but the workKind field in every output is now misleadingly labeled architecture for what is actually data-modeling or security work, and the workaround will need to be repeated by every future user closing these same two gates. This is a genuine capability gap, not just cosmetic naming drift: 2 of bootstrap's 4 gated artifacts cannot be assessed through their own vocabulary. Fix: extend readinessWorkKindSchema and workflowKindSchema to include data and security as first-class work kinds, ideally as part of the broader shared-vocabulary fix (see the intent/workflow enum unification issue), so all 4 gated artifacts have a real, correctly-labeled path through intent assess -> workflow start/advance.",
-        "status": "planned",
+        "status": "completed",
         "createdAt": "2026-08-22T22:24:27.328Z",
-        "updatedAt": "2026-08-22T22:24:27.328Z",
+        "updatedAt": "2026-08-23T01:54:49.060Z",
         "id": "issue.add-data-and-security-work-kinds-to-intent-and-workflow",
         "scope": {
           "include": [
@@ -1141,9 +1141,9 @@
       {
         "name": "namespace-persisted-planning-artifacts-to-avoid-silent-overwrite",
         "description": "intent assess --artifact <kind> --persist writes to a fixed path .autoforge/planning/<kind>.json, derived from the artifact kind alone - no run id, timestamp, or source-intent name in the path. Running --artifact technical-plan --persist a second time for unrelated work that also happens to produce a technical-plan-kind artifact silently overwrites the first file, with no warning, confirmation prompt, or diff. Reproduced 4 times in a row on the Virdua project: persisting a technical-plan artifact for the design, data, security, and development-plan bootstrap gates each clobbered the previous gate's technical-plan.json in place. We only recovered the earlier content because it had already been committed to git (git show HEAD~1:.autoforge/planning/technical-plan.json); a user who ran two passes before committing, or who doesn't use git at all, would lose the first artifact permanently and silently. This is a 100% reproduction rate across every applicable run this session, not an edge case. Fix: namespace persisted artifacts by more than kind alone - e.g. .autoforge/planning/<kind>/<source-fingerprint-or-intent-basename>.json - or at minimum refuse to overwrite an existing file without --force, and print a diff or confirmation when a write would clobber one. The sourceFingerprint value already computed and embedded in each artifact's JSON body is exactly what should be part of the persisted path.",
-        "status": "planned",
+        "status": "completed",
         "createdAt": "2026-08-22T22:25:17.293Z",
-        "updatedAt": "2026-08-22T22:25:17.293Z",
+        "updatedAt": "2026-08-23T02:08:45.099Z",
         "id": "issue.namespace-persisted-planning-artifacts-to-avoid-silent-overwrite",
         "scope": {
           "include": [
@@ -1155,9 +1155,9 @@
       {
         "name": "improve-generated-user-stories-artifact-quality",
         "description": "The --artifact user-stories generator (intent assess, generatorVersion 0.8.0-planning.1) mechanically templates every requirement string verbatim into 'As a user, I want <requirement text, unedited> so the stated objective is achieved,' with no actor extraction, no rephrasing into real story shape, and no splitting of compound requirements. Output is syntactically a user story but not a useful one - e.g. 'As a user, I want sequence the authorization middleware and session/token handling immediately after the data model, since the matching engine and candidate UI both depend on having real auth boundaries to build against. so the stated objective is achieved.' reads as barely grammatical boilerplate wrapped around the original requirement rather than a real decomposed story. Observed generating user-stories for the Virdua development-plan gate. This is a quality/usefulness gap, not a crash - lower priority than the correctness issues, but worth fixing since --persist artifacts are meant to be immediately actionable starting points for implementation, and right now they require significant manual rewriting before they are.",
-        "status": "planned",
+        "status": "completed",
         "createdAt": "2026-08-22T22:26:09.180Z",
-        "updatedAt": "2026-08-22T22:26:09.180Z",
+        "updatedAt": "2026-08-23T02:27:44.158Z",
         "id": "issue.improve-generated-user-stories-artifact-quality",
         "scope": {
           "include": [
@@ -1197,9 +1197,9 @@
       {
         "name": "clarify-use-command-project-lifecycle-mutation-gate",
         "description": "autoforge use <alias> <command> rewrites args to --project <path> <command> and dispatches against that project directory (src/cli entrypoint, main()). projectMutationBlocked() (src/workspace/lifecycle.ts) blocks any command not in readOnlyCommands (help, version, doctor, projects, assets, agents, bootstrap, twin, evidence) unless the target project's metadata.lifecycle === active. For a project registered via bootstrap attach/projects register without lifecycle ever having been explicitly set, metadata.lifecycle is undefined - not active - so it silently falls into the blocked branch, and every mutating command (add, decide, context, check, intent assess --persist, workflow start/advance, etc.) returns a bare Project lifecycle is undefined; mutating command \"<cmd>\" is blocked with exit code 4 and zero indication that autoforge projects update <path> --lifecycle active is the fix. We hit this immediately when trying to use autoforge use to file issues against the autoforge project itself - it had been registered but never had lifecycle set. This is a reasonable safety default but is currently undiscoverable: nothing in bootstrap attach, projects register, or projects show's output mentions that a freshly-registered project defaults to a locked, read-only-mutation state, or names the exact --lifecycle active fix. Fix: (1) have bootstrap attach / projects register set lifecycle: active by default rather than leaving it undefined, since an explicit opt-in gate that's silently on by default provides no real safety benefit; or if the undefined-as-blocked default is intentional, (2) print the exact fix command in the blocked-command error message instead of just the current lifecycle value.",
-        "status": "planned",
+        "status": "completed",
         "createdAt": "2026-08-22T22:26:11.398Z",
-        "updatedAt": "2026-08-22T22:26:11.398Z",
+        "updatedAt": "2026-08-23T02:19:16.948Z",
         "id": "issue.clarify-use-command-project-lifecycle-mutation-gate",
         "scope": {
           "include": [

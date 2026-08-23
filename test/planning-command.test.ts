@@ -83,6 +83,51 @@ describe("planning command", () => {
     );
   });
 
+  it("lists every stored version per kind, not just the latest", async () => {
+    const projectRoot = await mkdtemp(
+      path.join(os.tmpdir(), "autoforge-planning-versions-"),
+    );
+    directories.push(projectRoot);
+    await mkdir(path.join(projectRoot, ".git"));
+    await initializeProject({ projectRoot });
+    const store = new PlanningArtifactStore(projectRoot);
+    const older = generatePlanningArtifact(
+      intent,
+      "feature-brief",
+      new Date("2026-08-22T00:00:00.000Z"),
+    );
+    const newer = generatePlanningArtifact(
+      { ...intent, objective: "Allow refunds." },
+      "feature-brief",
+      new Date("2026-08-22T01:00:00.000Z"),
+    );
+    await store.write(older);
+    await store.write(newer);
+    const output = { stdout: vi.fn(), stderr: vi.fn() };
+    await expect(
+      runPlanningCommand({
+        args: ["list"],
+        output,
+        startDirectory: projectRoot,
+      }),
+    ).resolves.toBe(EXIT_CODE.success);
+    const rows = JSON.parse(output.stdout.mock.calls[0]?.[0] ?? "[]");
+    const featureBriefRows = rows.filter(
+      (row: { kind: string }) => row.kind === "feature-brief",
+    );
+    expect(featureBriefRows).toHaveLength(2);
+    expect(
+      featureBriefRows.map(
+        (row: { sourceFingerprint: string }) => row.sourceFingerprint,
+      ),
+    ).toEqual(
+      expect.arrayContaining([
+        older.sourceFingerprint,
+        newer.sourceFingerprint,
+      ]),
+    );
+  });
+
   it("reports a fresh artifact against its source intent", async () => {
     const projectRoot = await mkdtemp(
       path.join(os.tmpdir(), "autoforge-planning-freshness-"),

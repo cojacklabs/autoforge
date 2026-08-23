@@ -67,7 +67,7 @@ describe("intent command", () => {
     expect(result.workflow.stages).toEqual(["implementation", "validation"]);
     expect(result.artifacts[0].kind).toBe("feature-brief");
     expect(result.persisted).toEqual([
-      ".autoforge/planning/feature-brief.json",
+      `.autoforge/planning/feature-brief/${result.artifacts[0].sourceFingerprint}.json`,
     ]);
   });
 

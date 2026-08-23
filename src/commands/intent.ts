@@ -25,7 +25,7 @@ export interface IntentCommandOptions {
 
 function usage(output: LogWriter): ExitCode {
   output.stderr(
-    "Usage: autoforge intent assess <json-file> --kind <implementation|research|architecture|design|planning> [--artifact <kind>] [--persist]",
+    "Usage: autoforge intent assess <json-file> --kind <implementation|research|architecture|design|planning|data|security> [--artifact <kind>] [--persist]",
   );
   return EXIT_CODE.usage;
 }

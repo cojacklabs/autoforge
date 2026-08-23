@@ -16,6 +16,8 @@ describe("workflow definitions", () => {
       "design-create",
       "design-critique",
       "architecture-change",
+      "data-change",
+      "security-change",
       "validation",
     ]);
   });
@@ -30,5 +32,31 @@ describe("workflow definitions", () => {
       "validation",
     ]);
     expect(definition.stages.filter((stage) => stage.required)).toHaveLength(3);
+  });
+
+  it("registers data-change and security-change with an implementation stage", () => {
+    const dataChange = getWorkflowDefinition("data-change");
+    expect(dataChange.stages.map((stage) => stage.id)).toEqual([
+      "research",
+      "planning",
+      "implementation",
+      "validation",
+    ]);
+    expect(
+      dataChange.stages.find((stage) => stage.id === "research")?.required,
+    ).toBe(false);
+    expect(
+      dataChange.stages.filter((stage) => stage.id !== "research"),
+    ).toSatisfy((stages: { required: boolean }[]) =>
+      stages.every((stage) => stage.required),
+    );
+
+    const securityChange = getWorkflowDefinition("security-change");
+    expect(securityChange.stages.map((stage) => stage.id)).toEqual([
+      "research",
+      "planning",
+      "implementation",
+      "validation",
+    ]);
   });
 });

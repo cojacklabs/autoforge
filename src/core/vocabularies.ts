@@ -4,6 +4,8 @@ export const READINESS_WORK_KINDS = [
   "architecture",
   "design",
   "planning",
+  "data",
+  "security",
 ] as const;
 
 export const WORKFLOW_KINDS = [
@@ -13,6 +15,8 @@ export const WORKFLOW_KINDS = [
   "design-create",
   "design-critique",
   "architecture-change",
+  "data-change",
+  "security-change",
   "validation",
 ] as const;
 
@@ -27,6 +31,8 @@ export const INTENT_TO_WORKFLOW_KINDS: Readonly<
   architecture: ["architecture-change"],
   design: ["design-create", "design-critique"],
   planning: ["feature-development", "architecture-change", "design-create"],
+  data: ["data-change"],
+  security: ["security-change"],
 };
 
 const WORKFLOW_KIND_ALIASES: Readonly<
@@ -37,6 +43,8 @@ const WORKFLOW_KIND_ALIASES: Readonly<
   architecture: "architecture-change",
   design: "design-create",
   planning: "feature-development",
+  data: "data-change",
+  security: "security-change",
 };
 
 export function normalizeWorkflowKind(
@@ -49,5 +57,5 @@ export function normalizeWorkflowKind(
 }
 
 export function workflowKindHelp(): string {
-  return `Valid workflow kinds: ${WORKFLOW_KINDS.join(", ")}. Intent aliases: architecture→architecture-change, design→design-create, implementation→feature-development, planning→feature-development.`;
+  return `Valid workflow kinds: ${WORKFLOW_KINDS.join(", ")}. Intent aliases: architecture→architecture-change, design→design-create, implementation→feature-development, planning→feature-development, data→data-change, security→security-change.`;
 }

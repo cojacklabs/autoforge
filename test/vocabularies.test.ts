@@ -23,4 +23,13 @@ describe("shared command vocabularies", () => {
       expect(WORKFLOW_KINDS).toContain(normalizeWorkflowKind(kind));
     }
   });
+
+  it("includes data and security work kinds with dedicated workflow kinds", () => {
+    expect(READINESS_WORK_KINDS).toContain("data");
+    expect(READINESS_WORK_KINDS).toContain("security");
+    expect(WORKFLOW_KINDS).toContain("data-change");
+    expect(WORKFLOW_KINDS).toContain("security-change");
+    expect(normalizeWorkflowKind("data")).toBe("data-change");
+    expect(normalizeWorkflowKind("security")).toBe("security-change");
+  });
 });

@@ -46,6 +46,20 @@ describe("global workspace store", () => {
     }
   });
 
+  it("registers a new project with an explicit active lifecycle", async () => {
+    const home = await mkdtemp(
+      path.join(os.tmpdir(), "autoforge-global-workspace-"),
+    );
+    directories.push(home);
+    const store = new GlobalWorkspaceStore(home);
+    await store.registerProject("/tmp/project-lifecycle-check");
+    const config = await store.read();
+    expect(
+      config.projectMetadata?.[path.resolve("/tmp/project-lifecycle-check")]
+        ?.lifecycle,
+    ).toBe("active");
+  });
+
   it("resolves stable global asset directories", async () => {
     const home = await mkdtemp(
       path.join(os.tmpdir(), "autoforge-global-workspace-"),
