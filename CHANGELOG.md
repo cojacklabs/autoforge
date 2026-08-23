@@ -9,6 +9,48 @@ All notable changes to this project will be documented in this file.
 
 <!-- autoforge:changelog:start -->
 
+## [0.22.0] - 2026-08-23
+
+### Added
+
+- **Learning & Evidence Engine**: three new durable domains —
+  `hypothesis`, `experiment`, and `evidence` — closing the canonical
+  `hypothesis → experiment → evidence → decision → updated specification`
+  chain from the north-star roadmap:
+  - `autoforge learning hypothesis add|list|show|status` — records a
+    testable belief with a free-text `--metric`/`--target`.
+  - `autoforge learning experiment add|list|show|complete` — an
+    experiment may test multiple hypotheses at once.
+  - `autoforge learning evidence add|list|show` — nine evidence kinds
+    (`analytics`, `beta-feedback`, `support-ticket`, `bug-report`,
+    `usability-study`, `experiment-result`, `performance-metric`,
+    `interview`, `ai-evaluation`), linkable to an experiment, a
+    hypothesis, and/or a work item simultaneously — not mutually
+    exclusive.
+  - `autoforge decide --evidence <id>` closes the loop: recording a
+    decision stamps `resultingDecision` back onto every referenced
+    evidence record, making the chain mechanically traceable rather than
+    just linkable by convention.
+  - The digital twin (`autoforge twin generate`) now projects
+    hypothesis/experiment/evidence as nodes, with `tests`, `produced-by`,
+    `informs`, and `resulted-in` edges connecting them to the rest of the
+    project graph.
+
+### Notes
+
+- Evidence recorded against a decision is not yet surfaced by
+  `autoforge why` — the data is correctly linked, but the primary
+  read-query command doesn't yet show it. Tracked as
+  `issue.surface-evidence-in-why-search`.
+- This milestone was self-exercised end-to-end against AutoForge's own
+  project state before release: a real hypothesis about the
+  documentation-gate feature's effectiveness, an experiment, evidence
+  from this project's own v0.21.1/v0.21.2 release history, and a
+  decision closing the loop, all traceable via `resultingDecision` and
+  visible in the twin projection.
+
+<!-- autoforge:changelog:end -->
+
 ## [0.21.2] - 2026-08-23
 
 ### Added
@@ -44,8 +86,6 @@ A backlog triage also confirmed six previously-filed issues were already
 fixed in 0.21.x, discovered by a reporting session running a stale global
 `pnpm` install (v0.20.3) rather than a live defect. See
 `.autoforge/state/decisions.json` for the individual audit records.
-
-<!-- autoforge:changelog:end -->
 
 ## [0.21.1] - 2026-08-22
 

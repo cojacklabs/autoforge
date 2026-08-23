@@ -184,9 +184,8 @@ describe("decide command", () => {
 
   it("stamps resultingDecision when --evidence is provided", async () => {
     const { feature, projectRoot } = await createFixture();
-    const { runLearningEvidenceCommand } = await import(
-      "../src/commands/learning-evidence.js"
-    );
+    const { runLearningEvidenceCommand } =
+      await import("../src/commands/learning-evidence.js");
     const evidenceOutput = { stdout: vi.fn(), stderr: vi.fn() };
     await runLearningEvidenceCommand({
       args: [

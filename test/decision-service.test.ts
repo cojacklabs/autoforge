@@ -182,15 +182,12 @@ describe("decision service", () => {
   it("stamps resultingDecision on referenced evidence", async () => {
     const { decisionStore } = await createFixture();
     const { EvidenceStore } = await import("../src/learning/evidence-store.js");
-    const { EvidenceService } = await import(
-      "../src/learning/evidence-service.js"
-    );
-    const { ExperimentStore } = await import(
-      "../src/learning/experiment-store.js"
-    );
-    const { HypothesisStore } = await import(
-      "../src/learning/hypothesis-store.js"
-    );
+    const { EvidenceService } =
+      await import("../src/learning/evidence-service.js");
+    const { ExperimentStore } =
+      await import("../src/learning/experiment-store.js");
+    const { HypothesisStore } =
+      await import("../src/learning/hypothesis-store.js");
     const evidenceStore = new EvidenceStore(projectRoot);
     await evidenceStore.ensure();
     const evidenceWorkStore = createWorkStateStore(projectRoot, {
@@ -255,15 +252,12 @@ describe("decision service", () => {
   it("rejects unknown --evidence id without writing a decision", async () => {
     const { decisionStore } = await createFixture();
     const { EvidenceStore } = await import("../src/learning/evidence-store.js");
-    const { EvidenceService } = await import(
-      "../src/learning/evidence-service.js"
-    );
-    const { ExperimentStore } = await import(
-      "../src/learning/experiment-store.js"
-    );
-    const { HypothesisStore } = await import(
-      "../src/learning/hypothesis-store.js"
-    );
+    const { EvidenceService } =
+      await import("../src/learning/evidence-service.js");
+    const { ExperimentStore } =
+      await import("../src/learning/experiment-store.js");
+    const { HypothesisStore } =
+      await import("../src/learning/hypothesis-store.js");
     const evidenceStore = new EvidenceStore(projectRoot);
     await evidenceStore.ensure();
 
