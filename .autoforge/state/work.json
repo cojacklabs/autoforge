@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
-  "revision": 253,
-  "updatedAt": "2026-08-23T23:29:42.346Z",
+  "revision": 256,
+  "updatedAt": "2026-08-23T23:42:17.289Z",
   "data": {
     "features": [
       {
@@ -1513,6 +1513,20 @@
           "include": [
             "src/commands/gate.ts",
             "docs/AUTOFORGE_CLI_REFERENCE.md"
+          ],
+          "exclude": []
+        }
+      },
+      {
+        "name": "Add full capability map to agentic AI guide",
+        "description": "AUTOFORGE_AGENTIC_AI_GUIDE.md covered workflow etiquette only, predating v0.23/v0.24, with no map of the full domain surface (strategy, learning, governance, twin, orchestration, traceability). Added a Full Capability Map section explaining when to reach for each domain.",
+        "status": "completed",
+        "createdAt": "2026-08-23T23:42:07.518Z",
+        "updatedAt": "2026-08-23T23:42:17.193Z",
+        "id": "issue.add-full-capability-map-to-agentic-ai-guide",
+        "scope": {
+          "include": [
+            "docs/AUTOFORGE_AGENTIC_AI_GUIDE.md"
           ],
           "exclude": []
         }

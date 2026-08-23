@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
-  "revision": 50,
-  "updatedAt": "2026-08-23T23:29:37.614Z",
+  "revision": 51,
+  "updatedAt": "2026-08-23T23:42:16.887Z",
   "data": {
     "decisions": [
       {
@@ -1234,6 +1234,29 @@
         "kind": "bugfix",
         "createdAt": "2026-08-23T23:29:37.582Z",
         "updatedAt": "2026-08-23T23:29:37.582Z"
+      },
+      {
+        "id": "decision.documented-autoforge-s-full-capability-surface-for-agentic-ai-in-the-existing-ag",
+        "statement": "Documented AutoForge's full capability surface for agentic AI in the existing agentic AI guide",
+        "reasoning": "Agents following AGENTS.md/README onboarding could see command syntax in AUTOFORGE_CLI_REFERENCE.md but had no map of which domain to reach for and when, especially post-v0.23/v0.24 (strategy, twin, validation evidence). Extended the existing guide rather than creating a second overlapping doc.",
+        "consequences": [
+          "Agents onboarding to any AutoForge-managed project now have a single canonical doc covering both workflow etiquette and the full capability map, reducing the chance of missing a relevant domain (e.g. reaching for orchestrate prioritize instead of strategy assess, or never discovering learning/evidence or the digital twin)."
+        ],
+        "scope": [
+          "documentation"
+        ],
+        "keywords": [
+          "agentic-ai",
+          "capability-map"
+        ],
+        "relatedWork": [
+          "issue.add-full-capability-map-to-agentic-ai-guide"
+        ],
+        "supersedes": null,
+        "status": "active",
+        "kind": "feature-note",
+        "createdAt": "2026-08-23T23:42:16.862Z",
+        "updatedAt": "2026-08-23T23:42:16.862Z"
       }
     ]
   }

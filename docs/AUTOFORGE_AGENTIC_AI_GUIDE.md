@@ -58,6 +58,123 @@ Before creating any JSON input, run `autoforge schemas list` and inspect the
 relevant contract with `autoforge schemas show <id>` or the command's
 `--schema` flag.
 
+## Full Capability Map
+
+AutoForge is a control plane, not just a task tracker. Before assuming a
+capability is missing, check this map — the exact command syntax for
+everything below is in `docs/AUTOFORGE_CLI_REFERENCE.md`, which is the
+canonical source of truth; this section explains _when_ to reach for each
+domain.
+
+### Work lifecycle (features, phases, tasks, issues)
+
+`add` / `start` / `context --explain` / `check` / `gate check` / `decide` /
+`done`. Every unit of work is scoped by file-include/exclude patterns, so
+`context --explain` compiles only the relevant packet rather than the whole
+repository. `done` refuses to complete work with no linked decision unless
+you explicitly pass `--no-decision "<reason>"` — this is deliberate, not a
+bug: it forces every completed unit of work to leave a durable trace of
+_why_ it was done.
+
+### Memory and rationale (`decide`, `why`, `doctrine`)
+
+`decide` is the single durable record of _why_ something was done, changed,
+or rejected — link it to work via `--work <id>` and to supporting evidence
+via `--evidence <id>`. `why --query <text>` searches all of it back later;
+`why --history` walks supersession chains. `doctrine` holds standing rules
+of thumb distinct from one-off decisions. Prefer recording a decision over
+leaving reasoning only in a commit message or PR description — commit
+messages aren't queryable by `why`.
+
+### Strategy and prioritization (`strategy`)
+
+`strategy assess <work-id>` records an explainable, multi-factor judgment
+(alignment/value/risk/cost/evidence-strength/dependency-pressure/complexity/
+release-constraint, each `low`/`medium`/`high`/`uncertain`) plus a human
+`now`/`next`/`later`/`backlog` decision label — no blended numeric score.
+Every assessment writes a linked decision automatically. Use this when a
+human (or you, on their behalf) needs to explain _why_ something is
+prioritized the way it is, not merely _that_ it is. This is distinct from
+`orchestrate prioritize`, which is only a 0-100 scheduling tiebreaker for
+work already inside an active orchestration plan — reach for `strategy`
+first; reach for `orchestrate prioritize` only once a plan exists and two
+ready items need an ordering nudge.
+
+### Learning and evidence (`learning hypothesis|experiment|evidence`)
+
+Use this domain when a change is a bet, not a certainty: record a
+`hypothesis` with an expected outcome and metric, track an `experiment`
+that tests it, and capture `evidence` (nine kinds, from `analytics` to
+`ai-evaluation`) that confirms or refutes it. Evidence can link to an
+experiment, a hypothesis, and a work item simultaneously. Feed evidence
+into `decide --evidence <id>` or `strategy assess --evidence <id>` to
+close the loop from observation to decision.
+
+### Governance and domain intelligence (`constitution`, `domain`)
+
+`constitution` holds human-approved rules with explicit scope (paths, work
+kinds, releases, tags) and a MUST/MUST_NOT level — run
+`constitution check "<objective>"` before starting ambiguous or
+higher-risk work to surface conflicts early, not after implementation.
+`domain` holds the project's durable concept model (entities, relationships,
+invariants) with provenance back to the decisions and specs that established
+each concept; `domain check` preserves unknown invariant evidence rather
+than treating it as silently verified — an unresolved invariant is a signal
+to investigate, not a false pass.
+
+### Design and specifications (`design`, `workflow`)
+
+`design validate|import|update` brings screens, flows, components, and
+other specification types into AutoForge's durable specification store,
+with relationships (`uses`, `implements`, etc.) between them. `workflow
+start <id> <kind>` runs a structured multi-stage process (architecture
+change, design creation, feature development, and their aliases) when work
+needs more ceremony than a single task — use it for changes that touch
+architecture or need explicit design sign-off before implementation.
+
+### Multi-agent orchestration (`orchestrate`)
+
+Use this whenever more than one agent (or one agent across multiple
+worktrees) needs to work the same project concurrently. `orchestrate plan`
+compiles a dependency-aware queue; `ready` returns only work that's safe to
+start now; `claim` takes an exclusive scope lease and isolated Git
+worktree for writes (read-only claims don't block writers); `explain
+<work-id>` reports `contextFreshness` — treat `stale`/`unavailable` as a
+hard stop, release, and reclaim before continuing. Never start parallel
+agents against the same checkout without a plan; that's exactly the
+failure mode this domain exists to prevent.
+
+### The digital twin (`twin`)
+
+`twin generate` projects all durable state — work, decisions, evidence,
+governance, domain concepts, specifications, strategy assessments,
+traceability links, and validation evidence — into one queryable graph of
+nodes and edges. Use `twin query --type <type> --relationship <name>` to
+answer structural questions across domains at once (e.g., "which
+constitution rules govern this task," "what validates this decision") that
+would otherwise require manually cross-referencing several stores. The
+twin is a derived, gitignored cache: regenerate it with `twin generate`
+after state changes rather than trusting a stale copy, and treat a missing
+or unreadable cache as "run generate first," not an error.
+
+### Traceability (`trace`)
+
+`trace add <source> <relationship> <target>` records an explicit link
+(e.g., a task `implements` a feature, a test `verifies` a requirement).
+These links surface as edges in the twin and via `trace impact <artifact>`
+for forward/reverse blast-radius queries — use `trace impact` before
+changing or removing something you suspect other artifacts depend on.
+
+### Global workspace (`projects`, `attach`, `detach`)
+
+AutoForge tracks a machine-wide registry of every project it manages.
+Always run `autoforge attach "$PWD"` (not bare `init`) when onboarding a
+new project, so it registers in the global workspace and appears in
+`autoforge projects list` — `init` alone only creates local `.autoforge/`
+state. Use `projects relocate` after moving a project's directory, and
+`projects list` to discover other AutoForge-managed projects on the same
+machine.
+
 ## Remote and Local Documentation
 
 The canonical documentation is available in the repository GitHub source and
