@@ -50,4 +50,36 @@ describe("modular planning artifacts", () => {
       }),
     ).toBe(false);
   });
+
+  it("preserves leading acronyms instead of lowercasing them", () => {
+    const content = generatePlanningArtifact(
+      { ...intent, requirements: ["API rate limiting must be enforced."] },
+      "user-stories",
+    ).content;
+    expect(content).toContain(
+      "As a user, I want API rate limiting must be enforced.",
+    );
+  });
+
+  it("does not double punctuation when a requirement already ends with one", () => {
+    const content = generatePlanningArtifact(
+      { ...intent, requirements: ["Support cards."] },
+      "user-stories",
+    ).content;
+    expect(content).toContain("As a user, I want support cards.");
+    expect(content).not.toContain("support cards..");
+  });
+
+  it("states the shared objective clause once, not per requirement line", () => {
+    const content = generatePlanningArtifact(
+      {
+        ...intent,
+        requirements: ["Support cards", "Record payment status"],
+      },
+      "user-stories",
+    ).content;
+    const occurrences =
+      content.split("so the stated objective is achieved").length - 1;
+    expect(occurrences).toBeLessThanOrEqual(1);
+  });
 });

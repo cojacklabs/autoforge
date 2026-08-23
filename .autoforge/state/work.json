@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
-  "revision": 193,
-  "updatedAt": "2026-08-23T02:19:17.044Z",
+  "revision": 195,
+  "updatedAt": "2026-08-23T02:27:44.246Z",
   "data": {
     "features": [
       {
@@ -1155,9 +1155,9 @@
       {
         "name": "improve-generated-user-stories-artifact-quality",
         "description": "The --artifact user-stories generator (intent assess, generatorVersion 0.8.0-planning.1) mechanically templates every requirement string verbatim into 'As a user, I want <requirement text, unedited> so the stated objective is achieved,' with no actor extraction, no rephrasing into real story shape, and no splitting of compound requirements. Output is syntactically a user story but not a useful one - e.g. 'As a user, I want sequence the authorization middleware and session/token handling immediately after the data model, since the matching engine and candidate UI both depend on having real auth boundaries to build against. so the stated objective is achieved.' reads as barely grammatical boilerplate wrapped around the original requirement rather than a real decomposed story. Observed generating user-stories for the Virdua development-plan gate. This is a quality/usefulness gap, not a crash - lower priority than the correctness issues, but worth fixing since --persist artifacts are meant to be immediately actionable starting points for implementation, and right now they require significant manual rewriting before they are.",
-        "status": "planned",
+        "status": "completed",
         "createdAt": "2026-08-22T22:26:09.180Z",
-        "updatedAt": "2026-08-22T22:26:09.180Z",
+        "updatedAt": "2026-08-23T02:27:44.158Z",
         "id": "issue.improve-generated-user-stories-artifact-quality",
         "scope": {
           "include": [

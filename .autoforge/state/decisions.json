@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
-  "revision": 26,
-  "updatedAt": "2026-08-23T02:19:12.999Z",
+  "revision": 27,
+  "updatedAt": "2026-08-23T02:27:40.130Z",
   "data": {
     "decisions": [
       {
@@ -600,6 +600,29 @@
         "kind": "bugfix",
         "createdAt": "2026-08-23T02:19:12.975Z",
         "updatedAt": "2026-08-23T02:19:12.975Z"
+      },
+      {
+        "id": "decision.generated-user-stories-artifacts-no-longer-mangle-acronyms-or-repeat-the-objecti",
+        "statement": "Generated user-stories artifacts no longer mangle acronyms or repeat the objective clause on every line",
+        "reasoning": "The prior template called toLowerCase() on the full requirement string, destroying leading acronyms/proper nouns, and appended a generic so the stated objective is achieved phrase verbatim to every single requirement line, producing barely grammatical boilerplate.",
+        "consequences": [
+          "The user-stories template now lowercases only a non-acronym leading word, strips redundant trailing punctuation before appending a period, and states the shared objective once in a header line instead of once per story. Actor extraction and compound-requirement splitting remain explicitly out of scope as a separate, harder NLP problem."
+        ],
+        "scope": [
+          "planning"
+        ],
+        "keywords": [
+          "user-stories",
+          "template-quality"
+        ],
+        "relatedWork": [
+          "issue.improve-generated-user-stories-artifact-quality"
+        ],
+        "supersedes": null,
+        "status": "active",
+        "kind": "bugfix",
+        "createdAt": "2026-08-23T02:27:40.106Z",
+        "updatedAt": "2026-08-23T02:27:40.106Z"
       }
     ]
   }
