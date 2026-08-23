@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
-  "revision": 33,
-  "updatedAt": "2026-08-23T13:10:22.482Z",
+  "revision": 34,
+  "updatedAt": "2026-08-23T14:33:59.202Z",
   "data": {
     "decisions": [
       {
@@ -826,6 +826,27 @@
         "kind": "feature-note",
         "createdAt": "2026-08-23T13:10:22.456Z",
         "updatedAt": "2026-08-23T13:10:22.456Z"
+      },
+      {
+        "id": "decision.extended-the-readme-agent-setup-guide-canonical-startup-prompt-to-point-agents-a",
+        "statement": "Extended the README/AGENT_SETUP_GUIDE canonical startup prompt to point agents at AUTOFORGE_CLI_REFERENCE.md, brought that reference doc current with the learning and changelog command families, and removed hardcoded version numbers from documentation prose",
+        "reasoning": "Solo devs need a single copy/paste onboarding artifact that both bootstraps an agent into AutoForge's governed workflow and points it at a genuinely current command catalog, so the agent can govern/scaffold/categorize/prioritize work using the full CLI rather than guessing. The reference doc had drifted since v0.21 and was missing the entire learning/evidence surface and changelog compile shipped in v0.22.0.",
+        "consequences": [
+          "Future doc edits in this repo must never introduce a version number into prose; AUTOFORGE_CLI_REFERENCE.md needs a manual side-by-side check against src/cli/help.ts on future command additions since there is no automated drift check (deliberately out of scope)"
+        ],
+        "scope": [
+          "docs"
+        ],
+        "keywords": [
+          "onboarding",
+          "cli-reference"
+        ],
+        "relatedWork": [],
+        "supersedes": null,
+        "status": "active",
+        "kind": "feature-note",
+        "createdAt": "2026-08-23T14:33:59.175Z",
+        "updatedAt": "2026-08-23T14:33:59.175Z"
       }
     ]
   }

@@ -9,6 +9,26 @@ All notable changes to this project will be documented in this file.
 
 <!-- autoforge:changelog:start -->
 
+## [0.22.1] - 2026-08-23
+
+### Added
+
+- **Agent onboarding & CLI reference currency**: the canonical startup
+  prompt in `README.md` and `docs/AUTOFORGE_AGENT_SETUP_GUIDE.md` (kept
+  in lockstep) now directs agents to `docs/AUTOFORGE_CLI_REFERENCE.md`
+  for the complete current command surface, so an onboarding agent can
+  govern, scaffold, categorize, prioritize, and reorganize project work
+  using the full AutoForge CLI rather than guessing. The reference doc
+  itself is brought current: it gained the `learning`
+  hypothesis/experiment/evidence command family and
+  `autoforge changelog compile`, both shipped in v0.22.0 but previously
+  undocumented.
+- Documentation prose across the project no longer hardcodes version
+  numbers (starting with `README.md`'s title and the reference doc's
+  closing line), so these lines never need updating on future releases.
+
+<!-- autoforge:changelog:end -->
+
 ## [0.22.0] - 2026-08-23
 
 ### Added
@@ -48,8 +68,6 @@ All notable changes to this project will be documented in this file.
   from this project's own v0.21.1/v0.21.2 release history, and a
   decision closing the loop, all traceable via `resultingDecision` and
   visible in the twin projection.
-
-<!-- autoforge:changelog:end -->
 
 ## [0.21.2] - 2026-08-23
 
