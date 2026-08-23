@@ -11,6 +11,7 @@ import type { ContextSelection } from "../context/schemas.js";
 import { ContextPacketStore } from "../context/store.js";
 import { SpecificationRegistry } from "../specifications/registry.js";
 import { SpecificationFileStore } from "../specifications/store.js";
+import { StrategyStore } from "../strategy/strategy-store.js";
 import { TraceabilityStore } from "../traceability/store.js";
 import { traceImpact } from "../traceability/impact.js";
 import { inspectInstallation } from "./init.js";
@@ -74,8 +75,21 @@ export async function compileProjectContext(
     specifications,
     config: installation.config,
   });
-  const packet = new ContextPacketCompiler().compile(selection);
-  return { packet, selection };
+  const strategyStore = new StrategyStore(projectRoot);
+  await strategyStore.ensure();
+  const { state: strategyState } = await strategyStore.state.read();
+  const activeAssessment = strategyState.data.assessments.find(
+    (assessment) =>
+      assessment.status === "active" &&
+      assessment.workId === selection.work.item.id,
+  );
+
+  const enrichedSelection = activeAssessment
+    ? { ...selection, strategy: activeAssessment }
+    : selection;
+
+  const packet = new ContextPacketCompiler().compile(enrichedSelection);
+  return { packet, selection: enrichedSelection };
 }
 
 export async function runContextCommand(

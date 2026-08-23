@@ -18,6 +18,7 @@ Commands:
   init       Initialize AutoForge in the current project
   intent     Assess intent and generate planning artifacts
   learning   Record hypotheses, experiments, and product evidence
+  strategy   Record explainable strategy assessments and their decision label
   research   Register research artifacts
   knowledge  List and show intent and research artifacts
   planning   Inspect generated planning artifacts and freshness
@@ -62,6 +63,12 @@ Learning and evidence:
   autoforge learning evidence add --kind <kind> --summary <text> --source <text> [--experiment <id>] [--hypothesis <id>] [--work <work-id>]
   autoforge learning evidence list [--kind <kind>]
   autoforge learning evidence show <id>
+
+Strategy and prioritization:
+  autoforge strategy assess <work-id> --alignment <low|medium|high|uncertain> --value <low|medium|high|uncertain> --risk <low|medium|high|uncertain> --cost <low|medium|high|uncertain> --evidence-strength <low|medium|high|uncertain> --dependency-pressure <low|medium|high|uncertain> --complexity <low|medium|high|uncertain> --release-constraint <low|medium|high|uncertain> --decision <now|next|later|backlog> --rationale <text> [--evidence <evidence-id>] [--supersedes <strategy-id>]
+  autoforge strategy list [--decision <now|next|later|backlog>] [--work <work-id>]
+  autoforge strategy show <id>
+  autoforge strategy history <work-id>
 
 Doctrines:
   autoforge doctrine
