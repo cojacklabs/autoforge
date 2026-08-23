@@ -6,7 +6,10 @@ import type { EvidenceMemory } from "../learning/evidence-schemas.js";
 import type { ExperimentMemory } from "../learning/experiment-schemas.js";
 import type { HypothesisMemory } from "../learning/hypothesis-schemas.js";
 import type { ValidationEvidenceState } from "../quality/evidence.js";
-import type { Specification } from "../specifications/schemas.js";
+import type {
+  Specification,
+  SpecificationType,
+} from "../specifications/schemas.js";
 import type { StrategyMemory } from "../strategy/strategy-schemas.js";
 import type { TraceGraph } from "../traceability/schemas.js";
 import type { WorkState } from "../work/schemas.js";
@@ -93,7 +96,7 @@ export function projectStateToTwin(input: TwinStateInput): TwinProjection {
 
   const specificationNodes = (input.specifications ?? []).map((spec) => ({
     id: spec.id,
-    type: spec.type as (typeof twinNodeTypeSchema.options)[number],
+    type: specificationNodeType(spec.type),
     title: spec.name,
     source: spec.source,
     updatedAt: spec.updatedAt,
@@ -293,6 +296,31 @@ export function projectStateToTwin(input: TwinStateInput): TwinProjection {
     nodes,
     edges,
   });
+}
+
+const SPECIFICATION_TYPE_TO_TWIN_NODE_TYPE: Record<
+  SpecificationType,
+  (typeof twinNodeTypeSchema.options)[number]
+> = {
+  architecture: "architecture",
+  screen: "screen",
+  component: "component",
+  flow: "flow",
+  api: "api",
+  domain: "domain",
+  design: "specification",
+  token: "specification",
+  state: "specification",
+  responsive: "specification",
+  product: "specification",
+  research: "specification",
+  intent: "specification",
+};
+
+function specificationNodeType(
+  type: SpecificationType,
+): (typeof twinNodeTypeSchema.options)[number] {
+  return SPECIFICATION_TYPE_TO_TWIN_NODE_TYPE[type];
 }
 
 function workNode(

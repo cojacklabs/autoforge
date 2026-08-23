@@ -427,6 +427,50 @@ describe("project state digital twin adapter", () => {
     });
   });
 
+  it("projects specification types with no matching twin node type as generic specification nodes", () => {
+    const specTypes = [
+      "design",
+      "token",
+      "state",
+      "responsive",
+      "product",
+      "research",
+      "intent",
+    ] as const;
+    const result = projectStateToTwin({
+      projectId: "project.example",
+      generatedAt: "2026-08-22T12:00:00.000Z",
+      work: {
+        features: [],
+        phases: [],
+        tasks: [],
+        issues: [],
+        activeWork: null,
+      },
+      decisions: { decisions: [] },
+      hypotheses: { hypotheses: [] },
+      experiments: { experiments: [] },
+      evidence: { evidence: [] },
+      specifications: specTypes.map((type) => ({
+        id: `spec.${type}`,
+        type,
+        name: `${type} spec`,
+        description: `${type} spec.`,
+        relationships: {},
+        tags: [],
+        source: "manual:example",
+        updatedAt: "2026-08-22T12:00:00.000Z",
+        content: `${type} content.`,
+      })),
+    });
+
+    for (const type of specTypes) {
+      expect(
+        result.nodes.find((node) => node.id === `spec.${type}`)?.type,
+      ).toBe("specification");
+    }
+  });
+
   it("projects only active strategy assessments, with assesses and resulted-in edges", () => {
     const result = projectStateToTwin({
       projectId: "project.example",

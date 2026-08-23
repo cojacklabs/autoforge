@@ -27,6 +27,7 @@ export const twinNodeTypeSchema = z.enum([
   "strategy",
   "validation-evidence",
   "trace-link",
+  "specification",
 ]);
 
 export const twinNodeSchema = z

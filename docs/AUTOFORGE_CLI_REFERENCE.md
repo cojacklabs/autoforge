@@ -226,7 +226,11 @@ The digital twin includes governance, domain, design, strategy, and
 traceability data alongside work, decisions, and evidence — `twin query
 --type constitution`, `--type domain`, `--type strategy`, `--type
 validation-evidence`, and `--type trace-link` are all queryable once the
-corresponding domain has data.
+corresponding domain has data. Specification types with a direct twin
+counterpart (`architecture`, `screen`, `component`, `flow`, `api`, `domain`)
+project as that node type; the remaining specification types (`design`,
+`token`, `state`, `responsive`, `product`, `research`, `intent`) project as
+the generic `--type specification` node.
 
 ## JSON Input Schemas
 
