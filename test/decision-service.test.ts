@@ -246,6 +246,51 @@ describe("decision service", () => {
     ).rejects.toMatchObject({ code: "INVALID_ARGUMENT" });
   });
 
+  it("rejects unknown --evidence id without writing a decision", async () => {
+    const { decisionStore } = await createFixture();
+    const { EvidenceStore } = await import("../src/learning/evidence-store.js");
+    const { EvidenceService } = await import(
+      "../src/learning/evidence-service.js"
+    );
+    const { ExperimentStore } = await import(
+      "../src/learning/experiment-store.js"
+    );
+    const { HypothesisStore } = await import(
+      "../src/learning/hypothesis-store.js"
+    );
+    const evidenceStore = new EvidenceStore(projectRoot);
+    await evidenceStore.ensure();
+
+    const workStore = createWorkStateStore(projectRoot, {
+      now: () => new Date(TIMESTAMP),
+      temporaryId: () => "test",
+    });
+    const decisionServiceWithEvidence = new DecisionService(
+      decisionStore,
+      workStore,
+      {
+        now: () => new Date(TIMESTAMP),
+        evidenceService: new EvidenceService(
+          evidenceStore,
+          new ExperimentStore(projectRoot),
+          new HypothesisStore(projectRoot),
+        ),
+      },
+    );
+
+    await expect(
+      decisionServiceWithEvidence.record(
+        input({ evidence: ["evidence.does-not-exist"] }),
+      ),
+    ).rejects.toMatchObject({
+      code: "INVALID_ARGUMENT",
+      details: { unknownEvidenceIds: ["evidence.does-not-exist"] },
+    });
+    await expect(decisionStore.read()).resolves.toMatchObject({
+      state: { revision: 0, data: { decisions: [] } },
+    });
+  });
+
   it("rejects missing or previously superseded targets", async () => {
     const { decisionStore, service } = await createFixture();
     await expect(

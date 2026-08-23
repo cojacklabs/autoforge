@@ -233,6 +233,11 @@ describe("decide command", () => {
         startDirectory: projectRoot,
       }),
     ).rejects.toMatchObject({ code: "INVALID_ARGUMENT" });
+    await expect(
+      createDecisionStore(projectRoot).read(),
+    ).resolves.toMatchObject({
+      state: { revision: 0, data: { decisions: [] } },
+    });
   });
 
   it("returns usage for non-canonical metadata", async () => {

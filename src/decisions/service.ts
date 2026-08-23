@@ -112,6 +112,15 @@ export class DecisionService {
         unknownWorkIds,
       });
     }
+    if (input.evidence && input.evidence.length > 0) {
+      if (!this.evidenceService) {
+        throw decisionError(
+          "Decision references evidence but no evidence service is configured",
+          { evidence: input.evidence },
+        );
+      }
+      await this.evidenceService.assertEvidenceExists(input.evidence);
+    }
 
     const target = input.supersedes
       ? decisionState.data.decisions.find(
@@ -168,13 +177,7 @@ export class DecisionService {
       { expectedRevision: decisionState.revision },
     );
     if (input.evidence && input.evidence.length > 0) {
-      if (!this.evidenceService) {
-        throw decisionError(
-          "Decision references evidence but no evidence service is configured",
-          { evidence: input.evidence },
-        );
-      }
-      await this.evidenceService.stampResultingDecision(
+      await this.evidenceService!.stampResultingDecision(
         input.evidence,
         decision.id,
       );

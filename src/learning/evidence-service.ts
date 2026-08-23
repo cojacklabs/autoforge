@@ -131,10 +131,7 @@ export class EvidenceService {
     return { evidence, revision: committed.revision };
   }
 
-  async stampResultingDecision(
-    evidenceIds: readonly string[],
-    decisionId: string,
-  ): Promise<void> {
+  async assertEvidenceExists(evidenceIds: readonly string[]): Promise<void> {
     if (evidenceIds.length === 0) return;
     await this.evidenceStore.ensure();
     const { state: memoryState } = await this.evidenceStore.state.read();
@@ -147,6 +144,17 @@ export class EvidenceService {
         unknownEvidenceIds: unknown,
       });
     }
+  }
+
+  async stampResultingDecision(
+    evidenceIds: readonly string[],
+    decisionId: string,
+  ): Promise<void> {
+    if (evidenceIds.length === 0) return;
+    await this.assertEvidenceExists(evidenceIds);
+    await this.evidenceStore.ensure();
+    const { state: memoryState } = await this.evidenceStore.state.read();
+    const targetIds = new Set(evidenceIds);
     const evidence = memoryState.data.evidence.map((item) =>
       targetIds.has(item.id)
         ? { ...item, resultingDecision: decisionId }
