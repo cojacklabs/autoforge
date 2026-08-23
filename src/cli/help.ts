@@ -17,6 +17,7 @@ Commands:
   help       Show this command reference
   init       Initialize AutoForge in the current project
   intent     Assess intent and generate planning artifacts
+  learning   Record hypotheses, experiments, and product evidence
   research   Register research artifacts
   knowledge  List and show intent and research artifacts
   planning   Inspect generated planning artifacts and freshness
@@ -48,6 +49,19 @@ Add work:
 Decision memory:
   autoforge decide --statement <text> --reasoning <text> --consequence <text> --scope <tag> --keyword <tag> [--consequence <text>] [--scope <tag>] [--keyword <tag>] [--work <work-id>] [--supersedes <decision-id>] [--kind <architecture|bugfix|feature-note>]
   autoforge why [--query <text>] [--work <work-id>] [--work <work-id>] [--history] [--limit <count>]
+
+Learning and evidence:
+  autoforge learning hypothesis add --statement <text> --expected-outcome <text> --metric <text> --target <text> [--work <work-id>]
+  autoforge learning hypothesis list [--status <proposed|testing|confirmed|refuted>]
+  autoforge learning hypothesis show <id>
+  autoforge learning hypothesis status <id> --status <proposed|testing|confirmed|refuted>
+  autoforge learning experiment add --hypothesis <id> [--hypothesis <id> ...] --method <text>
+  autoforge learning experiment list [--status <planned|running|completed|abandoned>]
+  autoforge learning experiment show <id>
+  autoforge learning experiment complete <id>
+  autoforge learning evidence add --kind <kind> --summary <text> --source <text> [--experiment <id>] [--hypothesis <id>] [--work <work-id>]
+  autoforge learning evidence list [--kind <kind>]
+  autoforge learning evidence show <id>
 
 Doctrines:
   autoforge doctrine
