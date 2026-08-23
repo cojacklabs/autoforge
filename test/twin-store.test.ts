@@ -1,4 +1,4 @@
-import { mkdtemp, readFile } from "node:fs/promises";
+import { mkdir, mkdtemp, readFile, writeFile } from "node:fs/promises";
 import os from "node:os";
 import path from "node:path";
 import { afterEach, describe, expect, it } from "vitest";
@@ -36,5 +36,34 @@ describe("digital twin projection store", () => {
         "utf8",
       ),
     ).toContain('"schemaVersion": 1');
+  });
+
+  it("treats a cache using a no-longer-valid node type as absent instead of throwing", async () => {
+    const root = await mkdtemp(path.join(os.tmpdir(), "autoforge-twin-"));
+    roots.push(root);
+    const cacheDir = path.join(root, ".autoforge/twin");
+    await mkdir(cacheDir, { recursive: true });
+    await writeFile(
+      path.join(cacheDir, "projection.json"),
+      JSON.stringify({
+        schemaVersion: 1,
+        projectId: "project.example",
+        generatedAt: "2026-08-22T12:00:00.000Z",
+        nodes: [
+          {
+            id: "work.legacy",
+            type: "work",
+            title: "Legacy work node",
+            source: ".autoforge/state/work.json",
+            updatedAt: "2026-08-22T12:00:00.000Z",
+          },
+        ],
+        edges: [],
+      }),
+      "utf8",
+    );
+
+    const store = new TwinProjectionStore(root);
+    expect(await store.read()).toBeNull();
   });
 });
