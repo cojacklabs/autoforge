@@ -5,9 +5,14 @@ import type { ConstitutionArtifact } from "../governance/schemas.js";
 import type { EvidenceMemory } from "../learning/evidence-schemas.js";
 import type { ExperimentMemory } from "../learning/experiment-schemas.js";
 import type { HypothesisMemory } from "../learning/hypothesis-schemas.js";
+import type { ValidationEvidenceState } from "../quality/evidence.js";
+import type { Specification } from "../specifications/schemas.js";
+import type { StrategyMemory } from "../strategy/strategy-schemas.js";
+import type { TraceGraph } from "../traceability/schemas.js";
 import type { WorkState } from "../work/schemas.js";
 import { buildTwinProjection } from "./projection.js";
 import type { TwinProjection } from "./schemas.js";
+import { twinNodeTypeSchema } from "./schemas.js";
 
 export interface TwinStateInput {
   projectId: string;
@@ -19,6 +24,10 @@ export interface TwinStateInput {
   evidence: EvidenceMemory;
   constitution?: ConstitutionArtifact | null;
   domain?: DomainArtifact | null;
+  specifications?: readonly Specification[];
+  strategy?: StrategyMemory;
+  traceability?: TraceGraph;
+  validationEvidence?: ValidationEvidenceState;
 }
 
 export function projectStateToTwin(input: TwinStateInput): TwinProjection {
@@ -82,9 +91,90 @@ export function projectStateToTwin(input: TwinStateInput): TwinProjection {
         })),
   );
 
+  const specificationNodes = (input.specifications ?? []).map((spec) => ({
+    id: spec.id,
+    type: spec.type as (typeof twinNodeTypeSchema.options)[number],
+    title: spec.name,
+    source: spec.source,
+    updatedAt: spec.updatedAt,
+  }));
+  const specificationEdges = (input.specifications ?? []).flatMap((spec) =>
+    Object.entries(spec.relationships).flatMap(([relationshipName, targets]) =>
+      targets.map((targetId) => ({
+        sourceId: spec.id,
+        targetId,
+        relationship: relationshipName,
+      })),
+    ),
+  );
+
+  const activeStrategyAssessments = (input.strategy?.assessments ?? []).filter(
+    (assessment) => assessment.status === "active",
+  );
+  const strategyNodes = activeStrategyAssessments.map((assessment) => ({
+    id: assessment.id,
+    type: "strategy" as const,
+    title: `${assessment.decision}: ${assessment.workId}`,
+    source: ".autoforge/learning/strategy.json",
+    updatedAt: assessment.updatedAt,
+  }));
+  const strategyEdges = activeStrategyAssessments.flatMap((assessment) => [
+    {
+      sourceId: assessment.id,
+      targetId: assessment.workId,
+      relationship: "assesses",
+    },
+    ...(assessment.resultingDecision
+      ? [
+          {
+            sourceId: assessment.id,
+            targetId: assessment.resultingDecision,
+            relationship: "resulted-in",
+          },
+        ]
+      : []),
+  ]);
+
+  const traceabilityEdges = (input.traceability?.links ?? []).map((link) => ({
+    sourceId: link.sourceId,
+    targetId: link.targetId,
+    relationship: link.relationship,
+  }));
+
+  const validationEvidenceNodes = (
+    input.validationEvidence?.evidence ?? []
+  ).map((record) => ({
+    id: record.id,
+    type: "validation-evidence" as const,
+    title: `${record.gateId} (${record.status})`,
+    source: ".autoforge/quality/evidence.json",
+    updatedAt: record.capturedAt,
+  }));
+  const validationEvidenceEdges = (
+    input.validationEvidence?.evidence ?? []
+  ).flatMap((record) => [
+    ...(record.workId
+      ? [
+          {
+            sourceId: record.id,
+            targetId: record.workId,
+            relationship: "validates",
+          },
+        ]
+      : []),
+    ...record.traceIds.map((traceId) => ({
+      sourceId: record.id,
+      targetId: traceId,
+      relationship: "traces",
+    })),
+  ]);
+
   const nodes = [
     ...constitutionNodes,
     ...domainNodes,
+    ...specificationNodes,
+    ...strategyNodes,
+    ...validationEvidenceNodes,
     ...input.work.features.map((item) => workNode(item, "feature")),
     ...input.work.phases.map((item) => workNode(item, "phase")),
     ...input.work.tasks.map((item) => workNode(item, "task")),
@@ -122,6 +212,10 @@ export function projectStateToTwin(input: TwinStateInput): TwinProjection {
     ...constitutionEdges,
     ...domainRelationshipEdges,
     ...domainProvenanceEdges,
+    ...specificationEdges,
+    ...strategyEdges,
+    ...traceabilityEdges,
+    ...validationEvidenceEdges,
     ...input.work.phases.map((phase) => ({
       sourceId: phase.id,
       targetId: phase.featureId,

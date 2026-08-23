@@ -372,4 +372,266 @@ describe("project state digital twin adapter", () => {
     );
     expect(result.nodes.some((node) => node.type === "domain")).toBe(false);
   });
+
+  it("projects specifications using their own type and relationship names", () => {
+    const result = projectStateToTwin({
+      projectId: "project.example",
+      generatedAt: "2026-08-22T12:00:00.000Z",
+      work: {
+        features: [],
+        phases: [],
+        tasks: [],
+        issues: [],
+        activeWork: null,
+      },
+      decisions: { decisions: [] },
+      hypotheses: { hypotheses: [] },
+      experiments: { experiments: [] },
+      evidence: { evidence: [] },
+      specifications: [
+        {
+          id: "flow.checkout",
+          type: "flow",
+          name: "Checkout Flow",
+          description: "Checkout flow spec.",
+          relationships: { uses: ["screen.checkout"] },
+          tags: [],
+          source: "manual:example",
+          updatedAt: "2026-08-22T12:00:00.000Z",
+          content: "Checkout flow content.",
+        },
+        {
+          id: "screen.checkout",
+          type: "screen",
+          name: "Checkout Screen",
+          description: "Checkout screen spec.",
+          relationships: {},
+          tags: [],
+          source: "manual:example",
+          updatedAt: "2026-08-22T12:00:00.000Z",
+          content: "Checkout screen content.",
+        },
+      ],
+    });
+
+    expect(result.nodes.find((node) => node.id === "flow.checkout")?.type).toBe(
+      "flow",
+    );
+    expect(
+      result.nodes.find((node) => node.id === "screen.checkout")?.type,
+    ).toBe("screen");
+    expect(result.edges).toContainEqual({
+      sourceId: "flow.checkout",
+      targetId: "screen.checkout",
+      relationship: "uses",
+    });
+  });
+
+  it("projects only active strategy assessments, with assesses and resulted-in edges", () => {
+    const result = projectStateToTwin({
+      projectId: "project.example",
+      generatedAt: "2026-08-22T12:00:00.000Z",
+      work: {
+        features: [
+          {
+            id: "feature.messaging",
+            name: "Messaging",
+            description: "Messaging feature.",
+            status: "planned",
+            createdAt: "2026-08-22T12:00:00.000Z",
+            updatedAt: "2026-08-22T12:00:00.000Z",
+          },
+        ],
+        phases: [],
+        tasks: [],
+        issues: [],
+        activeWork: null,
+      },
+      decisions: {
+        decisions: [
+          {
+            id: "decision.strategic-assessment-recommends-backlog",
+            statement:
+              "feature.messaging: strategic assessment recommends backlog",
+            reasoning: "High risk.",
+            consequences: ["Deferred."],
+            scope: ["strategy"],
+            keywords: ["strategy", "backlog"],
+            relatedWork: ["feature.messaging"],
+            supersedes: null,
+            status: "active",
+            kind: "feature-note",
+            createdAt: "2026-08-22T12:00:00.000Z",
+            updatedAt: "2026-08-22T12:00:00.000Z",
+          },
+        ],
+      },
+      hypotheses: { hypotheses: [] },
+      experiments: { experiments: [] },
+      evidence: { evidence: [] },
+      strategy: {
+        assessments: [
+          {
+            id: "strategy.messaging-1",
+            workId: "feature.messaging",
+            factors: {
+              alignment: "low",
+              value: "uncertain",
+              risk: "high",
+              cost: "medium",
+              evidenceStrength: "low",
+              dependencyPressure: "low",
+              complexity: "medium",
+              releaseConstraint: "low",
+            },
+            decision: "backlog",
+            rationale: "High spam risk.",
+            evidenceIds: [],
+            resultingDecision:
+              "decision.strategic-assessment-recommends-backlog",
+            supersedes: null,
+            status: "superseded",
+            createdAt: "2026-08-22T11:00:00.000Z",
+            updatedAt: "2026-08-22T11:00:00.000Z",
+          },
+          {
+            id: "strategy.messaging-2",
+            workId: "feature.messaging",
+            factors: {
+              alignment: "high",
+              value: "high",
+              risk: "low",
+              cost: "medium",
+              evidenceStrength: "high",
+              dependencyPressure: "low",
+              complexity: "medium",
+              releaseConstraint: "low",
+            },
+            decision: "now",
+            rationale: "Risk resolved.",
+            evidenceIds: [],
+            resultingDecision:
+              "decision.strategic-assessment-recommends-backlog",
+            supersedes: "strategy.messaging-1",
+            status: "active",
+            createdAt: "2026-08-22T12:00:00.000Z",
+            updatedAt: "2026-08-22T12:00:00.000Z",
+          },
+        ],
+      },
+    });
+
+    expect(
+      result.nodes.some((node) => node.id === "strategy.messaging-1"),
+    ).toBe(false);
+    expect(
+      result.nodes.find((node) => node.id === "strategy.messaging-2")?.type,
+    ).toBe("strategy");
+    expect(result.edges).toContainEqual({
+      sourceId: "strategy.messaging-2",
+      targetId: "feature.messaging",
+      relationship: "assesses",
+    });
+    expect(result.edges).toContainEqual({
+      sourceId: "strategy.messaging-2",
+      targetId: "decision.strategic-assessment-recommends-backlog",
+      relationship: "resulted-in",
+    });
+  });
+
+  it("projects traceability links only between already-modeled nodes", () => {
+    const result = projectStateToTwin({
+      projectId: "project.example",
+      generatedAt: "2026-08-22T12:00:00.000Z",
+      work: {
+        features: [
+          {
+            id: "feature.search",
+            name: "Search",
+            description: "Search feature.",
+            status: "planned",
+            createdAt: "2026-08-22T12:00:00.000Z",
+            updatedAt: "2026-08-22T12:00:00.000Z",
+          },
+        ],
+        phases: [],
+        tasks: [],
+        issues: [],
+        activeWork: null,
+      },
+      decisions: { decisions: [] },
+      hypotheses: { hypotheses: [] },
+      experiments: { experiments: [] },
+      evidence: { evidence: [] },
+      traceability: {
+        schemaVersion: 1,
+        links: [
+          {
+            id: "trace.search-implements-story",
+            sourceId: "feature.search",
+            targetId: "story.search-onboarding",
+            relationship: "implements",
+            provenance: "manual",
+            capturedAt: "2026-08-22T12:00:00.000Z",
+          },
+        ],
+      },
+    });
+
+    expect(
+      result.edges.some((edge) => edge.sourceId === "feature.search"),
+    ).toBe(false);
+  });
+
+  it("projects validation evidence with validates edges to work items", () => {
+    const result = projectStateToTwin({
+      projectId: "project.example",
+      generatedAt: "2026-08-22T12:00:00.000Z",
+      work: {
+        features: [
+          {
+            id: "feature.search",
+            name: "Search",
+            description: "Search feature.",
+            status: "planned",
+            createdAt: "2026-08-22T12:00:00.000Z",
+            updatedAt: "2026-08-22T12:00:00.000Z",
+          },
+        ],
+        phases: [],
+        tasks: [],
+        issues: [],
+        activeWork: null,
+      },
+      decisions: { decisions: [] },
+      hypotheses: { hypotheses: [] },
+      experiments: { experiments: [] },
+      evidence: { evidence: [] },
+      validationEvidence: {
+        schemaVersion: 1,
+        evidence: [
+          {
+            id: "evidence.command.tests.123",
+            gateId: "command.tests",
+            status: "passed",
+            severity: "required",
+            workId: "feature.search",
+            traceIds: [],
+            reason: "Quality command tests exited with code 0.",
+            capturedAt: "2026-08-22T12:00:00.000Z",
+          },
+        ],
+      },
+    });
+
+    expect(
+      result.nodes.find((node) => node.id === "evidence.command.tests.123")
+        ?.type,
+    ).toBe("validation-evidence");
+    expect(result.edges).toContainEqual({
+      sourceId: "evidence.command.tests.123",
+      targetId: "feature.search",
+      relationship: "validates",
+    });
+  });
 });
