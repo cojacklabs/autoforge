@@ -9,25 +9,65 @@ All notable changes to this project will be documented in this file.
 
 <!-- autoforge:changelog:start -->
 
-## [0.22.1] - 2026-08-23
+<!-- autoforge:changelog:end -->
+
+## [0.23.0] - 2026-08-23
 
 ### Added
 
-- **Agent onboarding & CLI reference currency**: the canonical startup
-  prompt in `README.md` and `docs/AUTOFORGE_AGENT_SETUP_GUIDE.md` (kept
-  in lockstep) now directs agents to `docs/AUTOFORGE_CLI_REFERENCE.md`
-  for the complete current command surface, so an onboarding agent can
-  govern, scaffold, categorize, prioritize, and reorganize project work
-  using the full AutoForge CLI rather than guessing. The reference doc
-  itself is brought current: it gained the `learning`
-  hypothesis/experiment/evidence command family and
-  `autoforge changelog compile`, both shipped in v0.22.0 but previously
-  undocumented.
-- Documentation prose across the project no longer hardcodes version
-  numbers (starting with `README.md`'s title and the reference doc's
-  closing line), so these lines never need updating on future releases.
+- **Product Strategy & Prioritization Engine**: a new `strategy` domain
+  closing the north-star's v0.23 milestone — recording an explainable,
+  multi-factor, categorical judgment on any feature, phase, task, or
+  issue, with **no blended numeric score**:
+  - `autoforge strategy assess <work-id>` records eight factors
+    (`--alignment`, `--value`, `--risk`, `--cost`,
+    `--evidence-strength`, `--dependency-pressure`, `--complexity`,
+    `--release-constraint`, each `low`/`medium`/`high`/`uncertain`), a
+    human-assigned `--decision` (`now`/`next`/`later`/`backlog`), and a
+    required `--rationale`. Every assessment unconditionally writes a
+    linked decision via the same mechanism `autoforge decide --evidence`
+    uses, so `autoforge why` also surfaces strategy calls.
+  - `autoforge strategy list [--decision <label>] [--work <id>]`,
+    `show <id>`, and `history <work-id>` query assessments; assessments
+    are append-only with an explicit `--supersedes` chain, mirroring the
+    decision-memory convention.
+  - The active work item's active assessment is surfaced in context
+    packets as a new `## Strategy Assessment` section — an optional,
+    non-budgeted field (modeled on the existing `workflow`/`contract`
+    fields), not routed through the ranked/budgeted candidate system
+    doctrines and decisions compete in.
+  - Deliberately kept independent from `autoforge orchestrate
+prioritize` (v0.21's narrow 0-100 scheduling tiebreaker for
+    already-orchestrated work): a strategy assessment informs a human's
+    decision to prioritize; it does not compute or replace the
+    orchestration priority itself.
+- **Global install is now the advertised primary onboarding path**:
+  `README.md`, `CONTRIBUTING.md`, and a fully rewritten
+  `docs/QUICKSTART.md` now lead with `npm install --global` (or the
+  `yarn`/`pnpm` equivalent) and bare `autoforge` commands, matching how
+  the CLI already behaves as a per-machine control plane (global
+  workspace registry, cross-project history, `autoforge update`'s
+  existing global-vs-local detection). Local `--save-dev` + `npx` is
+  now an explicitly scoped fallback for environments that cannot retain
+  a persistent global install. `docs/QUICKSTART.md` — previously
+  orphaned and describing an entirely different, no-longer-existing
+  AutoForge product (autopilot levels, recipes, a training loop) — was
+  rewritten from scratch against the actual current command surface and
+  linked from `README.md`.
 
-<!-- autoforge:changelog:end -->
+### Fixed
+
+- **`autoforge why` surfaces linked evidence**: closes a v0.22
+  design-to-plan scope gap — `formatDecisionMatches()` now appends an
+  `Evidence: <id>, <id>` line beneath a matched decision whenever
+  evidence records reference it via `resultingDecision`.
+- **`projects list --json` duplicate implementation consolidated**: the
+  flag already worked, but was implemented twice across two branches of
+  `runProjectsCommand`; consolidated into one code path.
+- **North-star roadmap doc reconciled**: `dev/AUTOFORGE_ULTIMATE_NORTH_STAR_v0.8-v0.25.md`
+  carried a phantom `v0.15.0` "Interactive AutoForge CLI" milestone that
+  pushed every subsequent milestone number one version higher than the
+  authoritative revised roadmap; renumbered and reconciled.
 
 ## [0.22.0] - 2026-08-23
 
