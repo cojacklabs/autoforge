@@ -125,6 +125,75 @@ describe("why command", () => {
     );
   });
 
+  it("surfaces linked evidence beneath a matched decision", async () => {
+    const { feature, projectRoot } = await createFixture();
+    const { runLearningEvidenceCommand } =
+      await import("../src/commands/learning-evidence.js");
+    const evidenceOutput = { stdout: vi.fn(), stderr: vi.fn() };
+    await runLearningEvidenceCommand({
+      args: [
+        "add",
+        "--kind",
+        "bug-report",
+        "--summary",
+        "Fuzzy matches returned unrelated decisions.",
+        "--source",
+        "Beta feedback thread.",
+        "--work",
+        feature.entity.id,
+      ],
+      output: evidenceOutput,
+      startDirectory: projectRoot,
+    });
+
+    const { runDecideCommand } = await import("../src/commands/decide.js");
+    const decideOutput = { stdout: vi.fn(), stderr: vi.fn() };
+    await runDecideCommand({
+      args: [
+        "--statement",
+        "Use deterministic relevance search.",
+        "--reasoning",
+        "Fixed weights make decision retrieval explainable.",
+        "--consequence",
+        "Search remains local and reproducible.",
+        "--scope",
+        "decisions",
+        "--keyword",
+        "deterministic",
+        "--evidence",
+        "evidence.fuzzy-matches-returned-unrelated-decisions",
+      ],
+      output: decideOutput,
+      startDirectory: projectRoot,
+    });
+
+    const output = { stdout: vi.fn(), stderr: vi.fn() };
+    await expect(
+      runWhyCommand({
+        args: ["--query", "deterministic relevance search"],
+        output,
+        startDirectory: projectRoot,
+      }),
+    ).resolves.toBe(EXIT_CODE.success);
+    expect(output.stdout.mock.calls[0]?.[0]).toContain(
+      "Evidence: evidence.fuzzy-matches-returned-unrelated-decisions",
+    );
+  });
+
+  it("omits the evidence line when no evidence references the decision", async () => {
+    const { projectRoot } = await createFixture();
+    const output = { stdout: vi.fn(), stderr: vi.fn() };
+
+    await expect(
+      runWhyCommand({
+        args: ["--query", "determinism relevance"],
+        output,
+        startDirectory: projectRoot,
+      }),
+    ).resolves.toBe(EXIT_CODE.success);
+    expect(output.stdout.mock.calls[0]?.[0]).not.toContain("Evidence:");
+  });
+
   it.each([
     { args: [], message: "Provide --query" },
     {

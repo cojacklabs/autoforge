@@ -6,6 +6,7 @@ import {
 import { EXIT_CODE, type ExitCode } from "../core/errors.js";
 import type { LogWriter } from "../core/logger.js";
 import { discoverProjectRoot } from "../core/project.js";
+import { EvidenceStore } from "../learning/evidence-store.js";
 
 export interface WhyCommandOptions {
   args: readonly string[];
@@ -86,6 +87,7 @@ function parseWhyArguments(
 
 export function formatDecisionMatches(
   matches: readonly DecisionSearchMatch[],
+  evidenceByDecision?: ReadonlyMap<string, readonly string[]>,
 ): string {
   if (matches.length === 0) {
     return "No matching decisions.";
@@ -109,6 +111,10 @@ export function formatDecisionMatches(
       if (supersededBy) {
         lines.push(`Superseded by: ${supersededBy}`);
       }
+      const evidenceIds = evidenceByDecision?.get(decision.id);
+      if (evidenceIds && evidenceIds.length > 0) {
+        lines.push(`Evidence: ${evidenceIds.join(", ")}`);
+      }
       return lines.join("\n");
     },
   );
@@ -128,6 +134,23 @@ export async function runWhyCommand(
   });
   const { state } = await createDecisionStore(project.path).read();
   const matches = searchDecisions(state.data, parsed);
-  options.output.stdout(formatDecisionMatches(matches));
+
+  const evidenceStore = new EvidenceStore(project.path);
+  await evidenceStore.ensure();
+  const { state: evidenceState } = await evidenceStore.state.read();
+  const evidenceByDecision = new Map<string, string[]>();
+  for (const record of evidenceState.data.evidence) {
+    if (!record.resultingDecision) {
+      continue;
+    }
+    const existing = evidenceByDecision.get(record.resultingDecision);
+    if (existing) {
+      existing.push(record.id);
+    } else {
+      evidenceByDecision.set(record.resultingDecision, [record.id]);
+    }
+  }
+
+  options.output.stdout(formatDecisionMatches(matches, evidenceByDecision));
   return EXIT_CODE.success;
 }

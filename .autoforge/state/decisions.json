@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
-  "revision": 34,
-  "updatedAt": "2026-08-23T14:33:59.202Z",
+  "revision": 37,
+  "updatedAt": "2026-08-23T16:08:15.413Z",
   "data": {
     "decisions": [
       {
@@ -847,6 +847,82 @@
         "kind": "feature-note",
         "createdAt": "2026-08-23T14:33:59.175Z",
         "updatedAt": "2026-08-23T14:33:59.175Z"
+      },
+      {
+        "id": "decision.autoforge-why-surfaces-linked-evidence-beneath-each-matched-decision",
+        "statement": "autoforge why surfaces linked evidence beneath each matched decision",
+        "reasoning": "The v0.22 Learning & Evidence Engine design spec required an Evidence: line in why's decision output whenever evidence records reference a decision via resultingDecision, but no v0.22 implementation task covered src/decisions/search.ts or src/commands/why.ts, so the data was correctly linked but never surfaced to the primary human/agent-facing query command.",
+        "consequences": [
+          "runWhyCommand now loads the EvidenceStore, groups records by resultingDecision, and formatDecisionMatches appends an Evidence: <id>, <id> line to each matched decision block when applicable; two new why.test.ts cases cover the line's presence and its absence."
+        ],
+        "scope": [
+          "decisions",
+          "why",
+          "evidence"
+        ],
+        "keywords": [
+          "evidence",
+          "why",
+          "visibility"
+        ],
+        "relatedWork": [
+          "issue.surface-evidence-in-why-search"
+        ],
+        "supersedes": null,
+        "status": "active",
+        "kind": "feature-note",
+        "createdAt": "2026-08-23T15:02:40.416Z",
+        "updatedAt": "2026-08-23T15:02:40.416Z"
+      },
+      {
+        "id": "decision.projects-list-json-already-existed-before-this-issue-was-filed-the-duplicated-li",
+        "statement": "projects list --json already existed before this issue was filed; the duplicated list-handling branches were consolidated into one",
+        "reasoning": "Investigation showed runProjectsCommand had two separate code paths both handling action === list: an early branch entered only when --json appeared in the projectPath or flag slot, and a later branch handling every other list invocation including the bare default. Both built the same JSON/table output independently, which is confusing to maintain and made a bare autoforge projects command depend on defaulting logic duplicated in two places.",
+        "consequences": [
+          "runProjectsCommand now defaults a missing action to list once, and a single list branch at the bottom of the function handles bare list, list --json, and list <name> --json uniformly; the redundant early-return branch was removed. Added test coverage for the no-args default-to-list path and for rejecting a non---json trailing flag on list."
+        ],
+        "scope": [
+          "commands",
+          "projects",
+          "cli"
+        ],
+        "keywords": [
+          "projects",
+          "json",
+          "simplification"
+        ],
+        "relatedWork": [
+          "issue.projects-list-json-output"
+        ],
+        "supersedes": null,
+        "status": "active",
+        "kind": "bugfix",
+        "createdAt": "2026-08-23T15:09:23.925Z",
+        "updatedAt": "2026-08-23T15:09:23.925Z"
+      },
+      {
+        "id": "decision.the-ultimate-north-star-guide-is-now-version-number-consistent-with-the-authorit",
+        "statement": "The ultimate north-star guide is now version-number-consistent with the authoritative revised roadmap",
+        "reasoning": "docs/planning/NORTH_STAR_CONSISTENCY_AUDIT.md flagged that dev/AUTOFORGE_ULTIMATE_NORTH_STAR_v0.8-v0.25.md retained a phantom v0.15.0 Interactive AutoForge CLI milestone and off-by-one numbering for v0.16-v0.20 (Governance through Digital Twin) predating the roadmap revision that moved the Interactive CLI Experience to v0.25. This made the two north-star documents disagree on what version number corresponds to which engine from v0.15 through v0.20.",
+        "consequences": [
+          "Renumbered v0.16-v0.20 down by one (Governance=v0.15, Domain Intelligence=v0.16, Design Protocol=v0.17, Traceability=v0.18, Validation=v0.19, Digital Twin stays v0.20), replaced the phantom v0.15.0 Interactive CLI section with a superseded-milestone notice pointing to the revised doc's v0.25 section, fixed the dependency-chain diagram and Phase 1/Phase 2 seam description, and corrected the Core Engine Model's Foundation vs Product Intelligence engine lists. Both north-star documents are now numbering-consistent from v0.8 through v0.25; the revised doc remains authoritative for narrative sequencing rationale."
+        ],
+        "scope": [
+          "docs",
+          "planning",
+          "north-star"
+        ],
+        "keywords": [
+          "north-star",
+          "roadmap",
+          "documentation"
+        ],
+        "relatedWork": [],
+        "supersedes": null,
+        "status": "active",
+        "kind": "feature-note",
+        "createdAt": "2026-08-23T16:08:15.377Z",
+        "updatedAt": "2026-08-23T16:08:15.377Z"
       }
     ]
   }

@@ -61,6 +61,40 @@ describe("projects command", () => {
     );
   });
 
+  it("lists projects as text when no action is given", async () => {
+    const home = await mkdtemp(path.join(os.tmpdir(), "autoforge-projects-"));
+    roots.push(home);
+    const project = path.join(home, "project");
+    await new GlobalWorkspaceStore(home).registerProject(project);
+    const output = { stdout: vi.fn(), stderr: vi.fn() };
+    await expect(
+      runProjectsCommand({
+        args: [],
+        output,
+        homeDirectory: home,
+      }),
+    ).resolves.toBe(0);
+    expect(output.stdout).toHaveBeenCalledWith(
+      expect.stringContaining(project),
+    );
+  });
+
+  it("rejects a trailing flag on list that is not --json", async () => {
+    const home = await mkdtemp(path.join(os.tmpdir(), "autoforge-projects-"));
+    roots.push(home);
+    const output = { stdout: vi.fn(), stderr: vi.fn() };
+    await expect(
+      runProjectsCommand({
+        args: ["list", "--bogus"],
+        output,
+        homeDirectory: home,
+      }),
+    ).resolves.toBe(2);
+    expect(output.stderr).toHaveBeenCalledWith(
+      expect.stringContaining("Usage:"),
+    );
+  });
+
   it("reports project storage as JSON", async () => {
     const home = await mkdtemp(path.join(os.tmpdir(), "autoforge-projects-"));
     roots.push(home);

@@ -37,3 +37,4 @@ build/
 REPO*.md
 .superpowers/
 .autoforge/twin/
+.autoforge/quality/

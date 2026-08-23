@@ -67,10 +67,10 @@ The future-state metaphor is:
 
 AutoForge's roadmap now spans two major phases.
 
-Phase 1, v0.8--v0.15, builds the machinery required to capture,
+Phase 1, v0.8--v0.14, builds the machinery required to capture,
 organize, retrieve, and deliver project knowledge.
 
-Phase 2, v0.16--v0.25, builds governance and product intelligence on top
+Phase 2, v0.15--v0.25, builds governance and product intelligence on top
 of that machinery so AutoForge can coordinate a complete
 software-development lifecycle.
 
@@ -218,7 +218,6 @@ itself should be understood as cooperating engines.
 - Vision & Discovery Engine
 - Knowledge Graph Engine
 - Context Resolution / Context Protocol Engine
-- Interactive CLI
 
 ## Product Intelligence Engines
 
@@ -232,6 +231,7 @@ itself should be understood as cooperating engines.
 - Learning & Evidence Engine
 - Strategy & Prioritization Engine
 - Continuous Product Evolution Engine
+- Interactive CLI Experience
 
 These engines should remain composable rather than becoming one giant
 subsystem.
@@ -240,7 +240,7 @@ subsystem.
 
 # 6. Phase 1 --- Build the Project Brain
 
-## v0.8.0 → v0.15.0
+## v0.8.0 → v0.14.0
 
 Phase 1 answers:
 
@@ -568,58 +568,19 @@ understanding.
 
 ---
 
-## v0.15.0 --- Interactive AutoForge CLI
-
-### Mission
-
-Provide a human-facing orchestration interface without turning AutoForge
-into a coding agent.
-
-Possible interaction:
-
-```text
-$ autoforge
-
-Project: Verdua
-Stage: Discovery
-
-What are you thinking about?
-
-> _
-```
-
-Possible modes:
-
-```text
-brainstorm
-discovery
-research
-planning
-design
-development
-review
-validation
-```
-
-### Companion Mode
-
-```text
-Codex + AutoForge
-Claude Code + AutoForge
-Cursor + AutoForge
-```
-
-### Optional Future Native Mode
-
-AutoForge may eventually use pluggable model providers for extraction,
-classification, or orchestration, but native inference should not become
-a dependency of the open-source core.
-
-### Unlocks
-
-Users gain a consistent interface to the project brain.
-
----
+> **Superseded milestone notice:** this document originally placed an
+> "Interactive AutoForge CLI" milestone here as v0.15.0. The roadmap
+> revision after v0.14 (see
+> `dev/AUTOFORGE_NORTH_STAR_REVISED_POST_V0.14_TO_V0.25.md`) moved the
+> richer human-facing interactive experience to v0.25 so it can be built
+> on top of the mature governance, domain, design, traceability,
+> validation, digital-twin, orchestration, evidence, strategy, and
+> continuous-evolution engines instead of preceding them. v0.15 is now
+> the Project Constitution & Governance Engine described below. See
+> Section 5 ("Interactive CLI Experience") of the revised roadmap for the
+> current v0.25 design intent; the possible-interaction sketch and modes
+> originally proposed here still describe that later milestone
+> reasonably well.
 
 # 7. Phase 1 Readiness Gate
 
@@ -646,7 +607,7 @@ Phase 2 should extend these primitives rather than duplicate them.
 
 # 8. Phase 2 --- Build the Living Product Model
 
-## v0.16.0 → v0.25.0
+## v0.15.0 → v0.25.0
 
 Phase 2 answers:
 
@@ -655,7 +616,7 @@ Phase 2 answers:
 
 ---
 
-## v0.16.0 --- Project Constitution & Governance Engine
+## v0.15.0 --- Project Constitution & Governance Engine
 
 ### Mission
 
@@ -690,7 +651,7 @@ intent.
 
 ---
 
-## v0.17.0 --- Domain Intelligence Engine
+## v0.16.0 --- Domain Intelligence Engine
 
 ### Mission
 
@@ -739,7 +700,7 @@ reference the same business meaning.
 
 ---
 
-## v0.18.0 --- Repository-Native Design Specification Protocol
+## v0.17.0 --- Repository-Native Design Specification Protocol
 
 ### Mission
 
@@ -775,7 +736,7 @@ Multiple design/coding agents can work from the same design truth.
 
 ---
 
-## v0.19.0 --- Dependency, Traceability & Change-Impact Engine
+## v0.18.0 --- Dependency, Traceability & Change-Impact Engine
 
 ### Mission
 
@@ -811,7 +772,7 @@ Test
 
 ### Dependency
 
-Builds directly on v0.14's graph and v0.17/v0.18 semantics.
+Builds directly on v0.14's graph and v0.16/v0.17 semantics.
 
 ### Unlocks
 
@@ -819,7 +780,7 @@ AutoForge can perform impact analysis instead of file-name guessing.
 
 ---
 
-## v0.20.0 --- Validation & Quality Gate Engine
+## v0.19.0 --- Validation & Quality Gate Engine
 
 ### Mission
 
@@ -1130,17 +1091,15 @@ DISCOVERY / VISION (0.13)
         ↓
 KNOWLEDGE GRAPH + CONTEXT (0.14)
         ↓
-INTERACTIVE ACCESS (0.15)
+GOVERNANCE (0.15)
         ↓
-GOVERNANCE (0.16)
+DOMAIN INTELLIGENCE (0.16)
         ↓
-DOMAIN INTELLIGENCE (0.17)
+DESIGN PROTOCOL (0.17)
         ↓
-DESIGN PROTOCOL (0.18)
+TRACEABILITY (0.18)
         ↓
-TRACEABILITY (0.19)
-        ↓
-VALIDATION (0.20)
+VALIDATION (0.19)
         ↓
 DIGITAL TWIN (0.20)
         ↓
@@ -1158,7 +1117,7 @@ INTERACTIVE CLI (0.25)
 Important architectural interpretation:
 
 - v0.14 provides the graph primitive.
-- v0.19 enriches that graph with end-to-end product traceability.
+- v0.18 enriches that graph with end-to-end product traceability.
 - v0.20 exposes the connected graph/state as the product digital twin.
 - v0.21 uses the mature context/governance model to coordinate
   multiple agents.
@@ -1193,16 +1152,13 @@ Observe
 Learn
 ```
 
-The seam is v0.14--v0.16:
+The seam is v0.14--v0.15:
 
 ```text
 v0.14:
 What context is relevant?
 
 v0.15:
-How does the human interact with the project brain?
-
-v0.16:
 What rules govern what can happen with that context?
 ```
 

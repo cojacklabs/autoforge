@@ -29,49 +29,9 @@ function usage(output: LogWriter): ExitCode {
 export async function runProjectsCommand(
   options: ProjectsCommandOptions,
 ): Promise<ExitCode> {
-  const [action, projectPath, flag] = options.args;
+  const [rawAction, projectPath, flag] = options.args;
+  const action = rawAction ?? "list";
   const json = flag === "--json" || projectPath === "--json";
-  if (!action || (action === "list" && (projectPath === "--json" || json))) {
-    try {
-      const store = new GlobalWorkspaceStore(options.homeDirectory);
-      const config = await store.read().catch(() => ({
-        version: "0.11.0" as const,
-        projects: [],
-        projectMetadata: {},
-      }));
-      if (json) {
-        options.output.stdout(
-          JSON.stringify(
-            config.projects.map((project) => ({
-              path: project,
-              metadata:
-                (
-                  config.projectMetadata as Record<string, unknown> | undefined
-                )?.[project] ?? null,
-            })),
-            null,
-            2,
-          ),
-        );
-      } else {
-        options.output.stdout(
-          config.projects
-            .map((project) => {
-              const metadata = (
-                config.projectMetadata as
-                  | Record<string, { name: string; lifecycle?: string }>
-                  | undefined
-              )?.[project];
-              return `${metadata?.lifecycle ?? "active"}\t${metadata?.name ?? project}\t${project}`;
-            })
-            .join("\n"),
-        );
-      }
-      return EXIT_CODE.success;
-    } catch (error) {
-      return reportCommandError(error, options.output);
-    }
-  }
   if (action === "show") {
     if (!projectPath || (flag !== undefined && !json))
       return usage(options.output);
@@ -333,7 +293,9 @@ export async function runProjectsCommand(
           ? !projectPath || options.args.length !== 2
           : action === "global-import"
             ? !projectPath || options.args.length < 3 || options.args.length > 4
-            : options.args.length !== 1
+            : action === "list"
+              ? options.args.length > 2 || (options.args.length === 2 && !json)
+              : options.args.length !== 1
   )
     return usage(options.output);
   try {

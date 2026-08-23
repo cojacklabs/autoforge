@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
-  "revision": 206,
-  "updatedAt": "2026-08-23T13:56:18.224Z",
+  "revision": 210,
+  "updatedAt": "2026-08-23T15:09:29.348Z",
   "data": {
     "features": [
       {
@@ -1018,9 +1018,9 @@
       {
         "name": "projects-list-json-output",
         "description": "Add an optional JSON output mode to projects list for automation and agent tooling.",
-        "status": "planned",
+        "status": "completed",
         "createdAt": "2026-08-22T01:46:01.049Z",
-        "updatedAt": "2026-08-22T01:46:01.049Z",
+        "updatedAt": "2026-08-23T15:09:29.247Z",
         "id": "issue.projects-list-json-output",
         "scope": {
           "include": [
@@ -1254,9 +1254,9 @@
       {
         "name": "surface-evidence-in-why-search",
         "description": "The v0.22 Learning & Evidence Engine design spec (docs/superpowers/specs/2026-08-22-v0-22-learning-evidence-design.md, section 2) specifies that autoforge why's formatDecisionMatches() should include an 'Evidence: <id>, <id>' line when a matched decision has evidence records pointing at it via resultingDecision -- surfacing the concrete evidence that prompted a decision, not just its own reasoning text. This was never implemented: no task in the v0.22 implementation plan (docs/superpowers/plans/2026-08-22-v0-22-learning-evidence.md) covers src/decisions/search.ts, confirmed by the final whole-branch review as a design-to-plan scope gap, not an implementation defect. The underlying data is correctly recorded (Evidence.resultingDecision is correctly stamped by decide --evidence, verified end-to-end in the self-hosted exercise), but is not yet readable through the primary human/agent-facing query command. Fix: load evidence records in runWhyCommand, group by resultingDecision, and append an Evidence: line to each matched decision block in formatDecisionMatches() when applicable. This closes the read half of the loop -- v0.22 currently delivers loop INTEGRITY (data is correctly linked) but not yet loop VISIBILITY (the data isn't surfaced through autoforge why).",
-        "status": "planned",
+        "status": "completed",
         "createdAt": "2026-08-23T13:56:18.194Z",
-        "updatedAt": "2026-08-23T13:56:18.194Z",
+        "updatedAt": "2026-08-23T15:02:44.526Z",
         "id": "issue.surface-evidence-in-why-search",
         "scope": {
           "include": [
