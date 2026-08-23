@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
-  "revision": 191,
-  "updatedAt": "2026-08-23T02:08:45.202Z",
+  "revision": 193,
+  "updatedAt": "2026-08-23T02:19:17.044Z",
   "data": {
     "features": [
       {
@@ -1197,9 +1197,9 @@
       {
         "name": "clarify-use-command-project-lifecycle-mutation-gate",
         "description": "autoforge use <alias> <command> rewrites args to --project <path> <command> and dispatches against that project directory (src/cli entrypoint, main()). projectMutationBlocked() (src/workspace/lifecycle.ts) blocks any command not in readOnlyCommands (help, version, doctor, projects, assets, agents, bootstrap, twin, evidence) unless the target project's metadata.lifecycle === active. For a project registered via bootstrap attach/projects register without lifecycle ever having been explicitly set, metadata.lifecycle is undefined - not active - so it silently falls into the blocked branch, and every mutating command (add, decide, context, check, intent assess --persist, workflow start/advance, etc.) returns a bare Project lifecycle is undefined; mutating command \"<cmd>\" is blocked with exit code 4 and zero indication that autoforge projects update <path> --lifecycle active is the fix. We hit this immediately when trying to use autoforge use to file issues against the autoforge project itself - it had been registered but never had lifecycle set. This is a reasonable safety default but is currently undiscoverable: nothing in bootstrap attach, projects register, or projects show's output mentions that a freshly-registered project defaults to a locked, read-only-mutation state, or names the exact --lifecycle active fix. Fix: (1) have bootstrap attach / projects register set lifecycle: active by default rather than leaving it undefined, since an explicit opt-in gate that's silently on by default provides no real safety benefit; or if the undefined-as-blocked default is intentional, (2) print the exact fix command in the blocked-command error message instead of just the current lifecycle value.",
-        "status": "planned",
+        "status": "completed",
         "createdAt": "2026-08-22T22:26:11.398Z",
-        "updatedAt": "2026-08-22T22:26:11.398Z",
+        "updatedAt": "2026-08-23T02:19:16.948Z",
         "id": "issue.clarify-use-command-project-lifecycle-mutation-gate",
         "scope": {
           "include": [

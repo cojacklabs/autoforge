@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
-  "revision": 25,
-  "updatedAt": "2026-08-23T02:08:40.553Z",
+  "revision": 26,
+  "updatedAt": "2026-08-23T02:19:12.999Z",
   "data": {
     "decisions": [
       {
@@ -577,6 +577,29 @@
         "kind": "bugfix",
         "createdAt": "2026-08-23T02:08:40.527Z",
         "updatedAt": "2026-08-23T02:08:40.527Z"
+      },
+      {
+        "id": "decision.newly-registered-projects-now-default-to-an-active-lifecycle-and-the-mutation-bl",
+        "statement": "Newly registered projects now default to an active lifecycle, and the mutation-blocked error names the exact fix command",
+        "reasoning": "registerProject left lifecycle undefined, which projectMutationBlocked treats as blocked while projects list/show already displayed it as active -- an undiscoverable, inconsistent trap that silently blocked every mutating use command against a freshly attached project.",
+        "consequences": [
+          "registerProject sets lifecycle: active on first registration (preserving an existing explicit lifecycle on re-registration); the blocked-command stderr message now includes the exact autoforge projects update --lifecycle active fix."
+        ],
+        "scope": [
+          "workspace"
+        ],
+        "keywords": [
+          "lifecycle",
+          "use-command"
+        ],
+        "relatedWork": [
+          "issue.clarify-use-command-project-lifecycle-mutation-gate"
+        ],
+        "supersedes": null,
+        "status": "active",
+        "kind": "bugfix",
+        "createdAt": "2026-08-23T02:19:12.975Z",
+        "updatedAt": "2026-08-23T02:19:12.975Z"
       }
     ]
   }
