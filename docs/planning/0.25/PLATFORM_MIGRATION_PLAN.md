@@ -2,7 +2,8 @@
 
 ## Status
 
-Active; architecture reconciliation is in progress.
+Active; architecture reconciliation and the pre-relocation package policy are
+complete. Workspace foundation is next.
 
 This document is the authoritative implementation plan for AutoForge Core
 v0.25.
@@ -77,6 +78,10 @@ autoforge/
 The migration must not create empty packages that imply unsupported products.
 `apps/web`, `apps/service`, and hosted packages enter implementation only after
 the local Core-to-Agent path is proven.
+
+Package identities, publication ownership, independent versioning, and exact
+compatibility promises are governed by
+[`PACKAGE_OWNERSHIP_AND_VERSIONING_POLICY.md`](./PACKAGE_OWNERSHIP_AND_VERSIONING_POLICY.md).
 
 ## Dependency Boundaries
 
@@ -193,7 +198,8 @@ until a dedicated encryption, access-control, and retention design is approved.
 - Reconcile the canonical north-star documents with this plan.
 - Mark the prior v0.25 TUI plan as superseded for Core while preserving it.
 - Define package names, ownership, dependency rules, and versioning policy.
-- Select one internal workspace package manager; the recommended choice is pnpm.
+- Use pnpm as the internal workspace package manager and Changesets for
+  independent public-package releases.
 
 Exit gate: the new architecture and compatibility promises are reviewable before
 any source relocation begins.

@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
-  "revision": 53,
-  "updatedAt": "2026-08-24T18:49:22.147Z",
+  "revision": 55,
+  "updatedAt": "2026-08-24T19:04:58.108Z",
   "data": {
     "decisions": [
       {
@@ -1311,6 +1311,52 @@
         "kind": "architecture",
         "createdAt": "2026-08-24T18:49:22.120Z",
         "updatedAt": "2026-08-24T18:49:22.120Z"
+      },
+      {
+        "id": "decision.autoforge-v0-25-will-use-a-pnpm-and-turborepo-monorepo-with-independently-versio",
+        "statement": "AutoForge v0.25 will use a pnpm and Turborepo monorepo with independently versioned packages under the existing @cojacklabs scope; @cojacklabs/autoforge and the autoforge binary remain the deterministic Core CLI, while the interactive Agent ships separately as @cojacklabs/autoforge-agent and autoforge-agent.",
+        "reasoning": "This preserves v0.24 installation and command compatibility while enforcing a model-independent Core, preventing hosted or provider dependencies from entering local project truth, and allowing Core, Agent, libraries, Web, and Service to mature on independent release cadences.",
+        "consequences": [
+          "Source relocation must follow the documented acyclic dependency graph and publication gates; new public libraries begin at 0.1.0, Changesets records independent releases, and local Core operation cannot require an account or hosted service."
+        ],
+        "scope": [
+          "project"
+        ],
+        "keywords": [
+          "architecture",
+          "packaging",
+          "versioning"
+        ],
+        "relatedWork": [],
+        "supersedes": null,
+        "status": "active",
+        "kind": "architecture",
+        "createdAt": "2026-08-24T19:03:28.945Z",
+        "updatedAt": "2026-08-24T19:03:28.945Z"
+      },
+      {
+        "id": "decision.the-v0-25-package-ownership-and-versioning-policy-is-the-source-relocation-gate",
+        "statement": "The v0.25 package ownership and versioning policy is the source-relocation gate for task.define-package-ownership-and-versioning-policy.",
+        "reasoning": "The policy resolves package identities, dependency directions, public and private distribution, release authority, independent semantic versions, command ownership, and compatibility promises before workspace restructuring begins.",
+        "consequences": [
+          "The workspace foundation must implement the policy and pass its gates before any existing source is relocated."
+        ],
+        "scope": [
+          "project"
+        ],
+        "keywords": [
+          "architecture",
+          "packaging",
+          "versioning"
+        ],
+        "relatedWork": [
+          "task.define-package-ownership-and-versioning-policy"
+        ],
+        "supersedes": null,
+        "status": "active",
+        "kind": "architecture",
+        "createdAt": "2026-08-24T19:04:58.006Z",
+        "updatedAt": "2026-08-24T19:04:58.006Z"
       }
     ]
   }

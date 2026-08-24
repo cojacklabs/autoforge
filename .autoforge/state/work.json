@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
-  "revision": 283,
-  "updatedAt": "2026-08-24T18:49:22.771Z",
+  "revision": 285,
+  "updatedAt": "2026-08-24T19:04:59.222Z",
   "data": {
     "features": [
       {
@@ -1314,9 +1314,9 @@
       {
         "name": "Define package ownership and versioning policy",
         "description": "Document package names, dependency directions, independent application versions, compatibility promises, and publish ownership before source relocation.",
-        "status": "planned",
+        "status": "completed",
         "createdAt": "2026-08-24T14:22:11.252Z",
-        "updatedAt": "2026-08-24T14:22:11.252Z",
+        "updatedAt": "2026-08-24T19:04:58.716Z",
         "id": "task.define-package-ownership-and-versioning-policy",
         "phaseId": "phase.architecture-and-governance",
         "scope": {
