@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
-  "revision": 256,
-  "updatedAt": "2026-08-23T23:42:17.289Z",
+  "revision": 281,
+  "updatedAt": "2026-08-24T14:22:44.587Z",
   "data": {
     "features": [
       {
@@ -59,6 +59,14 @@
         "createdAt": "2026-08-23T20:56:24.530Z",
         "updatedAt": "2026-08-23T20:56:24.530Z",
         "id": "feature.continuous-product-evolution-engine"
+      },
+      {
+        "name": "v0.25 Platform Architecture Migration",
+        "description": "Extract a stable model-independent Core, protocol, SDK, and deterministic CLI; deprecate the Core TUI; and prove the boundary with an experimental local AutoForge Agent while preserving v0.24 compatibility.",
+        "status": "planned",
+        "createdAt": "2026-08-24T14:21:30.575Z",
+        "updatedAt": "2026-08-24T14:21:30.575Z",
+        "id": "feature.v0-25-platform-architecture-migration"
       }
     ],
     "phases": [
@@ -121,6 +129,76 @@
         "id": "phase.twin-and-why-integration",
         "featureId": "feature.continuous-product-evolution-engine",
         "sequence": 1
+      },
+      {
+        "name": "Architecture and Governance",
+        "description": "Approve the revised product boundary, reconcile north-star documentation, preserve superseded TUI work, and define package ownership and versioning.",
+        "status": "planned",
+        "createdAt": "2026-08-24T14:21:40.397Z",
+        "updatedAt": "2026-08-24T14:21:40.397Z",
+        "id": "phase.architecture-and-governance",
+        "featureId": "feature.v0-25-platform-architecture-migration",
+        "sequence": 1
+      },
+      {
+        "name": "Workspace Foundation",
+        "description": "Introduce the monorepo workspace and dependency-aware task graph without changing v0.24 behavior.",
+        "status": "planned",
+        "createdAt": "2026-08-24T14:21:40.735Z",
+        "updatedAt": "2026-08-24T14:21:40.735Z",
+        "id": "phase.workspace-foundation",
+        "featureId": "feature.v0-25-platform-architecture-migration",
+        "sequence": 2
+      },
+      {
+        "name": "Protocol and Core Extraction",
+        "description": "Extract versioned contracts and model-independent application services behind enforceable boundaries.",
+        "status": "planned",
+        "createdAt": "2026-08-24T14:21:41.122Z",
+        "updatedAt": "2026-08-24T14:21:41.122Z",
+        "id": "phase.protocol-and-core-extraction",
+        "featureId": "feature.v0-25-platform-architecture-migration",
+        "sequence": 3
+      },
+      {
+        "name": "Deterministic Core CLI",
+        "description": "Make the existing CLI a thin Core consumer, add status and Git-root-aware attachment, and deprecate the interactive TUI.",
+        "status": "planned",
+        "createdAt": "2026-08-24T14:21:41.515Z",
+        "updatedAt": "2026-08-24T14:21:41.515Z",
+        "id": "phase.deterministic-core-cli",
+        "featureId": "feature.v0-25-platform-architecture-migration",
+        "sequence": 4
+      },
+      {
+        "name": "SDK and Structured Handoffs",
+        "description": "Publish the programmatic integration boundary and provider-neutral cross-agent handoff contract.",
+        "status": "planned",
+        "createdAt": "2026-08-24T14:21:41.886Z",
+        "updatedAt": "2026-08-24T14:21:41.886Z",
+        "id": "phase.sdk-and-structured-handoffs",
+        "featureId": "feature.v0-25-platform-architecture-migration",
+        "sequence": 5
+      },
+      {
+        "name": "Experimental Local Agent",
+        "description": "Prove the Core boundary with an account-free local agent using one model provider and explicit approvals.",
+        "status": "planned",
+        "createdAt": "2026-08-24T14:21:42.268Z",
+        "updatedAt": "2026-08-24T14:21:42.268Z",
+        "id": "phase.experimental-local-agent",
+        "featureId": "feature.v0-25-platform-architecture-migration",
+        "sequence": 6
+      },
+      {
+        "name": "Compatibility Hardening and Release",
+        "description": "Validate v0.24 compatibility, repair known state failures, and assemble v0.25 release evidence.",
+        "status": "planned",
+        "createdAt": "2026-08-24T14:21:42.640Z",
+        "updatedAt": "2026-08-24T14:21:42.640Z",
+        "id": "phase.compatibility-hardening-and-release",
+        "featureId": "feature.v0-25-platform-architecture-migration",
+        "sequence": 7
       }
     ],
     "tasks": [
@@ -1211,6 +1289,337 @@
           "include": [
             "src/commands/why.ts",
             "test/why.test.ts"
+          ],
+          "exclude": []
+        }
+      },
+      {
+        "name": "Reconcile v0.25 north-star architecture",
+        "description": "Update canonical north-star and agent-facing documentation to establish Core, Agent, Web, Service, protocol, and SDK boundaries and mark the prior Core TUI milestone as superseded.",
+        "status": "planned",
+        "createdAt": "2026-08-24T14:22:10.710Z",
+        "updatedAt": "2026-08-24T14:22:10.710Z",
+        "id": "task.reconcile-v0-25-north-star-architecture",
+        "phaseId": "phase.architecture-and-governance",
+        "scope": {
+          "include": [
+            "dev/AUTOFORGE_*NORTH_STAR*.md",
+            "docs/planning/0.25/**",
+            "docs/superpowers/specs/*v0-25*",
+            "docs/superpowers/plans/*v0-25*"
+          ],
+          "exclude": []
+        }
+      },
+      {
+        "name": "Define package ownership and versioning policy",
+        "description": "Document package names, dependency directions, independent application versions, compatibility promises, and publish ownership before source relocation.",
+        "status": "planned",
+        "createdAt": "2026-08-24T14:22:11.252Z",
+        "updatedAt": "2026-08-24T14:22:11.252Z",
+        "id": "task.define-package-ownership-and-versioning-policy",
+        "phaseId": "phase.architecture-and-governance",
+        "scope": {
+          "include": [
+            "docs/planning/0.25/**",
+            "docs/architecture/**",
+            "package.json"
+          ],
+          "exclude": []
+        }
+      },
+      {
+        "name": "Establish pnpm Turborepo workspace",
+        "description": "Select the internal package manager, add the workspace and Turborepo task graph, and preserve existing v0.24 build and test behavior.",
+        "status": "planned",
+        "createdAt": "2026-08-24T14:22:11.871Z",
+        "updatedAt": "2026-08-24T14:22:11.871Z",
+        "id": "task.establish-pnpm-turborepo-workspace",
+        "phaseId": "phase.workspace-foundation",
+        "scope": {
+          "include": [
+            "package.json",
+            "pnpm-workspace.yaml",
+            "pnpm-lock.yaml",
+            "package-lock.json",
+            "turbo.json",
+            "apps/**",
+            "packages/**"
+          ],
+          "exclude": []
+        }
+      },
+      {
+        "name": "Enforce package boundaries and affected CI",
+        "description": "Add architectural boundary checks, package-level validation tasks, affected-package CI, and a mandatory full Core compatibility gate without requiring remote caching.",
+        "status": "planned",
+        "createdAt": "2026-08-24T14:22:12.494Z",
+        "updatedAt": "2026-08-24T14:22:12.494Z",
+        "id": "task.enforce-package-boundaries-and-affected-ci",
+        "phaseId": "phase.workspace-foundation",
+        "scope": {
+          "include": [
+            "turbo.json",
+            ".github/workflows/**",
+            "apps/**/package.json",
+            "packages/**/package.json",
+            "packages/config/**"
+          ],
+          "exclude": []
+        }
+      },
+      {
+        "name": "Extract versioned protocol contracts",
+        "description": "Move shared schemas, stable identifiers, serialized envelopes, errors, capabilities, and handoff contracts into an independently tested package with no I/O dependencies.",
+        "status": "planned",
+        "createdAt": "2026-08-24T14:22:12.867Z",
+        "updatedAt": "2026-08-24T14:22:12.867Z",
+        "id": "task.extract-versioned-protocol-contracts",
+        "phaseId": "phase.protocol-and-core-extraction",
+        "scope": {
+          "include": [
+            "src/**",
+            "packages/protocol/**",
+            "test/**",
+            "tests/**"
+          ],
+          "exclude": []
+        }
+      },
+      {
+        "name": "Extract model-independent Core services",
+        "description": "Move project intelligence and orchestration services into packages/core one domain at a time with injected filesystem, Git, clock, and global-storage dependencies.",
+        "status": "planned",
+        "createdAt": "2026-08-24T14:22:13.267Z",
+        "updatedAt": "2026-08-24T14:22:13.267Z",
+        "id": "task.extract-model-independent-core-services",
+        "phaseId": "phase.protocol-and-core-extraction",
+        "scope": {
+          "include": [
+            "src/**",
+            "packages/core/**",
+            "test/**",
+            "tests/**"
+          ],
+          "exclude": []
+        }
+      },
+      {
+        "name": "Migrate deterministic CLI to Core SDK",
+        "description": "Move command routing and formatting into apps/core-cli as a thin SDK consumer while preserving the @cojacklabs/autoforge package and autoforge executable.",
+        "status": "planned",
+        "createdAt": "2026-08-24T14:22:28.079Z",
+        "updatedAt": "2026-08-24T14:22:28.079Z",
+        "id": "task.migrate-deterministic-cli-to-core-sdk",
+        "phaseId": "phase.deterministic-core-cli",
+        "scope": {
+          "include": [
+            "src/cli/**",
+            "src/commands/**",
+            "apps/core-cli/**",
+            "packages/sdk/**",
+            "bin/**",
+            "test/**",
+            "tests/**"
+          ],
+          "exclude": []
+        }
+      },
+      {
+        "name": "Implement concise project status",
+        "description": "Make bare autoforge print concise status, relevant next commands, and help guidance; add status text, JSON, and bounded view output.",
+        "status": "planned",
+        "createdAt": "2026-08-24T14:22:28.509Z",
+        "updatedAt": "2026-08-24T14:22:28.509Z",
+        "id": "task.implement-concise-project-status",
+        "phaseId": "phase.deterministic-core-cli",
+        "scope": {
+          "include": [
+            "apps/core-cli/**",
+            "packages/core/**",
+            "packages/sdk/**",
+            "src/**",
+            "test/**",
+            "docs/**"
+          ],
+          "exclude": []
+        }
+      },
+      {
+        "name": "Implement Git-root-aware attach dry run",
+        "description": "Resolve attached paths to the enclosing Git root, inspect locally without mutation, handle worktrees/submodules/non-Git projects, and preview conflicts before writes.",
+        "status": "planned",
+        "createdAt": "2026-08-24T14:22:29.025Z",
+        "updatedAt": "2026-08-24T14:22:29.025Z",
+        "id": "task.implement-git-root-aware-attach-dry-run",
+        "phaseId": "phase.deterministic-core-cli",
+        "scope": {
+          "include": [
+            "apps/core-cli/**",
+            "packages/core/**",
+            "packages/sdk/**",
+            "src/commands/attach.ts",
+            "src/workspace/**",
+            "test/**",
+            "docs/**"
+          ],
+          "exclude": []
+        }
+      },
+      {
+        "name": "Deprecate Core interactive TUI",
+        "description": "Replace read-only TUI snapshots with status, retain a temporary compatibility alias, and direct interactive users toward the separate AutoForge Agent.",
+        "status": "planned",
+        "createdAt": "2026-08-24T14:22:29.463Z",
+        "updatedAt": "2026-08-24T14:22:29.463Z",
+        "id": "task.deprecate-core-interactive-tui",
+        "phaseId": "phase.deterministic-core-cli",
+        "scope": {
+          "include": [
+            "src/tui/**",
+            "src/commands/tui.ts",
+            "apps/core-cli/**",
+            "test/tui.test.ts",
+            "docs/**",
+            "README.md"
+          ],
+          "exclude": []
+        }
+      },
+      {
+        "name": "Publish supported AutoForge SDK",
+        "description": "Expose stable protocol-returning operations for projects, status, intent, work, context, checks, assignments, decisions, validation, handoffs, and completion.",
+        "status": "planned",
+        "createdAt": "2026-08-24T14:22:29.904Z",
+        "updatedAt": "2026-08-24T14:22:29.904Z",
+        "id": "task.publish-supported-autoforge-sdk",
+        "phaseId": "phase.sdk-and-structured-handoffs",
+        "scope": {
+          "include": [
+            "packages/sdk/**",
+            "packages/core/**",
+            "packages/protocol/**",
+            "test/**",
+            "docs/**"
+          ],
+          "exclude": []
+        }
+      },
+      {
+        "name": "Implement structured cross-agent handoffs",
+        "description": "Formalize tracked versus ignored state and provider-neutral handoffs containing work, scope, Git refs, changed files, decisions, validation, risks, open questions, next action, and context fingerprint without raw transcripts.",
+        "status": "planned",
+        "createdAt": "2026-08-24T14:22:30.441Z",
+        "updatedAt": "2026-08-24T14:22:30.441Z",
+        "id": "task.implement-structured-cross-agent-handoffs",
+        "phaseId": "phase.sdk-and-structured-handoffs",
+        "scope": {
+          "include": [
+            "packages/protocol/**",
+            "packages/core/**",
+            "packages/sdk/**",
+            "src/workflows/**",
+            "test/**",
+            "docs/**",
+            ".gitignore"
+          ],
+          "exclude": []
+        }
+      },
+      {
+        "name": "Create experimental local Agent CLI",
+        "description": "Build an account-free local SDK consumer with one provider, streaming, intent clarification, plan review, explicit approval, bounded edits, validation, and structured handoff.",
+        "status": "planned",
+        "createdAt": "2026-08-24T14:22:42.523Z",
+        "updatedAt": "2026-08-24T14:22:42.523Z",
+        "id": "task.create-experimental-local-agent-cli",
+        "phaseId": "phase.experimental-local-agent",
+        "scope": {
+          "include": [
+            "apps/agent-cli/**",
+            "packages/providers/**",
+            "packages/sdk/**",
+            "packages/protocol/**",
+            "test/**",
+            "docs/**"
+          ],
+          "exclude": []
+        }
+      },
+      {
+        "name": "Integrate secure local provider credentials",
+        "description": "Store local BYOK credentials through operating-system credential facilities and ensure secrets never enter Core state, logs, fixtures, or tracked project artifacts.",
+        "status": "planned",
+        "createdAt": "2026-08-24T14:22:43.031Z",
+        "updatedAt": "2026-08-24T14:22:43.031Z",
+        "id": "task.integrate-secure-local-provider-credentials",
+        "phaseId": "phase.experimental-local-agent",
+        "scope": {
+          "include": [
+            "apps/agent-cli/**",
+            "packages/providers/**",
+            "packages/config/**",
+            "test/**",
+            "docs/**"
+          ],
+          "exclude": []
+        }
+      },
+      {
+        "name": "Harden optional stores and relocated contracts",
+        "description": "Make absent bootstrap and optional stores graceful, repair stale project-root references after relocation, and validate interrupted session, lease, and context recovery.",
+        "status": "planned",
+        "createdAt": "2026-08-24T14:22:43.662Z",
+        "updatedAt": "2026-08-24T14:22:43.662Z",
+        "id": "task.harden-optional-stores-and-relocated-contracts",
+        "phaseId": "phase.compatibility-hardening-and-release",
+        "scope": {
+          "include": [
+            "src/**",
+            "packages/core/**",
+            "packages/sdk/**",
+            "test/**",
+            "docs/**"
+          ],
+          "exclude": []
+        }
+      },
+      {
+        "name": "Validate v0.24 compatibility and cross-agent continuity",
+        "description": "Prove v0.24 fixtures remain readable, existing commands remain compatible or deprecated, and Claude-to-Codex handoff works without raw transcripts.",
+        "status": "planned",
+        "createdAt": "2026-08-24T14:22:44.121Z",
+        "updatedAt": "2026-08-24T14:22:44.121Z",
+        "id": "task.validate-v0-24-compatibility-and-cross-agent-continuity",
+        "phaseId": "phase.compatibility-hardening-and-release",
+        "scope": {
+          "include": [
+            "test/**",
+            "tests/**",
+            "packages/**",
+            "apps/**",
+            "docs/planning/0.25/**"
+          ],
+          "exclude": []
+        }
+      },
+      {
+        "name": "Prepare v0.25 release evidence",
+        "description": "Run full package, foundation, legacy, boundary, migration, and end-to-end gates; update changelog, migration guidance, CLI reference, and release-readiness evidence.",
+        "status": "planned",
+        "createdAt": "2026-08-24T14:22:44.560Z",
+        "updatedAt": "2026-08-24T14:22:44.560Z",
+        "id": "task.prepare-v0-25-release-evidence",
+        "phaseId": "phase.compatibility-hardening-and-release",
+        "scope": {
+          "include": [
+            "CHANGELOG.md",
+            "README.md",
+            "docs/**",
+            "package.json",
+            "pnpm-lock.yaml",
+            "test/**",
+            "tests/**"
           ],
           "exclude": []
         }

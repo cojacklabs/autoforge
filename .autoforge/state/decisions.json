@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
-  "revision": 51,
-  "updatedAt": "2026-08-23T23:42:16.887Z",
+  "revision": 52,
+  "updatedAt": "2026-08-24T14:22:53.655Z",
   "data": {
     "decisions": [
       {
@@ -1257,6 +1257,33 @@
         "kind": "feature-note",
         "createdAt": "2026-08-23T23:42:16.862Z",
         "updatedAt": "2026-08-23T23:42:16.862Z"
+      },
+      {
+        "id": "decision.autoforge-v0-25-will-establish-separate-core-agent-web-and-hosted-service-bounda",
+        "statement": "AutoForge v0.25 will establish separate Core, Agent, Web, and hosted Service boundaries in one compatibility-first monorepo migration",
+        "reasoning": "AutoForge v0.24 already contains the project-intelligence engines; separating the deterministic model-independent Core from the first-party agentic interface prevents provider, credential, billing, and conversational concerns from coupling to the orchestration framework while preserving equal integration for third-party agents.",
+        "consequences": [
+          "The existing @cojacklabs/autoforge package and autoforge executable remain compatible during v0.25.",
+          "The Core interactive TUI is deprecated and its useful interaction concepts move to AutoForge Agent.",
+          "Protocol, Core, and SDK boundaries are extracted before production Web, Service, payments, or cloud synchronization work begins."
+        ],
+        "scope": [
+          "architecture",
+          "v0.25"
+        ],
+        "keywords": [
+          "platform",
+          "monorepo",
+          "interoperability"
+        ],
+        "relatedWork": [
+          "feature.v0-25-platform-architecture-migration"
+        ],
+        "supersedes": null,
+        "status": "active",
+        "kind": "architecture",
+        "createdAt": "2026-08-24T14:22:53.629Z",
+        "updatedAt": "2026-08-24T14:22:53.629Z"
       }
     ]
   }
