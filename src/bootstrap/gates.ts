@@ -21,7 +21,7 @@ export async function evaluateBootstrapGates(
   const manifest = await readBootstrapManifest(projectRoot);
   const gates = Object.fromEntries(
     BOOTSTRAP_GATES.map((id) => {
-      const artifact = manifest.artifacts.find(
+      const artifact = manifest?.artifacts.find(
         (candidate) => candidate.id === id,
       );
       return [id, artifact?.status === "approved" ? "approved" : "pending"];

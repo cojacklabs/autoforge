@@ -222,6 +222,11 @@ Bootstrap approvals update `.autoforge/bootstrap/manifest.json` atomically and
 record approval time and evidence. Completed workflow IDs are accepted as
 evidence; active workflow runs are rejected.
 
+`bootstrap status` treats the manifest as optional. Before scaffolding, it exits
+successfully with `status: "not-scaffolded"` and the `autoforge bootstrap
+scaffold` next action. Commands that require a manifest return the same
+actionable initialization guidance instead of a filesystem error.
+
 The digital twin includes governance, domain, design, strategy, and
 traceability data alongside work, decisions, and evidence — `twin query
 --type constitution`, `--type domain`, `--type strategy`, and `--type

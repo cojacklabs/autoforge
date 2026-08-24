@@ -149,9 +149,14 @@ export async function runBootstrapCommand(options: {
       );
       options.output.stdout(`Recorded bootstrap discovery at ${discoveryPath}`);
     } else if (options.args[0] === "status") {
+      const manifest = await readBootstrapManifest(options.startDirectory);
       options.output.stdout(
         JSON.stringify(
-          await readBootstrapManifest(options.startDirectory),
+          manifest ?? {
+            status: "not-scaffolded",
+            manifest: null,
+            nextAction: "autoforge bootstrap scaffold",
+          },
           null,
           2,
         ),

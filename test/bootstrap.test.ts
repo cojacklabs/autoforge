@@ -8,6 +8,7 @@ import {
   inspectBootstrap,
   scaffoldBootstrapManifest,
 } from "../src/bootstrap/inspect.js";
+import { readBootstrapManifest } from "../src/bootstrap/manifest.js";
 
 const directories: string[] = [];
 afterEach(async () => {
@@ -118,5 +119,14 @@ describe("bootstrap inspection", () => {
     await expect(scaffoldBootstrapManifest(project)).rejects.toMatchObject({
       code: "EEXIST",
     });
+  });
+
+  it("returns null when the optional bootstrap manifest is absent", async () => {
+    const project = await mkdtemp(
+      path.join(os.tmpdir(), "autoforge-bootstrap-absent-"),
+    );
+    directories.push(project);
+
+    await expect(readBootstrapManifest(project)).resolves.toBeNull();
   });
 });

@@ -66,12 +66,19 @@ export function bootstrapManifestPath(projectRoot: string): string {
 
 export async function readBootstrapManifest(
   projectRoot: string,
-): Promise<BootstrapManifest> {
-  return bootstrapManifestSchema.parse(
-    JSON.parse(
-      await readFile(bootstrapManifestPath(projectRoot), "utf8"),
-    ) as unknown,
-  );
+): Promise<BootstrapManifest | null> {
+  try {
+    return bootstrapManifestSchema.parse(
+      JSON.parse(
+        await readFile(bootstrapManifestPath(projectRoot), "utf8"),
+      ) as unknown,
+    );
+  } catch (error) {
+    if (error instanceof Error && "code" in error && error.code === "ENOENT") {
+      return null;
+    }
+    throw error;
+  }
 }
 
 async function validateEvidence(
@@ -132,6 +139,13 @@ export async function approveBootstrapArtifact(
 ): Promise<BootstrapManifest> {
   const id = bootstrapArtifactIdSchema.parse(artifactId);
   const manifest = await readBootstrapManifest(projectRoot);
+  if (!manifest) {
+    throw new AutoForgeError(
+      "INVALID_STATE",
+      'Bootstrap manifest is not initialized. Run "autoforge bootstrap scaffold" first.',
+      { exitCode: EXIT_CODE.invalidState },
+    );
+  }
   if (!manifest.artifacts.some((artifact) => artifact.id === id)) {
     throw new AutoForgeError(
       "INVALID_STATE",

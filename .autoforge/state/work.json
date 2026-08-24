@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
-  "revision": 285,
-  "updatedAt": "2026-08-24T19:04:59.222Z",
+  "revision": 288,
+  "updatedAt": "2026-08-24T23:03:54.114Z",
   "data": {
     "features": [
       {
@@ -1620,6 +1620,24 @@
             "pnpm-lock.yaml",
             "test/**",
             "tests/**"
+          ],
+          "exclude": []
+        }
+      },
+      {
+        "name": "Handle absent bootstrap manifest gracefully",
+        "description": "Make bootstrap status treat a missing optional manifest as an uninitialized state with actionable guidance instead of surfacing ENOENT, with focused command and manifest regression coverage.",
+        "status": "completed",
+        "createdAt": "2026-08-24T23:00:10.361Z",
+        "updatedAt": "2026-08-24T23:03:54.011Z",
+        "id": "task.handle-absent-bootstrap-manifest-gracefully",
+        "phaseId": "phase.compatibility-hardening-and-release",
+        "scope": {
+          "include": [
+            "src/bootstrap/**",
+            "src/commands/bootstrap.ts",
+            "test/bootstrap*.test.ts",
+            "docs/**"
           ],
           "exclude": []
         }

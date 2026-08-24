@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
-  "revision": 55,
-  "updatedAt": "2026-08-24T19:04:58.108Z",
+  "revision": 56,
+  "updatedAt": "2026-08-24T23:03:53.614Z",
   "data": {
     "decisions": [
       {
@@ -1357,6 +1357,30 @@
         "kind": "architecture",
         "createdAt": "2026-08-24T19:04:58.006Z",
         "updatedAt": "2026-08-24T19:04:58.006Z"
+      },
+      {
+        "id": "decision.bootstrap-manifest-reads-are-optional-before-scaffolding-and-bootstrap-status-re",
+        "statement": "Bootstrap manifest reads are optional before scaffolding, and bootstrap status reports a successful not-scaffolded state with an explicit scaffold next action.",
+        "reasoning": "A newly attached or long-lived project may validly lack the optional bootstrap manifest; surfacing raw ENOENT breaks the canonical agent onboarding sequence and obscures the safe initialization action.",
+        "consequences": [
+          "Missing manifests resolve to null, status exits successfully with structured guidance, gates remain pending, approval returns a targeted invalid-state error, and malformed manifests continue to fail validation."
+        ],
+        "scope": [
+          "project"
+        ],
+        "keywords": [
+          "bootstrap",
+          "compatibility",
+          "optional-store"
+        ],
+        "relatedWork": [
+          "task.handle-absent-bootstrap-manifest-gracefully"
+        ],
+        "supersedes": null,
+        "status": "active",
+        "kind": "architecture",
+        "createdAt": "2026-08-24T23:03:53.589Z",
+        "updatedAt": "2026-08-24T23:03:53.589Z"
       }
     ]
   }

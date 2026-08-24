@@ -57,6 +57,74 @@ describe("bootstrap command", () => {
     );
   });
 
+  it("reports an actionable status when the bootstrap manifest is absent", async () => {
+    const project = await mkdtemp(
+      path.join(os.tmpdir(), "autoforge-bootstrap-status-absent-"),
+    );
+    directories.push(project);
+    await mkdir(path.join(project, ".git"));
+    const output = { stdout: vi.fn(), stderr: vi.fn() };
+
+    await expect(
+      runBootstrapCommand({
+        args: ["status"],
+        output,
+        startDirectory: project,
+      }),
+    ).resolves.toBe(0);
+    expect(output.stdout).toHaveBeenCalledWith(
+      expect.stringContaining('"status": "not-scaffolded"'),
+    );
+    expect(output.stdout).toHaveBeenCalledWith(
+      expect.stringContaining('"nextAction": "autoforge bootstrap scaffold"'),
+    );
+    expect(output.stderr).not.toHaveBeenCalled();
+  });
+
+  it("explains how to initialize the manifest before approval", async () => {
+    const project = await mkdtemp(
+      path.join(os.tmpdir(), "autoforge-bootstrap-approve-absent-"),
+    );
+    directories.push(project);
+    await mkdir(path.join(project, ".git"));
+    const output = { stdout: vi.fn(), stderr: vi.fn() };
+
+    await expect(
+      runBootstrapCommand({
+        args: ["approve", "architecture"],
+        output,
+        startDirectory: project,
+      }),
+    ).resolves.toBe(4);
+    expect(output.stderr).toHaveBeenCalledWith(
+      'Error: Bootstrap manifest is not initialized. Run "autoforge bootstrap scaffold" first.',
+    );
+  });
+
+  it("reports bootstrap gates as pending when the manifest is absent", async () => {
+    const project = await mkdtemp(
+      path.join(os.tmpdir(), "autoforge-bootstrap-gates-absent-"),
+    );
+    directories.push(project);
+    await mkdir(path.join(project, ".git"));
+    const output = { stdout: vi.fn(), stderr: vi.fn() };
+
+    await expect(
+      runBootstrapCommand({
+        args: ["gates"],
+        output,
+        startDirectory: project,
+      }),
+    ).resolves.toBe(0);
+    expect(output.stdout).toHaveBeenCalledWith(
+      expect.stringContaining('"ready": false'),
+    );
+    expect(output.stdout).toHaveBeenCalledWith(
+      expect.stringContaining('"architecture": "pending"'),
+    );
+    expect(output.stderr).not.toHaveBeenCalled();
+  });
+
   it("records approved discovery input without overwriting it", async () => {
     const project = await mkdtemp(
       path.join(os.tmpdir(), "autoforge-bootstrap-discovery-"),
@@ -344,7 +412,7 @@ describe("bootstrap command", () => {
     );
   });
 
-  it("preserves legacy mode while exposing migration readiness", async () => {
+  it("preserves legacy mode while exposing unscaffolded bootstrap status", async () => {
     const project = await mkdtemp(
       path.join(os.tmpdir(), "autoforge-bootstrap-legacy-e2e-"),
     );
@@ -372,6 +440,9 @@ describe("bootstrap command", () => {
         output,
         startDirectory: project,
       }),
-    ).resolves.toBe(3);
+    ).resolves.toBe(0);
+    expect(output.stdout).toHaveBeenCalledWith(
+      expect.stringContaining('"status": "not-scaffolded"'),
+    );
   });
 });
