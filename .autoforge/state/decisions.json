@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
-  "revision": 52,
-  "updatedAt": "2026-08-24T14:22:53.655Z",
+  "revision": 53,
+  "updatedAt": "2026-08-24T18:49:22.147Z",
   "data": {
     "decisions": [
       {
@@ -1284,6 +1284,33 @@
         "kind": "architecture",
         "createdAt": "2026-08-24T14:22:53.629Z",
         "updatedAt": "2026-08-24T14:22:53.629Z"
+      },
+      {
+        "id": "decision.the-canonical-v0-25-north-star-now-defines-a-platform-architecture-migration-rat",
+        "statement": "The canonical v0.25 north-star now defines a platform architecture migration rather than an interactive Core TUI",
+        "reasoning": "The v0.24 project-intelligence lifecycle is complete, and embedding conversational interaction, model providers, credentials, tools, and hosted concerns in Core would violate model independence and create a competing project-truth boundary. The reconciled roadmap therefore makes protocol, Core, SDK, deterministic CLI, and structured handoffs authoritative, while preserving the prior TUI work as AutoForge Agent prototype material.",
+        "consequences": [
+          "docs/planning/0.25/PLATFORM_MIGRATION_PLAN.md is the authoritative Core v0.25 implementation plan.",
+          "The prior v0.25 TUI design and implementation plan are historical and must not be executed against Core.",
+          "AutoForge Agent and future hosted products consume Core through supported interfaces and may not own parallel project state."
+        ],
+        "scope": [
+          "architecture",
+          "v0.25"
+        ],
+        "keywords": [
+          "north-star",
+          "platform",
+          "tui"
+        ],
+        "relatedWork": [
+          "task.reconcile-v0-25-north-star-architecture"
+        ],
+        "supersedes": null,
+        "status": "active",
+        "kind": "architecture",
+        "createdAt": "2026-08-24T18:49:22.120Z",
+        "updatedAt": "2026-08-24T18:49:22.120Z"
       }
     ]
   }

@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
-  "revision": 281,
-  "updatedAt": "2026-08-24T14:22:44.587Z",
+  "revision": 283,
+  "updatedAt": "2026-08-24T18:49:22.771Z",
   "data": {
     "features": [
       {
@@ -1296,9 +1296,9 @@
       {
         "name": "Reconcile v0.25 north-star architecture",
         "description": "Update canonical north-star and agent-facing documentation to establish Core, Agent, Web, Service, protocol, and SDK boundaries and mark the prior Core TUI milestone as superseded.",
-        "status": "planned",
+        "status": "completed",
         "createdAt": "2026-08-24T14:22:10.710Z",
-        "updatedAt": "2026-08-24T14:22:10.710Z",
+        "updatedAt": "2026-08-24T18:49:22.657Z",
         "id": "task.reconcile-v0-25-north-star-architecture",
         "phaseId": "phase.architecture-and-governance",
         "scope": {

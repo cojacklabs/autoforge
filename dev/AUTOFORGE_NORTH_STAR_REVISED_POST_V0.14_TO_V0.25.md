@@ -6,19 +6,23 @@
 
 **Date:** August 21, 2026  
 **Status:** Canonical roadmap revision for post-v0.14 development  
-**Purpose:** Provide Codex and future contributors with one dependency-aware plan from the completed knowledge/context foundation through AutoForge's Continuous Product Evolution milestone.
+**Purpose:** Provide Codex and future contributors with one dependency-aware plan from the completed knowledge/context foundation through AutoForge's v0.25 platform transition.
 
 ---
 
 # 1. Executive Decision
 
-AutoForge v0.14 establishes the foundation required to begin the next architectural phase.
-
-The next release should **not** be the previously proposed rich Interactive CLI.
+AutoForge v0.24 completes the planned project-intelligence engine sequence and
+closes the continuous product-evolution loop. The next release should not add a
+second orchestration or reasoning system inside the existing CLI.
 
 ### Milestone Sequencing Amendment
 
-The roadmap now places **Continuous Product Evolution in v0.24** and the **Interactive CLI Experience in v0.25**. This ordering is authoritative: the lifecycle loop and shared services must mature before the richer human-facing presentation layer is built.
+The roadmap now places **Continuous Product Evolution in v0.24** and the
+**Platform Architecture Migration in v0.25**. This ordering is authoritative:
+the completed lifecycle services must be separated behind stable Core,
+protocol, SDK, and deterministic CLI boundaries before a first-party agent,
+hosted service, or web application expands the product surface.
 
 Instead:
 
@@ -34,12 +38,14 @@ v0.21 — Multi-Agent Orchestration
 v0.22 — Evidence + Learning
 v0.23 — Strategy + Prioritization
 v0.24 — Continuous Product Evolution
-v0.25 — Interactive CLI Experience
+v0.25 — Platform Architecture Migration
 ```
 
-The existing CLI and thin TUI remain supported.
-
-What is postponed to v0.25 is the **richer human-facing interactive AutoForge experience** that lets users naturally operate the mature project-intelligence system.
+The existing `@cojacklabs/autoforge` package and `autoforge` executable remain
+the compatibility baseline. The interactive Core TUI is deprecated in favor of
+deterministic status output, while its useful interaction concepts move to a
+separate AutoForge Agent built on the same public Core interfaces available to
+third-party agents.
 
 This ordering avoids designing the final interface before AutoForge's product-intelligence engines exist.
 
@@ -49,7 +55,10 @@ This ordering avoids designing the final interface before AutoForge's product-in
 
 ## Technical North Star
 
-> **AutoForge is an open-source software-engineering orchestration framework that converts human intent and persistent project knowledge into governed, precise, task-specific context for AI agents across the complete product lifecycle.**
+> **AutoForge Core is an open-source software-engineering orchestration
+> framework that converts human intent and persistent project knowledge into
+> governed, precise, task-specific context for AI agents across the complete
+> product lifecycle.**
 
 ## Human-Facing Philosophy
 
@@ -65,7 +74,7 @@ This ordering avoids designing the final interface before AutoForge's product-in
 
 These principles should not change as the roadmap evolves.
 
-## AutoForge Is Not the Reasoning Model
+## AutoForge Core Is Not the Reasoning Model
 
 ```text
 Agent Intelligence ≠ Project Intelligence
@@ -73,7 +82,11 @@ Agent Intelligence ≠ Project Intelligence
 
 The AI reasons.
 
-AutoForge provides project truth, product intent, persistent decisions, governance, domain meaning, design meaning, task context, execution boundaries, validation requirements, and evidence.
+AutoForge Core provides project truth, product intent, persistent decisions,
+governance, domain meaning, design meaning, task context, execution boundaries,
+validation requirements, and evidence. AutoForge Agent may invoke reasoning
+models, but it remains a consumer of Core rather than a second source of project
+truth.
 
 ## Minimum Complete Context
 
@@ -152,48 +165,55 @@ The next versions should extend these primitives rather than replace them.
 
 ---
 
-# 5. Why the Rich Interactive CLI Moves to v0.25
+# 5. Why v0.25 Becomes a Platform Migration
 
-The earlier roadmap placed an Interactive CLI immediately after the context foundation.
+The earlier roadmap placed a rich Interactive CLI after the context foundation
+and later deferred it until the product-intelligence engines were mature. By
+v0.24 those engines exist, but implementing the interactive experience inside
+Core would now cross a more important product boundary.
 
-That would expose AutoForge before the system understands several major concepts that the interface will eventually need to operate:
+The interactive product eventually needs concerns that the deterministic Core
+must not own:
 
 ```text
-Constitution
-Domains
-Release Scope
-Design Truth
-Traceability
-Change Impact
-Validation State
-Digital Twin
-Agents
-Evidence
-Strategy
-Prioritization
+natural-language conversation
+model-provider selection
+API credentials
+streaming responses
+tool execution
+file editing
+diff review
+human approvals
+hosted accounts and billing
 ```
 
-Building the final interaction model before those domains stabilize would likely cause repeated redesign.
+Adding these responsibilities to Core would couple project truth and
+orchestration to provider-specific reasoning, credential, and presentation
+concerns. Instead, v0.25 formalizes the shared platform boundary first.
 
 Therefore:
 
 ## Keep Now
 
-- existing non-interactive CLI;
-- existing commands;
-- machine-readable output;
-- existing thin/read-oriented TUI;
-- agent-facing project contracts.
+- the existing package and executable;
+- repository-backed project truth;
+- the global project registry with explicit attachment;
+- deterministic, noninteractive commands;
+- structured context, validation, and handoff contracts;
+- vendor-neutral support for third-party agents.
 
-## Postpone Until v0.25
+## Move to AutoForge Agent and Hosted Products
 
 - conversational orchestration shell;
 - unified project cockpit;
 - natural-language project operations;
-- interactive views over governance, domains, traceability, evidence, strategy, and digital-twin state;
-- mode inference across discovery, planning, design, development, review, and validation.
+- model-provider calls and local credential management;
+- streaming and code-editing loops;
+- cloud accounts, billing, and managed model access;
+- interactive views over Core project intelligence.
 
-> **Build the engines first. Design the cockpit once the controls actually exist.**
+> **Keep project truth in Core. Put reasoning and interaction in agents. Connect
+> them through one stable protocol.**
 
 ---
 
@@ -740,84 +760,6 @@ decision: backlog
 
 ---
 
-## v0.25 — Interactive CLI Experience
-
-### Primary Question
-
-> How does a human naturally operate the complete AutoForge system?
-
-### Mission
-
-Create the rich interactive project cockpit after the underlying project-intelligence engines are mature.
-
-### Potential Experience
-
-```text
-$ autoforge
-
-AutoForge — Verdua
-──────────────────────────────
-
-Current Release: Candidate Beta
-Active Work: none
-
-Governance
-✓ Constitution loaded
-⚠ 1 proposed conflict
-
-Domains
-✓ 11 modeled
-
-Implementation
-12 / 17 stories complete
-
-Validation
-⚠ 2 release gates incomplete
-
-Evidence
-3 findings awaiting review
-
-What are you thinking about?
-
-> _
-```
-
-### Possible Modes
-
-```text
-brainstorm
-discovery
-research
-planning
-design
-development
-review
-validation
-strategy
-```
-
-### Important Boundary
-
-The interactive CLI is a presentation/orchestration surface over application services.
-
-It must not own governance logic, graph logic, domain state, context ranking, validation logic, evidence logic, or agent logic.
-
-### Existing TUI
-
-The current thin/read-oriented TUI may remain available throughout Phase 2.
-
-v0.25 represents the richer conversational/operational experience, not the first existence of a terminal interface.
-
-### Why v0.25 Follows v0.24
-
-By v0.25 the system's major engines exist and the v0.24 lifecycle loop is available.
-
-The human now gets one natural surface to operate them.
-
-The v0.25 interface must remain a presentation/orchestration layer over the already-complete v0.24 lifecycle services.
-
----
-
 ## v0.24 — Continuous Product Evolution Engine
 
 ### Primary Question
@@ -867,16 +809,17 @@ Updated Product Model
 
 ### Critical Architectural Rule
 
-v0.24 must not depend exclusively on the v0.25 UI.
+v0.24 must not depend exclusively on any first-party interface.
 
 Continuous evolution must remain accessible through shared application services so it can be operated through:
 
 ```text
-Interactive CLI
+AutoForge Agent
 regular CLI
 Codex
 Claude Code
 CI
+SDK integrations
 future MCP integrations
 future cloud interfaces
 ```
@@ -884,6 +827,82 @@ future cloud interfaces
 ### Capstone Goal
 
 > **Persistent engineering orchestration across the entire product lifecycle.**
+
+---
+
+## v0.25 — Platform Architecture Migration
+
+### Primary Question
+
+> How can AutoForge expose its complete v0.24 project-intelligence system to
+> first-party and third-party agents without coupling Core to any model,
+> provider, credential store, hosted account, or interactive interface?
+
+### Mission
+
+Extract and formalize a compatibility-first platform boundary:
+
+```text
+Agent interfaces
+  |-- AutoForge Agent
+  |-- Claude Code / Codex
+  |-- Cursor / Gemini / Grok
+  `-- hosted and future integrations
+            |
+            v
+Stable SDK / JSON / future MCP protocol
+            |
+            v
+AutoForge Core
+  |-- project knowledge and memory
+  |-- governance and domain intelligence
+  |-- work, context, and contracts
+  |-- orchestration and handoffs
+  `-- validation, evidence, and digital twin
+```
+
+### Required Boundaries
+
+- Core remains deterministic, noninteractive, model-independent, and usable
+  without an AutoForge account.
+- The existing `@cojacklabs/autoforge` package and `autoforge` executable remain
+  compatible throughout the migration.
+- A versioned protocol and supported SDK expose Core operations without forcing
+  integrations to parse terminal prose.
+- Bare `autoforge` prints concise project status, relevant next commands, and
+  help guidance.
+- Explicit `autoforge attach <path>` registration treats the enclosing Git
+  repository as one project and preserves project isolation.
+- Durable project intelligence travels with Git; sessions, leases, caches,
+  credentials, machine paths, and raw conversations remain local and ignored.
+- Cross-agent continuity uses structured handoffs rather than raw transcripts.
+
+### Product Separation
+
+AutoForge Agent owns natural-language conversation, provider selection, local
+BYOK credentials, streaming, tool use, code edits, diff review, and approvals.
+The future Web and Service products own accounts, teams, billing, managed model
+access, and opt-in hosted capabilities. None of these products may create a
+parallel project-truth or orchestration model.
+
+### TUI Disposition
+
+The Core interactive TUI is deprecated. Read-only snapshots transition to
+deterministic `autoforge status` text and JSON output, with a temporary
+compatibility alias. The prior slash-command design and partial worktree remain
+preserved as prototype material for AutoForge Agent, not as Core v0.25 scope.
+
+### Authoritative Implementation Plan
+
+`docs/planning/0.25/PLATFORM_MIGRATION_PLAN.md` defines the ordered migration,
+compatibility strategy, deferred hosted scope, validation requirements, and
+completion gate for this milestone.
+
+### Why v0.25 Follows v0.24
+
+The completed v0.24 lifecycle supplies the behavior that integrations need.
+v0.25 now separates that behavior behind stable boundaries before introducing
+the first-party agent and hosted product surfaces.
 
 ---
 
@@ -912,7 +931,7 @@ v0.23 Strategy + Prioritization
         ↓
 v0.24 Continuous Evolution
         ↓
-v0.25 Interactive Experience
+v0.25 Platform Architecture Migration
 ```
 
 This is a dependency narrative, not permission to couple each implementation tightly to the previous release.
@@ -1166,6 +1185,8 @@ A future 1.0 should reliably:
 - support human prioritization;
 - maintain a living product model;
 - close the development feedback loop;
+- expose a stable programmatic protocol and SDK;
+- preserve structured continuity across independent agents;
 - remain project-isolated;
 - remain vendor-neutral;
 - keep humans in control.
@@ -1186,8 +1207,9 @@ AI performs bounded work.
 Validation proves completion.
 Evidence records reality.
 Strategy helps humans decide.
-The interactive CLI exposes the system.
 Continuous Evolution closes the loop.
+The platform protocol exposes Core to every compatible agent.
+AutoForge Agent provides the optional first-party interactive experience.
 ```
 
 That is the revised path from the completed v0.14 foundation to AutoForge's v0.25 North Star.

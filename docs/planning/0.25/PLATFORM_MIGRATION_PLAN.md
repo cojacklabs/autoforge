@@ -2,7 +2,10 @@
 
 ## Status
 
-Approved direction; implementation has not started.
+Active; architecture reconciliation is in progress.
+
+This document is the authoritative implementation plan for AutoForge Core
+v0.25.
 
 This plan supersedes the proposed v0.25 interactive TUI as the next Core
 milestone. The existing slash-command design, implementation plan, commits, and

@@ -1,5 +1,13 @@
 # v0.25 Interactive TUI Slash Commands Implementation Plan
 
+> **Status: superseded for AutoForge Core.** Do not execute this plan against
+> Core or use it as the v0.25 release checklist. It is preserved as historical
+> implementation detail and prototype material for AutoForge Agent. The
+> authoritative Core plan is
+> `docs/planning/0.25/PLATFORM_MIGRATION_PLAN.md`. Existing commits and
+> uncommitted changes in the preserved `v0-25-tui-slash-commands` worktree must
+> remain intact until the Agent migration decides how to reuse them.
+
 > **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
 
 **Goal:** Replace `autoforge tui`'s bare-word input (`quit`, `help`,
@@ -72,10 +80,12 @@ in use, no new dependency).
 ### Task 1: `/`-prefixed input gate and view-switch commands
 
 **Files:**
+
 - Modify: `src/tui/app.ts`
 - Test: `test/tui.test.ts`
 
 **Interfaces:**
+
 - Consumes: `TUI_VIEW_IDS`, `tuiViewIdSchema`, `TuiViewId` (already
   imported in this file); no changes to their shapes.
 - Produces: the parsing/dispatch skeleton every later task in this
@@ -266,45 +276,44 @@ end of the `while` loop's try/catch, i.e. everything after
 `notice = undefined;` and before the loop's closing brace) with:
 
 ```typescript
-      const answer = await options.terminal.prompt("autoforge> ");
-      if (answer === null) return;
-      const trimmed = answer.trim();
-      if (!trimmed.startsWith("/")) {
-        notice =
-          "Commands must start with /. Type /help for available commands.";
-        continue;
-      }
-      const [rawCommand, ...rest] = trimmed.slice(1).split(/\s+/);
-      const command = (rawCommand ?? "").toLowerCase();
-      if (command === "quit") return;
-      if (command === "help") {
-        const commandList = [
-          ...VIEW_COMMANDS.map((id) => `/${id}`),
-          "/start <id>",
-          "/done",
-          "/decide",
-          "/refresh",
-          "/repair",
-          "/help",
-          "/quit",
-        ];
-        notice = `Commands: ${commandList.join(", ")}`;
-        continue;
-      }
-      const requestedView = resolveView(command);
-      if (requestedView) {
-        current = requestedView;
-        continue;
-      }
-      try {
-        if (command === "refresh") notice = await options.service.refreshContext();
-        else if (command === "repair") notice = await options.service.repairSession();
-        else {
-          notice = `Unknown command: /${trimmed.slice(1)}. Type /help for available commands.`;
-        }
-      } catch (error) {
-        notice = `Error: ${toAutoForgeError(error).message}`;
-      }
+const answer = await options.terminal.prompt("autoforge> ");
+if (answer === null) return;
+const trimmed = answer.trim();
+if (!trimmed.startsWith("/")) {
+  notice = "Commands must start with /. Type /help for available commands.";
+  continue;
+}
+const [rawCommand, ...rest] = trimmed.slice(1).split(/\s+/);
+const command = (rawCommand ?? "").toLowerCase();
+if (command === "quit") return;
+if (command === "help") {
+  const commandList = [
+    ...VIEW_COMMANDS.map((id) => `/${id}`),
+    "/start <id>",
+    "/done",
+    "/decide",
+    "/refresh",
+    "/repair",
+    "/help",
+    "/quit",
+  ];
+  notice = `Commands: ${commandList.join(", ")}`;
+  continue;
+}
+const requestedView = resolveView(command);
+if (requestedView) {
+  current = requestedView;
+  continue;
+}
+try {
+  if (command === "refresh") notice = await options.service.refreshContext();
+  else if (command === "repair") notice = await options.service.repairSession();
+  else {
+    notice = `Unknown command: /${trimmed.slice(1)}. Type /help for available commands.`;
+  }
+} catch (error) {
+  notice = `Error: ${toAutoForgeError(error).message}`;
+}
 ```
 
 Add a `VIEW_COMMANDS` constant near the top of the file (module scope,
@@ -368,10 +377,12 @@ git commit -m "feat: gate TUI input behind a leading slash, remove numeric view-
 ### Task 2: `/start <id>` and `/done`
 
 **Files:**
+
 - Modify: `src/tui/app.ts`
 - Test: `test/tui.test.ts`
 
 **Interfaces:**
+
 - Consumes: `runStartCommand` from `../commands/start.js`,
   `runDoneCommand` from `../commands/done.js`. Both already exist,
   unmodified:
@@ -396,12 +407,14 @@ it("dispatches /start to runStartCommand with the inferred kind", async () => {
   const projectRoot = await createProject();
   const { WorkService } = await import("../src/work/service.js");
   const { createWorkStateStore } = await import("../src/state/kernel.js");
-  await new WorkService(createWorkStateStore(projectRoot)).createTask({
-    phaseId: "phase.none",
-    name: "Test task",
-    description: "A task for testing /start.",
-    scope: { include: ["src/**"], exclude: [] },
-  }).catch(() => {}); // phase may not exist; the test only needs a plausible id shape
+  await new WorkService(createWorkStateStore(projectRoot))
+    .createTask({
+      phaseId: "phase.none",
+      name: "Test task",
+      description: "A task for testing /start.",
+      scope: { include: ["src/**"], exclude: [] },
+    })
+    .catch(() => {}); // phase may not exist; the test only needs a plausible id shape
   const writes: string[] = [];
   const answers = ["/start task.does-not-exist", "/quit"];
   const terminal: TuiTerminal = {
@@ -516,37 +529,37 @@ In the dispatcher's `try` block (from Task 1), add two new branches
 before the final `else` (the "Unknown command" fallback):
 
 ```typescript
-      try {
-        if (command === "refresh") notice = await options.service.refreshContext();
-        else if (command === "repair") notice = await options.service.repairSession();
-        else if (command === "start") {
-          const id = rest[0];
-          const kind = id ? inferWorkKind(id) : undefined;
-          if (!id || !kind) {
-            notice = `Could not infer a work kind from "${id ?? ""}". Ids must start with "task." or "issue.".`;
-          } else {
-            const { writer, text } = collectingLogWriter();
-            await runStartCommand({
-              args: [kind, id],
-              output: writer,
-              startDirectory: options.projectRoot,
-            });
-            notice = text();
-          }
-        } else if (command === "done") {
-          const { writer, text } = collectingLogWriter();
-          await runDoneCommand({
-            args: [],
-            output: writer,
-            startDirectory: options.projectRoot,
-          });
-          notice = text();
-        } else {
-          notice = `Unknown command: /${trimmed.slice(1)}. Type /help for available commands.`;
-        }
-      } catch (error) {
-        notice = `Error: ${toAutoForgeError(error).message}`;
-      }
+try {
+  if (command === "refresh") notice = await options.service.refreshContext();
+  else if (command === "repair") notice = await options.service.repairSession();
+  else if (command === "start") {
+    const id = rest[0];
+    const kind = id ? inferWorkKind(id) : undefined;
+    if (!id || !kind) {
+      notice = `Could not infer a work kind from "${id ?? ""}". Ids must start with "task." or "issue.".`;
+    } else {
+      const { writer, text } = collectingLogWriter();
+      await runStartCommand({
+        args: [kind, id],
+        output: writer,
+        startDirectory: options.projectRoot,
+      });
+      notice = text();
+    }
+  } else if (command === "done") {
+    const { writer, text } = collectingLogWriter();
+    await runDoneCommand({
+      args: [],
+      output: writer,
+      startDirectory: options.projectRoot,
+    });
+    notice = text();
+  } else {
+    notice = `Unknown command: /${trimmed.slice(1)}. Type /help for available commands.`;
+  }
+} catch (error) {
+  notice = `Error: ${toAutoForgeError(error).message}`;
+}
 ```
 
 Also update the `/help` notice string from Task 1 to mention `/start
@@ -579,10 +592,12 @@ git commit -m "feat: add /start and /done slash commands to the TUI"
 ### Task 3: `/decide` guided wizard
 
 **Files:**
+
 - Modify: `src/tui/app.ts`
 - Test: `test/tui.test.ts`
 
 **Interfaces:**
+
 - Consumes: `runDecideCommand` from `../commands/decide.js` —
   `runDecideCommand(options: { args: readonly string[]; output: LogWriter; startDirectory: string }): Promise<ExitCode>`.
   `collectingLogWriter()` from Task 2 (this same file).
@@ -632,9 +647,7 @@ it("runs the /decide wizard end to end and records a decision", async () => {
   const { createDecisionStore } = await import("../src/decisions/store.js");
   const stored = await createDecisionStore(projectRoot).read();
   expect(stored.state.data.decisions).toHaveLength(1);
-  expect(stored.state.data.decisions[0]?.statement).toBe(
-    "Use indexed search",
-  );
+  expect(stored.state.data.decisions[0]?.statement).toBe("Use indexed search");
   expect(stored.state.data.decisions[0]?.consequences).toEqual([
     "Must add an index",
   ]);
@@ -778,7 +791,8 @@ async function runDecideWizard(
     .filter((keyword) => keyword.length > 0);
 
   const args: string[] = ["--statement", statement, "--reasoning", reasoning];
-  for (const consequence of consequences) args.push("--consequence", consequence);
+  for (const consequence of consequences)
+    args.push("--consequence", consequence);
   for (const scopeValue of scope) args.push("--scope", scopeValue);
   for (const keyword of keywords) args.push("--keyword", keyword);
 
@@ -826,10 +840,12 @@ git commit -m "feat: add the /decide guided wizard to the TUI"
 ### Task 4: Remove the per-iteration screen clear (fix the redraw race)
 
 **Files:**
+
 - Modify: `src/tui/app.ts`
 - Test: `test/tui.test.ts`
 
 **Interfaces:**
+
 - Consumes: `TuiTerminal.clear()` (unchanged interface — this task
   changes only how often `runTuiSession` calls it, not the interface
   itself).
@@ -938,11 +954,13 @@ the actual cause of garbled key rendering during interactive use."
 ### Task 5: Tab-completion and threading `projectRoot` through `runTuiCommand`
 
 **Files:**
+
 - Modify: `src/tui/app.ts`
 - Modify: `src/commands/tui.ts`
 - Test: `test/tui.test.ts`
 
 **Interfaces:**
+
 - Consumes: `readline.createInterface`'s `completer` option (Node.js
   built-in, accepts `(line: string) => [string[], string]` or the
   async/callback equivalent — this task uses the synchronous form,
@@ -1087,14 +1105,14 @@ In `src/commands/tui.ts`, add `projectRoot: project.path` to the
 `runTuiSession` call:
 
 ```typescript
-  await runTuiSession({
-    service,
-    terminal: options.terminal ?? createNodeTuiTerminal(),
-    projectRoot: project.path,
-    initialView: parsed.view,
-    color: parsed.color,
-    ...(options.width === undefined ? {} : { width: options.width }),
-  });
+await runTuiSession({
+  service,
+  terminal: options.terminal ?? createNodeTuiTerminal(),
+  projectRoot: project.path,
+  initialView: parsed.view,
+  color: parsed.color,
+  ...(options.width === undefined ? {} : { width: options.width }),
+});
 ```
 
 - [ ] **Step 4: Run the tests to verify they pass**
@@ -1120,16 +1138,18 @@ git commit -m "feat: add Tab-completion for slash commands and thread projectRoo
 ### Task 6: Documentation
 
 **Files:**
+
 - Modify: `docs/AUTOFORGE_CLI_REFERENCE.md`
 
 **Interfaces:**
+
 - Consumes: nothing.
 - Produces: nothing new — documentation accuracy only.
 
 **Context:** `docs/AUTOFORGE_CLI_REFERENCE.md`'s "Help and TUI" section
 currently reads:
 
-```markdown
+````markdown
 ## Help and TUI
 
 ```bash
@@ -1137,7 +1157,9 @@ autoforge help
 autoforge tui
 autoforge tui --snapshot --no-color
 ```
-```
+````
+
+````
 
 - [ ] **Step 1: Update the doc**
 
@@ -1150,7 +1172,7 @@ Replace that section with:
 autoforge help
 autoforge tui
 autoforge tui --snapshot --no-color
-```
+````
 
 `autoforge tui`'s interactive mode accepts only `/`-prefixed slash
 commands. View-switching commands match every `TuiViewId` exactly
@@ -1167,20 +1189,22 @@ with no leading `/` produces a guidance message rather than being
 treated as a command. Tab-completion suggests matching commands as you
 type. `autoforge tui --snapshot` is unaffected by any of this — it
 never reads a command.
-```
+
+````
 
 - [ ] **Step 2: Commit**
 
 ```bash
 git add docs/AUTOFORGE_CLI_REFERENCE.md
 git commit -m "docs: document the TUI's slash-command surface"
-```
+````
 
 ---
 
 ### Task 7: Version bump and changelog
 
 **Files:**
+
 - Modify: `package.json`
 - Modify: `package-lock.json`
 - Modify: `test/cli-foundation.test.ts`
@@ -1188,6 +1212,7 @@ git commit -m "docs: document the TUI's slash-command surface"
 - Modify: `CHANGELOG.md`
 
 **Interfaces:**
+
 - Consumes: nothing.
 - Produces: nothing new — release bookkeeping only.
 
@@ -1225,13 +1250,13 @@ Expected: `package-lock.json`'s root `"version"` and
 In `test/cli-foundation.test.ts`, change:
 
 ```typescript
-    expect(findPackageVersion()).toBe("0.24.0");
+expect(findPackageVersion()).toBe("0.24.0");
 ```
 
 to:
 
 ```typescript
-    expect(findPackageVersion()).toBe("0.25.0");
+expect(findPackageVersion()).toBe("0.25.0");
 ```
 
 In `test/cli-integration.test.ts`, change all three occurrences of:
@@ -1290,6 +1315,7 @@ empty, untouched):
 - [ ] **Step 5: Verify**
 
 Run:
+
 ```bash
 ./node_modules/.bin/vitest run test/cli-foundation.test.ts test/cli-integration.test.ts
 ./node_modules/.bin/tsc --noEmit
@@ -1297,6 +1323,7 @@ Run:
 npm run build
 node dist/cli.js version
 ```
+
 Expected: version-assertion tests pass, typecheck clean, prettier
 clean, and the built CLI reports `AutoForge 0.25.0`.
 

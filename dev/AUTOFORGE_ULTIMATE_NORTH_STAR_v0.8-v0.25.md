@@ -2,9 +2,12 @@
 
 ## Unified Roadmap: v0.8.0 → v0.25.0
 
-> **Sequencing amendment:** v0.24 is now Continuous Product Evolution and v0.25 is the Interactive CLI Experience. The continuous lifecycle must be complete before the richer human-facing interface is implemented.
+> **Platform amendment:** v0.24 completes Continuous Product Evolution and
+> v0.25 establishes the Core, protocol, SDK, deterministic CLI, and first-party
+> Agent boundaries required to expose that lifecycle without coupling project
+> intelligence to a model provider or interactive interface.
 
-### Phase 1 Foundation + Phase 2 Product Intelligence
+### Phase 1 Foundation + Phase 2 Product Intelligence + Platform Transition
 
 **Date:** August 21, 2026\
 **Status:** Canonical architecture and roadmap bridge for planning,
@@ -17,10 +20,12 @@ capability advances the project toward the North Star.
 
 # 1. Executive Summary
 
-AutoForge is an open-source software-engineering orchestration
-framework.
+AutoForge Core is an open-source software-engineering orchestration
+framework. The broader AutoForge platform may include first-party Agent, Web,
+and hosted Service products that consume Core through the same supported
+interfaces available to third parties.
 
-It is **not** an AI agent and should not evolve into a replacement for
+Core is **not** an AI agent and should not evolve into a replacement for
 Codex, Claude Code, Cursor, Antigravity, Gemini, or other
 reasoning/coding agents.
 
@@ -70,9 +75,11 @@ AutoForge's roadmap now spans two major phases.
 Phase 1, v0.8--v0.14, builds the machinery required to capture,
 organize, retrieve, and deliver project knowledge.
 
-Phase 2, v0.15--v0.25, builds governance and product intelligence on top
+Phase 2, v0.15--v0.24, builds governance and product intelligence on top
 of that machinery so AutoForge can coordinate a complete
-software-development lifecycle.
+software-development lifecycle. v0.25 then extracts stable platform
+boundaries so first-party and third-party agents can consume that lifecycle
+without duplicating it.
 
 This document is the connective tissue between those phases.
 
@@ -231,7 +238,7 @@ itself should be understood as cooperating engines.
 - Learning & Evidence Engine
 - Strategy & Prioritization Engine
 - Continuous Product Evolution Engine
-- Interactive CLI Experience
+- Platform Protocol & SDK
 
 These engines should remain composable rather than becoming one giant
 subsystem.
@@ -572,15 +579,13 @@ understanding.
 > "Interactive AutoForge CLI" milestone here as v0.15.0. The roadmap
 > revision after v0.14 (see
 > `dev/AUTOFORGE_NORTH_STAR_REVISED_POST_V0.14_TO_V0.25.md`) moved the
-> richer human-facing interactive experience to v0.25 so it can be built
-> on top of the mature governance, domain, design, traceability,
-> validation, digital-twin, orchestration, evidence, strategy, and
-> continuous-evolution engines instead of preceding them. v0.15 is now
-> the Project Constitution & Governance Engine described below. See
-> Section 5 ("Interactive CLI Experience") of the revised roadmap for the
-> current v0.25 design intent; the possible-interaction sketch and modes
-> originally proposed here still describe that later milestone
-> reasonably well.
+> richer human-facing interactive experience after the project-intelligence
+> engines. The later v0.25 platform amendment then separated that experience
+> into AutoForge Agent instead of embedding provider and interaction concerns
+> in Core. v0.15 is now the Project Constitution & Governance Engine described
+> below, and v0.25 is the Platform Architecture Migration. See Section 5 of the
+> revised roadmap and `docs/planning/0.25/PLATFORM_MIGRATION_PLAN.md` for the
+> current boundary and implementation plan.
 
 # 7. Phase 1 Readiness Gate
 
@@ -607,7 +612,7 @@ Phase 2 should extend these primitives rather than duplicate them.
 
 # 8. Phase 2 --- Build the Living Product Model
 
-## v0.15.0 → v0.25.0
+## v0.15.0 → v0.24.0, followed by the v0.25 platform transition
 
 Phase 2 answers:
 
@@ -1053,19 +1058,41 @@ This is the integration milestone for the complete architecture.
 
 ---
 
-## v0.25.0 --- Interactive CLI Experience
+## v0.25.0 --- Platform Architecture Migration
 
 ### Mission
 
-Provide the richer human-facing cockpit over the mature v0.24 lifecycle services.
+Expose the mature v0.24 lifecycle through stable, compatibility-first platform
+boundaries without making Core a reasoning model, hosted service, or
+interactive application.
 
 ### Architectural Boundary
 
-The interactive CLI is a presentation and orchestration surface. It must reuse shared application services and must not own governance, graph, context, validation, evidence, or agent logic.
+```text
+AutoForge Agent + third-party agents
+                 ↓
+       protocol / SDK / JSON
+                 ↓
+          AutoForge Core
+```
+
+Core owns repository-backed project intelligence, orchestration, context,
+validation, and structured handoffs. AutoForge Agent owns natural-language
+conversation, model providers, credentials, streaming, tools, edits, and human
+approvals. Future Web and Service applications own accounts, billing, managed
+model access, and opt-in hosted capabilities.
+
+The existing `@cojacklabs/autoforge` package and `autoforge` executable remain
+the compatibility baseline. Bare `autoforge` becomes concise, noninteractive
+status output. The Core TUI is deprecated; its prior slash-command work is
+preserved as prototype material for AutoForge Agent.
 
 ### Dependency
 
-Requires the v0.24 continuous lifecycle to be complete and operable through the regular CLI, agentic controllers, and CI.
+Requires the v0.24 continuous lifecycle to remain operable throughout the
+protocol, Core, SDK, and deterministic CLI extraction. The authoritative
+migration and validation gates are in
+`docs/planning/0.25/PLATFORM_MIGRATION_PLAN.md`.
 
 ---
 
@@ -1111,7 +1138,7 @@ STRATEGY SUPPORT (0.23)
         ↓
 CONTINUOUS EVOLUTION (0.24)
         ↓
-INTERACTIVE CLI (0.25)
+PLATFORM ARCHITECTURE (0.25)
 ```
 
 Important architectural interpretation:
@@ -1121,7 +1148,9 @@ Important architectural interpretation:
 - v0.20 exposes the connected graph/state as the product digital twin.
 - v0.21 uses the mature context/governance model to coordinate
   multiple agents.
-- v0.25 integrates the full loop.
+- v0.24 integrates and closes the full loop.
+- v0.25 exposes that loop through stable Core, protocol, SDK, and agent
+  boundaries.
 
 These should not become duplicate representations.
 
@@ -1350,6 +1379,9 @@ A future 1.0 maturity threshold should mean AutoForge reliably:
 - preserves rationale and decisions;
 - incorporates real-world evidence;
 - supports human prioritization;
+- exposes a stable programmatic protocol and SDK;
+- transfers structured state and handoffs across compatible agents;
+- remains fully usable without a hosted account or model provider;
 - keeps projects isolated;
 - remains vendor-neutral;
 - maintains a living interpretation of the product;
@@ -1399,15 +1431,11 @@ That is the seamless path from v0.8 through v0.25.
 
 # 17. Immediate Focus
 
-The roadmap is intentionally ambitious. Current development should
-remain milestone-focused.
+The v0.24 project-intelligence sequence is complete. The immediate objective is
+the compatibility-first v0.25 platform migration, not new hosted or agentic
+product breadth.
 
-The immediate objective is not to build Phase 2 prematurely.
-
-The objective is to make each Phase 1 primitive strong enough that Phase
-2 can extend it without architectural rewrites.
-
-In particular, the transition should protect:
+The transition must protect:
 
 - stable project isolation;
 - stable artifact IDs;
@@ -1416,9 +1444,13 @@ In particular, the transition should protect:
 - deterministic schemas;
 - explainable context resolution;
 - agent-neutral context packets;
+- backward-readable project state;
+- the existing package and executable contract;
+- deterministic noninteractive Core operation;
 - human authority;
 - repository portability.
 
-If those foundations remain stable, Phase 2 can evolve naturally from
-the system already being built rather than requiring AutoForge to
-reinvent itself.
+Implementation proceeds in this order: protocol, Core, SDK, deterministic CLI,
+structured handoffs, then one experimental local Agent flow. Production Web,
+Service, payments, cloud synchronization, and broad provider support remain
+deferred until the local boundary is proven.

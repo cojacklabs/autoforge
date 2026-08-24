@@ -2,7 +2,14 @@
 
 ## Status
 
-Approved for implementation planning.
+Superseded for AutoForge Core; preserved as AutoForge Agent prototype material.
+
+This document is historical and must not be implemented or shipped as the Core
+v0.25 milestone. The approved Core milestone is the platform architecture
+migration defined in
+`docs/planning/0.25/PLATFORM_MIGRATION_PLAN.md`. Existing commits and
+uncommitted work in the preserved `v0-25-tui-slash-commands` worktree remain
+useful input when the separate AutoForge Agent terminal experience begins.
 
 ## Mission
 
@@ -14,11 +21,12 @@ switch views and trigger real AutoForge actions (`/start`, `/done`,
 cause of garbled/corrupted screen redraws reported during manual
 testing.
 
-This redefines v0.25's scope entirely: the previously-planned "polished
+At the time this design was approved, it redefined v0.25's scope: the previously-planned "polished
 `projects` table output" work was designed, implemented, reviewed
 clean, and then explicitly discarded (worktree and branch deleted, docs
 removed from `main`) once a larger direction for this milestone was
-chosen. v0.25 is now this slash-command shell, and only this.
+chosen. The later platform-architecture decision superseded this direction for
+Core and moved the interactive shell into the separate Agent product boundary.
 
 ## Background
 
@@ -86,26 +94,26 @@ Eleven view-switch commands, one per existing `TuiViewId`
 (`src/tui/schemas.ts`'s `TUI_VIEW_IDS`), plus six action/session
 commands:
 
-| Command | Effect |
-|---|---|
-| `/dashboard` | switch to the `dashboard` view |
-| `/active-work` | switch to the `active-work` view |
-| `/features` | switch to the `features` view |
-| `/issues` | switch to the `issues` view |
-| `/tasks` | switch to the `tasks` view |
-| `/decisions` | switch to the `decisions` view |
-| `/context` | switch to the `context` view |
-| `/specifications` | switch to the `specifications` view |
-| `/doctrines` | switch to the `doctrines` view |
-| `/agents` | switch to the `agents` view |
-| `/health` | switch to the `health` view |
-| `/start <id>` | start `<id>` as the active work item |
-| `/done` | complete the active work item |
-| `/decide` | launch the guided decision-recording wizard |
-| `/refresh` | today's `context-refresh`, renamed |
-| `/repair` | today's `session-repair`, renamed |
-| `/help` | list every command above |
-| `/quit` | exit the session |
+| Command           | Effect                                      |
+| ----------------- | ------------------------------------------- |
+| `/dashboard`      | switch to the `dashboard` view              |
+| `/active-work`    | switch to the `active-work` view            |
+| `/features`       | switch to the `features` view               |
+| `/issues`         | switch to the `issues` view                 |
+| `/tasks`          | switch to the `tasks` view                  |
+| `/decisions`      | switch to the `decisions` view              |
+| `/context`        | switch to the `context` view                |
+| `/specifications` | switch to the `specifications` view         |
+| `/doctrines`      | switch to the `doctrines` view              |
+| `/agents`         | switch to the `agents` view                 |
+| `/health`         | switch to the `health` view                 |
+| `/start <id>`     | start `<id>` as the active work item        |
+| `/done`           | complete the active work item               |
+| `/decide`         | launch the guided decision-recording wizard |
+| `/refresh`        | today's `context-refresh`, renamed          |
+| `/repair`         | today's `session-repair`, renamed           |
+| `/help`           | list every command above                    |
+| `/quit`           | exit the session                            |
 
 The eleven view commands are generated directly from `TUI_VIEW_IDS`
 (`/${id}` for each), so adding a twelfth view to that array in the
@@ -322,7 +330,7 @@ never hand-duplicated a second time.
   the new input syntax.
 - New tests: bare (non-slash) input produces the guidance message; an
   unmatched `/command` produces the unknown-command message; `/start
-  task.foo` dispatches to `runStartCommand` with `["task", "task.foo"]`
+task.foo` dispatches to `runStartCommand` with `["task", "task.foo"]`
   and surfaces its output as a notice; `/start` with an unprefixed or
   malformed id produces the kind-inference error; `/done` dispatches to
   `runDoneCommand` with `[]`; the `/decide` wizard collects all five
@@ -343,12 +351,7 @@ never hand-duplicated a second time.
 
 ## Rollout
 
-Ships as v0.25.0 (this is the milestone's only remaining content,
-following the earlier discarded direction). CHANGELOG documents the
-slash-command surface, the `/decide` wizard, Tab-completion, and the
-redraw-corruption fix. The design's Background section's "explicitly
-excluded scope" paragraph is the durable record of the future
-AI-agent-in-the-TUI direction, so that intent is not lost even though
-it is not designed or scheduled here; a future brainstorm for that
-capability should start from this document's Background section, not
-from scratch.
+No longer ships as AutoForge Core v0.25. Preserve the command surface,
+`/decide` wizard, completion behavior, and redraw analysis as candidate Agent
+requirements. Any Agent implementation must consume the supported Core SDK and
+protocol rather than calling or duplicating Core stores directly.
