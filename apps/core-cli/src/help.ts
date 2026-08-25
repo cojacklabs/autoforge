@@ -39,7 +39,7 @@ Commands:
   recap      Summarize current work and session state
   start      Start a task or issue and open a session
   status     Show concise project status and relevant next commands
-  tui        Open the terminal UI or print a view snapshot
+  tui        Deprecated compatibility alias for status
   version    Show the installed AutoForge version
   why        Search decision rationale
 
@@ -86,9 +86,9 @@ Context packets:
   autoforge context
   autoforge context --explain
 
-Terminal UI:
-  autoforge tui
-  autoforge tui --snapshot [--view <view>] [--no-color]
+Deprecated TUI compatibility:
+  autoforge tui [--snapshot] [--view <view>] [--no-color]
+  tui now renders status; interactive experiences move to AutoForge Agent
 
 Legacy migration:
   autoforge migrate --dry-run [--json]

@@ -134,7 +134,10 @@ autoforge design validate dev/design/screen.md
 autoforge design import dev/design/screen.md
 ```
 
-Use `autoforge recap` for handoffs, `autoforge tui --snapshot` for automation, and `autoforge doctor` for installation health.
+Use `autoforge recap` for handoffs, `autoforge status --json` for automation,
+and `autoforge doctor` for installation health. The former interactive
+`autoforge tui` is deprecated and temporarily aliases deterministic status
+output; interactive prompting belongs to the separate AutoForge Agent.
 
 When a registered project changes location, preserve its global history with:
 

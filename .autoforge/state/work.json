@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
-  "revision": 310,
-  "updatedAt": "2026-08-25T02:54:04.275Z",
+  "revision": 312,
+  "updatedAt": "2026-08-25T03:06:45.463Z",
   "data": {
     "features": [
       {
@@ -1474,9 +1474,9 @@
       {
         "name": "Deprecate Core interactive TUI",
         "description": "Replace read-only TUI snapshots with status, retain a temporary compatibility alias, and direct interactive users toward the separate AutoForge Agent.",
-        "status": "planned",
+        "status": "completed",
         "createdAt": "2026-08-24T14:22:29.463Z",
-        "updatedAt": "2026-08-24T14:22:29.463Z",
+        "updatedAt": "2026-08-25T03:06:45.336Z",
         "id": "task.deprecate-core-interactive-tui",
         "phaseId": "phase.deterministic-core-cli",
         "scope": {

@@ -1,94 +1,94 @@
+import {
+  runStatusCommand,
+  type StatusView,
+} from "../../apps/core-cli/src/status.js";
 import { EXIT_CODE, type ExitCode } from "../core/errors.js";
 import type { LogWriter } from "../core/logger.js";
-import { discoverProjectRoot } from "../core/project.js";
-import {
-  createNodeTuiTerminal,
-  runTuiSession,
-  type TuiTerminal,
-} from "../tui/app.js";
-import { renderTuiView } from "../tui/renderer.js";
-import { tuiViewIdSchema, type TuiViewId } from "../tui/schemas.js";
-import { TuiProjectService } from "../tui/service.js";
 
 export interface TuiCommandOptions {
   args: readonly string[];
   output: LogWriter;
   startDirectory: string;
-  interactive?: boolean;
-  terminal?: TuiTerminal;
-  width?: number;
 }
 
-interface TuiArguments {
-  snapshot: boolean;
-  view: TuiViewId;
-  color: boolean;
-}
+const LEGACY_VIEW_MAP: Readonly<Record<string, StatusView>> = {
+  dashboard: "summary",
+  "active-work": "work",
+  features: "work",
+  issues: "work",
+  tasks: "work",
+  decisions: "summary",
+  context: "summary",
+  specifications: "summary",
+  doctrines: "summary",
+  agents: "summary",
+  health: "summary",
+  summary: "summary",
+  work: "work",
+  next: "next",
+};
 
-function usage(output: LogWriter): undefined {
+function usage(output: LogWriter): ExitCode {
   output.stderr(
     "Usage: autoforge tui [--snapshot] [--view <view>] [--no-color]",
   );
-  return undefined;
+  return EXIT_CODE.usage;
 }
 
-function parseArguments(
+function statusArguments(
   args: readonly string[],
   output: LogWriter,
-): TuiArguments | undefined {
+): { args: readonly string[]; snapshot: boolean } | ExitCode {
+  let view: StatusView = "summary";
   let snapshot = false;
-  let view: TuiViewId = "dashboard";
-  let color = true;
+  let noColor = false;
+  let hasView = false;
   for (let index = 0; index < args.length; index += 1) {
     const argument = args[index];
-    if (argument === "--snapshot") snapshot = true;
-    else if (argument === "--no-color") color = false;
-    else if (argument === "--view") {
+    if (argument === "--snapshot" && !snapshot) {
+      snapshot = true;
+      continue;
+    }
+    if (argument === "--no-color" && !noColor) {
+      noColor = true;
+      continue;
+    }
+    if (argument === "--view" && !hasView) {
       const value = args[index + 1];
-      const result = tuiViewIdSchema.safeParse(value);
-      if (!result.success) return usage(output);
-      view = result.data;
+      const mapped = value ? LEGACY_VIEW_MAP[value] : undefined;
+      if (!mapped) return usage(output);
+      view = mapped;
+      hasView = true;
       index += 1;
-    } else return usage(output);
+      continue;
+    }
+    return usage(output);
   }
-  return { snapshot, view, color };
+  return { args: ["--view", view], snapshot };
 }
 
 export async function runTuiCommand(
   options: TuiCommandOptions,
 ): Promise<ExitCode> {
-  const parsed = parseArguments(options.args, options.output);
-  if (!parsed) return EXIT_CODE.usage;
-  const project = await discoverProjectRoot({
+  const parsed = statusArguments(options.args, options.output);
+  if (typeof parsed === "number") return parsed;
+  const output = parsed.snapshot
+    ? {
+        stdout: (message: string) =>
+          options.output.stdout(
+            message.replace(/^AutoForge —/, "AutoForge TUI (deprecated) —"),
+          ),
+        stderr: options.output.stderr,
+      }
+    : options.output;
+  if (!parsed.snapshot) {
+    options.output.stderr(
+      'Deprecated: "autoforge tui" now aliases "autoforge status". Interactive experiences are moving to the separate AutoForge Agent.',
+    );
+  }
+  return runStatusCommand({
+    args: parsed.args,
+    output,
     startDirectory: options.startDirectory,
   });
-  const service = new TuiProjectService(project.path);
-  if (parsed.snapshot) {
-    const view = await service.loadView(parsed.view);
-    options.output.stdout(
-      renderTuiView(view, {
-        projectName: service.projectName,
-        color: false,
-        ...(options.width === undefined ? {} : { width: options.width }),
-      }),
-    );
-    return EXIT_CODE.success;
-  }
-  const interactive =
-    options.interactive ??
-    (process.stdin.isTTY === true && process.stdout.isTTY === true);
-  if (!interactive) {
-    options.output.stderr(
-      'Interactive TUI requires a terminal. Use "autoforge tui --snapshot" instead.',
-    );
-    return EXIT_CODE.usage;
-  }
-  await runTuiSession({
-    service,
-    terminal: options.terminal ?? createNodeTuiTerminal(),
-    initialView: parsed.view,
-    color: parsed.color,
-    ...(options.width === undefined ? {} : { width: options.width }),
-  });
-  return EXIT_CODE.success;
 }

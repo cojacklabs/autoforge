@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
-  "revision": 65,
-  "updatedAt": "2026-08-25T02:53:58.481Z",
+  "revision": 66,
+  "updatedAt": "2026-08-25T03:06:38.476Z",
   "data": {
     "decisions": [
       {
@@ -1617,6 +1617,34 @@
         "kind": "feature-note",
         "createdAt": "2026-08-25T02:53:58.455Z",
         "updatedAt": "2026-08-25T02:53:58.455Z"
+      },
+      {
+        "id": "decision.the-core-interactive-tui-is-removed-autoforge-tui-remains-only-as-a-temporary-re",
+        "statement": "The Core interactive TUI is removed; autoforge tui remains only as a temporary read-only compatibility alias over SDK-backed status output, while interactive prompting belongs to the separate AutoForge Agent.",
+        "reasoning": "Maintaining a second project-view and prompt loop inside Core duplicates the deterministic status boundary and would couple future reasoning UX to the orchestration framework. Mapping legacy views to bounded status projections preserves command compatibility without retaining parallel state-reading code.",
+        "consequences": [
+          "Bare tui emits Agent migration guidance and renders summary status without opening a prompt.",
+          "tui --snapshot preserves a no-stderr automation path and a deprecated legacy heading while using status data.",
+          "The obsolete TUI application, renderer, schemas, service, and recovery prompt actions are removed from Core; historical design documents remain preserved."
+        ],
+        "scope": [
+          "tui",
+          "core-cli",
+          "docs"
+        ],
+        "keywords": [
+          "deprecation",
+          "tui",
+          "agent"
+        ],
+        "relatedWork": [
+          "task.deprecate-core-interactive-tui"
+        ],
+        "supersedes": null,
+        "status": "active",
+        "kind": "feature-note",
+        "createdAt": "2026-08-25T03:06:38.446Z",
+        "updatedAt": "2026-08-25T03:06:38.446Z"
       }
     ]
   }

@@ -274,12 +274,19 @@ contracts that validate runtime input.
 
 The command installs the exact version returned by npm and uses `--global` for global installations. Verify with `autoforge version` and `autoforge doctor`.
 
-## Help and TUI
+## Help and Deprecated TUI Alias
 
 ```bash
 autoforge help
 autoforge tui
 autoforge tui --snapshot --no-color
 ```
+
+`autoforge tui` no longer starts an interactive loop. It is a temporary
+compatibility alias for deterministic `autoforge status` output. Bare `tui`
+emits deprecation guidance directing interactive users to the separate
+AutoForge Agent; snapshot output retains its legacy heading with a deprecation
+marker so existing automation is not broken by a new stderr stream.
+Legacy TUI views map onto the bounded `summary`, `work`, or `next` status views.
 
 Legacy commands not shown by `autoforge help` are not part of the supported workflow.
