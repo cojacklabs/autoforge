@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
-  "revision": 63,
-  "updatedAt": "2026-08-25T02:28:53.622Z",
+  "revision": 64,
+  "updatedAt": "2026-08-25T02:46:07.370Z",
   "data": {
     "decisions": [
       {
@@ -1561,6 +1561,34 @@
         "kind": "architecture",
         "createdAt": "2026-08-25T02:28:53.585Z",
         "updatedAt": "2026-08-25T02:28:53.585Z"
+      },
+      {
+        "id": "decision.bare-autoforge-and-the-status-command-now-render-one-sdk-backed-structured-proje",
+        "statement": "Bare autoforge and the status command now render one SDK-backed structured project-status model through fixed summary, work, and next views, with JSON preserving the protocol envelope.",
+        "reasoning": "A single bounded status model gives humans concise guidance and agents structured output without duplicating project truth or requiring terminal parsing, while keeping the complete command catalog behind explicit help.",
+        "consequences": [
+          "Bare autoforge prints concise status instead of the full help screen.",
+          "autoforge status --json returns protocolVersion and structured data.",
+          "Status views are limited to summary, work, and next, and next-command recommendations are capped at four."
+        ],
+        "scope": [
+          "apps/core-cli",
+          "packages/sdk",
+          "docs"
+        ],
+        "keywords": [
+          "status",
+          "sdk",
+          "cli"
+        ],
+        "relatedWork": [
+          "task.implement-concise-project-status"
+        ],
+        "supersedes": null,
+        "status": "active",
+        "kind": "feature-note",
+        "createdAt": "2026-08-25T02:46:07.341Z",
+        "updatedAt": "2026-08-25T02:46:07.341Z"
       }
     ]
   }

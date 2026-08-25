@@ -14,6 +14,37 @@ export interface SdkResponse<T> {
   data: T;
 }
 
+export interface ProjectStatus {
+  project: { name: string; root: string };
+  work: {
+    state: "idle" | "active";
+    active: {
+      kind: "task" | "issue";
+      id: string;
+      name: string;
+      sessionId: string;
+      startedAt: string;
+    } | null;
+    counts: {
+      planned: number;
+      ready: number;
+      active: number;
+      blocked: number;
+      completed: number;
+      canceled: number;
+    };
+  };
+  nextCommands: string[];
+}
+
+export type ProjectStatusReader = () => Promise<ProjectStatus>;
+
+export async function readProjectStatus(
+  reader: ProjectStatusReader,
+): Promise<SdkResponse<ProjectStatus>> {
+  return response(await reader());
+}
+
 export type StartableWorkKind = "task" | "issue";
 
 export interface StartWorkInput {

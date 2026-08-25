@@ -38,6 +38,7 @@ Commands:
   update     Check, preview, or apply a global AutoForge update
   recap      Summarize current work and session state
   start      Start a task or issue and open a session
+  status     Show concise project status and relevant next commands
   tui        Open the terminal UI or print a view snapshot
   version    Show the installed AutoForge version
   why        Search decision rationale
@@ -76,6 +77,7 @@ Doctrines:
   autoforge doctrine <name>
 
 Work lifecycle:
+  autoforge status [--json] [--view <summary|work|next>]
   autoforge start <task|issue> <id>
   autoforge recap
   autoforge done [--no-decision "<reason>"]

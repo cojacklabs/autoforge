@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
-  "revision": 306,
-  "updatedAt": "2026-08-25T02:28:59.064Z",
+  "revision": 308,
+  "updatedAt": "2026-08-25T02:46:13.709Z",
   "data": {
     "features": [
       {
@@ -1433,9 +1433,9 @@
       {
         "name": "Implement concise project status",
         "description": "Make bare autoforge print concise status, relevant next commands, and help guidance; add status text, JSON, and bounded view output.",
-        "status": "planned",
+        "status": "completed",
         "createdAt": "2026-08-24T14:22:28.509Z",
-        "updatedAt": "2026-08-24T14:22:28.509Z",
+        "updatedAt": "2026-08-25T02:46:13.590Z",
         "id": "task.implement-concise-project-status",
         "phaseId": "phase.deterministic-core-cli",
         "scope": {

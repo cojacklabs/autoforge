@@ -44,6 +44,7 @@ export interface CliDependencies {
     migrate(args: readonly string[]): Promise<ExitCode>;
     recap(args: readonly string[]): Promise<ExitCode>;
     start(args: readonly string[]): Promise<ExitCode>;
+    status(args: readonly string[]): Promise<ExitCode>;
     tui(args: readonly string[]): Promise<ExitCode>;
     why(args: readonly string[]): Promise<ExitCode>;
   };
@@ -69,7 +70,6 @@ export async function runCli(
   const [command, ...commandArgs] = args;
 
   switch (command) {
-    case undefined:
     case "help":
     case "-h":
     case "--help": {
@@ -85,6 +85,9 @@ export async function runCli(
       dependencies.output.stdout(AUTOFORGE_HELP);
       return EXIT_CODE.success;
     }
+
+    case undefined:
+      return dependencies.commands.status([]);
 
     case "version":
     case "-v":
@@ -243,6 +246,9 @@ export async function runCli(
 
     case "start":
       return dependencies.commands.start(commandArgs);
+
+    case "status":
+      return dependencies.commands.status(commandArgs);
 
     case "recap":
       return dependencies.commands.recap(commandArgs);

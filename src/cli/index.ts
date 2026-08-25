@@ -42,6 +42,7 @@ import { runStartCommand } from "../commands/start.js";
 import { runTuiCommand } from "../commands/tui.js";
 import { runWhyCommand } from "../commands/why.js";
 import { runStrategyCommand } from "../commands/strategy.js";
+import { runStatusCommand } from "../../apps/core-cli/src/status.js";
 import { GlobalWorkspaceStore } from "../workspace/global-store.js";
 import { projectMutationBlocked } from "../workspace/lifecycle.js";
 import { runCli, type CliOutput } from "./router.js";
@@ -296,6 +297,12 @@ export async function main(
           }),
         start: (commandArgs) =>
           runStartCommand({
+            args: commandArgs,
+            output,
+            startDirectory,
+          }),
+        status: (commandArgs) =>
+          runStatusCommand({
             args: commandArgs,
             output,
             startDirectory,

@@ -15,6 +15,10 @@ Use `use` when operating on a named project from outside its directory.
 ```bash
 autoforge init
 autoforge doctor
+autoforge
+autoforge status
+autoforge status --json
+autoforge status --view <summary|work|next>
 autoforge add task --phase <phase-id> --name "Task" --description "..." --include "src/**"
 autoforge start task <task-id>
 autoforge context --explain
@@ -23,6 +27,10 @@ autoforge gate check
 autoforge done
 autoforge recap
 ```
+
+Bare `autoforge` prints the concise summary view with relevant next commands and
+guidance to run `autoforge help`. Status views are fixed, bounded projections;
+`--json` returns the protocol-versioned structured status envelope.
 
 ## Memory and Planning
 

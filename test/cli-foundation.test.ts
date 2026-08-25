@@ -31,6 +31,7 @@ function createDependencies() {
       migrate: vi.fn(async () => EXIT_CODE.success),
       recap: vi.fn(async () => EXIT_CODE.success),
       start: vi.fn(async () => EXIT_CODE.success),
+      status: vi.fn(async () => EXIT_CODE.success),
       tui: vi.fn(async () => EXIT_CODE.success),
       why: vi.fn(async () => EXIT_CODE.success),
     },
@@ -55,18 +56,36 @@ describe("foundation CLI router", () => {
     expect(output.stderr).not.toHaveBeenCalled();
   });
 
-  it.each([
-    { args: [] },
-    { args: ["help"] },
-    { args: ["-h"] },
-    { args: ["--help"] },
-  ])("prints canonical help for %j", async ({ args }) => {
+  it.each([{ args: ["help"] }, { args: ["-h"] }, { args: ["--help"] }])(
+    "prints canonical help for %j",
+    async ({ args }) => {
+      const dependencies = createDependencies();
+
+      await expect(runCli(args, dependencies)).resolves.toBe(EXIT_CODE.success);
+      expect(dependencies.output.stdout).toHaveBeenCalledOnce();
+      expect(dependencies.output.stdout).toHaveBeenCalledWith(AUTOFORGE_HELP);
+      expect(dependencies.output.stderr).not.toHaveBeenCalled();
+    },
+  );
+
+  it("routes bare invocation to concise status", async () => {
     const dependencies = createDependencies();
 
-    await expect(runCli(args, dependencies)).resolves.toBe(EXIT_CODE.success);
-    expect(dependencies.output.stdout).toHaveBeenCalledOnce();
-    expect(dependencies.output.stdout).toHaveBeenCalledWith(AUTOFORGE_HELP);
-    expect(dependencies.output.stderr).not.toHaveBeenCalled();
+    await expect(runCli([], dependencies)).resolves.toBe(EXIT_CODE.success);
+    expect(dependencies.commands.status).toHaveBeenCalledWith([]);
+    expect(dependencies.output.stdout).not.toHaveBeenCalled();
+  });
+
+  it("routes status arguments", async () => {
+    const dependencies = createDependencies();
+
+    await expect(
+      runCli(["status", "--view", "next"], dependencies),
+    ).resolves.toBe(EXIT_CODE.success);
+    expect(dependencies.commands.status).toHaveBeenCalledWith([
+      "--view",
+      "next",
+    ]);
   });
 
   it.each([{ args: ["version"] }, { args: ["-v"] }, { args: ["--version"] }])(

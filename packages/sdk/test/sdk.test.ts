@@ -1,8 +1,51 @@
 import { describe, expect, it, vi } from "vitest";
 
-import { assessIntent, createAutoForgeSdk } from "../src/index.js";
+import {
+  assessIntent,
+  createAutoForgeSdk,
+  readProjectStatus,
+} from "../src/index.js";
 
 describe("internal AutoForge SDK foundation", () => {
+  it("returns structured project status through an injected reader", async () => {
+    await expect(
+      readProjectStatus(async () => ({
+        project: { name: "demo", root: "/projects/demo" },
+        work: {
+          state: "idle",
+          active: null,
+          counts: {
+            planned: 2,
+            ready: 0,
+            active: 0,
+            blocked: 0,
+            completed: 3,
+            canceled: 0,
+          },
+        },
+        nextCommands: ["autoforge start task task.next", "autoforge help"],
+      })),
+    ).resolves.toEqual({
+      protocolVersion: "1",
+      data: {
+        project: { name: "demo", root: "/projects/demo" },
+        work: {
+          state: "idle",
+          active: null,
+          counts: {
+            planned: 2,
+            ready: 0,
+            active: 0,
+            blocked: 0,
+            completed: 3,
+            canceled: 0,
+          },
+        },
+        nextCommands: ["autoforge start task task.next", "autoforge help"],
+      },
+    });
+  });
+
   it("offers deterministic intent assessment without lifecycle adapters", () => {
     const result = assessIntent(
       {
