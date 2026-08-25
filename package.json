@@ -1,6 +1,7 @@
 {
   "name": "@cojacklabs/autoforge",
   "version": "0.24.0",
+  "packageManager": "pnpm@11.22.0",
   "type": "module",
   "private": false,
   "license": "MIT",
@@ -16,6 +17,18 @@
     "test": "npm run test:foundation && npm run test:legacy",
     "test:foundation": "npm run build && vitest run",
     "test:legacy": "node --test tests/*.test.js",
+    "core:build": "node ./scripts/clean_dist.js && tsup",
+    "core:typecheck": "tsc --noEmit",
+    "core:test:foundation": "vitest run",
+    "core:test:legacy": "node --test tests/*.test.js",
+    "core:format:check": "prettier --check \"**/*.{js,jsx,ts,tsx,json,md,yaml,yml}\"",
+    "core:planning:check": "node ./scripts/check_planning_bundle.mjs",
+    "workspace:build": "turbo run core:build",
+    "workspace:typecheck": "turbo run core:typecheck",
+    "workspace:test": "turbo run core:test:foundation core:test:legacy",
+    "workspace:format:check": "turbo run core:format:check",
+    "workspace:planning:check": "turbo run core:planning:check",
+    "workspace:check": "turbo run core:build core:typecheck core:test:foundation core:test:legacy core:format:check core:planning:check",
     "prepack": "npm run build"
   },
   "bin": {
@@ -36,6 +49,7 @@
     "ignore": "^5.3.1",
     "prettier": "^3.3.3",
     "repomix": "^1.18.0",
+    "turbo": "^2.10.11",
     "tsup": "^8.5.1",
     "typescript": "^7.0.2",
     "vitest": "^4.1.11"

@@ -1,0 +1,54 @@
+{
+  "$schema": "https://turborepo.dev/schema.json",
+  "cacheDir": "node_modules/.cache/turbo",
+  "ui": "stream",
+  "tasks": {
+    "build": {
+      "dependsOn": ["^build"],
+      "outputs": ["dist/**", "build/**"]
+    },
+    "typecheck": {
+      "dependsOn": ["^build"],
+      "outputs": []
+    },
+    "test": {
+      "dependsOn": ["build", "^build"],
+      "outputs": []
+    },
+    "test:foundation": {
+      "dependsOn": ["build", "^build"],
+      "outputs": []
+    },
+    "test:legacy": {
+      "dependsOn": ["build", "^build"],
+      "outputs": []
+    },
+    "format:check": {
+      "outputs": []
+    },
+    "planning:check": {
+      "outputs": []
+    },
+    "//#core:build": {
+      "outputs": ["dist/**", "build/**"]
+    },
+    "//#core:typecheck": {
+      "dependsOn": ["//#core:build"],
+      "outputs": []
+    },
+    "//#core:test:foundation": {
+      "dependsOn": ["//#core:build"],
+      "outputs": []
+    },
+    "//#core:test:legacy": {
+      "dependsOn": ["//#core:build"],
+      "outputs": []
+    },
+    "//#core:format:check": {
+      "outputs": []
+    },
+    "//#core:planning:check": {
+      "outputs": []
+    }
+  }
+}

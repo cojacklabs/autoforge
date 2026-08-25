@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
-  "revision": 288,
-  "updatedAt": "2026-08-24T23:03:54.114Z",
+  "revision": 290,
+  "updatedAt": "2026-08-25T00:44:31.558Z",
   "data": {
     "features": [
       {
@@ -1331,9 +1331,9 @@
       {
         "name": "Establish pnpm Turborepo workspace",
         "description": "Select the internal package manager, add the workspace and Turborepo task graph, and preserve existing v0.24 build and test behavior.",
-        "status": "planned",
+        "status": "completed",
         "createdAt": "2026-08-24T14:22:11.871Z",
-        "updatedAt": "2026-08-24T14:22:11.871Z",
+        "updatedAt": "2026-08-25T00:44:31.451Z",
         "id": "task.establish-pnpm-turborepo-workspace",
         "phaseId": "phase.workspace-foundation",
         "scope": {

@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
-  "revision": 56,
-  "updatedAt": "2026-08-24T23:03:53.614Z",
+  "revision": 57,
+  "updatedAt": "2026-08-25T00:44:31.128Z",
   "data": {
     "decisions": [
       {
@@ -1381,6 +1381,31 @@
         "kind": "architecture",
         "createdAt": "2026-08-24T23:03:53.589Z",
         "updatedAt": "2026-08-24T23:03:53.589Z"
+      },
+      {
+        "id": "decision.autoforge-v0-25-adopts-pnpm-11-22-0-and-turborepo-2-10-11-with-temporary-registe",
+        "statement": "AutoForge v0.25 adopts pnpm 11.22.0 and Turborepo 2.10.11 with temporary registered Core root tasks until source relocation creates real app and package workspaces.",
+        "reasoning": "The existing @cojacklabs/autoforge package and autoforge binary must remain publishable and behavior-compatible during workspace foundation; Turborepo root tasks provide an incremental task graph without prematurely making the root private or creating empty placeholder packages.",
+        "consequences": [
+          "pnpm-lock.yaml is the sole tracked dependency lockfile, package-lock.json is removed, apps/* and packages/* are workspace locations, workspace:* scripts exercise the current Core through Turbo, local caching is stored under ignored node_modules, remote caching is optional and disabled by default, and root-task aliases are removed when Core relocates to apps/core-cli."
+        ],
+        "scope": [
+          "project"
+        ],
+        "keywords": [
+          "workspace",
+          "pnpm",
+          "turborepo",
+          "compatibility"
+        ],
+        "relatedWork": [
+          "task.establish-pnpm-turborepo-workspace"
+        ],
+        "supersedes": null,
+        "status": "active",
+        "kind": "architecture",
+        "createdAt": "2026-08-25T00:44:31.104Z",
+        "updatedAt": "2026-08-25T00:44:31.104Z"
       }
     ]
   }

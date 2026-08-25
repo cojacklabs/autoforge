@@ -1,2 +1,8 @@
-ignoredBuiltDependencies:
-  - esbuild
+packages:
+  - "apps/*"
+  - "packages/*"
+
+storeDir: node_modules/.pnpm-store
+
+allowBuilds:
+  esbuild: false
