@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
-  "revision": 64,
-  "updatedAt": "2026-08-25T02:46:07.370Z",
+  "revision": 65,
+  "updatedAt": "2026-08-25T02:53:58.481Z",
   "data": {
     "decisions": [
       {
@@ -1589,6 +1589,34 @@
         "kind": "feature-note",
         "createdAt": "2026-08-25T02:46:07.341Z",
         "updatedAt": "2026-08-25T02:46:07.341Z"
+      },
+      {
+        "id": "decision.explicit-attachment-now-resolves-paths-inside-git-repositories-to-a-canonical-re",
+        "statement": "Explicit attachment now resolves paths inside Git repositories to a canonical repository root, treats submodules as independent projects, maps linked worktrees to their owning project, and preserves exact non-Git paths.",
+        "reasoning": "Repository-wide project identity prevents sibling application folders from fragmenting project truth, while local read-only Git inspection and a structured dry run make initialization, registration, and conflicts reviewable before mutation.",
+        "consequences": [
+          "autoforge attach accepts --dry-run and optional --json without writing project or global state.",
+          "Nested Git paths attach the complete repository root; submodules attach themselves; linked worktrees register the owning root.",
+          "Partial or nested AutoForge state is reported as a conflict before initialization or registration."
+        ],
+        "scope": [
+          "attach",
+          "workspace",
+          "sdk"
+        ],
+        "keywords": [
+          "git-root",
+          "dry-run",
+          "project-identity"
+        ],
+        "relatedWork": [
+          "task.implement-git-root-aware-attach-dry-run"
+        ],
+        "supersedes": null,
+        "status": "active",
+        "kind": "feature-note",
+        "createdAt": "2026-08-25T02:53:58.455Z",
+        "updatedAt": "2026-08-25T02:53:58.455Z"
       }
     ]
   }

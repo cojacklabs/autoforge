@@ -193,10 +193,18 @@ autoforge projects update <path> [--name <name>] [--alias <alias>] [--lifecycle 
 autoforge projects register <path>
 autoforge projects prune [--dry-run]
 autoforge attach <path>
+autoforge attach <path> --dry-run
+autoforge attach <path> --dry-run --json
 autoforge detach <path>
 autoforge assets list templates
 autoforge assets list doctrines
 ```
+
+Attachment resolves any path inside a Git repository to the repository root.
+Submodules remain independent projects, while linked worktrees resolve to their
+owning project. Non-Git directories use the exact supplied path. `--dry-run`
+performs local Git and AutoForge inspection and previews initialization,
+registration, and conflicts without writing project or global state.
 
 `relocate` updates a registered project's canonical path after the directory has
 been moved and migrates path-derived global storage. The destination must be an

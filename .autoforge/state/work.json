@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
-  "revision": 308,
-  "updatedAt": "2026-08-25T02:46:13.709Z",
+  "revision": 310,
+  "updatedAt": "2026-08-25T02:54:04.275Z",
   "data": {
     "features": [
       {
@@ -1453,9 +1453,9 @@
       {
         "name": "Implement Git-root-aware attach dry run",
         "description": "Resolve attached paths to the enclosing Git root, inspect locally without mutation, handle worktrees/submodules/non-Git projects, and preview conflicts before writes.",
-        "status": "planned",
+        "status": "completed",
         "createdAt": "2026-08-24T14:22:29.025Z",
-        "updatedAt": "2026-08-24T14:22:29.025Z",
+        "updatedAt": "2026-08-25T02:54:04.189Z",
         "id": "task.implement-git-root-aware-attach-dry-run",
         "phaseId": "phase.deterministic-core-cli",
         "scope": {

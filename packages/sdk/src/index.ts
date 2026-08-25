@@ -45,6 +45,24 @@ export async function readProjectStatus(
   return response(await reader());
 }
 
+export interface AttachmentInspection {
+  requestedPath: string;
+  resolvedRoot: string;
+  repositoryKind: "git" | "worktree" | "submodule" | "non-git";
+  installationStatus: "absent" | "current" | "legacy" | "partial";
+  registrationStatus: "registered" | "unregistered";
+  actions: Array<"initialize" | "register">;
+  conflicts: string[];
+}
+
+export type AttachmentInspector = () => Promise<AttachmentInspection>;
+
+export async function inspectProjectAttachment(
+  inspector: AttachmentInspector,
+): Promise<SdkResponse<AttachmentInspection>> {
+  return response(await inspector());
+}
+
 export type StartableWorkKind = "task" | "issue";
 
 export interface StartWorkInput {

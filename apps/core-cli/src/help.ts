@@ -161,7 +161,7 @@ Intent assessment:
   autoforge projects update <path> [--name <name>] [--alias <alias>] [--lifecycle <state>] [--retention-days <n>]
   autoforge projects register <path>
   autoforge projects prune [--dry-run]
-  autoforge attach <path>
+  autoforge attach <path> [--dry-run [--json]]
   autoforge detach <path>
   autoforge use <project-name> <command>
   autoforge agents list

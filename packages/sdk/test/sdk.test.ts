@@ -3,10 +3,31 @@ import { describe, expect, it, vi } from "vitest";
 import {
   assessIntent,
   createAutoForgeSdk,
+  inspectProjectAttachment,
   readProjectStatus,
 } from "../src/index.js";
 
 describe("internal AutoForge SDK foundation", () => {
+  it("returns structured attachment inspection without owning effects", async () => {
+    await expect(
+      inspectProjectAttachment(async () => ({
+        requestedPath: "/projects/demo/packages/app",
+        resolvedRoot: "/projects/demo",
+        repositoryKind: "git",
+        installationStatus: "absent",
+        registrationStatus: "unregistered",
+        actions: ["initialize", "register"],
+        conflicts: [],
+      })),
+    ).resolves.toMatchObject({
+      protocolVersion: "1",
+      data: {
+        resolvedRoot: "/projects/demo",
+        actions: ["initialize", "register"],
+      },
+    });
+  });
+
   it("returns structured project status through an injected reader", async () => {
     await expect(
       readProjectStatus(async () => ({
