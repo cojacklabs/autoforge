@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
-  "revision": 295,
-  "updatedAt": "2026-08-25T01:22:51.749Z",
+  "revision": 298,
+  "updatedAt": "2026-08-25T01:37:52.746Z",
   "data": {
     "features": [
       {
@@ -1392,13 +1392,15 @@
       {
         "name": "Extract model-independent Core services",
         "description": "Move project intelligence and orchestration services into packages/core one domain at a time with injected filesystem, Git, clock, and global-storage dependencies.",
-        "status": "planned",
+        "status": "completed",
         "createdAt": "2026-08-24T14:22:13.267Z",
-        "updatedAt": "2026-08-24T14:22:13.267Z",
+        "updatedAt": "2026-08-25T01:37:52.643Z",
         "id": "task.extract-model-independent-core-services",
         "phaseId": "phase.protocol-and-core-extraction",
         "scope": {
           "include": [
+            "package.json",
+            "pnpm-lock.yaml",
             "src/**",
             "packages/core/**",
             "test/**",

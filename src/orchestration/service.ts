@@ -1,11 +1,15 @@
 import { createHash, randomUUID } from "node:crypto";
 
+import {
+  planFromWorkState,
+  scopesOverlap,
+  type OrchestrationRepository,
+} from "@cojacklabs/autoforge-core/orchestration";
 import { AutoForgeError, EXIT_CODE } from "../core/errors.js";
 import {
   assertAgentContractCompatibility,
   normalizeAgentId,
 } from "../contract/capabilities.js";
-import type { WorkState } from "../work/schemas.js";
 import {
   orchestrationAssignmentPacketSchema,
   orchestrationHandoffInputSchema,
@@ -49,6 +53,7 @@ export interface ExplainWorkResult {
 export interface OrchestrationServiceOptions {
   now?: () => Date;
   id?: () => string;
+  store?: OrchestrationRepository;
   worktrees?: WorktreeManager;
   contextBudget?: number;
   contextProvider?: OrchestrationContextProvider;
@@ -70,31 +75,7 @@ function orchestrationError(
   });
 }
 
-function scopeRoot(pattern: string): string {
-  const normalized = pattern.replaceAll("\\", "/");
-  const wildcard = normalized.search(/[?*\[]/);
-  const prefix = wildcard === -1 ? normalized : normalized.slice(0, wildcard);
-  return prefix.replace(/\/$/, "");
-}
-
-export function scopesOverlap(
-  left: OrchestrationNode["scope"],
-  right: OrchestrationNode["scope"],
-): boolean {
-  return left.include.some((leftPattern) =>
-    right.include.some((rightPattern) => {
-      const leftRoot = scopeRoot(leftPattern);
-      const rightRoot = scopeRoot(rightPattern);
-      return (
-        leftRoot.length === 0 ||
-        rightRoot.length === 0 ||
-        leftRoot === rightRoot ||
-        leftRoot.startsWith(`${rightRoot}/`) ||
-        rightRoot.startsWith(`${leftRoot}/`)
-      );
-    }),
-  );
-}
+export { planFromWorkState, scopesOverlap };
 
 function requiredGateTypes(
   node: Pick<OrchestrationNode, "role" | "risk" | "releaseCritical" | "stage">,
@@ -177,30 +158,8 @@ function assertAcyclic(nodes: OrchestrationPlanInput["nodes"]): void {
   for (const node of nodes) visit(node.workId);
 }
 
-export function planFromWorkState(work: WorkState): OrchestrationPlanInput {
-  return orchestrationPlanInputSchema.parse({
-    nodes: [...work.tasks, ...work.issues]
-      .filter(
-        (item) => item.status !== "completed" && item.status !== "canceled",
-      )
-      .map((item) => ({
-        workId: item.id,
-        objective: item.description,
-        acceptanceCriteria: [],
-        stage: "implementation",
-        role: "general",
-        dependencies: [],
-        priority: item.status === "active" ? 100 : 50,
-        releaseCritical: false,
-        risk: "normal",
-        scope: item.scope,
-        requiredCapabilities: ["contextPackets", "contractValidation"],
-      })),
-  });
-}
-
 export class OrchestrationService {
-  private readonly store: OrchestrationStore;
+  private readonly store: OrchestrationRepository;
   private readonly projectRoot: string;
   private readonly now: () => Date;
   private readonly id: () => string;
@@ -210,7 +169,7 @@ export class OrchestrationService {
 
   constructor(projectRoot: string, options: OrchestrationServiceOptions = {}) {
     this.projectRoot = projectRoot;
-    this.store = new OrchestrationStore(projectRoot);
+    this.store = options.store ?? new OrchestrationStore(projectRoot);
     this.now = options.now ?? (() => new Date());
     this.id = options.id ?? randomUUID;
     this.worktrees = options.worktrees ?? new GitWorktreeManager();

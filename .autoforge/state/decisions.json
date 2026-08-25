@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
-  "revision": 59,
-  "updatedAt": "2026-08-25T01:22:27.900Z",
+  "revision": 60,
+  "updatedAt": "2026-08-25T01:37:51.758Z",
   "data": {
     "decisions": [
       {
@@ -1456,6 +1456,31 @@
         "kind": "architecture",
         "createdAt": "2026-08-25T01:22:27.876Z",
         "updatedAt": "2026-08-25T01:22:27.876Z"
+      },
+      {
+        "id": "decision.autoforge-core-begins-as-the-independently-buildable-cojacklabs-autoforge-core-p",
+        "statement": "AutoForge Core begins as the independently buildable @cojacklabs/autoforge-core package and owns deterministic project-intelligence and orchestration policy behind explicit effect ports.",
+        "reasoning": "Intent triage, readiness, workflow recommendation, planning generation, orchestration schemas, scope policy, and work projection are model-independent domain behavior. Moving them below the CLI while injecting clock, ID, persistence, filesystem, Git, context, and global-storage capabilities prevents application and provider concerns from becoming Core dependencies.",
+        "consequences": [
+          "The Core package begins at 0.1.0 and depends only on protocol plus general-purpose libraries; existing src intent, planning, and orchestration schema paths remain compatibility facades; the local CLI retains concrete adapters and can inject orchestration persistence; package-level and complete v0.24 compatibility gates remain mandatory."
+        ],
+        "scope": [
+          "project"
+        ],
+        "keywords": [
+          "architecture",
+          "core",
+          "dependency-injection",
+          "compatibility"
+        ],
+        "relatedWork": [
+          "task.extract-model-independent-core-services"
+        ],
+        "supersedes": null,
+        "status": "active",
+        "kind": "architecture",
+        "createdAt": "2026-08-25T01:37:51.732Z",
+        "updatedAt": "2026-08-25T01:37:51.732Z"
       }
     ]
   }
