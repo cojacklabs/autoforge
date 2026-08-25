@@ -22,10 +22,12 @@
 ### Task 1: Add `kind` field to the decision schema
 
 **Files:**
+
 - Modify: `src/decisions/schemas.ts`
 - Test: `test/decision-schemas.test.ts`
 
 **Interfaces:**
+
 - Produces: `decisionKindSchema` (Zod enum: `"architecture" | "bugfix" | "feature-note" | "skip-reason"`), exported `DecisionKind` type, and `decision.kind: DecisionKind` field (required in the schema, always present after parsing — callers that don't supply it get `"architecture"` via a default at the schema level).
 
 - [ ] **Step 1: Write the failing test**
@@ -125,7 +127,7 @@ export const decisionSchema = z
     createdAt: timestampSchema,
     updatedAt: timestampSchema,
   })
-  .strict()
+  .strict();
 ```
 
 Add the exported type near the bottom, next to `DecisionStatus`:
@@ -161,12 +163,14 @@ git commit -m "feat: add kind field to decision schema"
 ### Task 2: Thread `--kind` through `autoforge decide`
 
 **Files:**
+
 - Modify: `src/decisions/service.ts`
 - Modify: `src/commands/decide.ts`
 - Test: `test/decision-service.test.ts`
 - Test: `test/decide.test.ts`
 
 **Interfaces:**
+
 - Consumes: `decisionKindSchema`, `DecisionKind` from Task 1 (`src/decisions/schemas.js`).
 - Produces: `RecordDecisionInput.kind?: DecisionKind` (optional, defaults to `"architecture"` inside `DecisionService.record()`); `autoforge decide --kind <value>` CLI flag.
 
@@ -265,12 +269,18 @@ it("accepts an explicit --kind flag", async () => {
   await expect(
     runDecideCommand({
       args: [
-        "--statement", "Fix null pointer on empty cart.",
-        "--reasoning", "Cart total crashed when no items were present.",
-        "--consequence", "Guard the total calculation.",
-        "--scope", "checkout",
-        "--keyword", "bugfix",
-        "--kind", "bugfix",
+        "--statement",
+        "Fix null pointer on empty cart.",
+        "--reasoning",
+        "Cart total crashed when no items were present.",
+        "--consequence",
+        "Guard the total calculation.",
+        "--scope",
+        "checkout",
+        "--keyword",
+        "bugfix",
+        "--kind",
+        "bugfix",
       ],
       output,
       startDirectory: projectRoot,
@@ -284,13 +294,20 @@ it("rejects --kind provided more than once", async () => {
   await expect(
     runDecideCommand({
       args: [
-        "--statement", "Example.",
-        "--reasoning", "Example.",
-        "--consequence", "Example.",
-        "--scope", "example",
-        "--keyword", "example",
-        "--kind", "bugfix",
-        "--kind", "architecture",
+        "--statement",
+        "Example.",
+        "--reasoning",
+        "Example.",
+        "--consequence",
+        "Example.",
+        "--scope",
+        "example",
+        "--keyword",
+        "example",
+        "--kind",
+        "bugfix",
+        "--kind",
+        "architecture",
       ],
       output,
       startDirectory: projectRoot,
@@ -309,7 +326,12 @@ Expected: FAIL — `--kind` is rejected as `Unknown decide option: --kind` (exit
 Add `"--kind"` to `SINGLE_FLAGS`:
 
 ```typescript
-const SINGLE_FLAGS = new Set(["--statement", "--reasoning", "--supersedes", "--kind"]);
+const SINGLE_FLAGS = new Set([
+  "--statement",
+  "--reasoning",
+  "--supersedes",
+  "--kind",
+]);
 ```
 
 Add `kind?: string;` to `ParsedDecideArguments`:
@@ -330,7 +352,12 @@ interface ParsedDecideArguments {
 In `parseDecideArguments`, after the existing `supersedes` extraction, add kind validation and extraction:
 
 ```typescript
-const KNOWN_KINDS = new Set(["architecture", "bugfix", "feature-note", "skip-reason"]);
+const KNOWN_KINDS = new Set([
+  "architecture",
+  "bugfix",
+  "feature-note",
+  "skip-reason",
+]);
 
 const supersedes = singleValues.get("--supersedes");
 const kind = singleValues.get("--kind");
@@ -357,7 +384,8 @@ In `runDecideCommand`, pass `parsed.kind` through to `service.record`:
 ```typescript
 const result = await service.record({
   ...parsed,
-  kind: parsed.kind as import("../decisions/schemas.js").DecisionKind | undefined,
+  kind: parsed.kind as
+    import("../decisions/schemas.js").DecisionKind | undefined,
 });
 ```
 
@@ -389,11 +417,13 @@ git commit -m "feat: add --kind flag to autoforge decide"
 ### Task 3: Gate `autoforge done` on a linked decision for issues/tasks
 
 **Files:**
+
 - Modify: `src/commands/done.ts`
 - Modify: `test/done.test.ts` (existing "completes work from a nested project directory" test must be updated — it currently completes an issue with no linked decision)
 - Test: `test/done.test.ts` (new cases)
 
 **Interfaces:**
+
 - Consumes: `createDecisionStore` (`src/decisions/store.js`), `DecisionService` (`src/decisions/service.js`), `Decision`/`DecisionMemory` types (`src/decisions/schemas.js`); `work.data.activeWork: { kind: "task" | "issue"; id: string; startedAt: string } | null` (already read in `done.ts`).
 - Produces: `runDoneCommand` now accepts an additional CLI flag `--no-decision <reason>` (parsed from `options.args`, which was previously required to be empty — this changes `done`'s argument contract). Returns `EXIT_CODE.invalidState` (4) with a specific stderr message when the gate blocks.
 
@@ -410,9 +440,7 @@ it("blocks completion of an issue with no linked decision", async () => {
     runDoneCommand({ args: [], output, startDirectory: projectRoot }),
   ).resolves.toBe(EXIT_CODE.invalidState);
   expect(output.stderr).toHaveBeenCalledWith(
-    expect.stringContaining(
-      "before closing this issue, or pass --no-decision",
-    ),
+    expect.stringContaining("before closing this issue, or pass --no-decision"),
   );
 });
 
@@ -420,15 +448,17 @@ it("completes an issue with a linked decision", async () => {
   const { issue, projectRoot, workStore } = await createFixture();
   const { createDecisionStore } = await import("../src/decisions/store.js");
   const { DecisionService } = await import("../src/decisions/service.js");
-  await new DecisionService(createDecisionStore(projectRoot), workStore).record({
-    statement: "Document the done-command fixture.",
-    reasoning: "Required by the documentation gate.",
-    consequences: ["Recorded for test coverage."],
-    scope: ["testing"],
-    keywords: ["done-command"],
-    relatedWork: [issue.entity.id],
-    kind: "bugfix",
-  });
+  await new DecisionService(createDecisionStore(projectRoot), workStore).record(
+    {
+      statement: "Document the done-command fixture.",
+      reasoning: "Required by the documentation gate.",
+      consequences: ["Recorded for test coverage."],
+      scope: ["testing"],
+      keywords: ["done-command"],
+      relatedWork: [issue.entity.id],
+      kind: "bugfix",
+    },
+  );
   const output = { stdout: vi.fn(), stderr: vi.fn() };
 
   await expect(
@@ -493,7 +523,7 @@ Also check the `"preserves the lifecycle conflict when nothing is active"` test:
 - [ ] **Step 3: Run tests to verify failures**
 
 Run: `npx vitest run test/done.test.ts`
-Expected: the two updated existing tests now pass (decision now exists) is not yet true — at this point the *new* "blocks"/"completes with decision"/"bypasses" tests fail because `--no-decision` is rejected as an unexpected argument (`EXIT_CODE.usage`, not `invalidState`/`success`), and the "blocks" test fails because nothing currently blocks. Confirm output shows these specific failures before proceeding.
+Expected: the two updated existing tests now pass (decision now exists) is not yet true — at this point the _new_ "blocks"/"completes with decision"/"bypasses" tests fail because `--no-decision` is rejected as an unexpected argument (`EXIT_CODE.usage`, not `invalidState`/`success`), and the "blocks" test fails because nothing currently blocks. Confirm output shows these specific failures before proceeding.
 
 - [ ] **Step 4: Implement the gate in `src/commands/done.ts`**
 
@@ -566,7 +596,10 @@ export async function runDoneCommand(
   }
 
   const activeWork = work.data.activeWork;
-  if (activeWork && (activeWork.kind === "issue" || activeWork.kind === "task")) {
+  if (
+    activeWork &&
+    (activeWork.kind === "issue" || activeWork.kind === "task")
+  ) {
     const decisionStore = createDecisionStore(project.path);
     const { state: decisionMemory } = await decisionStore.read();
     const hasLinkedDecision = decisionMemory.data.decisions.some((decision) =>
@@ -656,12 +689,15 @@ git commit -m "feat: gate issue/task completion on a linked decision"
 ### Task 4: Build the changelog compiler core (pure function)
 
 **Files:**
+
 - Create: `src/changelog/compile.ts`
 - Test: `test/changelog/compile.test.ts`
 
 **Interfaces:**
+
 - Consumes: `Decision`, `DecisionKind` types from `src/decisions/schemas.js`.
 - Produces:
+
   ```typescript
   export interface CompileChangelogInput {
     decisions: readonly Decision[];
@@ -673,6 +709,7 @@ git commit -m "feat: gate issue/task completion on a linked decision"
     compiledSection: string,
   ): string;
   ```
+
   `compileChangelogSection` returns a Markdown string (empty string if no qualifying decisions). `upsertChangelogSection` inserts/replaces a clearly delimited block in the existing file content without touching anything outside it.
 
 - [ ] **Step 1: Write the failing test for `compileChangelogSection`**
@@ -782,7 +819,10 @@ describe("upsertChangelogSection", () => {
   ].join("\n");
 
   it("inserts the compiled section between the markers", () => {
-    const result = upsertChangelogSection(existing, "### Fixed\n\n- New fix.\n");
+    const result = upsertChangelogSection(
+      existing,
+      "### Fixed\n\n- New fix.\n",
+    );
     expect(result).toContain("<!-- autoforge:changelog:start -->");
     expect(result).toContain("### Fixed");
     expect(result).toContain("- New fix.");
@@ -798,7 +838,10 @@ describe("upsertChangelogSection", () => {
   });
 
   it("replaces prior compiled content on a subsequent run with different decisions", () => {
-    const once = upsertChangelogSection(existing, "### Fixed\n\n- First fix.\n");
+    const once = upsertChangelogSection(
+      existing,
+      "### Fixed\n\n- First fix.\n",
+    );
     const twice = upsertChangelogSection(
       once,
       "### Fixed\n\n- First fix.\n- Second fix.\n",
@@ -876,7 +919,10 @@ export function upsertChangelogSection(
   }
   const before = existingChangelog.slice(0, startIndex + START_MARKER.length);
   const after = existingChangelog.slice(endIndex);
-  const body = compiledSection.trim().length > 0 ? `\n${compiledSection.trim()}\n\n` : "\n";
+  const body =
+    compiledSection.trim().length > 0
+      ? `\n${compiledSection.trim()}\n\n`
+      : "\n";
   return `${before}${body}${after}`;
 }
 ```
@@ -903,9 +949,11 @@ git commit -m "feat: add pure changelog compilation and upsert functions"
 ### Task 5: Add the marker block to `CHANGELOG.md`
 
 **Files:**
+
 - Modify: `CHANGELOG.md`
 
 **Interfaces:**
+
 - Consumes: nothing (manual documentation edit).
 - Produces: `<!-- autoforge:changelog:start -->` / `<!-- autoforge:changelog:end -->` markers that `upsertChangelogSection` (Task 4) requires to exist.
 
@@ -918,7 +966,6 @@ Open `CHANGELOG.md`. Immediately after the existing note block (the one starting
 ```markdown
 <!-- autoforge:changelog:start -->
 <!-- autoforge:changelog:end -->
-
 ```
 
 The file should now read, in order: title, "All notable changes..." line, the historical-tracking note, the empty marker block, then the `## [0.21.1]` entry and everything below it, unchanged.
@@ -940,6 +987,7 @@ git commit -m "docs: add changelog compilation markers"
 ### Task 6: Wire `autoforge changelog compile` end-to-end
 
 **Files:**
+
 - Create: `src/commands/changelog.ts`
 - Modify: `src/cli/router.ts`
 - Modify: `src/cli/index.ts`
@@ -947,6 +995,7 @@ git commit -m "docs: add changelog compilation markers"
 - Test: `test/changelog-command.test.ts`
 
 **Interfaces:**
+
 - Consumes: `compileChangelogSection`, `upsertChangelogSection` from `src/changelog/compile.js` (Task 4); `createDecisionStore` from `src/decisions/store.js`; `discoverProjectRoot` from `src/core/project.js`; `execFile`/`promisify` pattern from `src/orchestration/worktrees.ts` for reading the latest git tag.
 - Produces: `runChangelogCommand(options): Promise<ExitCode>` with the same `{ args, output, startDirectory }` shape as every other command; wired into `CliDependencies.commands.changelog?(args): Promise<ExitCode>` in the router, following exactly the `constitution`/`domain` pattern already in `src/cli/router.ts:120-127` and `src/cli/index.ts:254-257`.
 
@@ -1005,11 +1054,9 @@ async function createFixture() {
     ].join("\n"),
   );
   await execFileAsync("git", ["add", "-A"], { cwd: projectRoot });
-  await execFileAsync(
-    "git",
-    ["commit", "-q", "-m", "initial", "--no-verify"],
-    { cwd: projectRoot },
-  );
+  await execFileAsync("git", ["commit", "-q", "-m", "initial", "--no-verify"], {
+    cwd: projectRoot,
+  });
   await execFileAsync("git", ["tag", "v0.1.0"], { cwd: projectRoot });
   return { projectRoot };
 }
@@ -1033,7 +1080,11 @@ describe("changelog compile command", () => {
     const output = { stdout: vi.fn(), stderr: vi.fn() };
 
     await expect(
-      runChangelogCommand({ args: ["compile"], output, startDirectory: projectRoot }),
+      runChangelogCommand({
+        args: ["compile"],
+        output,
+        startDirectory: projectRoot,
+      }),
     ).resolves.toBe(EXIT_CODE.success);
 
     const changelog = await readFile(
@@ -1053,7 +1104,11 @@ describe("changelog compile command", () => {
     const output = { stdout: vi.fn(), stderr: vi.fn() };
 
     await expect(
-      runChangelogCommand({ args: ["compile"], output, startDirectory: projectRoot }),
+      runChangelogCommand({
+        args: ["compile"],
+        output,
+        startDirectory: projectRoot,
+      }),
     ).resolves.toBe(EXIT_CODE.success);
 
     const after = await readFile(
@@ -1067,7 +1122,11 @@ describe("changelog compile command", () => {
     const { projectRoot } = await createFixture();
     const output = { stdout: vi.fn(), stderr: vi.fn() };
     await expect(
-      runChangelogCommand({ args: ["bogus"], output, startDirectory: projectRoot }),
+      runChangelogCommand({
+        args: ["bogus"],
+        output,
+        startDirectory: projectRoot,
+      }),
     ).resolves.toBe(EXIT_CODE.usage);
   });
 });
@@ -1086,7 +1145,10 @@ import { readFile, writeFile } from "node:fs/promises";
 import path from "node:path";
 import { promisify } from "node:util";
 
-import { compileChangelogSection, upsertChangelogSection } from "../changelog/compile.js";
+import {
+  compileChangelogSection,
+  upsertChangelogSection,
+} from "../changelog/compile.js";
 import { EXIT_CODE, type ExitCode } from "../core/errors.js";
 import type { LogWriter } from "../core/logger.js";
 import { discoverProjectRoot } from "../core/project.js";
@@ -1110,11 +1172,13 @@ async function resolveSinceTimestamp(
   sinceTag: string | undefined,
 ): Promise<string> {
   try {
-    const tag = sinceTag ?? (
-      await execFileAsync("git", ["describe", "--tags", "--abbrev=0"], {
-        cwd: projectRoot,
-      })
-    ).stdout.trim();
+    const tag =
+      sinceTag ??
+      (
+        await execFileAsync("git", ["describe", "--tags", "--abbrev=0"], {
+          cwd: projectRoot,
+        })
+      ).stdout.trim();
     const { stdout } = await execFileAsync(
       "git",
       ["log", "-1", "--format=%aI", tag],
@@ -1247,6 +1311,7 @@ git commit -m "feat: add autoforge changelog compile command"
 ### Task 7: Document the feature and record the governing decision
 
 **Files:**
+
 - Create: `docs/planning/0.22-pre/DOCUMENTATION_GATE.md` (if `docs/planning/0.22/` does not yet exist as of implementation time, use `docs/planning/0.22-pre/`; if v0.22 planning has already started, place this file in `docs/planning/0.22/` instead — check `ls docs/planning/` before creating the directory)
 - Modify: `README.md` (if it documents the `done`/`decide` command surface — check for an existing section first)
 

@@ -12,7 +12,7 @@ npm install --global @cojacklabs/autoforge
 # or: yarn global add @cojacklabs/autoforge
 # or: pnpm add --global @cojacklabs/autoforge
 
-autoforge init
+autoforge attach "$PWD"
 autoforge doctor
 ```
 
@@ -22,12 +22,17 @@ Node available and no retained global package cache:
 
 ```bash
 npm install --save-dev @cojacklabs/autoforge
-npx autoforge init
+npx autoforge attach "$PWD"
 npx autoforge doctor
 ```
 
 See `docs/QUICKSTART.md` for the full first-session walkthrough (adding
 work, running it, and querying project memory).
+
+Existing installations upgrading across the platform split should review the
+[migration guide](docs/planning/0.25/MIGRATION_GUIDE.md). The deterministic
+Core CLI remains locally usable without an account; the separately installed
+Agent is optional and experimental.
 
 ## Starting From Scratch
 
@@ -137,7 +142,16 @@ autoforge design import dev/design/screen.md
 Use `autoforge recap` for handoffs, `autoforge status --json` for automation,
 and `autoforge doctor` for installation health. The former interactive
 `autoforge tui` is deprecated and temporarily aliases deterministic status
-output; interactive prompting belongs to the separate AutoForge Agent.
+output. With the separate AutoForge Agent installed, bare `autoforge` launches
+it in an interactive terminal; CI, pipes, redirected output, and unavailable
+Agent installations retain deterministic status. Local provider credentials
+can be managed through the allowlisted Core proxy:
+
+```bash
+autoforge credentials set openai
+autoforge credentials status openai
+autoforge credentials delete openai
+```
 
 When a registered project changes location, preserve its global history with:
 

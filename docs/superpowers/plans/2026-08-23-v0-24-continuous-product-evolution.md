@@ -1296,9 +1296,8 @@ it("surfaces validation evidence beneath a matched decision via related work", a
     relatedWork: [feature.entity.id],
   });
 
-  const { ValidationEvidenceStore } = await import(
-    "../src/quality/evidence.js"
-  );
+  const { ValidationEvidenceStore } =
+    await import("../src/quality/evidence.js");
   await new ValidationEvidenceStore(projectRoot).record({
     id: "evidence.command.tests.1",
     gateId: "command.tests",

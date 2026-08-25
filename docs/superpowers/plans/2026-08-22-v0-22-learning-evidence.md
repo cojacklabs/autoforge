@@ -25,6 +25,7 @@
 ### Task 1: Hypothesis domain (schema, store, service, command)
 
 **Files:**
+
 - Create: `src/learning/hypothesis-schemas.ts`
 - Create: `src/learning/hypothesis-store.ts`
 - Create: `src/learning/hypothesis-service.ts`
@@ -35,16 +36,30 @@
 - Test: `test/learning-hypothesis-command.test.ts`
 
 **Interfaces:**
+
 - Consumes: `AtomicStateStore`, `StateEnvelope`, `createStateEnvelopeSchema`, `STATE_SCHEMA_VERSION` from `src/state/store.js`/`src/state/schemas.js`; `relatedWorkIdSchema` pattern from `src/decisions/schemas.js` (do not import it directly — duplicate the regex locally, matching how `src/decisions/schemas.ts` itself defines it inline, to keep `src/learning/` self-contained per the module-boundary convention already used for `src/decisions/`, `src/planning/`, etc.).
 - Produces:
   ```typescript
   // hypothesis-schemas.ts
-  export const hypothesisIdSchema: z.ZodType<string>;   // /^hypothesis\.[a-z0-9][a-z0-9._-]*$/
-  export const hypothesisStatusSchema: z.ZodEnum<["proposed", "testing", "confirmed", "refuted"]>;
+  export const hypothesisIdSchema: z.ZodType<string>; // /^hypothesis\.[a-z0-9][a-z0-9._-]*$/
+  export const hypothesisStatusSchema: z.ZodEnum<
+    ["proposed", "testing", "confirmed", "refuted"]
+  >;
   export const hypothesisSchema: z.ZodType<Hypothesis>;
   export const hypothesisMemorySchema: z.ZodType<HypothesisMemory>; // { hypotheses: Hypothesis[] }
-  export type Hypothesis = { id: string; statement: string; expectedOutcome: string; metric: string; target: string; linkedFeature: string | null; status: HypothesisStatus; createdAt: string; updatedAt: string };
-  export type HypothesisStatus = "proposed" | "testing" | "confirmed" | "refuted";
+  export type Hypothesis = {
+    id: string;
+    statement: string;
+    expectedOutcome: string;
+    metric: string;
+    target: string;
+    linkedFeature: string | null;
+    status: HypothesisStatus;
+    createdAt: string;
+    updatedAt: string;
+  };
+  export type HypothesisStatus =
+    "proposed" | "testing" | "confirmed" | "refuted";
   export type HypothesisMemory = { hypotheses: Hypothesis[] };
 
   // hypothesis-store.ts
@@ -56,12 +71,28 @@
   }
 
   // hypothesis-service.ts
-  export interface RecordHypothesisInput { statement: string; expectedOutcome: string; metric: string; target: string; linkedFeature?: string };
-  export interface HypothesisMutationResult { hypothesis: Hypothesis; revision: number };
+  export interface RecordHypothesisInput {
+    statement: string;
+    expectedOutcome: string;
+    metric: string;
+    target: string;
+    linkedFeature?: string;
+  }
+  export interface HypothesisMutationResult {
+    hypothesis: Hypothesis;
+    revision: number;
+  }
   export class HypothesisService {
-    constructor(store: HypothesisStore, workStore: AtomicStateStore<WorkState>, options?: { now?: () => Date });
+    constructor(
+      store: HypothesisStore,
+      workStore: AtomicStateStore<WorkState>,
+      options?: { now?: () => Date },
+    );
     record(input: RecordHypothesisInput): Promise<HypothesisMutationResult>;
-    setStatus(id: string, status: HypothesisStatus): Promise<HypothesisMutationResult>;
+    setStatus(
+      id: string,
+      status: HypothesisStatus,
+    ): Promise<HypothesisMutationResult>;
   }
   ```
 - Later tasks (2, 3, 5) consume `hypothesisIdSchema`, `Hypothesis`, `HypothesisStore`, `HypothesisService.record`'s return shape.
@@ -253,10 +284,7 @@ describe("hypothesis store", () => {
     temporaryDirectories.push(projectRoot);
     const store = new HypothesisStore(projectRoot);
     await store.ensure();
-    await store.state.write(
-      { hypotheses: [] },
-      { expectedRevision: 0 },
-    );
+    await store.state.write({ hypotheses: [] }, { expectedRevision: 0 });
     await store.ensure();
     await expect(store.state.read()).resolves.toMatchObject({
       state: { revision: 1 },
@@ -424,10 +452,7 @@ describe("hypothesis service", () => {
       metric: "example",
       target: "example",
     });
-    const updated = await service.setStatus(
-      created.hypothesis.id,
-      "confirmed",
-    );
+    const updated = await service.setStatus(created.hypothesis.id, "confirmed");
     expect(updated.hypothesis.status).toBe("confirmed");
   });
 
@@ -715,12 +740,7 @@ describe("learning hypothesis command", () => {
     });
     await expect(
       runLearningHypothesisCommand({
-        args: [
-          "status",
-          "hypothesis.example",
-          "--status",
-          "confirmed",
-        ],
+        args: ["status", "hypothesis.example", "--status", "confirmed"],
         output,
         startDirectory: projectRoot,
       }),
@@ -919,6 +939,7 @@ git commit -m "feat: add hypothesis domain (schema, store, service, command)"
 ### Task 2: Experiment domain (schema, store, service, command)
 
 **Files:**
+
 - Create: `src/learning/experiment-schemas.ts`
 - Create: `src/learning/experiment-store.ts`
 - Create: `src/learning/experiment-service.ts`
@@ -929,25 +950,46 @@ git commit -m "feat: add hypothesis domain (schema, store, service, command)"
 - Test: `test/learning-experiment-command.test.ts`
 
 **Interfaces:**
+
 - Consumes: `hypothesisIdSchema`, `Hypothesis` from Task 1 (`src/learning/hypothesis-schemas.js`); `HypothesisStore` from Task 1 to validate `hypothesisIds` reference real hypotheses (same "validate against a related store" pattern as `DecisionService` validating `relatedWork` against `WorkState`).
 - Produces:
   ```typescript
   // experiment-schemas.ts
-  export const experimentIdSchema: z.ZodType<string>;   // /^experiment\.[a-z0-9][a-z0-9._-]*$/
-  export const experimentStatusSchema: z.ZodEnum<["planned", "running", "completed", "abandoned"]>;
+  export const experimentIdSchema: z.ZodType<string>; // /^experiment\.[a-z0-9][a-z0-9._-]*$/
+  export const experimentStatusSchema: z.ZodEnum<
+    ["planned", "running", "completed", "abandoned"]
+  >;
   export const experimentSchema: z.ZodType<Experiment>;
   export const experimentMemorySchema: z.ZodType<ExperimentMemory>;
-  export type Experiment = { id: string; hypothesisIds: string[]; method: string; status: ExperimentStatus; startedAt: string; endedAt: string | null; createdAt: string; updatedAt: string };
-  export type ExperimentStatus = "planned" | "running" | "completed" | "abandoned";
+  export type Experiment = {
+    id: string;
+    hypothesisIds: string[];
+    method: string;
+    status: ExperimentStatus;
+    startedAt: string;
+    endedAt: string | null;
+    createdAt: string;
+    updatedAt: string;
+  };
+  export type ExperimentStatus =
+    "planned" | "running" | "completed" | "abandoned";
   export type ExperimentMemory = { experiments: Experiment[] };
 
   // experiment-store.ts — same shape as HypothesisStore
-  export class ExperimentStore { readonly state: AtomicStateStore<ExperimentMemory>; ensure(): Promise<void>; }
+  export class ExperimentStore {
+    readonly state: AtomicStateStore<ExperimentMemory>;
+    ensure(): Promise<void>;
+  }
 
   // experiment-service.ts
-  export interface RecordExperimentInput { hypothesisIds: string[]; method: string };
+  export interface RecordExperimentInput {
+    hypothesisIds: string[];
+    method: string;
+  }
   export class ExperimentService {
-    record(input: RecordExperimentInput): Promise<{ experiment: Experiment; revision: number }>;
+    record(
+      input: RecordExperimentInput,
+    ): Promise<{ experiment: Experiment; revision: number }>;
     complete(id: string): Promise<{ experiment: Experiment; revision: number }>;
   }
   ```
@@ -1063,7 +1105,9 @@ export const experimentSchema = z
   })
   .strict()
   .superRefine((experiment, context) => {
-    if (new Set(experiment.hypothesisIds).size !== experiment.hypothesisIds.length) {
+    if (
+      new Set(experiment.hypothesisIds).size !== experiment.hypothesisIds.length
+    ) {
       context.addIssue({
         code: "custom",
         message: "hypothesisIds values must be unique",
@@ -1296,10 +1340,7 @@ Expected: FAIL — module `src/learning/experiment-service.ts` does not exist.
 
 ```typescript
 import { AutoForgeError, EXIT_CODE } from "../core/errors.js";
-import {
-  experimentSchema,
-  type Experiment,
-} from "./experiment-schemas.js";
+import { experimentSchema, type Experiment } from "./experiment-schemas.js";
 import type { ExperimentStore } from "./experiment-store.js";
 import type { HypothesisStore } from "./hypothesis-store.js";
 
@@ -1548,9 +1589,7 @@ export async function runLearningExperimentCommand(
     }
     if (action === "complete" && rest[0] && rest.length === 1) {
       const result = await service.complete(rest[0]);
-      options.output.stdout(
-        `Completed experiment ${result.experiment.id}.`,
-      );
+      options.output.stdout(`Completed experiment ${result.experiment.id}.`);
       return EXIT_CODE.success;
     }
     return usage(options.output);
@@ -1588,6 +1627,7 @@ git commit -m "feat: add experiment domain (schema, store, service, command)"
 ### Task 3: Evidence domain (schema, store, service, command)
 
 **Files:**
+
 - Create: `src/learning/evidence-schemas.ts`
 - Create: `src/learning/evidence-store.ts`
 - Create: `src/learning/evidence-service.ts`
@@ -1598,30 +1638,73 @@ git commit -m "feat: add experiment domain (schema, store, service, command)"
 - Test: `test/learning-evidence-command.test.ts`
 
 **Interfaces:**
+
 - Consumes: `hypothesisIdSchema` (Task 1), `experimentIdSchema` (Task 2), `HypothesisStore` (Task 1), `ExperimentStore` (Task 2).
 - Produces:
   ```typescript
   // evidence-schemas.ts
-  export const evidenceIdSchema: z.ZodType<string>;   // /^evidence\.[a-z0-9][a-z0-9._-]*$/
-  export const evidenceKindSchema: z.ZodEnum<[
-    "analytics", "beta-feedback", "support-ticket", "bug-report",
-    "usability-study", "experiment-result", "performance-metric",
-    "interview", "ai-evaluation",
-  ]>;
+  export const evidenceIdSchema: z.ZodType<string>; // /^evidence\.[a-z0-9][a-z0-9._-]*$/
+  export const evidenceKindSchema: z.ZodEnum<
+    [
+      "analytics",
+      "beta-feedback",
+      "support-ticket",
+      "bug-report",
+      "usability-study",
+      "experiment-result",
+      "performance-metric",
+      "interview",
+      "ai-evaluation",
+    ]
+  >;
   export const evidenceSchema: z.ZodType<Evidence>;
   export const evidenceMemorySchema: z.ZodType<EvidenceMemory>;
-  export type Evidence = { id: string; kind: EvidenceKind; summary: string; source: string; experimentId: string | null; hypothesisId: string | null; relatedWork: string | null; resultingDecision: string | null; capturedAt: string };
-  export type EvidenceKind = "analytics" | "beta-feedback" | "support-ticket" | "bug-report" | "usability-study" | "experiment-result" | "performance-metric" | "interview" | "ai-evaluation";
+  export type Evidence = {
+    id: string;
+    kind: EvidenceKind;
+    summary: string;
+    source: string;
+    experimentId: string | null;
+    hypothesisId: string | null;
+    relatedWork: string | null;
+    resultingDecision: string | null;
+    capturedAt: string;
+  };
+  export type EvidenceKind =
+    | "analytics"
+    | "beta-feedback"
+    | "support-ticket"
+    | "bug-report"
+    | "usability-study"
+    | "experiment-result"
+    | "performance-metric"
+    | "interview"
+    | "ai-evaluation";
   export type EvidenceMemory = { evidence: Evidence[] };
 
   // evidence-store.ts — same shape as HypothesisStore/ExperimentStore
-  export class EvidenceStore { readonly state: AtomicStateStore<EvidenceMemory>; ensure(): Promise<void>; }
+  export class EvidenceStore {
+    readonly state: AtomicStateStore<EvidenceMemory>;
+    ensure(): Promise<void>;
+  }
 
   // evidence-service.ts
-  export interface RecordEvidenceInput { kind: EvidenceKind; summary: string; source: string; experimentId?: string; hypothesisId?: string; relatedWork?: string };
+  export interface RecordEvidenceInput {
+    kind: EvidenceKind;
+    summary: string;
+    source: string;
+    experimentId?: string;
+    hypothesisId?: string;
+    relatedWork?: string;
+  }
   export class EvidenceService {
-    record(input: RecordEvidenceInput): Promise<{ evidence: Evidence; revision: number }>;
-    stampResultingDecision(evidenceIds: string[], decisionId: string): Promise<void>;
+    record(
+      input: RecordEvidenceInput,
+    ): Promise<{ evidence: Evidence; revision: number }>;
+    stampResultingDecision(
+      evidenceIds: string[],
+      decisionId: string,
+    ): Promise<void>;
   }
   ```
 - Task 5 (`decide --evidence`) consumes `EvidenceStore`, `EvidenceService.stampResultingDecision`.
@@ -1699,7 +1782,11 @@ describe("evidence schema", () => {
   it("rejects evidence with no experiment, hypothesis, or related work", () => {
     expect(() =>
       evidenceSchema.parse(
-        baseEvidence({ experimentId: null, hypothesisId: null, relatedWork: null }),
+        baseEvidence({
+          experimentId: null,
+          hypothesisId: null,
+          relatedWork: null,
+        }),
       ),
     ).toThrow();
   });
@@ -2119,7 +2206,8 @@ export class EvidenceService {
 
     if (input.experimentId) {
       await this.experimentStore.ensure();
-      const { state: experimentState } = await this.experimentStore.state.read();
+      const { state: experimentState } =
+        await this.experimentStore.state.read();
       const known = new Set(
         experimentState.data.experiments.map((item) => item.id),
       );
@@ -2131,7 +2219,8 @@ export class EvidenceService {
     }
     if (input.hypothesisId) {
       await this.hypothesisStore.ensure();
-      const { state: hypothesisState } = await this.hypothesisStore.state.read();
+      const { state: hypothesisState } =
+        await this.hypothesisStore.state.read();
       const known = new Set(
         hypothesisState.data.hypotheses.map((item) => item.id),
       );
@@ -2178,7 +2267,9 @@ export class EvidenceService {
       (id) => !memoryState.data.evidence.some((item) => item.id === id),
     );
     if (unknown.length > 0) {
-      throw evidenceError("Unknown evidence id", { unknownEvidenceIds: unknown });
+      throw evidenceError("Unknown evidence id", {
+        unknownEvidenceIds: unknown,
+      });
     }
     const evidence = memoryState.data.evidence.map((item) =>
       targetIds.has(item.id)
@@ -2312,9 +2403,7 @@ export async function runLearningEvidenceCommand(
     if (action === "show" && rest[0]) {
       await evidenceStore.ensure();
       const { state } = await evidenceStore.state.read();
-      const found = state.data.evidence.find(
-        (record) => record.id === rest[0],
-      );
+      const found = state.data.evidence.find((record) => record.id === rest[0]);
       if (!found) return EXIT_CODE.notFound;
       options.output.stdout(JSON.stringify(found, null, 2));
       return EXIT_CODE.success;
@@ -2354,6 +2443,7 @@ git commit -m "feat: add evidence domain (schema, store, service, command)"
 ### Task 4: Wire `autoforge learning` into the CLI router
 
 **Files:**
+
 - Modify: `src/cli/router.ts`
 - Modify: `src/cli/index.ts`
 - Modify: `src/cli/help.ts`
@@ -2361,6 +2451,7 @@ git commit -m "feat: add evidence domain (schema, store, service, command)"
 - Test: `test/learning-command.test.ts`
 
 **Interfaces:**
+
 - Consumes: `runLearningHypothesisCommand` (Task 1), `runLearningExperimentCommand` (Task 2), `runLearningEvidenceCommand` (Task 3).
 - Produces: a single `runLearningCommand(options): Promise<ExitCode>` dispatcher (new file `src/commands/learning.ts`) that routes `autoforge learning hypothesis|experiment|evidence <rest>` to the three sub-commands, wired into `CliDependencies.commands.learning?(args): Promise<ExitCode>` following exactly the `changelog` pattern already in `src/cli/router.ts` and `src/cli/index.ts`.
 
@@ -2601,6 +2692,7 @@ git commit -m "feat: wire autoforge learning command family into the CLI"
 ### Task 5: Close the loop — `decide --evidence`
 
 **Files:**
+
 - Modify: `src/decisions/service.ts`
 - Modify: `src/commands/decide.ts`
 - Modify: `src/cli/help.ts`
@@ -2608,6 +2700,7 @@ git commit -m "feat: wire autoforge learning command family into the CLI"
 - Test: `test/decide.test.ts`
 
 **Interfaces:**
+
 - Consumes: `EvidenceStore`, `EvidenceService.stampResultingDecision` (Task 3).
 - Produces: `DecisionService.record()` accepts a new optional `evidence?: string[]` field on `RecordDecisionInput`; after committing the decision, it stamps `resultingDecision` on each referenced evidence record. `autoforge decide` gains a repeatable `--evidence <id>` flag.
 
@@ -2619,15 +2712,12 @@ Add to `test/decision-service.test.ts`. The file's existing `createFixture()` (a
 it("stamps resultingDecision on referenced evidence", async () => {
   const { decisionStore, service: baseService } = await createFixture();
   const { EvidenceStore } = await import("../src/learning/evidence-store.js");
-  const { EvidenceService } = await import(
-    "../src/learning/evidence-service.js"
-  );
-  const { ExperimentStore } = await import(
-    "../src/learning/experiment-store.js"
-  );
-  const { HypothesisStore } = await import(
-    "../src/learning/hypothesis-store.js"
-  );
+  const { EvidenceService } =
+    await import("../src/learning/evidence-service.js");
+  const { ExperimentStore } =
+    await import("../src/learning/experiment-store.js");
+  const { HypothesisStore } =
+    await import("../src/learning/hypothesis-store.js");
   const evidenceStore = new EvidenceStore(projectRoot);
   await evidenceStore.ensure();
   const evidenceResult = await new EvidenceService(
@@ -2738,18 +2828,18 @@ export class DecisionService {
 After the decision is committed (end of `record()`, before `return`), add:
 
 ```typescript
-    if (input.evidence && input.evidence.length > 0) {
-      if (!this.evidenceService) {
-        throw decisionError(
-          "Decision references evidence but no evidence service is configured",
-          { evidence: input.evidence },
-        );
-      }
-      await this.evidenceService.stampResultingDecision(
-        input.evidence,
-        decision.id,
-      );
-    }
+if (input.evidence && input.evidence.length > 0) {
+  if (!this.evidenceService) {
+    throw decisionError(
+      "Decision references evidence but no evidence service is configured",
+      { evidence: input.evidence },
+    );
+  }
+  await this.evidenceService.stampResultingDecision(
+    input.evidence,
+    decision.id,
+  );
+}
 ```
 
 - [ ] **Step 4: Run test to verify it passes**
@@ -2764,9 +2854,8 @@ Add to `test/decide.test.ts`, inside the existing `describe("decide command", ..
 ```typescript
 it("stamps resultingDecision when --evidence is provided", async () => {
   const { feature, projectRoot } = await createFixture();
-  const { runLearningEvidenceCommand } = await import(
-    "../src/commands/learning-evidence.js"
-  );
+  const { runLearningEvidenceCommand } =
+    await import("../src/commands/learning-evidence.js");
   const evidenceOutput = { stdout: vi.fn(), stderr: vi.fn() };
   await runLearningEvidenceCommand({
     args: [
@@ -2787,11 +2876,7 @@ it("stamps resultingDecision when --evidence is provided", async () => {
   const output = { stdout: vi.fn(), stderr: vi.fn() };
   await expect(
     runDecideCommand({
-      args: [
-        ...decisionArgs(),
-        "--evidence",
-        "evidence.example-bug-report",
-      ],
+      args: [...decisionArgs(), "--evidence", "evidence.example-bug-report"],
       output,
       startDirectory: projectRoot,
     }),
@@ -2801,8 +2886,9 @@ it("stamps resultingDecision when --evidence is provided", async () => {
   const evidenceStore = new EvidenceStore(projectRoot);
   const { state } = await evidenceStore.state.read();
   expect(
-    state.data.evidence.find((item) => item.id === "evidence.example-bug-report")
-      ?.resultingDecision,
+    state.data.evidence.find(
+      (item) => item.id === "evidence.example-bug-report",
+    )?.resultingDecision,
   ).toBe("decision.use-deterministic-search");
 });
 
@@ -2857,17 +2943,17 @@ interface ParsedDecideArguments {
 ```
 
 ```typescript
-  return {
-    statement,
-    reasoning,
-    consequences,
-    scope,
-    keywords,
-    relatedWork: repeatableValues.get("--work") ?? [],
-    evidence: repeatableValues.get("--evidence") ?? [],
-    ...(supersedes ? { supersedes } : {}),
-    ...(kind ? { kind } : {}),
-  };
+return {
+  statement,
+  reasoning,
+  consequences,
+  scope,
+  keywords,
+  relatedWork: repeatableValues.get("--work") ?? [],
+  evidence: repeatableValues.get("--evidence") ?? [],
+  ...(supersedes ? { supersedes } : {}),
+  ...(kind ? { kind } : {}),
+};
 ```
 
 In `runDecideCommand`, construct the `DecisionService` with an `EvidenceService`:
@@ -2880,29 +2966,29 @@ import { HypothesisStore } from "../learning/hypothesis-store.js";
 ```
 
 ```typescript
-  const service = new DecisionService(
-    createDecisionStore(project.path),
-    createWorkStateStore(project.path),
-    {
-      evidenceService: new EvidenceService(
-        new EvidenceStore(project.path),
-        new ExperimentStore(project.path),
-        new HypothesisStore(project.path),
-      ),
-    },
-  );
+const service = new DecisionService(
+  createDecisionStore(project.path),
+  createWorkStateStore(project.path),
+  {
+    evidenceService: new EvidenceService(
+      new EvidenceStore(project.path),
+      new ExperimentStore(project.path),
+      new HypothesisStore(project.path),
+    ),
+  },
+);
 ```
 
 Update the `service.record({...rest, ...})` call to include `evidence: rest.evidence`:
 
 ```typescript
-    const { kind, ...rest } = parsed;
-    const result = await service.record({
-      ...rest,
-      ...(kind
-        ? { kind: kind as import("../decisions/schemas.js").DecisionKind }
-        : {}),
-    });
+const { kind, ...rest } = parsed;
+const result = await service.record({
+  ...rest,
+  ...(kind
+    ? { kind: kind as import("../decisions/schemas.js").DecisionKind }
+    : {}),
+});
 ```
 
 (`rest` already includes `evidence` since it's spread from `parsed` — no change needed here beyond what's shown, since `evidence` is already a top-level field on `ParsedDecideArguments` after Step 7's earlier edit. Verify this is genuinely a no-op by checking the spread includes it; if TypeScript flags a mismatch against `RecordDecisionInput`, the field names already match (`evidence: string[]` on both sides), so no additional mapping should be required.)
@@ -2937,6 +3023,7 @@ git commit -m "feat: close the evidence-to-decision loop via decide --evidence"
 ### Task 6: Twin projection integration
 
 **Files:**
+
 - Modify: `src/twin/schemas.ts`
 - Modify: `src/twin/from-state.ts`
 - Modify: `src/commands/twin.ts`
@@ -2945,6 +3032,7 @@ git commit -m "feat: close the evidence-to-decision loop via decide --evidence"
 - Modify: `test/twin-command.test.ts`
 
 **Interfaces:**
+
 - Consumes: `Hypothesis`/`HypothesisStore` (Task 1), `Experiment`/`ExperimentStore` (Task 2), `Evidence`/`EvidenceStore` (Task 3).
 - Produces: `twinNodeTypeSchema` gains `"hypothesis"` and `"experiment"` (`"evidence"` already exists in the enum, unused until now). `TwinStateInput` gains `hypotheses: HypothesisMemory`, `experiments: ExperimentMemory`, `evidence: EvidenceMemory` fields; `projectStateToTwin` produces nodes/edges for all three.
 
@@ -3076,15 +3164,15 @@ it("projects hypotheses, experiments, and evidence as nodes with edges", () => {
     evidence: { evidence: [evidence] },
   });
 
-  expect(
-    projection.nodes.find((node) => node.id === hypothesis.id)?.type,
-  ).toBe("hypothesis");
-  expect(
-    projection.nodes.find((node) => node.id === experiment.id)?.type,
-  ).toBe("experiment");
-  expect(
-    projection.nodes.find((node) => node.id === evidence.id)?.type,
-  ).toBe("evidence");
+  expect(projection.nodes.find((node) => node.id === hypothesis.id)?.type).toBe(
+    "hypothesis",
+  );
+  expect(projection.nodes.find((node) => node.id === experiment.id)?.type).toBe(
+    "experiment",
+  );
+  expect(projection.nodes.find((node) => node.id === evidence.id)?.type).toBe(
+    "evidence",
+  );
   expect(projection.edges).toContainEqual({
     sourceId: experiment.id,
     targetId: hypothesis.id,
@@ -3213,38 +3301,38 @@ import { HypothesisStore } from "../learning/hypothesis-store.js";
 In the `action === "generate"` branch, before calling `projectStateToTwin`:
 
 ```typescript
-    const hypothesisStore = new HypothesisStore(project.path);
-    const experimentStore = new ExperimentStore(project.path);
-    const evidenceStore = new EvidenceStore(project.path);
-    await Promise.all([
-      hypothesisStore.ensure(),
-      experimentStore.ensure(),
-      evidenceStore.ensure(),
-    ]);
-    const [
-      { state: work },
-      { state: decisions },
-      { state: hypotheses },
-      { state: experiments },
-      { state: evidence },
-    ] = await Promise.all([
-      createWorkStateStore(project.path).read(),
-      createDecisionStore(project.path).read(),
-      hypothesisStore.state.read(),
-      experimentStore.state.read(),
-      evidenceStore.state.read(),
-    ]);
-    const projection = await store.write(
-      projectStateToTwin({
-        projectId: path.resolve(project.path),
-        generatedAt,
-        work: work.data,
-        decisions: decisions.data,
-        hypotheses: hypotheses.data,
-        experiments: experiments.data,
-        evidence: evidence.data,
-      }),
-    );
+const hypothesisStore = new HypothesisStore(project.path);
+const experimentStore = new ExperimentStore(project.path);
+const evidenceStore = new EvidenceStore(project.path);
+await Promise.all([
+  hypothesisStore.ensure(),
+  experimentStore.ensure(),
+  evidenceStore.ensure(),
+]);
+const [
+  { state: work },
+  { state: decisions },
+  { state: hypotheses },
+  { state: experiments },
+  { state: evidence },
+] = await Promise.all([
+  createWorkStateStore(project.path).read(),
+  createDecisionStore(project.path).read(),
+  hypothesisStore.state.read(),
+  experimentStore.state.read(),
+  evidenceStore.state.read(),
+]);
+const projection = await store.write(
+  projectStateToTwin({
+    projectId: path.resolve(project.path),
+    generatedAt,
+    work: work.data,
+    decisions: decisions.data,
+    hypotheses: hypotheses.data,
+    experiments: experiments.data,
+    evidence: evidence.data,
+  }),
+);
 ```
 
 (Replace the existing `Promise.all`/`projectStateToTwin` call block entirely with this — do not leave the old two-store version alongside it.)

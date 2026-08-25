@@ -28,9 +28,31 @@ autoforge done
 autoforge recap
 ```
 
-Bare `autoforge` prints the concise summary view with relevant next commands and
-guidance to run `autoforge help`. Status views are fixed, bounded projections;
-`--json` returns the protocol-versioned structured status envelope.
+Bare `autoforge` delegates to the separately installed `autoforge-agent` only
+in an eligible interactive terminal. CI, pipes, redirected output, recursive
+launches, an explicit `AUTOFORGE_NO_AGENT=1`, and missing or incompatible Agent
+installations retain the concise deterministic status fallback. `autoforge
+status`, `status --json`, and every explicit Core subcommand remain
+deterministic. Status views are fixed, bounded projections; `--json` returns the
+protocol-versioned structured status envelope.
+
+With active work, `autoforge gate check` automatically inspects tracked and
+untracked Git changes that match the task or issue scope. Use `--path <file>`
+or `--files <file,file>` to validate explicit unchanged files or paths in a
+non-Git project.
+
+Core also proxies the explicitly allowlisted Agent-owned credential namespace:
+
+```bash
+autoforge credentials set openai
+autoforge credentials status openai
+autoforge credentials delete openai
+```
+
+These commands negotiate the Agent launcher protocol and spawn
+`autoforge-agent credentials ...`; Core never imports credential or provider
+code. Unlike bare invocation, a missing or incompatible Agent produces
+actionable guidance rather than status fallback.
 
 ## Memory and Planning
 
@@ -175,6 +197,12 @@ Applicable constitution rules are embedded in canonical context. Required and
 prohibited actions derive from governance plus the selected agent contract, and
 validation requirements derive from configured project quality gates.
 
+Workflow-stage and orchestration handoff commands retain their existing
+contracts. Provider-neutral cross-agent continuity uses the supported SDK
+handoff contract and canonical `.autoforge/handoffs/*.json` records; see
+[`CROSS_AGENT_HANDOFFS.md`](./CROSS_AGENT_HANDOFFS.md). Raw transcripts are not
+part of that contract and remain disabled by default.
+
 ## Global Workspace
 
 ```bash
@@ -210,7 +238,11 @@ registration, and conflicts without writing project or global state.
 been moved and migrates path-derived global storage. The destination must be an
 initialized AutoForge project with the same project identity. Use `--planned`
 before moving the directory to record the intended destination without changing
-the active registry path. `move` is an alias for `relocate`.
+the active registry path. When an Agent contract exists, completed relocation
+also repairs its absolute `projectRoot`; a missing contract is valid optional
+state, while a malformed contract produces regeneration guidance without
+rolling back the successful registry relocation. `move` is an alias for
+`relocate`.
 
 ## Bootstrap, Migration, and Updates
 

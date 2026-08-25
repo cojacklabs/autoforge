@@ -81,7 +81,7 @@ Two changes, both requested by the issue:
   independently — audit at implementation time) now sets
   `lifecycle: "active"` explicitly on first registration, instead of
   leaving the field absent. This aligns actual gate behavior with what
-  `projects list`/`show` already *display* for an unset lifecycle.
+  `projects list`/`show` already _display_ for an unset lifecycle.
 - The blocked-command error message in `src/cli/index.ts` gains the exact
   fix command:
   `Project lifecycle is <value>; mutating command "<cmd>" is blocked. Run 'autoforge projects update <path> --lifecycle active' to allow mutations.`

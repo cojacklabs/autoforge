@@ -22,28 +22,40 @@ AutoForge will use pnpm workspaces and Turborepo. pnpm owns dependency
 installation and workspace linking; Turborepo owns the task graph and caching.
 Turborepo does not own package versioning or publication.
 
-Changesets will be introduced with the workspace foundation to record
-package-level changes, calculate independent versions, and produce release
-notes. Public packages are published under the existing `@cojacklabs` npm
-scope. Changing npm scopes is not part of v0.25.
+Changesets records package-level changes, calculates independent versions, and
+produces release notes. The already-versioned v0.25 release set is its explicit
+baseline import; package metadata is recorded in the root changelog and release
+readiness document without creating a second version bump. Every subsequent
+public-package change requires a changeset. Public packages are published under
+the existing `@cojacklabs` npm scope. Changing npm scopes is not part of v0.25.
 
-The repository root becomes a private workspace package and is never
-published. Remote caching remains optional.
+For v0.25, the repository root remains the compatibility release host for
+`@cojacklabs/autoforge`. `apps/core-cli` owns new routing, terminal formatting,
+status, and Agent-launcher source, while the root manifest, binary shim, bundle
+entry, and remaining command adapters preserve the existing package artifact.
+The boundary checker treats that root manifest as the Core CLI application
+manifest. This exception avoids moving a partially extracted application into
+a package that still imports repository-root implementation files.
+
+The root becomes private only after the Core CLI is self-contained under
+`apps/core-cli`; that physical packaging move is deferred beyond v0.25 and must
+preserve the package name, executable, command behavior, and installation
+artifact. Remote caching remains optional.
 
 ## Package and Application Ownership
 
-| Workspace            | Package identity                  | Distribution                                              | Functional owner     | Responsibility                                                                                        |
-| -------------------- | --------------------------------- | --------------------------------------------------------- | -------------------- | ----------------------------------------------------------------------------------------------------- |
-| `apps/core-cli`      | `@cojacklabs/autoforge`           | Public npm package; `autoforge` binary                    | Core CLI             | Deterministic command routing, terminal output, process exit codes, and compatibility aliases         |
-| `apps/agent-cli`     | `@cojacklabs/autoforge-agent`     | Public experimental npm package; `autoforge-agent` binary | Agent                | Interactive prompting, model selection, streaming, approvals, and bounded agent execution             |
-| `apps/web`           | `@cojacklabs/autoforge-web`       | Private deployable application                            | Web                  | Account, organization, usage, and billing interfaces                                                  |
-| `apps/service`       | `@cojacklabs/autoforge-service`   | Private deployable application                            | Service              | Hosted identity, entitlements, usage metering, model gateway, and service APIs                        |
-| `packages/protocol`  | `@cojacklabs/autoforge-protocol`  | Public npm library                                        | Protocol             | Versioned schemas, wire contracts, capability identifiers, and shared error shapes                    |
-| `packages/core`      | `@cojacklabs/autoforge-core`      | Public npm library                                        | Core                 | Project truth, governance, work, context, decisions, validation, handoffs, and orchestration services |
-| `packages/sdk`       | `@cojacklabs/autoforge-sdk`       | Public npm library                                        | SDK                  | Supported programmatic facade over Core operations                                                    |
-| `packages/providers` | `@cojacklabs/autoforge-providers` | Public only after its provider interface stabilizes       | Agent integrations   | Model-provider interfaces and adapters; never project-state ownership                                 |
-| `packages/client`    | `@cojacklabs/autoforge-client`    | Public only with a supported hosted API                   | Service integrations | Typed, transport-level client for AutoForge Service                                                   |
-| `packages/config`    | `@cojacklabs/autoforge-config`    | Private workspace package                                 | Developer experience | Shared TypeScript, lint, formatting, test, and build configuration                                    |
+| Workspace                                        | Package identity                  | Distribution                                              | Functional owner     | Responsibility                                                                                              |
+| ------------------------------------------------ | --------------------------------- | --------------------------------------------------------- | -------------------- | ----------------------------------------------------------------------------------------------------------- |
+| Root release host + `apps/core-cli` source owner | `@cojacklabs/autoforge`           | Public npm package; `autoforge` binary                    | Core CLI             | Deterministic command routing and output, compatibility aliases, and thin optional Agent process delegation |
+| `apps/agent-cli`                                 | `@cojacklabs/autoforge-agent`     | Public experimental npm package; `autoforge-agent` binary | Agent                | Interactive prompting, model selection, streaming, approvals, and bounded agent execution                   |
+| `apps/web`                                       | `@cojacklabs/autoforge-web`       | Private deployable application                            | Web                  | Account, organization, usage, and billing interfaces                                                        |
+| `apps/service`                                   | `@cojacklabs/autoforge-service`   | Private deployable application                            | Service              | Hosted identity, entitlements, usage metering, model gateway, and service APIs                              |
+| `packages/protocol`                              | `@cojacklabs/autoforge-protocol`  | Public npm library                                        | Protocol             | Versioned schemas, wire contracts, capability identifiers, and shared error shapes                          |
+| `packages/core`                                  | `@cojacklabs/autoforge-core`      | Public npm library                                        | Core                 | Project truth, governance, work, context, decisions, validation, handoffs, and orchestration services       |
+| `packages/sdk`                                   | `@cojacklabs/autoforge-sdk`       | Public npm library                                        | SDK                  | Supported programmatic facade over Core operations                                                          |
+| `packages/providers`                             | `@cojacklabs/autoforge-providers` | Public only after its provider interface stabilizes       | Agent integrations   | Model-provider interfaces and adapters; never project-state ownership                                       |
+| `packages/client`                                | `@cojacklabs/autoforge-client`    | Public only with a supported hosted API                   | Service integrations | Typed, transport-level client for AutoForge Service                                                         |
+| `packages/config`                                | `@cojacklabs/autoforge-config`    | Private workspace package                                 | Developer experience | Shared TypeScript, lint, formatting, test, and build configuration                                          |
 
 The paths above are targets, not permission to create empty packages. A package
 is created only when a real implementation and focused validation move into it.
@@ -82,7 +94,9 @@ below are authoritative:
 6. `core-cli` may depend on `sdk`, `core`, and `protocol`; it never depends on
    Agent, providers, Web, Service, authentication, or billing.
 7. `agent-cli` may depend on `sdk`, `protocol`, `providers`, and `client`. It
-   uses SDK operations instead of creating parallel project-state stores.
+   uses SDK operations instead of creating parallel project-state stores. Its
+   local credential adapter may access native operating-system credential
+   facilities; credential values never enter another workspace package.
 8. `web` uses `client` and `protocol` for Service communication. It does not
    access local Core stores directly.
 9. `service` may consume `protocol`, `core`, `sdk`, and `providers`, but hosted
@@ -97,14 +111,20 @@ normal validation task.
 
 ## Command Ownership
 
-`autoforge` remains the deterministic Core CLI. With no subcommand it prints a
-concise project status, relevant next commands, and `autoforge help` guidance;
-it does not open a prompt or call a model.
+`autoforge` remains the Core-owned command router. Explicit Core subcommands,
+including `autoforge status`, are deterministic and never call a model. With no
+subcommand, the v0.25 target behavior is to launch the separately installed
+Agent in an eligible interactive terminal. In CI, pipes, redirected output, or
+when the Agent is unavailable, bare `autoforge` renders the same concise project
+status, relevant next commands, and `autoforge help` guidance available today.
 
-`autoforge-agent` owns the interactive experience. A future `autoforge agent`
-command may delegate to the separately installed Agent package, but the Core
-package must not bundle provider SDKs or Agent dependencies. When Agent is not
-installed, delegation must return an actionable installation message.
+`autoforge-agent` owns the interactive experience and remains directly
+invocable. The Core package discovers and spawns that executable as a thin
+process boundary; it must not bundle or import provider SDKs, Agent code,
+credential stores, or model-runtime dependencies. Delegation forwards terminal
+streams, signals, and exit codes, prevents recursive launch, and returns
+actionable installation guidance before falling back to status when the Agent
+is missing or incompatible.
 
 In v0.25, interactive `autoforge tui` is deprecated. `autoforge tui
 --snapshot` remains a compatibility alias for deterministic status output
@@ -141,6 +161,9 @@ instead of assuming that matching package versions imply matching features.
 
 - Existing supported v0.24 commands, the `@cojacklabs/autoforge` package name,
   and the `autoforge` binary remain available in v0.25.
+- Automation must use explicit Core subcommands. Bare invocation remains safe
+  for legacy automation through deterministic fallback whenever the process is
+  noninteractive or its output is piped or redirected.
 - Structured JSON fields and exit-code meanings are compatibility surfaces.
   Human-oriented prose may improve provided it does not break a documented
   parsing contract; consumers should use JSON or the SDK.
@@ -166,6 +189,9 @@ instead of assuming that matching package versions imply matching features.
   operations.
 - Credentials, raw provider transcripts, caches, leases, and machine-specific
   paths never enter tracked project state.
+- Validated cross-agent handoffs are canonical tracked state under
+  `.autoforge/handoffs/`; generated context, orchestration packets, provider
+  runtime data, and raw conversations remain ignored.
 
 ### Local-first compatibility
 
@@ -193,12 +219,21 @@ migration plan.
 
 ## Source-Relocation Gate
 
-Source relocation may begin only after the workspace-foundation task confirms:
+Bounded source relocation may begin only after the workspace-foundation task
+confirms:
 
 - pnpm and Turborepo configuration implement these package identities;
-- the root is private while `apps/core-cli` retains
-  `@cojacklabs/autoforge` and the `autoforge` binary;
+- the root compatibility manifest remains the release host for
+  `@cojacklabs/autoforge` until `apps/core-cli` is self-contained;
+- the repository boundary checker evaluates that compatibility manifest as the
+  Core CLI application manifest;
 - dependency and task graphs are acyclic and enforce the allowed directions;
 - current v0.24 build, typecheck, format, and test commands work through the
   workspace task graph; and
 - no behavioral redesign is bundled into the relocation commit.
+
+Privatizing the root and moving the public manifest into `apps/core-cli` is a
+separate future gate. It requires eliminating upward imports from
+`apps/core-cli` into root `src`, moving the binary and bundle entry atomically,
+and passing the same packed-install and command-compatibility suites before and
+after the move.

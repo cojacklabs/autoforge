@@ -127,9 +127,8 @@ describe("why command", () => {
 
   it("surfaces linked evidence beneath a matched decision", async () => {
     const { feature, projectRoot } = await createFixture();
-    const { runLearningEvidenceCommand } = await import(
-      "../src/commands/learning-evidence.js"
-    );
+    const { runLearningEvidenceCommand } =
+      await import("../src/commands/learning-evidence.js");
     const evidenceOutput = { stdout: vi.fn(), stderr: vi.fn() };
     await runLearningEvidenceCommand({
       args: [
@@ -211,9 +210,8 @@ describe("why command", () => {
       relatedWork: [feature.entity.id],
     });
 
-    const { ValidationEvidenceStore } = await import(
-      "../src/quality/evidence.js"
-    );
+    const { ValidationEvidenceStore } =
+      await import("../src/quality/evidence.js");
     await new ValidationEvidenceStore(projectRoot).record({
       id: "evidence.command.tests.1",
       gateId: "command.tests",

@@ -10,6 +10,41 @@ All notable changes to this project will be documented in this file.
 <!-- autoforge:changelog:start -->
 <!-- autoforge:changelog:end -->
 
+## [0.25.0] - 2026-08-25
+
+### Package releases
+
+| Package                           | Version  | Release status                                          |
+| --------------------------------- | -------- | ------------------------------------------------------- |
+| `@cojacklabs/autoforge`           | `0.25.0` | Core CLI compatibility release; approval pending        |
+| `@cojacklabs/autoforge-protocol`  | `0.1.0`  | Initial public protocol contract; approval pending      |
+| `@cojacklabs/autoforge-core`      | `0.1.0`  | Initial public model-independent Core; approval pending |
+| `@cojacklabs/autoforge-sdk`       | `0.1.0`  | Initial public programmatic facade; approval pending    |
+| `@cojacklabs/autoforge-agent`     | `0.1.0`  | Private experimental package; independently gated       |
+| `@cojacklabs/autoforge-providers` | `0.1.0`  | Private experimental package; independently gated       |
+
+This release set is the Changesets baseline import. Candidate versions were
+assigned before Changesets was installed, so no additional version bump is
+pending for the entries above. All subsequent public-package changes require a
+changeset.
+
+### Added
+
+- Bare autoforge and the status command now render one SDK-backed structured project-status model through fixed summary, work, and next views, with JSON preserving the protocol envelope. (decision.bare-autoforge-and-the-status-command-now-render-one-sdk-backed-structured-proje)
+- Explicit attachment now resolves paths inside Git repositories to a canonical repository root, treats submodules as independent projects, maps linked worktrees to their owning project, and preserves exact non-Git paths. (decision.explicit-attachment-now-resolves-paths-inside-git-repositories-to-a-canonical-re)
+- The Core interactive TUI is removed; autoforge tui remains only as a temporary read-only compatibility alias over SDK-backed status output, while interactive prompting belongs to the separate AutoForge Agent. (decision.the-core-interactive-tui-is-removed-autoforge-tui-remains-only-as-a-temporary-re)
+- The AutoForge SDK is stabilized as a public 0.1.0 protocol-versioned injected-operation facade and is prepared, but not authorized, for npm publication. (decision.the-autoforge-sdk-is-stabilized-as-a-public-0-1-0-protocol-versioned-injected-op)
+- AutoForge protocol version 1 defines canonical provider-neutral cross-agent handoffs as tracked structured project truth, while transcripts and provider runtime state remain ignored. (decision.autoforge-protocol-version-1-defines-canonical-provider-neutral-cross-agent-hand)
+- The experimental AutoForge Agent begins as a separate local SDK consumer with one injected OpenAI provider, mandatory plan approval, preflighted bounded edits, Core validation, streaming completion, and protocol-v1 handoffs. (decision.the-experimental-autoforge-agent-begins-as-a-separate-local-sdk-consumer-with-on)
+- AutoForge Agent stores local provider credentials only in native operating-system credential facilities behind an Agent-owned injected vault, with hidden terminal entry and no plaintext fallback. (decision.autoforge-agent-stores-local-provider-credentials-only-in-native-operating-syste)
+- Core delegates eligible bare invocation and the allowlisted credentials namespace to a separately installed AutoForge Agent through versioned process negotiation while every explicit Core command and noninteractive bare invocation remain deterministic. (decision.core-delegates-eligible-bare-invocation-and-the-allowlisted-credentials-namespac)
+- v0.25 compatibility is anchored by a frozen v0.24 project fixture and a provider-neutral Claude-to-Codex handoff fixture rather than raw conversational transcripts. (decision.v0-25-compatibility-is-anchored-by-a-frozen-v0-24-project-fixture-and-a-provider)
+- AutoForge 0.25.0 is prepared as an audited release candidate with compatibility migration guidance, independently versioned Protocol/Core/SDK packages, corrected publishable dependency ranges, and complete local validation evidence; publication remains pending explicit maintainer approval. (decision.autoforge-0-25-0-is-prepared-as-an-audited-release-candidate-with-compatibility)
+
+### Fixed
+
+- Completed project relocation repairs an existing generated Agent contract to the destination project root, while absent optional contracts and bootstrap manifests remain valid uninitialized state. (decision.completed-project-relocation-repairs-an-existing-generated-agent-contract-to-the)
+
 ## [0.24.0] - 2026-08-23
 
 ### Added

@@ -9,7 +9,7 @@
 every release from v0.7.0 through v0.21.0 shipped without a changelog entry,
 discovered only during a manual audit. The underlying cause: documentation
 of changes (changelog entries, bug-fix rationale, decision records) was
-advisory guidance an agent was *expected* to remember, with no mechanism
+advisory guidance an agent was _expected_ to remember, with no mechanism
 that noticed or blocked when it didn't happen. This is especially acute
 across agent handoffs (e.g. Codex sessions) where no human was present to
 catch the omission in real time.

@@ -22,6 +22,7 @@
 ### Task 1: Add `data` and `security` work kinds
 
 **Files:**
+
 - Modify: `src/core/vocabularies.ts`
 - Modify: `src/workflows/definitions.ts`
 - Modify: `src/intent/readiness.ts`
@@ -31,6 +32,7 @@
 - Test: `test/intent/readiness.test.ts`
 
 **Interfaces:**
+
 - Consumes: nothing new from other tasks (this task is fully self-contained).
 - Produces: `READINESS_WORK_KINDS` gains `"data"` and `"security"`; `WORKFLOW_KINDS` gains `"data-change"` and `"security-change"`; `INTENT_TO_WORKFLOW_KINDS`/`WORKFLOW_KIND_ALIASES` map `data`→`data-change`, `security`→`security-change`; `PROFILES` in `readiness.ts` gains entries for both.
 
@@ -223,9 +225,7 @@ it("registers data-change and security-change with an implementation stage", () 
 Also update the existing `"registers every v0.9 core workflow"` test's exact-order array to include the two new kinds in the position they'll be added (immediately after `architecture-change`, matching `WORKFLOW_KINDS`'s declaration order from Step 3):
 
 ```typescript
-expect(
-  listWorkflowDefinitions().map((definition) => definition.kind),
-).toEqual([
+expect(listWorkflowDefinitions().map((definition) => definition.kind)).toEqual([
   "feature-development",
   "bug-fix",
   "research",
@@ -342,12 +342,14 @@ git commit -m "feat: add data and security work kinds to intent/workflow vocabul
 ### Task 2: Namespace persisted planning artifacts by source fingerprint
 
 **Files:**
+
 - Modify: `src/planning/store.ts`
 - Modify: `src/commands/planning.ts`
 - Test: `test/planning/store.test.ts`
 - Test: `test/planning-command.test.ts`
 
 **Interfaces:**
+
 - Consumes: `PlanningArtifact` (`sourceFingerprint`, `generatedAt`, `kind` fields) from `src/planning/artifacts.js` — unchanged from Task 1's scope, no dependency on Task 1.
 - Produces: `PlanningArtifactStore.write()` returns a fingerprint-namespaced relative path; `PlanningArtifactStore.read(kind, fingerprint?)` — `fingerprint` is a new optional second parameter; new method `PlanningArtifactStore.listVersions(kind): Promise<PlanningArtifact[]>` returning every stored version of a kind, newest first by `generatedAt`.
 
@@ -419,9 +421,9 @@ describe("planning artifact store", () => {
     await expect(
       store.read("feature-brief", "0".repeat(64)),
     ).resolves.toBeNull();
-    await expect(
-      store.isFresh("feature-brief", "0".repeat(64)),
-    ).resolves.toBe(false);
+    await expect(store.isFresh("feature-brief", "0".repeat(64))).resolves.toBe(
+      false,
+    );
   });
 
   it("does not overwrite a prior artifact of the same kind with a different source", async () => {
@@ -678,14 +680,11 @@ it("lists every stored version per kind, not just the latest", async () => {
   );
   expect(featureBriefRows).toHaveLength(2);
   expect(
-    featureBriefRows.map((row: { sourceFingerprint: string }) =>
-      row.sourceFingerprint,
+    featureBriefRows.map(
+      (row: { sourceFingerprint: string }) => row.sourceFingerprint,
     ),
   ).toEqual(
-    expect.arrayContaining([
-      older.sourceFingerprint,
-      newer.sourceFingerprint,
-    ]),
+    expect.arrayContaining([older.sourceFingerprint, newer.sourceFingerprint]),
   );
 });
 ```
@@ -775,12 +774,14 @@ git commit -m "fix: namespace persisted planning artifacts by source fingerprint
 ### Task 3: Fix the `use` command project lifecycle mutation gate
 
 **Files:**
+
 - Modify: `src/workspace/global-store.ts`
 - Modify: `src/cli/index.ts`
 - Test: `test/global-workspace-store.test.ts`
 - Test: `test/project-lifecycle.test.ts`
 
 **Interfaces:**
+
 - Consumes: nothing from other tasks.
 - Produces: `GlobalWorkspaceStore.registerProject()` sets `lifecycle: "active"` on new registrations. The blocked-mutation stderr message in `src/cli/index.ts` gains the fix command.
 
@@ -860,7 +861,7 @@ it("treats an undefined lifecycle as blocked, distinct from active", () => {
 });
 ```
 
-(This documents the current, still-correct enforcement behavior for a project with no lifecycle set at all — Step 3's fix prevents *new* registrations from ever reaching this state, but the gate itself must still safely handle a metadata record with no lifecycle field for defense in depth, e.g. from a project registered by an older AutoForge version before this fix existed.)
+(This documents the current, still-correct enforcement behavior for a project with no lifecycle set at all — Step 3's fix prevents _new_ registrations from ever reaching this state, but the gate itself must still safely handle a metadata record with no lifecycle field for defense in depth, e.g. from a project registered by an older AutoForge version before this fix existed.)
 
 - [ ] **Step 6: Run test to verify it passes as-is**
 
@@ -948,10 +949,12 @@ git commit -m "fix: default new project registrations to an active lifecycle"
 ### Task 4: Clean up generated user-stories template quality
 
 **Files:**
+
 - Modify: `src/planning/artifacts.ts`
 - Test: `test/planning/artifacts.test.ts`
 
 **Interfaces:**
+
 - Consumes: nothing from other tasks.
 - Produces: no signature change — `render()`'s `"user-stories"` case output format changes only.
 
@@ -965,7 +968,9 @@ it("preserves leading acronyms instead of lowercasing them", () => {
     { ...intent, requirements: ["API rate limiting must be enforced."] },
     "user-stories",
   ).content;
-  expect(content).toContain("As a user, I want API rate limiting must be enforced.");
+  expect(content).toContain(
+    "As a user, I want API rate limiting must be enforced.",
+  );
 });
 
 it("does not double punctuation when a requirement already ends with one", () => {
@@ -985,7 +990,8 @@ it("states the shared objective clause once, not per requirement line", () => {
     },
     "user-stories",
   ).content;
-  const occurrences = content.split("so the stated objective is achieved").length - 1;
+  const occurrences =
+    content.split("so the stated objective is achieved").length - 1;
   expect(occurrences).toBeLessThanOrEqual(1);
 });
 ```

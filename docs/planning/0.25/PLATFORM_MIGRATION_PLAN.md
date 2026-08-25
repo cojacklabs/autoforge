@@ -2,8 +2,10 @@
 
 ## Status
 
-Active; architecture reconciliation and the pre-relocation package policy are
-complete. Workspace foundation is next.
+Implementation complete; release evidence is prepared for maintainer audit.
+Publication remains held for explicit human approval. Bare `autoforge` is the
+interactive Agent launcher in eligible terminals while retaining deterministic
+status as the explicit and noninteractive fallback.
 
 This document is the authoritative implementation plan for AutoForge Core
 v0.25.
@@ -109,8 +111,12 @@ not be required for local development.
 
 ### Core command experience
 
-Bare `autoforge` remains deterministic and noninteractive. It prints concise
-project status, relevant next commands, and guidance to run `autoforge help`.
+Explicit Core commands remain deterministic and noninteractive. Before the
+Phase 6 launcher is complete, bare `autoforge` also prints concise project
+status, relevant next commands, and guidance to run `autoforge help`. After the
+launcher passes its gate, eligible interactive terminals delegate bare
+invocation to `autoforge-agent`; noninteractive use and Agent-unavailable
+installations retain that status behavior.
 
 ```bash
 autoforge
@@ -155,6 +161,7 @@ Tracked project intelligence:
 - governance and domain knowledge;
 - specifications and traceability;
 - approved evidence and durable architecture/product knowledge.
+- validated provider-neutral handoffs under `.autoforge/handoffs/`.
 
 Ignored operational state:
 
@@ -236,6 +243,10 @@ fixtures remain readable.
 ### Phase 4: Deterministic Core CLI
 
 - Convert command routing and terminal formatting into `apps/core-cli`.
+- Keep the repository root as the v0.25 compatibility release host while
+  application-owned source moves incrementally. Physical relocation of the
+  public manifest and binary waits until the application no longer imports
+  root implementation files.
 - Make the CLI a thin consumer of the internal SDK foundation. CLI migration
   must not create a second application-service facade or bypass the SDK to
   mutate project state.
@@ -244,8 +255,10 @@ fixtures remain readable.
 - Deprecate the interactive TUI and preserve `tui --snapshot` as a temporary
   status alias.
 
-Exit gate: the globally installed command remains compatible, deterministic,
-and noninteractive, with stable structured output and exit codes.
+Exit gate: explicit Core commands and all noninteractive execution remain
+compatible and deterministic, with stable structured output and exit codes.
+Until the experimental Agent and launcher delegation are implemented, bare
+`autoforge` continues to render deterministic status.
 
 ### Phase 5: Public SDK stabilization and handoff protocol
 
@@ -268,12 +281,21 @@ The reconciled implementation sequence is therefore:
 1. Establish the narrow internal SDK foundation.
 2. Migrate the deterministic CLI to that SDK.
 3. Implement status, Git-root-aware attach, and TUI deprecation through the SDK.
-4. Stabilize and publish the exercised SDK surface with structured handoffs.
+4. Stabilize and prepare the exercised SDK surface for publication.
+5. Implement structured handoffs, then request explicit publication approval.
 
 Package publication remains independently versioned. Creating an internal
 `packages/sdk` workspace does not itself authorize an npm release.
 
 ### Phase 6: Experimental local Agent
+
+Status: implemented. The direct `autoforge-agent` experiment provides the
+one-provider clarification, approval, bounded-edit, validation, streaming, and
+structured-handoff workflow. Local BYOK credentials use native operating-system
+credential storage with hidden terminal entry and no plaintext fallback. Core
+uses version-negotiated process delegation for eligible bare invocation and the
+allowlisted `credentials` namespace while preserving deterministic fallback and
+dependency isolation.
 
 - Create `apps/agent-cli` as an experimental SDK consumer.
 - Reuse concepts from the preserved TUI worktree rather than merging its Core
@@ -281,15 +303,30 @@ Package publication remains independently versioned. Creating an internal
 - Support one provider, streaming text, intent clarification, plan review,
   explicit approval, bounded edits, validation, and handoff.
 - Keep local BYOK credentials in operating-system credential storage.
+- Make bare `autoforge` a thin launcher that delegates to the separately
+  installed Agent only in an eligible interactive terminal.
+- Preserve `autoforge status` as the explicit deterministic status command and
+  preserve bare status as the noninteractive, CI, piped-output, and
+  Agent-unavailable fallback.
+- Forward terminal streams, signals, and exit codes across delegation; prevent
+  recursive launch; and provide actionable Agent installation guidance when
+  the separate package is unavailable.
+- Keep `autoforge-agent` as the direct, explicit Agent entry point. Core must
+  discover and spawn it without importing Agent, provider, credential, hosted,
+  or model-runtime dependencies.
 
 Exit gate: one approved local prompt can produce scoped, validated work through
-the SDK without an AutoForge account.
+the SDK without an AutoForge account, and bare `autoforge` launches that Agent
+in an eligible terminal without weakening deterministic automation or the
+Core/Agent dependency boundary.
 
 ### Phase 7: Compatibility, hardening, and release
 
 - Fix missing optional-store behavior, including absent bootstrap manifests.
 - Repair stale project-root references in generated contracts after relocation.
 - Verify atomic writes, interrupted sessions, lease recovery, and stale context.
+- Verify launcher recovery for missing, incompatible, interrupted, and
+  recursively invoked Agent installations.
 - Run package-boundary, protocol, migration, foundation, legacy, and end-to-end
   tests.
 - Publish deprecations, migration guidance, changelog, and release-readiness
@@ -299,8 +336,25 @@ Exit gate: all v0.24 projects load without knowledge loss, the existing binary
 remains installable, and every changed behavior is compatible or explicitly
 deprecated.
 
+Implementation checkpoint (2026-08-25): Phase 7 implementation is complete.
+Absent bootstrap manifests now produce
+actionable `not-scaffolded` status, completed project relocation repairs an
+existing Agent contract's absolute project root, and missing contracts remain
+valid optional state. Automated recovery coverage verifies interrupted sessions,
+expired leases, and stale context detection. A frozen v0.24 project fixture now
+proves work and session envelopes load without mutation or data loss, its next
+work remains actionable through the current status boundary, the deprecated TUI
+command remains a read-only alias, and the Claude-to-Codex protocol fixture
+continues without transcript fields. Launcher recovery, package and release
+validation, migration guidance, changelog, and release-readiness evidence are
+implemented. Publication remains gated on reviewable commits, remote CI,
+published-dependency smoke testing, and explicit maintainer approval.
+
 ## Deferred Beyond the v0.25 Release Gate
 
+- Optional lightweight-model intent compilation, memory organization, research
+  assistance, and portable design orchestration, preserved in
+  [`FUTURE_INTELLIGENCE_AND_DESIGN_ORCHESTRATION.md`](./FUTURE_INTELLIGENCE_AND_DESIGN_ORCHESTRATION.md);
 - Production Web application;
 - payments and subscription management;
 - production hosted Service/model gateway;
@@ -337,7 +391,14 @@ validated. They should have independent product milestones and release gates.
 - Turborepo package-boundary checks pass.
 - Package build, typecheck, format, and tests pass.
 - Full foundation and legacy suites pass before release.
-- Bare `autoforge` and `status --json` work inside and outside projects.
+- Bare `autoforge` launches the Agent only in an eligible interactive terminal;
+  it renders deterministic status in CI, pipes, redirected output, and when the
+  Agent is unavailable.
+- `autoforge status` and `status --json` remain deterministic inside and outside
+  projects, and every explicit Core subcommand bypasses Agent delegation.
+- Launcher tests cover terminal stream forwarding, signals, exit codes,
+  recursion prevention, installation guidance, and Linux, macOS, and Windows
+  process behavior.
 - `attach --dry-run` covers repository roots, nested paths, submodules,
   worktrees, conflicts, and non-Git projects.
 - A cross-agent structured-handoff fixture passes without raw transcripts.
@@ -349,6 +410,7 @@ validated. They should have independent product milestones and release gates.
 ## Completion Definition
 
 v0.25 is complete when AutoForge v0.24 project intelligence operates through a
-stable protocol, Core, SDK, and deterministic CLI boundary; the interactive TUI
-has a documented migration path; and an experimental first-party Agent proves
-the boundary without making Core depend on a model provider or hosted account.
+stable protocol, Core, SDK, and deterministic explicit-command boundary; the
+interactive TUI has migrated to an experimental first-party Agent; and bare
+`autoforge` can launch that Agent in an eligible terminal without making Core
+depend on a model provider, credential runtime, or hosted account.

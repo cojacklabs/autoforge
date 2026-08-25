@@ -26,9 +26,9 @@ v0.22.0. `README.md`'s title also hardcodes a version number (`# AutoForge
 ## Non-Goals
 
 - No changes to `docs/AUTOFORGE_AGENTIC_AI_GUIDE.md`'s behavioral content
-  — that document teaches *how* an agent should think and act (workflow
-  discipline, scope respect, evidence handling); this work is about *what
-  commands exist*, a different concern, and is out of scope here.
+  — that document teaches _how_ an agent should think and act (workflow
+  discipline, scope respect, evidence handling); this work is about _what
+  commands exist_, a different concern, and is out of scope here.
 - No automated CI/test enforcing ongoing parity between
   `src/cli/help.ts` and `AUTOFORGE_CLI_REFERENCE.md`. This pass fixes
   current staleness; a drift-prevention mechanism (if wanted) is a
@@ -62,10 +62,10 @@ unchanged; the new clause is additive.
 ### 3. Bring `docs/AUTOFORGE_CLI_REFERENCE.md` fully current
 
 - Add a new section covering all `autoforge learning
-  hypothesis|experiment|evidence` subcommands (12 total: `add`/`list`/
+hypothesis|experiment|evidence` subcommands (12 total: `add`/`list`/
   `show`/`status` for hypothesis; `add`/`list`/`show`/`complete` for
   experiment; `add`/`list`/`show` for evidence) and the `decide
-  --evidence <id>` flag that closes the loop.
+--evidence <id>` flag that closes the loop.
 - Add `autoforge changelog compile [--since <git-tag>]`.
 - Verify every other section against `src/cli/help.ts`'s actual usage
   lines directly (not a fuzzy text diff, which produces too much noise

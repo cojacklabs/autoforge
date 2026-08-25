@@ -21,6 +21,7 @@
 ### Task 1: De-version README title and bring CLI reference doc fully current
 
 **Files:**
+
 - Modify: `README.md`
 - Modify: `docs/AUTOFORGE_AGENT_SETUP_GUIDE.md`
 - Modify: `docs/AUTOFORGE_CLI_REFERENCE.md`
@@ -73,7 +74,7 @@ Replace it with (matching the README's added clause, keeping this file's own lea
 
 In `docs/AUTOFORGE_CLI_REFERENCE.md`, insert a new section directly after the "## Memory and Planning" section (after line 39, before `## Governance and Domain Intelligence`):
 
-```markdown
+````markdown
 ## Learning and Evidence
 
 ```bash
@@ -90,6 +91,7 @@ autoforge learning evidence list [--kind <kind>]
 autoforge learning evidence show <id>
 autoforge decide --evidence <evidence-id> ...
 ```
+````
 
 `learning hypothesis` records a testable belief with a free-text `--metric`
 and `--target`. `learning experiment` may test multiple hypotheses at once
@@ -100,7 +102,8 @@ via repeated `--hypothesis` flags. `learning evidence` accepts nine kinds
 simultaneously — the links are not mutually exclusive. Passing `--evidence
 <id>` to `autoforge decide` closes the loop: it stamps that decision back
 onto every referenced evidence record.
-```
+
+````
 
 - [ ] **Step 5: Add `changelog compile` to AUTOFORGE_CLI_REFERENCE.md**
 
@@ -108,14 +111,15 @@ In `docs/AUTOFORGE_CLI_REFERENCE.md`, the "## Memory and Planning" section's cod
 
 ```markdown
 autoforge planning handoff <kind> --phase <phase-id> --include "docs/**"
-```
-```
+````
+
+````
 
 Add one line inside that same code block, directly after the `autoforge doctrine` line (after line 32, before `autoforge intent assess ...`):
 
 ```markdown
 autoforge changelog compile [--since <git-tag>]
-```
+````
 
 So the block reads (showing the relevant excerpt):
 
