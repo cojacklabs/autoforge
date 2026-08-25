@@ -16,21 +16,71 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v5
 
+      - name: Set up pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 11.22.0
+          run_install: false
+
       - name: Set up Node.js 22
         uses: actions/setup-node@v5
         with:
           node-version: 22
-          cache: npm
+          cache: pnpm
 
       - name: Install dependencies
-        run: npm ci --ignore-scripts
+        run: pnpm install --frozen-lockfile
+
+      - name: Check release metadata
+        run: pnpm release:status
+
+      - name: Verify public package dependency order
+        run: |
+          node --input-type=module <<'NODE'
+          import { readFile } from "node:fs/promises";
+
+          const readManifest = async (file) =>
+            JSON.parse(await readFile(file, "utf8"));
+          const [root, protocol, core, sdk] = await Promise.all([
+            readManifest("package.json"),
+            readManifest("packages/protocol/package.json"),
+            readManifest("packages/core/package.json"),
+            readManifest("packages/sdk/package.json"),
+          ]);
+          const expected = [
+            [protocol.name, "@cojacklabs/autoforge-protocol"],
+            [core.name, "@cojacklabs/autoforge-core"],
+            [sdk.name, "@cojacklabs/autoforge-sdk"],
+            [root.name, "@cojacklabs/autoforge"],
+          ];
+          for (const [actual, name] of expected) {
+            if (actual !== name) throw new Error(`Expected ${name}, found ${actual}`);
+          }
+          if (core.dependencies[protocol.name] !== "workspace:^")
+            throw new Error("Core must track Protocol through workspace:^");
+          if (
+            sdk.dependencies[protocol.name] !== "workspace:^" ||
+            sdk.dependencies[core.name] !== "workspace:^"
+          ) throw new Error("SDK must track Protocol and Core through workspace:^");
+          for (const dependency of [protocol.name, core.name, sdk.name]) {
+            if (!root.dependencies[dependency]?.startsWith("^"))
+              throw new Error(`Core CLI must publish a compatible range for ${dependency}`);
+          }
+          console.log("Publication order: Protocol -> Core -> SDK -> Core CLI");
+          NODE
 
       - name: Run release gates
         run: |
-          npm run format:check
-          npm run typecheck
-          npm test
-          npm run build
+          pnpm run format:check
+          pnpm run typecheck
+          pnpm test
+
+      - name: Build public packages in dependency order
+        run: |
+          pnpm --filter @cojacklabs/autoforge-protocol build
+          pnpm --filter @cojacklabs/autoforge-core build
+          pnpm --filter @cojacklabs/autoforge-sdk build
+          pnpm build
 
       - name: Verify tag matches package version
         if: startsWith(github.ref, 'refs/tags/')
@@ -39,14 +89,31 @@ jobs:
           PACKAGE_VERSION=$(node -p "require('./package.json').version")
           test "$TAG_VERSION" = "$PACKAGE_VERSION"
 
-      - name: Verify package contents
-        run: npm pack --dry-run
+      - name: Pack and smoke test public package set
+        run: |
+          ARTIFACT_DIR="$RUNNER_TEMP/autoforge-package-artifacts"
+          SMOKE_DIR="$RUNNER_TEMP/autoforge-package-smoke"
+          mkdir -p "$ARTIFACT_DIR" "$SMOKE_DIR"
+          pnpm --dir packages/protocol pack --pack-destination "$ARTIFACT_DIR"
+          pnpm --dir packages/core pack --pack-destination "$ARTIFACT_DIR"
+          pnpm --dir packages/sdk pack --pack-destination "$ARTIFACT_DIR"
+          pnpm pack --pack-destination "$ARTIFACT_DIR"
+          cd "$SMOKE_DIR"
+          npm init -y >/dev/null
+          npm install --ignore-scripts --no-audit --no-fund \
+            "$ARTIFACT_DIR"/cojacklabs-autoforge-protocol-*.tgz \
+            "$ARTIFACT_DIR"/cojacklabs-autoforge-core-*.tgz \
+            "$ARTIFACT_DIR"/cojacklabs-autoforge-sdk-*.tgz \
+            "$ARTIFACT_DIR"/cojacklabs-autoforge-[0-9]*.tgz
+          node --input-type=module -e "await import('@cojacklabs/autoforge-protocol'); await import('@cojacklabs/autoforge-core'); await import('@cojacklabs/autoforge-sdk')"
+          npx --no-install autoforge version
+          npx --no-install autoforge help >/dev/null
 
       - name: Publish handoff
         run: |
           {
             echo "### Release verification passed"
-            echo "Package: $(node -p \"require('./package.json').name\")"
-            echo "Version: $(node -p \"require('./package.json').version\")"
+            echo "Publication order: Protocol → Core → SDK → Core CLI"
+            echo "Core CLI: $(node -p \"require('./package.json').name + '@' + require('./package.json').version\")"
             echo "Publishing remains an explicit, credentialed npm operation."
           } >> "$GITHUB_STEP_SUMMARY"

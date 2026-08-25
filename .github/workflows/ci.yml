@@ -15,24 +15,26 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Set up pnpm and Node.js 22
-        uses: pnpm/setup@v1
+      - name: Set up pnpm
+        uses: pnpm/action-setup@v4
         with:
-          runtime: node@22
-          cache: true
-          install: false
+          version: 11.22.0
+          run_install: false
+
+      - name: Set up Node.js 22
+        uses: actions/setup-node@v5
+        with:
+          node-version: 22
+          cache: pnpm
 
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
 
-      - name: Check workspace imports
-        run: pnpm exec turbo boundaries
-
-      - name: Check AutoForge dependency policy
+      - name: Check source imports and AutoForge dependency policy
         run: node packages/config/src/check-boundaries.mjs
 
       - name: Validate affected packages
-        run: pnpm exec turbo run build typecheck test format:check boundaries --affected
+        run: pnpm exec turbo run build typecheck test format:check --affected
 
   core-compatibility:
     runs-on: ubuntu-latest
@@ -40,12 +42,17 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v5
 
-      - name: Set up pnpm and Node.js 22
-        uses: pnpm/setup@v1
+      - name: Set up pnpm
+        uses: pnpm/action-setup@v4
         with:
-          runtime: node@22
-          cache: true
-          install: false
+          version: 11.22.0
+          run_install: false
+
+      - name: Set up Node.js 22
+        uses: actions/setup-node@v5
+        with:
+          node-version: 22
+          cache: pnpm
 
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
@@ -62,13 +69,58 @@ jobs:
       - name: Check planning synchronization
         run: pnpm workspace:planning:check
 
-      - name: Smoke test packed package
+      - name: Check release metadata
+        run: pnpm release:status
+
+      - name: Build public packages in dependency order
         run: |
-          PACKAGE=$(npm pack --pack-destination "$RUNNER_TEMP" | tail -n 1)
+          pnpm --filter @cojacklabs/autoforge-protocol build
+          pnpm --filter @cojacklabs/autoforge-core build
+          pnpm --filter @cojacklabs/autoforge-sdk build
+          pnpm build
+
+      - name: Smoke test packed public package set
+        run: |
+          ARTIFACT_DIR="$RUNNER_TEMP/autoforge-package-artifacts"
           SMOKE_DIR="$RUNNER_TEMP/autoforge-package-smoke"
-          mkdir -p "$SMOKE_DIR"
+          mkdir -p "$ARTIFACT_DIR" "$SMOKE_DIR"
+          pnpm --dir packages/protocol pack --pack-destination "$ARTIFACT_DIR"
+          pnpm --dir packages/core pack --pack-destination "$ARTIFACT_DIR"
+          pnpm --dir packages/sdk pack --pack-destination "$ARTIFACT_DIR"
+          pnpm pack --pack-destination "$ARTIFACT_DIR"
           cd "$SMOKE_DIR"
           npm init -y >/dev/null
-          npm install "$RUNNER_TEMP/$PACKAGE" --ignore-scripts
-          npx autoforge version
-          npx autoforge help >/dev/null
+          npm install --ignore-scripts --no-audit --no-fund \
+            "$ARTIFACT_DIR"/cojacklabs-autoforge-protocol-*.tgz \
+            "$ARTIFACT_DIR"/cojacklabs-autoforge-core-*.tgz \
+            "$ARTIFACT_DIR"/cojacklabs-autoforge-sdk-*.tgz \
+            "$ARTIFACT_DIR"/cojacklabs-autoforge-[0-9]*.tgz
+          node --input-type=module -e "await import('@cojacklabs/autoforge-protocol'); await import('@cojacklabs/autoforge-core'); await import('@cojacklabs/autoforge-sdk')"
+          npx --no-install autoforge version
+          npx --no-install autoforge help >/dev/null
+
+  windows-agent-launcher:
+    runs-on: windows-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+
+      - name: Set up pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 11.22.0
+          run_install: false
+
+      - name: Set up Node.js 22
+        uses: actions/setup-node@v5
+        with:
+          node-version: 22
+          cache: pnpm
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Exercise the native Windows Agent command shim
+        run: |
+          pnpm exec vitest run test/agent-launcher.test.ts
+          pnpm --dir packages/protocol exec vitest run test/agent-launcher.test.ts

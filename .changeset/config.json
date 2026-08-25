@@ -1,0 +1,17 @@
+{
+  "$schema": "https://unpkg.com/@changesets/config@4.0.0/schema.json",
+  "baseBranch": "main",
+  "access": "public",
+  "format": "prettier",
+  "changelog": "@changesets/cli/changelog",
+  "commit": false,
+  "ignore": ["@cojacklabs/autoforge-agent", "@cojacklabs/autoforge-providers"],
+  "fixed": [],
+  "linked": [],
+  "updateInternalDependencies": "patch",
+  "bumpVersionsWithWorkspaceProtocolOnly": true,
+  "privatePackages": {
+    "version": false,
+    "tag": false
+  }
+}

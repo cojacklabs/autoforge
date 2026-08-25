@@ -8,3 +8,4 @@ pnpm-lock.yaml
 shared/types/orchestration.ts
 .autoforge/
 .autoforge.backup-*/
+.claude/settings.local.json
