@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
-  "revision": 61,
-  "updatedAt": "2026-08-25T01:52:34.635Z",
+  "revision": 62,
+  "updatedAt": "2026-08-25T02:03:57.611Z",
   "data": {
     "decisions": [
       {
@@ -1506,6 +1506,33 @@
         "kind": "architecture",
         "createdAt": "2026-08-25T01:52:34.602Z",
         "updatedAt": "2026-08-25T01:52:34.602Z"
+      },
+      {
+        "id": "decision.the-v0-25-autoforge-sdk-begins-as-a-private-0-1-0-protocol-versioned-facade-over",
+        "statement": "The v0.25 AutoForge SDK begins as a private 0.1.0 protocol-versioned facade over Core with project lifecycle effects supplied through injected operations.",
+        "reasoning": "This gives the existing CLI a typed migration seam without making the SDK responsible for terminal rendering, filesystem layout, Git behavior, model providers, or hosted services before its public contract is proven.",
+        "consequences": [
+          "The deterministic CLI can migrate command paths onto structured SDK responses incrementally.",
+          "SDK publication remains gated on CLI migration, compatibility evidence, and contract stabilization."
+        ],
+        "scope": [
+          "packages/sdk",
+          "packages/core",
+          "packages/protocol"
+        ],
+        "keywords": [
+          "sdk",
+          "lifecycle",
+          "boundary"
+        ],
+        "relatedWork": [
+          "task.establish-internal-autoforge-sdk-foundation"
+        ],
+        "supersedes": null,
+        "status": "active",
+        "kind": "architecture",
+        "createdAt": "2026-08-25T02:03:57.588Z",
+        "updatedAt": "2026-08-25T02:03:57.588Z"
       }
     ]
   }

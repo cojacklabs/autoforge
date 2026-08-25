@@ -42,6 +42,7 @@
   "dependencies": {
     "@cojacklabs/autoforge-core": "workspace:^",
     "@cojacklabs/autoforge-protocol": "workspace:^",
+    "@cojacklabs/autoforge-sdk": "workspace:^",
     "yaml": "^2.9.0",
     "zod": "^4.4.3"
   },

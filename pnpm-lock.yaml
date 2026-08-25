@@ -14,6 +14,9 @@ importers:
       '@cojacklabs/autoforge-protocol':
         specifier: workspace:^
         version: link:packages/protocol
+      '@cojacklabs/autoforge-sdk':
+        specifier: workspace:^
+        version: link:packages/sdk
       yaml:
         specifier: ^2.9.0
         version: 2.9.0
@@ -76,6 +79,28 @@ importers:
       zod:
         specifier: ^4.4.3
         version: 4.4.3
+    devDependencies:
+      prettier:
+        specifier: ^3.3.3
+        version: 3.9.6
+      tsup:
+        specifier: ^8.5.1
+        version: 8.5.1(jiti@2.7.0)(postcss@8.5.26)(typescript@7.0.2)(yaml@2.9.0)
+      typescript:
+        specifier: ^7.0.2
+        version: 7.0.2
+      vitest:
+        specifier: ^4.1.11
+        version: 4.1.11(@opentelemetry/api@1.9.0)(@types/node@26.2.0)(vite@8.2.1(@types/node@26.2.0)(esbuild@0.27.7)(jiti@2.7.0)(yaml@2.9.0))
+
+  packages/sdk:
+    dependencies:
+      '@cojacklabs/autoforge-core':
+        specifier: workspace:^
+        version: link:../core
+      '@cojacklabs/autoforge-protocol':
+        specifier: workspace:^
+        version: link:../protocol
     devDependencies:
       prettier:
         specifier: ^3.3.3
