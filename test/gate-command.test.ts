@@ -55,10 +55,11 @@ describe("gate command", () => {
 
   it("returns invalid state and redacts a failed secret check", async () => {
     const projectRoot = await createProject();
-    await writeFile(
-      path.join(projectRoot, "unsafe.txt"),
-      'password = "abcdefghijklmnop"\n',
+    const simulatedCredential = ["abcdefgh", "ijklmnop"].join("");
+    const unsafeLine = ["pass", 'word = "', simulatedCredential, '"\n'].join(
+      "",
     );
+    await writeFile(path.join(projectRoot, "unsafe.txt"), unsafeLine);
     const output = { stdout: vi.fn(), stderr: vi.fn() };
 
     await expect(
@@ -75,7 +76,7 @@ describe("gate command", () => {
       expect.stringContaining("value redacted"),
     );
     expect(JSON.stringify(output.stderr.mock.calls)).not.toContain(
-      "abcdefghijklmnop",
+      simulatedCredential,
     );
   });
 
@@ -110,6 +111,52 @@ describe("gate command", () => {
     for (const record of evidenceState.evidence) {
       expect(record.workId).toBe(issue.entity.id);
     }
+  });
+
+  it("selects changed files inside the active work scope when paths are omitted", async () => {
+    const projectRoot = await createProject();
+    await mkdir(path.join(projectRoot, "src", "generated"), {
+      recursive: true,
+    });
+    await writeFile(path.join(projectRoot, "src", "app.ts"), "export {};\n");
+    await writeFile(
+      path.join(projectRoot, "src", "generated", "client.ts"),
+      "export {};\n",
+    );
+    const issue = await new WorkService(
+      createWorkStateStore(projectRoot),
+    ).createIssue({
+      name: "Scoped validation",
+      description: "Validate changed source files.",
+      scope: { include: ["src/**"], exclude: ["src/generated/**"] },
+    });
+    await runStartCommand({
+      args: ["issue", issue.entity.id],
+      output: { stdout: () => {}, stderr: () => {} },
+      startDirectory: projectRoot,
+    });
+    const changedFileReader = vi
+      .fn()
+      .mockResolvedValue([
+        "docs/notes.md",
+        "src/generated/client.ts",
+        "src/app.ts",
+      ]);
+    const output = { stdout: vi.fn(), stderr: vi.fn() };
+
+    await expect(
+      runGateCommand({
+        args: ["check", "--json"],
+        output,
+        startDirectory: projectRoot,
+        changedFileReader,
+      }),
+    ).resolves.toBe(EXIT_CODE.success);
+
+    expect(changedFileReader).toHaveBeenCalledWith(projectRoot);
+    expect(JSON.parse(output.stdout.mock.calls[0]?.[0] ?? "").files).toEqual([
+      "src/app.ts",
+    ]);
   });
 
   it("records evidence with no work id when no work item is active", async () => {

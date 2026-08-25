@@ -51,4 +51,35 @@ describe("agent contract generator", () => {
       'autoforge --project "$PWD" context --explain',
     );
   });
+
+  it("repairs a stale project root after the project directory moves", async () => {
+    const root = await mkdtemp(path.join(os.tmpdir(), "autoforge-contract-"));
+    directories.push(root);
+    const previousRoot = path.join(root, "before");
+    const currentRoot = path.join(root, "after");
+    await mkdir(path.join(currentRoot, ".autoforge"), { recursive: true });
+    const store = new AgentContractStore(currentRoot);
+    await store.write(
+      generateAgentContract({
+        agentId: "generic",
+        projectRoot: previousRoot,
+        validationCommands: ["npm test"],
+      }),
+    );
+    await expect(store.repairProjectRoot()).resolves.toBe("updated");
+    await expect(store.read()).resolves.toMatchObject({
+      projectRoot: currentRoot,
+    });
+    await expect(store.repairProjectRoot()).resolves.toBe("current");
+  });
+
+  it("treats an absent optional contract as missing during repair", async () => {
+    const projectRoot = await mkdtemp(
+      path.join(os.tmpdir(), "autoforge-contract-"),
+    );
+    directories.push(projectRoot);
+    await expect(
+      new AgentContractStore(projectRoot).repairProjectRoot(),
+    ).resolves.toBe("missing");
+  });
 });

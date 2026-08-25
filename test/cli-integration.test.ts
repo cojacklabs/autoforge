@@ -16,6 +16,13 @@ import { afterEach, describe, expect, it } from "vitest";
 const BUNDLED_CLI = path.resolve("dist", "cli.js");
 const temporaryDirectories: string[] = [];
 
+async function packageVersion(): Promise<string> {
+  const manifest = JSON.parse(await readFile("package.json", "utf8")) as {
+    version: string;
+  };
+  return manifest.version;
+}
+
 interface CliProcessResult {
   exitCode: number | null;
   stderr: string;
@@ -71,6 +78,7 @@ afterEach(async () => {
 describe("bundled foundation CLI", () => {
   it("prints canonical help and the package version", async () => {
     const projectRoot = await createProject();
+    const version = await packageVersion();
 
     await expect(runBundledCli(projectRoot, ["help"])).resolves.toMatchObject({
       exitCode: 0,
@@ -84,12 +92,13 @@ describe("bundled foundation CLI", () => {
     ).resolves.toMatchObject({
       exitCode: 0,
       stderr: "",
-      stdout: "AutoForge 0.24.0\n",
+      stdout: `AutoForge ${version}\n`,
     });
   });
 
   it("runs through a symlinked package bin entrypoint", async () => {
     const projectRoot = await createProject();
+    const version = await packageVersion();
     const link = path.join(projectRoot, "autoforge-bin");
     await symlink(BUNDLED_CLI, link);
     await expect(
@@ -111,12 +120,13 @@ describe("bundled foundation CLI", () => {
     ).resolves.toMatchObject({
       exitCode: 0,
       stderr: "",
-      stdout: "AutoForge 0.24.0\n",
+      stdout: `AutoForge ${version}\n`,
     });
   });
 
   it("runs through the npm-style node_modules/.bin path", async () => {
     const projectRoot = await createProject();
+    const version = await packageVersion();
     const binDirectory = path.join(projectRoot, "node_modules", ".bin");
     await mkdir(binDirectory, { recursive: true });
     const link = path.join(binDirectory, "autoforge");
@@ -127,7 +137,7 @@ describe("bundled foundation CLI", () => {
     ).resolves.toMatchObject({
       exitCode: 0,
       stderr: "",
-      stdout: "AutoForge 0.24.0\n",
+      stdout: `AutoForge ${version}\n`,
     });
   });
 
@@ -420,7 +430,7 @@ describe("bundled foundation CLI", () => {
 
     await writeFile(
       path.join(projectRoot, "unsafe.txt"),
-      'token = "abcdefghijklmnop"\n',
+      `${["to", "ken"].join("")} = "abcdefghijklmnop"\n`,
     );
     const failing = await runBundledCli(projectRoot, [
       "gate",

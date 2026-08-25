@@ -14,6 +14,7 @@ import {
   relocateProjectStorage,
 } from "../workspace/tiered-storage.js";
 import { reportCommandError } from "../cli/command-error.js";
+import { AgentContractStore } from "../contract/generator.js";
 
 export interface ProjectsCommandOptions {
   args: readonly string[];
@@ -120,9 +121,18 @@ export async function runProjectsCommand(
         );
         try {
           const result = await store.relocateProject(projectPath, destination);
+          const contractRepair = await new AgentContractStore(
+            result.destination,
+          )
+            .repairProjectRoot()
+            .catch(() => "invalid" as const);
           options.output.stdout(
-            `Relocated project registry from ${result.source} to ${result.destination}${storageMoved ? " and migrated global storage" : ""}.`,
+            `Relocated project registry from ${result.source} to ${result.destination}${storageMoved ? " and migrated global storage" : ""}${contractRepair === "updated" ? " and repaired the Agent contract project root" : ""}.`,
           );
+          if (contractRepair === "invalid")
+            options.output.stderr(
+              "Warning: the relocated Agent contract is malformed and could not be repaired; regenerate it with autoforge contract generate <agent-id>.",
+            );
         } catch (error) {
           if (storageMoved) {
             await relocateProjectStorage(

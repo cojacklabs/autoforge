@@ -1,3 +1,5 @@
+import { readFileSync } from "node:fs";
+
 import { describe, expect, it, vi } from "vitest";
 
 import { AUTOFORGE_HELP as APP_AUTOFORGE_HELP } from "../apps/core-cli/src/help.js";
@@ -74,6 +76,33 @@ describe("foundation CLI router", () => {
     await expect(runCli([], dependencies)).resolves.toBe(EXIT_CODE.success);
     expect(dependencies.commands.status).toHaveBeenCalledWith([]);
     expect(dependencies.output.stdout).not.toHaveBeenCalled();
+  });
+
+  it("launches the Agent for eligible bare invocation", async () => {
+    const dependencies = {
+      ...createDependencies(),
+      launchAgent: vi.fn(async () => EXIT_CODE.success),
+    };
+
+    await expect(runCli([], dependencies)).resolves.toBe(EXIT_CODE.success);
+    expect(dependencies.launchAgent).toHaveBeenCalledWith([]);
+    expect(dependencies.commands.status).not.toHaveBeenCalled();
+  });
+
+  it("delegates the allowlisted credentials namespace", async () => {
+    const dependencies = {
+      ...createDependencies(),
+      launchAgent: vi.fn(async () => EXIT_CODE.success),
+    };
+
+    await expect(
+      runCli(["credentials", "status", "openai"], dependencies),
+    ).resolves.toBe(EXIT_CODE.success);
+    expect(dependencies.launchAgent).toHaveBeenCalledWith([
+      "credentials",
+      "status",
+      "openai",
+    ]);
   });
 
   it("routes status arguments", async () => {
@@ -300,6 +329,9 @@ describe("foundation CLI router", () => {
 
 describe("foundation CLI entry", () => {
   it("discovers the repository package version", () => {
-    expect(findPackageVersion()).toBe("0.24.0");
+    const manifest = JSON.parse(readFileSync("package.json", "utf8")) as {
+      version: string;
+    };
+    expect(findPackageVersion()).toBe(manifest.version);
   });
 });

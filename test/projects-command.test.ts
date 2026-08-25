@@ -10,6 +10,10 @@ import os from "node:os";
 import path from "node:path";
 import { afterEach, describe, expect, it, vi } from "vitest";
 import { runProjectsCommand } from "../src/commands/projects.js";
+import {
+  AgentContractStore,
+  generateAgentContract,
+} from "../src/contract/generator.js";
 import { GlobalWorkspaceStore } from "../src/workspace/global-store.js";
 import {
   projectStorageDirectory,
@@ -226,6 +230,13 @@ describe("projects command", () => {
     await new StorageManifestStore(project, home).write(
       new Date("2026-08-22T12:00:00.000Z"),
     );
+    await new AgentContractStore(project).write(
+      generateAgentContract({
+        agentId: "generic",
+        projectRoot: project,
+        validationCommands: ["npm test"],
+      }),
+    );
     await rename(project, destination);
     const output = { stdout: vi.fn(), stderr: vi.fn() };
 
@@ -252,5 +263,11 @@ describe("projects command", () => {
     await expect(
       access(projectStorageDirectory(project, home)),
     ).rejects.toThrow();
+    await expect(
+      new AgentContractStore(destination).read(),
+    ).resolves.toMatchObject({ projectRoot: destination });
+    expect(output.stdout).toHaveBeenCalledWith(
+      expect.stringContaining("repaired the Agent contract project root"),
+    );
   });
 });

@@ -1,0 +1,17 @@
+{
+  "schemaVersion": 1,
+  "revision": 12,
+  "updatedAt": "2026-08-24T12:00:00.000Z",
+  "data": {
+    "current": null,
+    "previous": [
+      {
+        "id": "session.v0-24-fixture",
+        "status": "ended",
+        "startedAt": "2026-08-24T10:00:00.000Z",
+        "endedAt": "2026-08-24T11:00:00.000Z",
+        "activeWork": null
+      }
+    ]
+  }
+}

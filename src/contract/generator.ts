@@ -67,4 +67,20 @@ export class AgentContractStore {
       JSON.parse(await readFile(this.filePath, "utf8")) as unknown,
     );
   }
+
+  async repairProjectRoot(): Promise<"updated" | "current" | "missing"> {
+    let contract: AgentContract;
+    try {
+      contract = await this.read();
+    } catch (error) {
+      if (error instanceof Error && "code" in error && error.code === "ENOENT")
+        return "missing";
+      throw error;
+    }
+    const projectRoot = path.dirname(path.dirname(this.filePath));
+    if (path.resolve(contract.projectRoot) === path.resolve(projectRoot))
+      return "current";
+    await this.write({ ...contract, projectRoot });
+    return "updated";
+  }
 }

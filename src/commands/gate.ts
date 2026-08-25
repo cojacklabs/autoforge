@@ -1,15 +1,23 @@
+import { execFile } from "node:child_process";
+import { promisify } from "node:util";
+
 import { EXIT_CODE, type ExitCode } from "../core/errors.js";
 import type { LogWriter } from "../core/logger.js";
+import { matchesRepositoryPattern } from "../core/patterns.js";
 import { discoverProjectRoot } from "../core/project.js";
 import { runQualityGate } from "../quality/service.js";
 import type { QualityGateReport } from "../quality/schemas.js";
 import { ValidationEvidenceStore } from "../quality/evidence.js";
 import { createWorkStateStore } from "../state/kernel.js";
+import type { WorkState } from "../work/schemas.js";
+
+const execFileAsync = promisify(execFile);
 
 export interface GateCommandOptions {
   args: readonly string[];
   output: LogWriter;
   startDirectory: string;
+  changedFileReader?: (projectRoot: string) => Promise<string[]>;
 }
 
 interface ParsedGateArguments {
@@ -95,6 +103,62 @@ function writeTextReport(report: QualityGateReport, output: LogWriter): void {
   }
 }
 
+async function readGitChangedFiles(projectRoot: string): Promise<string[]> {
+  try {
+    const [{ stdout: changed }, { stdout: untracked }] = await Promise.all([
+      execFileAsync(
+        "git",
+        [
+          "-C",
+          projectRoot,
+          "diff",
+          "--name-only",
+          "--diff-filter=ACMRTUXB",
+          "-z",
+          "HEAD",
+        ],
+        { encoding: "utf8" },
+      ),
+      execFileAsync(
+        "git",
+        ["-C", projectRoot, "ls-files", "--others", "--exclude-standard", "-z"],
+        { encoding: "utf8" },
+      ),
+    ]);
+    return [...new Set(`${changed}${untracked}`.split("\0").filter(Boolean))]
+      .map((file) => file.replaceAll("\\", "/"))
+      .sort();
+  } catch {
+    return [];
+  }
+}
+
+function activeWorkScope(workState: WorkState) {
+  const active = workState.activeWork;
+  if (!active) return undefined;
+  const collection =
+    active.kind === "task" ? workState.tasks : workState.issues;
+  return collection.find((item) => item.id === active.id)?.scope;
+}
+
+async function selectGateFiles(
+  explicitFiles: string[],
+  projectRoot: string,
+  workState: WorkState,
+  changedFileReader: (projectRoot: string) => Promise<string[]>,
+): Promise<string[]> {
+  if (explicitFiles.length > 0) return explicitFiles;
+  const scope = activeWorkScope(workState);
+  if (!scope) return [];
+  return (await changedFileReader(projectRoot)).filter(
+    (file) =>
+      scope.include.some((pattern) =>
+        matchesRepositoryPattern(file, pattern),
+      ) &&
+      !scope.exclude.some((pattern) => matchesRepositoryPattern(file, pattern)),
+  );
+}
+
 export async function runGateCommand(
   options: GateCommandOptions,
 ): Promise<ExitCode> {
@@ -105,14 +169,20 @@ export async function runGateCommand(
   const project = await discoverProjectRoot({
     startDirectory: options.startDirectory,
   });
+  const workState = (await createWorkStateStore(project.path).read()).state
+    .data;
+  const files = await selectGateFiles(
+    parsed.files,
+    project.path,
+    workState,
+    options.changedFileReader ?? readGitChangedFiles,
+  );
   const report = await runQualityGate({
     projectRoot: project.path,
-    files: parsed.files,
+    files,
   });
   const evidenceStore = new ValidationEvidenceStore(project.path);
   const capturedAt = new Date().toISOString();
-  const workState = (await createWorkStateStore(project.path).read()).state
-    .data;
   const activeWorkId = workState.activeWork?.id;
   for (const check of report.checks) {
     await evidenceStore.record({

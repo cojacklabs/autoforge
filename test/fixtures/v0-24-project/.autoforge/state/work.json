@@ -1,0 +1,46 @@
+{
+  "schemaVersion": 1,
+  "revision": 24,
+  "updatedAt": "2026-08-24T12:00:00.000Z",
+  "data": {
+    "features": [
+      {
+        "id": "feature.v0-24-fixture",
+        "name": "v0.24 fixture",
+        "description": "Representative project intelligence written by AutoForge v0.24.",
+        "status": "planned",
+        "createdAt": "2026-08-24T12:00:00.000Z",
+        "updatedAt": "2026-08-24T12:00:00.000Z"
+      }
+    ],
+    "phases": [
+      {
+        "id": "phase.v0-24-fixture",
+        "featureId": "feature.v0-24-fixture",
+        "sequence": 1,
+        "name": "Compatibility",
+        "description": "Keep existing project state readable.",
+        "status": "planned",
+        "createdAt": "2026-08-24T12:00:00.000Z",
+        "updatedAt": "2026-08-24T12:00:00.000Z"
+      }
+    ],
+    "tasks": [
+      {
+        "id": "task.resume-v0-24-project",
+        "phaseId": "phase.v0-24-fixture",
+        "name": "Resume project work",
+        "description": "Continue from durable v0.24 project truth.",
+        "status": "ready",
+        "scope": {
+          "include": ["src/**"],
+          "exclude": []
+        },
+        "createdAt": "2026-08-24T12:00:00.000Z",
+        "updatedAt": "2026-08-24T12:00:00.000Z"
+      }
+    ],
+    "issues": [],
+    "activeWork": null
+  }
+}
