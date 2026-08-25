@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
-  "revision": 57,
-  "updatedAt": "2026-08-25T00:44:31.128Z",
+  "revision": 58,
+  "updatedAt": "2026-08-25T00:57:16.781Z",
   "data": {
     "decisions": [
       {
@@ -1406,6 +1406,31 @@
         "kind": "architecture",
         "createdAt": "2026-08-25T00:44:31.104Z",
         "updatedAt": "2026-08-25T00:44:31.104Z"
+      },
+      {
+        "id": "decision.autoforge-enforces-workspace-boundaries-with-turborepo-import-checks-plus-a-repo",
+        "statement": "AutoForge enforces workspace boundaries with Turborepo import checks plus a repository-owned package policy, and CI separates affected-package validation from a mandatory full Core compatibility gate.",
+        "reasoning": "Turbo boundaries catch undeclared imports and package breakout, while AutoForge's explicit manifest policy encodes the stricter Core, Agent, Web, and Service dependency graph; separate CI jobs keep incremental feedback fast without allowing affected filtering to skip the released Core baseline.",
+        "consequences": [
+          "Every pull request runs built-in and AutoForge-specific boundary checks plus affected package tasks; every pull request and main push also runs full Core typechecking, foundation and legacy tests, formatting, planning synchronization, and package smoke validation without remote cache credentials."
+        ],
+        "scope": [
+          "project"
+        ],
+        "keywords": [
+          "architecture",
+          "boundaries",
+          "ci",
+          "turborepo"
+        ],
+        "relatedWork": [
+          "task.enforce-package-boundaries-and-affected-ci"
+        ],
+        "supersedes": null,
+        "status": "active",
+        "kind": "architecture",
+        "createdAt": "2026-08-25T00:57:16.737Z",
+        "updatedAt": "2026-08-25T00:57:16.737Z"
       }
     ]
   }

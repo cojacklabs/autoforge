@@ -2,6 +2,20 @@
   "$schema": "https://turborepo.dev/schema.json",
   "cacheDir": "node_modules/.cache/turbo",
   "ui": "stream",
+  "boundaries": {
+    "tags": {
+      "public": {
+        "dependencies": {
+          "deny": ["app"]
+        }
+      },
+      "library": {
+        "dependencies": {
+          "deny": ["app"]
+        }
+      }
+    }
+  },
   "tasks": {
     "build": {
       "dependsOn": ["^build"],
@@ -27,6 +41,9 @@
       "outputs": []
     },
     "planning:check": {
+      "outputs": []
+    },
+    "boundaries": {
       "outputs": []
     },
     "//#core:build": {

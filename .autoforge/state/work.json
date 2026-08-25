@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
-  "revision": 290,
-  "updatedAt": "2026-08-25T00:44:31.558Z",
+  "revision": 292,
+  "updatedAt": "2026-08-25T00:57:46.093Z",
   "data": {
     "features": [
       {
@@ -1352,9 +1352,9 @@
       {
         "name": "Enforce package boundaries and affected CI",
         "description": "Add architectural boundary checks, package-level validation tasks, affected-package CI, and a mandatory full Core compatibility gate without requiring remote caching.",
-        "status": "planned",
+        "status": "completed",
         "createdAt": "2026-08-24T14:22:12.494Z",
-        "updatedAt": "2026-08-24T14:22:12.494Z",
+        "updatedAt": "2026-08-25T00:57:45.964Z",
         "id": "task.enforce-package-boundaries-and-affected-ci",
         "phaseId": "phase.workspace-foundation",
         "scope": {

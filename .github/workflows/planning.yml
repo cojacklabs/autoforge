@@ -10,7 +10,8 @@ on:
       - "dev/AutoForge_Planning_Bundle.md"
       - "scripts/check_planning_bundle.mjs"
       - "package.json"
-      - "package-lock.json"
+      - "pnpm-lock.yaml"
+      - "pnpm-workspace.yaml"
       - ".github/workflows/planning.yml"
   push:
     branches: [main]
@@ -18,7 +19,8 @@ on:
       - "dev/**"
       - "scripts/check_planning_bundle.mjs"
       - "package.json"
-      - "package-lock.json"
+      - "pnpm-lock.yaml"
+      - "pnpm-workspace.yaml"
 
 permissions:
   contents: read
@@ -28,9 +30,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v5
-      - uses: actions/setup-node@v5
+      - uses: pnpm/setup@v1
         with:
-          node-version: 22
-          cache: npm
-      - run: npm ci --ignore-scripts
-      - run: npm run planning:check
+          runtime: node@22
+          cache: true
+          install: false
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm workspace:planning:check

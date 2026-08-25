@@ -7,29 +7,60 @@ on:
       - main
 
 jobs:
-  validate:
+  affected-packages:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+
+      - name: Set up pnpm and Node.js 22
+        uses: pnpm/setup@v1
+        with:
+          runtime: node@22
+          cache: true
+          install: false
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Check workspace imports
+        run: pnpm exec turbo boundaries
+
+      - name: Check AutoForge dependency policy
+        run: node packages/config/src/check-boundaries.mjs
+
+      - name: Validate affected packages
+        run: pnpm exec turbo run build typecheck test format:check boundaries --affected
+
+  core-compatibility:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
         uses: actions/checkout@v5
 
-      - name: Set up Node.js 20
-        uses: actions/setup-node@v5
+      - name: Set up pnpm and Node.js 22
+        uses: pnpm/setup@v1
         with:
-          node-version: 22
-          cache: npm
+          runtime: node@22
+          cache: true
+          install: false
 
       - name: Install dependencies
-        run: npm ci --ignore-scripts
+        run: pnpm install --frozen-lockfile
 
-      - name: Lint formatting
-        run: npm run format:check
+      - name: Typecheck Core
+        run: pnpm workspace:typecheck
 
-      - name: Run unit tests
-        run: npm test
+      - name: Run full Core compatibility suites
+        run: pnpm workspace:test
 
-      - name: Build package
-        run: npm run build
+      - name: Check Core formatting
+        run: pnpm workspace:format:check
+
+      - name: Check planning synchronization
+        run: pnpm workspace:planning:check
 
       - name: Smoke test packed package
         run: |
