@@ -9,6 +9,7 @@ Commands:
   changelog  Compile documented bugfix and feature-note decisions into CHANGELOG.md
   check      Evaluate work, session, context, and edit guardrails
   context    Generate the active work build packet
+  credentials Manage local Agent provider credentials
   decide     Record or supersede an architectural decision
   design     Validate, import, list, or show design specifications
   doctrine   List doctrines or show doctrine guidance
@@ -81,6 +82,11 @@ Work lifecycle:
   autoforge start <task|issue> <id>
   autoforge recap
   autoforge done [--no-decision "<reason>"]
+
+Agent credentials:
+  autoforge credentials set openai
+  autoforge credentials status openai
+  autoforge credentials delete openai
 
 Context packets:
   autoforge context

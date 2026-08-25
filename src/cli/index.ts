@@ -43,6 +43,7 @@ import { runTuiCommand } from "../commands/tui.js";
 import { runWhyCommand } from "../commands/why.js";
 import { runStrategyCommand } from "../commands/strategy.js";
 import { runStatusCommand } from "../../apps/core-cli/src/status.js";
+import { launchAutoForgeAgent } from "../../apps/core-cli/src/agent-launcher.js";
 import { GlobalWorkspaceStore } from "../workspace/global-store.js";
 import { projectMutationBlocked } from "../workspace/lifecycle.js";
 import { runCli, type CliOutput } from "./router.js";
@@ -138,6 +139,8 @@ export async function main(
     return await runCli(cliArgs, {
       output,
       version: findPackageVersion(),
+      launchAgent: (agentArgs) =>
+        launchAutoForgeAgent(agentArgs, { output, cwd: startDirectory }),
       commands: {
         add: (commandArgs) =>
           runAddCommand({

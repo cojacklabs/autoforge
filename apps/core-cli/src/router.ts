@@ -7,6 +7,7 @@ export type CliOutput = LogWriter;
 export interface CliDependencies {
   output: CliOutput;
   version: string;
+  launchAgent?(args: readonly string[]): Promise<ExitCode | undefined>;
   commands: {
     add(args: readonly string[]): Promise<ExitCode>;
     check(args: readonly string[]): Promise<ExitCode>;
@@ -86,8 +87,22 @@ export async function runCli(
       return EXIT_CODE.success;
     }
 
-    case undefined:
-      return dependencies.commands.status([]);
+    case undefined: {
+      const launched = await dependencies.launchAgent?.([]);
+      return launched ?? dependencies.commands.status([]);
+    }
+
+    case "credentials": {
+      const launched = await dependencies.launchAgent?.([
+        "credentials",
+        ...commandArgs,
+      ]);
+      if (launched !== undefined) return launched;
+      dependencies.output.stderr(
+        "AutoForge Agent is unavailable. Install @cojacklabs/autoforge-agent to use credentials.",
+      );
+      return EXIT_CODE.invalidState;
+    }
 
     case "version":
     case "-v":
