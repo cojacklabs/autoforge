@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
-  "revision": 312,
-  "updatedAt": "2026-08-25T03:06:45.463Z",
+  "revision": 367,
+  "updatedAt": "2026-08-25T21:36:48.669Z",
   "data": {
     "features": [
       {
@@ -1494,9 +1494,9 @@
       {
         "name": "Publish supported AutoForge SDK",
         "description": "Expose stable protocol-returning operations for projects, status, intent, work, context, checks, assignments, decisions, validation, handoffs, and completion.",
-        "status": "planned",
+        "status": "completed",
         "createdAt": "2026-08-24T14:22:29.904Z",
-        "updatedAt": "2026-08-24T14:22:29.904Z",
+        "updatedAt": "2026-08-25T03:28:57.205Z",
         "id": "task.publish-supported-autoforge-sdk",
         "phaseId": "phase.sdk-and-structured-handoffs",
         "scope": {
@@ -1513,9 +1513,9 @@
       {
         "name": "Implement structured cross-agent handoffs",
         "description": "Formalize tracked versus ignored state and provider-neutral handoffs containing work, scope, Git refs, changed files, decisions, validation, risks, open questions, next action, and context fingerprint without raw transcripts.",
-        "status": "planned",
+        "status": "completed",
         "createdAt": "2026-08-24T14:22:30.441Z",
-        "updatedAt": "2026-08-24T14:22:30.441Z",
+        "updatedAt": "2026-08-25T03:40:27.893Z",
         "id": "task.implement-structured-cross-agent-handoffs",
         "phaseId": "phase.sdk-and-structured-handoffs",
         "scope": {
@@ -1534,9 +1534,9 @@
       {
         "name": "Create experimental local Agent CLI",
         "description": "Build an account-free local SDK consumer with one provider, streaming, intent clarification, plan review, explicit approval, bounded edits, validation, and structured handoff.",
-        "status": "planned",
+        "status": "completed",
         "createdAt": "2026-08-24T14:22:42.523Z",
-        "updatedAt": "2026-08-24T14:22:42.523Z",
+        "updatedAt": "2026-08-25T04:00:06.913Z",
         "id": "task.create-experimental-local-agent-cli",
         "phaseId": "phase.experimental-local-agent",
         "scope": {
@@ -1554,9 +1554,9 @@
       {
         "name": "Integrate secure local provider credentials",
         "description": "Store local BYOK credentials through operating-system credential facilities and ensure secrets never enter Core state, logs, fixtures, or tracked project artifacts.",
-        "status": "planned",
+        "status": "completed",
         "createdAt": "2026-08-24T14:22:43.031Z",
-        "updatedAt": "2026-08-24T14:22:43.031Z",
+        "updatedAt": "2026-08-25T04:32:16.806Z",
         "id": "task.integrate-secure-local-provider-credentials",
         "phaseId": "phase.experimental-local-agent",
         "scope": {
@@ -1573,9 +1573,9 @@
       {
         "name": "Harden optional stores and relocated contracts",
         "description": "Make absent bootstrap and optional stores graceful, repair stale project-root references after relocation, and validate interrupted session, lease, and context recovery.",
-        "status": "planned",
+        "status": "completed",
         "createdAt": "2026-08-24T14:22:43.662Z",
-        "updatedAt": "2026-08-24T14:22:43.662Z",
+        "updatedAt": "2026-08-25T05:00:45.053Z",
         "id": "task.harden-optional-stores-and-relocated-contracts",
         "phaseId": "phase.compatibility-hardening-and-release",
         "scope": {
@@ -1592,9 +1592,9 @@
       {
         "name": "Validate v0.24 compatibility and cross-agent continuity",
         "description": "Prove v0.24 fixtures remain readable, existing commands remain compatible or deprecated, and Claude-to-Codex handoff works without raw transcripts.",
-        "status": "planned",
+        "status": "completed",
         "createdAt": "2026-08-24T14:22:44.121Z",
-        "updatedAt": "2026-08-24T14:22:44.121Z",
+        "updatedAt": "2026-08-25T05:04:46.836Z",
         "id": "task.validate-v0-24-compatibility-and-cross-agent-continuity",
         "phaseId": "phase.compatibility-hardening-and-release",
         "scope": {
@@ -1611,9 +1611,9 @@
       {
         "name": "Prepare v0.25 release evidence",
         "description": "Run full package, foundation, legacy, boundary, migration, and end-to-end gates; update changelog, migration guidance, CLI reference, and release-readiness evidence.",
-        "status": "planned",
+        "status": "completed",
         "createdAt": "2026-08-24T14:22:44.560Z",
-        "updatedAt": "2026-08-24T14:22:44.560Z",
+        "updatedAt": "2026-08-25T05:26:31.290Z",
         "id": "task.prepare-v0-25-release-evidence",
         "phaseId": "phase.compatibility-hardening-and-release",
         "scope": {
@@ -1678,6 +1678,43 @@
             "src/**",
             "test/**",
             "tests/**"
+          ],
+          "exclude": []
+        }
+      },
+      {
+        "name": "Reconcile bare AutoForge agent launcher plan",
+        "description": "Supersede the permanent deterministic bare-command policy: define bare autoforge as a thin interactive Agent launcher in TTY contexts with deterministic status fallback, preserve explicit Core commands, and update the v0.25 milestone, package policy, CLI reference, decisions, validation, and implementation queue.",
+        "status": "completed",
+        "createdAt": "2026-08-25T03:16:24.393Z",
+        "updatedAt": "2026-08-25T03:21:24.438Z",
+        "id": "task.reconcile-bare-autoforge-agent-launcher-plan",
+        "phaseId": "phase.architecture-and-governance",
+        "scope": {
+          "include": [
+            "docs/planning/0.25/**",
+            "docs/AUTOFORGE_CLI_REFERENCE.md",
+            ".autoforge/state/**"
+          ],
+          "exclude": []
+        }
+      },
+      {
+        "name": "Delegate bare AutoForge to the local Agent",
+        "description": "After the experimental Agent and secure credential foundation exist, make bare autoforge launch the separately installed Agent in eligible interactive terminals while preserving deterministic status for CI, pipes, redirected output, missing or incompatible Agent installations, and every explicit Core command. Forward terminal streams, signals, and exit codes; prevent recursion; preserve Core dependency isolation; and validate Linux, macOS, and Windows process behavior.",
+        "status": "completed",
+        "createdAt": "2026-08-25T03:17:09.265Z",
+        "updatedAt": "2026-08-25T04:50:57.229Z",
+        "id": "task.delegate-bare-autoforge-to-the-local-agent",
+        "phaseId": "phase.experimental-local-agent",
+        "scope": {
+          "include": [
+            "apps/core-cli/**",
+            "apps/agent-cli/**",
+            "packages/protocol/**",
+            "src/cli/index.ts",
+            "test/**",
+            "docs/**"
           ],
           "exclude": []
         }
@@ -1997,8 +2034,271 @@
           ],
           "exclude": []
         }
+      },
+      {
+        "name": "Audit v0.25 Protocol and Core release candidate",
+        "description": "Read-only release audit of Protocol and Core manifests, public exports, schemas, dependency boundaries, tests, root publication wiring, and release documentation before committing or publishing v0.25.",
+        "status": "completed",
+        "createdAt": "2026-08-25T14:35:57.926Z",
+        "updatedAt": "2026-08-25T14:39:58.032Z",
+        "id": "issue.audit-v0-25-protocol-and-core-release-candidate",
+        "scope": {
+          "include": [
+            "packages/protocol/**",
+            "packages/core/**",
+            "package.json",
+            "pnpm-lock.yaml",
+            "docs/planning/0.25/**"
+          ],
+          "exclude": []
+        }
+      },
+      {
+        "name": "Repair v0.25 release automation for pnpm and dependency order",
+        "description": "Release Verification still runs npm ci with no package-lock, and CI's isolated root tarball install resolves unpublished Protocol/Core/SDK dependencies from npm. Convert release automation to pnpm, verify every public package artifact, and enforce the documented Protocol -> Core -> SDK -> Core CLI publication order.",
+        "status": "completed",
+        "createdAt": "2026-08-25T14:39:52.652Z",
+        "updatedAt": "2026-08-25T15:13:50.011Z",
+        "id": "issue.repair-v0-25-release-automation-for-pnpm-and-dependency-order",
+        "scope": {
+          "include": [
+            ".github/workflows/**",
+            "package.json",
+            "pnpm-lock.yaml",
+            "packages/*/package.json",
+            "docs/planning/0.25/**"
+          ],
+          "exclude": []
+        }
+      },
+      {
+        "name": "Introduce Changesets and complete v0.25 release metadata",
+        "description": "The accepted package policy and publication gate require Changesets, package-level release notes, changelogs, and compatibility ranges, but the repository has no .changeset configuration or release entries. Add the independent-version release workflow before publication approval.",
+        "status": "completed",
+        "createdAt": "2026-08-25T14:39:53.156Z",
+        "updatedAt": "2026-08-25T15:01:51.248Z",
+        "id": "issue.introduce-changesets-and-complete-v0-25-release-metadata",
+        "scope": {
+          "include": [
+            ".changeset/**",
+            "package.json",
+            "pnpm-lock.yaml",
+            "packages/*/package.json",
+            "CHANGELOG.md",
+            "docs/planning/0.25/**"
+          ],
+          "exclude": []
+        }
+      },
+      {
+        "name": "Enforce repository-relative scope in agent handoffs",
+        "description": "agentHandoffSchema rejects unsafe changedFiles but currently accepts absolute and parent-traversing scope include/exclude patterns. Reuse a canonical repository-relative scope schema and add focused rejection tests so canonical tracked handoffs cannot grant scope outside the repository.",
+        "status": "completed",
+        "createdAt": "2026-08-25T14:39:53.637Z",
+        "updatedAt": "2026-08-25T14:46:17.867Z",
+        "id": "issue.enforce-repository-relative-scope-in-agent-handoffs",
+        "scope": {
+          "include": [
+            "packages/protocol/src/handoff.ts",
+            "packages/protocol/test/**",
+            "packages/core/src/**",
+            "packages/core/test/**",
+            "src/workflows/**",
+            "test/agent-handoff.test.ts"
+          ],
+          "exclude": []
+        }
+      },
+      {
+        "name": "Reconcile Core CLI workspace ownership before v0.25 release",
+        "description": "The accepted architecture requires a private repository root and a publishable apps/core-cli package owning @cojacklabs/autoforge, but the root remains the public package and apps/core-cli has no manifest. Complete the relocation or explicitly amend the accepted policy and release readiness claims before tagging.",
+        "status": "completed",
+        "createdAt": "2026-08-25T14:39:54.131Z",
+        "updatedAt": "2026-08-25T14:55:11.511Z",
+        "id": "issue.reconcile-core-cli-workspace-ownership-before-v0-25-release",
+        "scope": {
+          "include": [
+            "apps/core-cli/**",
+            "src/cli/**",
+            "package.json",
+            "pnpm-lock.yaml",
+            "tsup.config.ts",
+            "docs/planning/0.25/**",
+            "README.md"
+          ],
+          "exclude": []
+        }
+      },
+      {
+        "name": "Final v0.25 release candidate audit and deep validation",
+        "description": "Perform a read-only, release-blocking audit of the accumulated v0.25 worktree: repository hygiene, public API and package boundaries, security and credentials, compatibility, CI and release workflows, package artifacts, Changesets metadata, documentation consistency, and complete validation. Record every blocker before any commit, tag, GitHub release, npm publication, or deployment.",
+        "status": "completed",
+        "createdAt": "2026-08-25T15:15:27.850Z",
+        "updatedAt": "2026-08-25T15:34:19.938Z",
+        "id": "issue.final-v0-25-release-candidate-audit-and-deep-validation",
+        "scope": {
+          "include": [
+            "**"
+          ],
+          "exclude": []
+        }
+      },
+      {
+        "name": "Fix Windows AutoForge Agent launcher execution",
+        "description": "Release blocker: the public Core launcher resolves autoforge-agent.cmd on Windows but passes it directly to child_process.spawn with shell disabled. Node documents that .cmd files require cmd.exe or an equivalent shell, so bare Agent launch and the credentials proxy cannot work on Windows. Add real Windows process coverage while preserving argument safety, signals, exit codes, and recursion prevention.",
+        "status": "completed",
+        "createdAt": "2026-08-25T15:34:11.585Z",
+        "updatedAt": "2026-08-25T15:58:13.242Z",
+        "id": "issue.fix-windows-autoforge-agent-launcher-execution",
+        "scope": {
+          "include": [
+            "apps/core-cli/src/agent-launcher.ts",
+            "test/agent-launcher.test.ts",
+            "packages/protocol/src/agent-launcher.ts",
+            "docs/planning/0.25/**"
+          ],
+          "exclude": []
+        }
+      },
+      {
+        "name": "Harden experimental Agent path containment and entrypoint portability",
+        "description": "Release blocker for the Agent: LocalAgentWorkspace allows writes through a symlinked directory outside the project, and the import.meta.url entrypoint check silently skips main when the installed path contains spaces. Enforce real filesystem containment without TOCTOU/symlink escape, use a robust executable-entry check or bin shim, add regression tests, and reconcile npm installation documentation with the package's private release state.",
+        "status": "completed",
+        "createdAt": "2026-08-25T15:34:12.216Z",
+        "updatedAt": "2026-08-25T16:02:58.764Z",
+        "id": "issue.harden-experimental-agent-path-containment-and-entrypoint-portability",
+        "scope": {
+          "include": [
+            "apps/agent-cli/**",
+            "docs/LOCAL_PROVIDER_CREDENTIALS.md",
+            "docs/planning/0.25/MIGRATION_GUIDE.md",
+            "README.md"
+          ],
+          "exclude": []
+        }
+      },
+      {
+        "name": "Eliminate generated-output race from CI boundary validation",
+        "description": "Release blocker: Turborepo boundaries scans ignored dist output after builds; the current CI schedules build and boundaries together, making the result order-dependent. Ensure authoritative source-only boundary validation and order CI so generated artifacts or restored caches cannot create false failures.",
+        "status": "completed",
+        "createdAt": "2026-08-25T15:34:12.790Z",
+        "updatedAt": "2026-08-25T15:54:43.098Z",
+        "id": "issue.eliminate-generated-output-race-from-ci-boundary-validation",
+        "scope": {
+          "include": [
+            ".github/workflows/ci.yml",
+            "turbo.json",
+            "packages/config/src/check-boundaries.mjs",
+            "apps/agent-cli/package.json",
+            "packages/*/package.json"
+          ],
+          "exclude": []
+        }
+      },
+      {
+        "name": "Repair AutoForge project quality gate execution and file selection",
+        "description": "Release blocker: autoforge gate check cannot execute the configured bare tsc command from a normal environment, and an active all-scope issue selects no files so file containment, secret scanning, and structured syntax are skipped. Use package-manager-resolved commands and define reliable changed/scope file selection with regression coverage.",
+        "status": "completed",
+        "createdAt": "2026-08-25T15:34:13.404Z",
+        "updatedAt": "2026-08-25T15:52:21.324Z",
+        "id": "issue.repair-autoforge-project-quality-gate-execution-and-file-selection",
+        "scope": {
+          "include": [
+            ".autoforge/config.json",
+            "src/quality/**",
+            "src/commands/gate.ts",
+            "test/quality-gate.test.ts",
+            "test/gate-command.test.ts",
+            "docs/AUTOFORGE_CLI_REFERENCE.md"
+          ],
+          "exclude": []
+        }
+      },
+      {
+        "name": "Prepare reviewable v0.25 release checkpoint and remote verification",
+        "description": "After release blockers are fixed, split the accumulated worktree into bounded commits while excluding claude_resume.md and local .autoforge/learning/strategy.json, verify exact Changesets baseline/release-set metadata, push for Node 22 GitHub CI, re-run release verification, record explicit approval, and publish Protocol then Core then SDK then Core CLI. Do not tag or publish before every gate passes.",
+        "status": "active",
+        "createdAt": "2026-08-25T15:34:14.057Z",
+        "updatedAt": "2026-08-25T16:53:13.208Z",
+        "id": "issue.prepare-reviewable-v0-25-release-checkpoint-and-remote-verification",
+        "scope": {
+          "include": [
+            ".github/workflows/**",
+            ".changeset/**",
+            "CHANGELOG.md",
+            "docs/planning/0.25/**",
+            "package.json",
+            "pnpm-lock.yaml",
+            "apps/**",
+            "packages/**",
+            "src/**",
+            "test/**"
+          ],
+          "exclude": []
+        }
+      },
+      {
+        "name": "Define and enforce an Agent code-commenting standard",
+        "description": "Post-v0.25 governance enhancement: require AutoForge-guided agents to leave durable, high-value code commentary where intent is not evident from implementation. Document and enforce comments for public API contracts, architectural boundaries, security and compatibility constraints, non-obvious algorithms, invariants, and intentionally unusual tradeoffs. Explicitly prohibit noisy comments that restate syntax, stale narrative comments, raw prompt transcripts, and unactionable TODOs. Prefer explain-why comments, typed APIs, tests, and decision links; require TODO/FIXME comments to reference an AutoForge work item when practical. Integrate the standard into generated agent context/contracts and review gates, with objective checks limited to enforceable surfaces such as exported API documentation rather than arbitrary comment-density quotas. Plan this after the v0.25 release checkpoint so it does not expand the current release candidate.",
+        "status": "planned",
+        "createdAt": "2026-08-25T19:08:51.225Z",
+        "updatedAt": "2026-08-25T19:08:51.225Z",
+        "id": "issue.define-and-enforce-an-agent-code-commenting-standard",
+        "scope": {
+          "include": [
+            "src/doctrine/**",
+            "src/contract/**",
+            "src/quality/**",
+            "docs/**",
+            "test/**",
+            "README.md"
+          ],
+          "exclude": []
+        }
+      },
+      {
+        "name": "Define optional Intent Compiler and portable design orchestration",
+        "description": "Backburner platform architecture: define provider-neutral contracts and boundaries for lightweight-model prompt compilation, clarification, task and memory proposals, explainable prioritization inputs, evidence-backed research assistance, and portable design contracts consumed through Figma, TypeUI, Stitch, and future adapters. Core must remain deterministic and own schemas, validation, governance, state, evidence, and approval; Agent or Service owns model routing and provider calls. This is not a v0.25 requirement, committed version, or fixed sequence. The preserved concept is docs/planning/0.25/FUTURE_INTELLIGENCE_AND_DESIGN_ORCHESTRATION.md.",
+        "status": "planned",
+        "createdAt": "2026-08-25T21:09:27.741Z",
+        "updatedAt": "2026-08-25T21:09:27.741Z",
+        "id": "issue.define-optional-intent-compiler-and-portable-design-orchestration",
+        "scope": {
+          "include": [
+            "packages/protocol/**",
+            "packages/core/**",
+            "packages/sdk/**",
+            "packages/providers/**",
+            "apps/agent-cli/**",
+            "apps/service/**",
+            "docs/**",
+            "test/**"
+          ],
+          "exclude": []
+        }
+      },
+      {
+        "name": "Enforce Agent generated-content safety before writes and streaming",
+        "description": "Add code-level validation and sanitization for model-generated file content and streamed output before the experimental Agent writes to disk or stdout. Reject secrets, raw transcripts, and machine-specific absolute paths; ensure failed validation cannot leave partial edits; and cover the policy with focused tests before Agent or Providers publication.",
+        "status": "planned",
+        "createdAt": "2026-08-25T21:36:48.643Z",
+        "updatedAt": "2026-08-25T21:36:48.643Z",
+        "id": "issue.enforce-agent-generated-content-safety-before-writes-and-streaming",
+        "scope": {
+          "include": [
+            "apps/agent-cli/**",
+            "packages/providers/**",
+            "test/**",
+            "docs/**"
+          ],
+          "exclude": []
+        }
       }
     ],
-    "activeWork": null
+    "activeWork": {
+      "kind": "issue",
+      "id": "issue.prepare-reviewable-v0-25-release-checkpoint-and-remote-verification",
+      "startedAt": "2026-08-25T16:53:13.208Z"
+    }
   }
 }

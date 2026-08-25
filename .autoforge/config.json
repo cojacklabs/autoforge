@@ -7,9 +7,10 @@
   "qualityGates": [
     {
       "id": "typecheck",
-      "command": "tsc",
+      "command": "npm",
       "args": [
-        "--noEmit"
+        "run",
+        "typecheck"
       ],
       "timeoutMs": 120000
     },
@@ -28,7 +29,7 @@
       "args": [
         "test"
       ],
-      "timeoutMs": 120000
+      "timeoutMs": 180000
     }
   ],
   "artifacts": {

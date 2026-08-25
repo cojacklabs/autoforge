@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
-  "revision": 2,
-  "updatedAt": "2026-08-23T13:10:22.548Z",
+  "revision": 7,
+  "updatedAt": "2026-08-25T21:51:26.726Z",
   "data": {
     "evidence": [
       {
@@ -14,6 +14,28 @@
         "relatedWork": null,
         "resultingDecision": "decision.the-documentation-gate-genuinely-improved-release-hygiene-across-v0-21-1-and-v0",
         "capturedAt": "2026-08-23T13:10:01.720Z"
+      },
+      {
+        "id": "evidence.final-v0-25-local-release-audit-passed-under-node-js-22-19-0-712-foundation-test",
+        "kind": "ai-evaluation",
+        "summary": "Final v0.25 local release audit passed under Node.js 22.19.0: 712 foundation tests, 17 legacy tests, 34 workspace package tests, builds, typechecks, formatting, source/package boundaries, planning synchronization, Changesets status, production dependency audit, 98-file AutoForge quality gate, packed artifact contents, and isolated four-package npm installation all passed. Remaining work is documentation evidence reconciliation, bounded commit review excluding claude_resume.md and .autoforge/learning/strategy.json, remote GitHub CI, and explicit release approval.",
+        "source": "Codex local release-candidate audit on 2026-08-25",
+        "experimentId": null,
+        "hypothesisId": null,
+        "relatedWork": "issue.prepare-reviewable-v0-25-release-checkpoint-and-remote-verification",
+        "resultingDecision": "decision.the-active-v0-25-release-checkpoint-begins-from-a-fully-passing-local-node-22-au",
+        "capturedAt": "2026-08-25T16:53:28.561Z"
+      },
+      {
+        "id": "evidence.final-v0-25-release-candidate-validation-passed-on-node-22-19-0-712-foundation-t",
+        "kind": "ai-evaluation",
+        "summary": "Final v0.25 release-candidate validation passed on Node 22.19.0: 712 foundation tests plus one Windows-only skip, 17 legacy tests, 34 package tests, all package build/typecheck/format tasks, source and package boundaries, Changesets status, clean public tarballs, isolated package-set install, and the explicit 102-file AutoForge security and quality gate.",
+        "source": "docs/planning/0.25/RELEASE_READINESS.md",
+        "experimentId": null,
+        "hypothesisId": null,
+        "relatedWork": "issue.prepare-reviewable-v0-25-release-checkpoint-and-remote-verification",
+        "resultingDecision": "decision.the-v0-25-candidate-is-locally-validated-and-split-into-reviewable-commits-relea",
+        "capturedAt": "2026-08-25T21:47:25.314Z"
       }
     ]
   }

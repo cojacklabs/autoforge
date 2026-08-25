@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
-  "revision": 66,
-  "updatedAt": "2026-08-25T03:06:38.476Z",
+  "revision": 96,
+  "updatedAt": "2026-08-25T21:51:26.653Z",
   "data": {
     "decisions": [
       {
@@ -1353,10 +1353,10 @@
           "task.define-package-ownership-and-versioning-policy"
         ],
         "supersedes": null,
-        "status": "active",
+        "status": "superseded",
         "kind": "architecture",
         "createdAt": "2026-08-24T19:04:58.006Z",
-        "updatedAt": "2026-08-24T19:04:58.006Z"
+        "updatedAt": "2026-08-25T14:55:11.153Z"
       },
       {
         "id": "decision.bootstrap-manifest-reads-are-optional-before-scaffolding-and-bootstrap-status-re",
@@ -1585,10 +1585,10 @@
           "task.implement-concise-project-status"
         ],
         "supersedes": null,
-        "status": "active",
+        "status": "superseded",
         "kind": "feature-note",
         "createdAt": "2026-08-25T02:46:07.341Z",
-        "updatedAt": "2026-08-25T02:46:07.341Z"
+        "updatedAt": "2026-08-25T03:17:42.627Z"
       },
       {
         "id": "decision.explicit-attachment-now-resolves-paths-inside-git-repositories-to-a-canonical-re",
@@ -1645,6 +1645,749 @@
         "kind": "feature-note",
         "createdAt": "2026-08-25T03:06:38.446Z",
         "updatedAt": "2026-08-25T03:06:38.446Z"
+      },
+      {
+        "id": "decision.bare-autoforge-will-become-the-thin-launcher-for-the-separately-installed-autofo",
+        "statement": "Bare autoforge will become the thin launcher for the separately installed AutoForge Agent in eligible interactive terminals, while autoforge status, every explicit Core command, and noninteractive bare invocation remain deterministic.",
+        "reasoning": "The product north star should match the familiar bare-command experience of agentic CLIs without merging model providers, credentials, or interactive runtime code into Core. Process delegation preserves the separate Agent package and Core dependency boundary, while terminal-aware fallback protects CI, pipes, redirected output, legacy automation, and installations that do not include the Agent.",
+        "consequences": [
+          "This supersedes the permanent status-only interpretation of the earlier bare-autoforge and package-ownership decisions while retaining their structured status model as the explicit and fallback behavior. Phase 6 now includes task.delegate-bare-autoforge-to-the-local-agent after the experimental Agent and credential foundations; validation must cover discovery, compatibility, recursion prevention, stream and signal forwarding, exit codes, missing-Agent guidance, and cross-platform behavior."
+        ],
+        "scope": [
+          "project"
+        ],
+        "keywords": [
+          "architecture",
+          "cli",
+          "agent"
+        ],
+        "relatedWork": [],
+        "supersedes": null,
+        "status": "active",
+        "kind": "architecture",
+        "createdAt": "2026-08-25T03:17:18.824Z",
+        "updatedAt": "2026-08-25T03:17:18.824Z"
+      },
+      {
+        "id": "decision.the-earlier-decision-that-bare-autoforge-permanently-renders-project-status-is-s",
+        "statement": "The earlier decision that bare autoforge permanently renders project status is superseded by terminal-aware Agent launcher delegation.",
+        "reasoning": "Structured status remains the correct deterministic projection, but it is now the explicit autoforge status behavior and the safe bare-command fallback rather than the ultimate interactive product entry point.",
+        "consequences": [
+          "Once Phase 6 launcher work passes its gates, bare autoforge delegates to autoforge-agent only in eligible interactive terminals; until then the existing status-only behavior remains authoritative."
+        ],
+        "scope": [
+          "project"
+        ],
+        "keywords": [
+          "architecture",
+          "cli",
+          "agent"
+        ],
+        "relatedWork": [],
+        "supersedes": "decision.bare-autoforge-and-the-status-command-now-render-one-sdk-backed-structured-proje",
+        "status": "active",
+        "kind": "architecture",
+        "createdAt": "2026-08-25T03:17:42.627Z",
+        "updatedAt": "2026-08-25T03:17:42.627Z"
+      },
+      {
+        "id": "decision.the-reconciled-v0-25-milestone-places-terminal-aware-bare-autoforge-agent-delega",
+        "statement": "The reconciled v0.25 milestone places terminal-aware bare AutoForge Agent delegation in Phase 6.",
+        "reasoning": "The Agent and credential foundations must exist before Core can safely delegate, and the launcher must preserve deterministic automation and package isolation.",
+        "consequences": [
+          "Documentation, validation requirements, and the implementation queue now include task.delegate-bare-autoforge-to-the-local-agent; current bare status behavior remains authoritative until that task completes."
+        ],
+        "scope": [
+          "project"
+        ],
+        "keywords": [
+          "architecture",
+          "cli",
+          "agent"
+        ],
+        "relatedWork": [
+          "task.reconcile-bare-autoforge-agent-launcher-plan"
+        ],
+        "supersedes": null,
+        "status": "active",
+        "kind": "architecture",
+        "createdAt": "2026-08-25T03:21:23.978Z",
+        "updatedAt": "2026-08-25T03:21:23.978Z"
+      },
+      {
+        "id": "decision.the-autoforge-sdk-is-stabilized-as-a-public-0-1-0-protocol-versioned-injected-op",
+        "statement": "The AutoForge SDK is stabilized as a public 0.1.0 protocol-versioned injected-operation facade and is prepared, but not authorized, for npm publication.",
+        "reasoning": "External agents need one typed lifecycle covering projects, status, intent, work, context, checks, assignments, decisions, validation, handoffs, and completion without parsing terminal output or allowing the SDK to own filesystem, Git, provider, credential, or hosted effects.",
+        "consequences": [
+          "@cojacklabs/autoforge-sdk is marked public, advertises its supported capabilities, preserves adapter result types and errors, documents Core and Protocol compatibility, includes license and tarball metadata, and remains unpublished until explicit human release approval after structured handoff stabilization."
+        ],
+        "scope": [
+          "sdk",
+          "protocol"
+        ],
+        "keywords": [
+          "sdk",
+          "api"
+        ],
+        "relatedWork": [
+          "task.publish-supported-autoforge-sdk"
+        ],
+        "supersedes": null,
+        "status": "active",
+        "kind": "feature-note",
+        "createdAt": "2026-08-25T03:28:56.762Z",
+        "updatedAt": "2026-08-25T03:28:56.762Z"
+      },
+      {
+        "id": "decision.autoforge-protocol-version-1-defines-canonical-provider-neutral-cross-agent-hand",
+        "statement": "AutoForge protocol version 1 defines canonical provider-neutral cross-agent handoffs as tracked structured project truth, while transcripts and provider runtime state remain ignored.",
+        "reasoning": "Agents need enough durable state to resume work across Claude, Codex, and future providers without storing costly, sensitive, or noisy conversations. A strict protocol contract plus a Core service and injected repository preserves one project-truth boundary and prevents provider or filesystem concerns from entering Core.",
+        "consequences": [
+          "Canonical handoffs record project and session identity, source and target agents, active work, scope, Git refs, project-relative changed files, decisions, validation, risks, open questions, next action, and context fingerprint under .autoforge/handoffs. Unknown fields, transcript data, unsafe paths, duplicate changed files, and same-agent transfers are rejected; context, sessions, leases, credentials, provider caches, logs, and transcripts remain ignored."
+        ],
+        "scope": [
+          "protocol",
+          "core",
+          "sdk"
+        ],
+        "keywords": [
+          "handoff",
+          "agent"
+        ],
+        "relatedWork": [
+          "task.implement-structured-cross-agent-handoffs"
+        ],
+        "supersedes": null,
+        "status": "active",
+        "kind": "feature-note",
+        "createdAt": "2026-08-25T03:40:27.467Z",
+        "updatedAt": "2026-08-25T03:40:27.467Z"
+      },
+      {
+        "id": "decision.the-experimental-autoforge-agent-begins-as-a-separate-local-sdk-consumer-with-on",
+        "statement": "The experimental AutoForge Agent begins as a separate local SDK consumer with one injected OpenAI provider, mandatory plan approval, preflighted bounded edits, Core validation, streaming completion, and protocol-v1 handoffs.",
+        "reasoning": "This proves the account-free Core-to-SDK-to-Agent boundary without adding model dependencies to Core, persisting transcripts, or waiting for hosted infrastructure; mock-model tests validate behavior without paid calls.",
+        "consequences": [
+          "The autoforge-agent binary is experimental and direct-invocation only; OPENAI_API_KEY is a temporary process input until OS credential storage is implemented; bare autoforge delegation remains a separate task; the transitional local gateway must continue converging on structured Core operations."
+        ],
+        "scope": [
+          "agent"
+        ],
+        "keywords": [
+          "agent",
+          "sdk",
+          "provider",
+          "approval",
+          "handoff"
+        ],
+        "relatedWork": [
+          "task.create-experimental-local-agent-cli"
+        ],
+        "supersedes": null,
+        "status": "active",
+        "kind": "feature-note",
+        "createdAt": "2026-08-25T04:00:01.767Z",
+        "updatedAt": "2026-08-25T04:00:01.767Z"
+      },
+      {
+        "id": "decision.autoforge-agent-stores-local-provider-credentials-only-in-native-operating-syste",
+        "statement": "AutoForge Agent stores local provider credentials only in native operating-system credential facilities behind an Agent-owned injected vault, with hidden terminal entry and no plaintext fallback.",
+        "reasoning": "Native Keychain, Credential Manager, and Secret Service storage keeps BYOK secrets outside Core state, repositories, process arguments, logs, fixtures, and handoffs while preserving account-free local operation across supported desktop platforms.",
+        "consequences": [
+          "The initial OpenAI credential uses the fixed com.cojacklabs.autoforge-agent service namespace; credentials set, status, and delete expose no secret values; locked or unavailable stores fail closed with sanitized errors; Core and provider packages remain credential-free."
+        ],
+        "scope": [
+          "agent",
+          "security"
+        ],
+        "keywords": [
+          "credential",
+          "provider",
+          "local"
+        ],
+        "relatedWork": [
+          "task.integrate-secure-local-provider-credentials"
+        ],
+        "supersedes": null,
+        "status": "active",
+        "kind": "feature-note",
+        "createdAt": "2026-08-25T04:32:16.322Z",
+        "updatedAt": "2026-08-25T04:32:16.322Z"
+      },
+      {
+        "id": "decision.core-delegates-eligible-bare-invocation-and-the-allowlisted-credentials-namespac",
+        "statement": "Core delegates eligible bare invocation and the allowlisted credentials namespace to a separately installed AutoForge Agent through versioned process negotiation while every explicit Core command and noninteractive bare invocation remain deterministic.",
+        "reasoning": "A thin executable boundary delivers the familiar interactive entry point without importing Agent, provider, or credential dependencies into Core; protocol preflight, recursion markers, terminal eligibility, and deterministic fallback protect automation and incompatible installations.",
+        "consequences": [
+          "Core requires launcher protocol version 1, forwards project working directory, inherited streams, SIGINT, SIGTERM, arguments, and Agent exit codes; Linux and macOS resolve autoforge-agent while Windows resolves autoforge-agent.cmd; missing or incompatible bare launches fall back to status, while explicit autoforge credentials commands return actionable guidance."
+        ],
+        "scope": [
+          "cli",
+          "agent"
+        ],
+        "keywords": [
+          "launcher",
+          "delegation",
+          "credentials"
+        ],
+        "relatedWork": [
+          "task.delegate-bare-autoforge-to-the-local-agent"
+        ],
+        "supersedes": null,
+        "status": "active",
+        "kind": "feature-note",
+        "createdAt": "2026-08-25T04:50:56.840Z",
+        "updatedAt": "2026-08-25T04:50:56.840Z"
+      },
+      {
+        "id": "decision.completed-project-relocation-repairs-an-existing-generated-agent-contract-to-the",
+        "statement": "Completed project relocation repairs an existing generated Agent contract to the destination project root, while absent optional contracts and bootstrap manifests remain valid uninitialized state.",
+        "reasoning": "Generated contracts persist an absolute projectRoot that becomes stale when a registered repository moves. Repairing it as part of successful relocation preserves contract correctness, while treating absent optional stores as normal avoids filesystem-level crashes before scaffolding.",
+        "consequences": [
+          "bootstrap status returns actionable not-scaffolded output when its manifest is absent.",
+          "projects relocate atomically rewrites a valid Agent contract projectRoot at the destination and reports malformed contracts with regeneration guidance without rolling back registry relocation."
+        ],
+        "scope": [
+          "compatibility",
+          "relocation"
+        ],
+        "keywords": [
+          "optional-store",
+          "agent-contract"
+        ],
+        "relatedWork": [
+          "task.harden-optional-stores-and-relocated-contracts"
+        ],
+        "supersedes": null,
+        "status": "active",
+        "kind": "bugfix",
+        "createdAt": "2026-08-25T05:00:41.970Z",
+        "updatedAt": "2026-08-25T05:00:41.970Z"
+      },
+      {
+        "id": "decision.v0-25-compatibility-is-anchored-by-a-frozen-v0-24-project-fixture-and-a-provider",
+        "statement": "v0.25 compatibility is anchored by a frozen v0.24 project fixture and a provider-neutral Claude-to-Codex handoff fixture rather than raw conversational transcripts.",
+        "reasoning": "Compatibility must be demonstrated against durable user-visible state, not inferred from unchanged TypeScript types. The fixture verifies exact v0.24 work and session envelopes remain readable and unmodified through current status and deprecated-command boundaries, while the handoff fixture carries the structured truth required for another agent to resume.",
+        "consequences": [
+          "Future state-schema changes must keep the v0.24 fixture readable without silent mutation or add an explicit, lossless migration test.",
+          "Cross-agent continuity remains defined by protocol-versioned project, work, scope, Git, decision, validation, risk, question, and next-action data; transcripts and messages are excluded."
+        ],
+        "scope": [
+          "compatibility",
+          "handoff"
+        ],
+        "keywords": [
+          "v0.24",
+          "fixture",
+          "claude-to-codex"
+        ],
+        "relatedWork": [
+          "task.validate-v0-24-compatibility-and-cross-agent-continuity"
+        ],
+        "supersedes": null,
+        "status": "active",
+        "kind": "feature-note",
+        "createdAt": "2026-08-25T05:04:46.437Z",
+        "updatedAt": "2026-08-25T05:04:46.437Z"
+      },
+      {
+        "id": "decision.autoforge-0-25-0-is-prepared-as-an-audited-release-candidate-with-compatibility",
+        "statement": "AutoForge 0.25.0 is prepared as an audited release candidate with compatibility migration guidance, independently versioned Protocol/Core/SDK packages, corrected publishable dependency ranges, and complete local validation evidence; publication remains pending explicit maintainer approval.",
+        "reasoning": "The milestone now passes package boundaries, builds, typechecks, formatting, planning synchronization, 707 foundation tests, 17 legacy tests, compatibility and handoff fixtures, launcher recovery coverage, selected-file security gates, and an isolated multi-tarball installation. Keeping approval pending separates implementation completion from tomorrow's human code audit and the credentialed publication action.",
+        "consequences": [
+          "Release publication must follow Protocol, Core, SDK, then Core CLI order and repeat the normal registry-backed tarball installation after the libraries are public.",
+          "The maintainer audit checklist in docs/planning/0.25/RELEASE_READINESS.md remains the authoritative final gate; no tag or package publication is authorized yet."
+        ],
+        "scope": [
+          "release",
+          "v0.25"
+        ],
+        "keywords": [
+          "release-readiness",
+          "migration",
+          "publication"
+        ],
+        "relatedWork": [
+          "task.prepare-v0-25-release-evidence"
+        ],
+        "supersedes": null,
+        "status": "superseded",
+        "kind": "feature-note",
+        "createdAt": "2026-08-25T05:26:30.906Z",
+        "updatedAt": "2026-08-25T16:53:39.398Z"
+      },
+      {
+        "id": "decision.skipped-documentation-for-issue-audit-v0-25-protocol-and-core-release-candidate",
+        "statement": "Skipped documentation for issue.audit-v0-25-protocol-and-core-release-candidate",
+        "reasoning": "Read-only audit completed; findings were recorded as four bounded follow-up issues and no implementation decision was made.",
+        "consequences": [
+          "issue.audit-v0-25-protocol-and-core-release-candidate was closed without a linked decision."
+        ],
+        "scope": [
+          "issue"
+        ],
+        "keywords": [
+          "skip-reason"
+        ],
+        "relatedWork": [
+          "issue.audit-v0-25-protocol-and-core-release-candidate"
+        ],
+        "supersedes": null,
+        "status": "active",
+        "kind": "skip-reason",
+        "createdAt": "2026-08-25T14:39:57.959Z",
+        "updatedAt": "2026-08-25T14:39:57.959Z"
+      },
+      {
+        "id": "decision.protocol-and-core-now-share-one-repository-relative-scope-pattern-schema-for-can",
+        "statement": "Protocol and Core now share one repository-relative scope-pattern schema for canonical handoffs and orchestration scopes.",
+        "reasoning": "Cross-agent handoffs previously rejected unsafe changed-file paths but accepted absolute, UNC, drive-qualified, and parent-traversing scope patterns. A shared Protocol schema makes the security boundary consistent for every consumer.",
+        "consequences": [
+          "Agent handoff and Core work-scope parsing reject scope patterns that escape the repository, while valid relative glob patterns remain compatible."
+        ],
+        "scope": [
+          "protocol",
+          "handoffs",
+          "orchestration"
+        ],
+        "keywords": [
+          "containment",
+          "scope"
+        ],
+        "relatedWork": [
+          "issue.enforce-repository-relative-scope-in-agent-handoffs"
+        ],
+        "supersedes": null,
+        "status": "active",
+        "kind": "bugfix",
+        "createdAt": "2026-08-25T14:46:17.407Z",
+        "updatedAt": "2026-08-25T14:46:17.407Z"
+      },
+      {
+        "id": "decision.for-v0-25-the-repository-root-remains-the-compatibility-release-host-for-cojackl",
+        "statement": "For v0.25, the repository root remains the compatibility release host for @cojacklabs/autoforge while apps/core-cli owns new Core CLI application source.",
+        "reasoning": "The Core CLI is not yet self-contained: application-owned modules still compose root command adapters, and the repository boundary checker deliberately evaluates the root manifest as the Core CLI manifest. Moving the public manifest and binary now would create a high-risk packaging rewrite immediately before release.",
+        "consequences": [
+          "The accepted package policy and release readiness now document the v0.25 exception. Physical manifest and binary relocation is deferred until apps/core-cli has no upward imports, while package identity, behavior, and packed-install compatibility remain mandatory."
+        ],
+        "scope": [
+          "architecture",
+          "core-cli",
+          "release"
+        ],
+        "keywords": [
+          "packaging",
+          "compatibility"
+        ],
+        "relatedWork": [
+          "issue.reconcile-core-cli-workspace-ownership-before-v0-25-release"
+        ],
+        "supersedes": "decision.the-v0-25-package-ownership-and-versioning-policy-is-the-source-relocation-gate",
+        "status": "active",
+        "kind": "architecture",
+        "createdAt": "2026-08-25T14:55:11.153Z",
+        "updatedAt": "2026-08-25T14:55:11.153Z"
+      },
+      {
+        "id": "decision.autoforge-uses-changesets-3-for-independent-public-package-release-planning-with",
+        "statement": "AutoForge uses Changesets 3 for independent public-package release planning, with v0.25 recorded as an empty already-versioned baseline import.",
+        "reasoning": "The v0.25 candidate versions were assigned before release tooling was installed. A normal pending changeset would incorrectly calculate another minor release, while an explicit empty baseline makes the accumulated migration auditable and requires every subsequent public-package change to declare its intended bump.",
+        "consequences": [
+          "Protocol, Core, SDK, and the root-hosted Core CLI use Changesets status, version, and publish scripts; private Agent and Providers remain ignored until separately approved; publication still requires explicit human authorization."
+        ],
+        "scope": [
+          "release",
+          "versioning",
+          "packages"
+        ],
+        "keywords": [
+          "changesets",
+          "changelog"
+        ],
+        "relatedWork": [
+          "issue.introduce-changesets-and-complete-v0-25-release-metadata"
+        ],
+        "supersedes": null,
+        "status": "active",
+        "kind": "feature-note",
+        "createdAt": "2026-08-25T15:01:50.828Z",
+        "updatedAt": "2026-08-25T15:01:50.828Z"
+      },
+      {
+        "id": "decision.v0-25-ci-and-release-verification-use-pnpm-validate-changesets-and-build-pack-an",
+        "statement": "v0.25 CI and release verification use pnpm, validate Changesets, and build, pack, and smoke-test public packages in Protocol-to-Core-to-SDK-to-Core-CLI order.",
+        "reasoning": "npm ci could not install a pnpm-only repository, and installing only the root CLI tarball attempted to resolve unpublished workspace libraries from npm. Installing all four local tarballs together proves the publishable package set without weakening explicit release approval.",
+        "consequences": [
+          "All GitHub workflows use pnpm/action-setup and pnpm-lock.yaml; release verification checks dependency ranges and ordered artifacts; publication remains a separate credentialed human action after the libraries are approved in dependency order."
+        ],
+        "scope": [
+          "release",
+          "ci",
+          "packages"
+        ],
+        "keywords": [
+          "pnpm",
+          "tarball",
+          "publication"
+        ],
+        "relatedWork": [
+          "issue.repair-v0-25-release-automation-for-pnpm-and-dependency-order"
+        ],
+        "supersedes": null,
+        "status": "active",
+        "kind": "bugfix",
+        "createdAt": "2026-08-25T15:13:49.598Z",
+        "updatedAt": "2026-08-25T15:13:49.598Z"
+      },
+      {
+        "id": "decision.skipped-documentation-for-issue-final-v0-25-release-candidate-audit-and-deep-val",
+        "statement": "Skipped documentation for issue.final-v0-25-release-candidate-audit-and-deep-validation",
+        "reasoning": "This read-only audit recorded release blockers as bounded follow-up issues; it made no architectural decision.",
+        "consequences": [
+          "issue.final-v0-25-release-candidate-audit-and-deep-validation was closed without a linked decision."
+        ],
+        "scope": [
+          "issue"
+        ],
+        "keywords": [
+          "skip-reason"
+        ],
+        "relatedWork": [
+          "issue.final-v0-25-release-candidate-audit-and-deep-validation"
+        ],
+        "supersedes": null,
+        "status": "active",
+        "kind": "skip-reason",
+        "createdAt": "2026-08-25T15:34:19.849Z",
+        "updatedAt": "2026-08-25T15:34:19.849Z"
+      },
+      {
+        "id": "decision.gate-checks-resolve-repository-owned-tools-and-automatically-validate-changed-fi",
+        "statement": "Gate checks resolve repository-owned tools and automatically validate changed files within active work scope",
+        "reasoning": "Release validation must not depend on globally installed executables or silently skip the files governed by active work.",
+        "consequences": [
+          "The AutoForge project invokes typecheck through npm, allows three minutes for the full suite, and no-argument gate checks select Git changes matching active include and exclude patterns."
+        ],
+        "scope": [
+          "quality",
+          "release"
+        ],
+        "keywords": [
+          "gate",
+          "validation"
+        ],
+        "relatedWork": [
+          "issue.repair-autoforge-project-quality-gate-execution-and-file-selection"
+        ],
+        "supersedes": null,
+        "status": "active",
+        "kind": "bugfix",
+        "createdAt": "2026-08-25T15:52:14.755Z",
+        "updatedAt": "2026-08-25T15:52:14.755Z"
+      },
+      {
+        "id": "decision.ci-uses-autoforge-s-source-only-boundary-checker-instead-of-turborepo-s-generate",
+        "statement": "CI uses AutoForge's source-only boundary checker instead of Turborepo's generated-output scanner",
+        "reasoning": "Turborepo boundaries scans ignored dist artifacts and can race concurrent builds, while release enforcement needs deterministic checks over authored source and manifests.",
+        "consequences": [
+          "The repository checker now validates every source import against declared dependencies and the ownership allowlist; CI runs it before affected build, typecheck, test, and format tasks without scheduling a generated-output boundary scan."
+        ],
+        "scope": [
+          "ci",
+          "package-boundaries"
+        ],
+        "keywords": [
+          "turborepo",
+          "validation"
+        ],
+        "relatedWork": [
+          "issue.eliminate-generated-output-race-from-ci-boundary-validation"
+        ],
+        "supersedes": null,
+        "status": "active",
+        "kind": "bugfix",
+        "createdAt": "2026-08-25T15:54:37.042Z",
+        "updatedAt": "2026-08-25T15:54:37.042Z"
+      },
+      {
+        "id": "decision.windows-core-delegation-invokes-the-npm-agent-shim-through-cmd-exe-with-constrai",
+        "statement": "Windows Core delegation invokes the npm Agent shim through cmd.exe with constrained arguments",
+        "reasoning": "Windows cannot execute npm-generated .cmd shims directly, while unconstrained shell delegation would introduce command-injection risk.",
+        "consequences": [
+          "Core discovers autoforge-agent.cmd through cwd and PATH, reports it missing before spawning, invokes it through the configured Windows command processor, rejects shell metacharacters, and continues direct shell-free execution on Unix."
+        ],
+        "scope": [
+          "launcher",
+          "windows"
+        ],
+        "keywords": [
+          "agent",
+          "security"
+        ],
+        "relatedWork": [
+          "issue.fix-windows-autoforge-agent-launcher-execution"
+        ],
+        "supersedes": null,
+        "status": "active",
+        "kind": "bugfix",
+        "createdAt": "2026-08-25T15:58:05.382Z",
+        "updatedAt": "2026-08-25T15:58:05.382Z"
+      },
+      {
+        "id": "decision.the-experimental-agent-writes-only-through-canonical-project-contained-parents-a",
+        "statement": "The experimental Agent writes only through canonical project-contained parents and launches through a dedicated npm bin shim",
+        "reasoning": "Lexical path checks allow symlink traversal, and comparing import.meta.url to an unencoded argv path fails for installations containing spaces.",
+        "consequences": [
+          "Agent writes resolve and verify the nearest existing canonical ancestor before creating directories or atomic temporary files; outside symlinks are rejected, and the package bin always calls main directly. Agent npm installation guidance is conditional on its separate public approval while the workspace remains private."
+        ],
+        "scope": [
+          "agent",
+          "filesystem"
+        ],
+        "keywords": [
+          "containment",
+          "portability"
+        ],
+        "relatedWork": [
+          "issue.harden-experimental-agent-path-containment-and-entrypoint-portability"
+        ],
+        "supersedes": null,
+        "status": "active",
+        "kind": "bugfix",
+        "createdAt": "2026-08-25T16:02:47.592Z",
+        "updatedAt": "2026-08-25T16:02:47.592Z"
+      },
+      {
+        "id": "decision.autoforge-0-25-0-passes-the-final-local-node-22-release-candidate-audit-and-is-r",
+        "statement": "AutoForge 0.25.0 passes the final local Node 22 release-candidate audit and is ready for bounded commit review and independent Claude verification, but not yet authorized for tagging or publication",
+        "reasoning": "Fresh validation under the release workflow runtime passed 712 foundation tests, 17 legacy tests, 34 workspace package tests, source/package boundaries, all builds and typechecks, formatting, planning synchronization, Changesets status, production dependency audit, the 98-file AutoForge gate, clean tarballs, and isolated installation. The readiness document still needs its stale counts and obsolete boundary wording reconciled, and personal/local files must be excluded before commits.",
+        "consequences": [
+          "Claude Code should review the active release-checkpoint context and accumulated diff before commit approval.",
+          "Exclude claude_resume.md and .autoforge/learning/strategy.json from release commits.",
+          "Do not tag, push for release, or publish until documentation reconciliation, bounded commits, remote Node 22 CI, and explicit maintainer approval are complete."
+        ],
+        "scope": [
+          "release",
+          "v0.25"
+        ],
+        "keywords": [
+          "release-readiness",
+          "node22",
+          "claude-review"
+        ],
+        "relatedWork": [],
+        "supersedes": "decision.autoforge-0-25-0-is-prepared-as-an-audited-release-candidate-with-compatibility",
+        "status": "superseded",
+        "kind": "architecture",
+        "createdAt": "2026-08-25T16:53:39.398Z",
+        "updatedAt": "2026-08-25T16:54:10.252Z"
+      },
+      {
+        "id": "decision.the-active-v0-25-release-checkpoint-begins-from-a-fully-passing-local-node-22-au",
+        "statement": "The active v0.25 release checkpoint begins from a fully passing local Node 22 audit and requires independent Claude review before any commit or release approval",
+        "reasoning": "The release runtime passed 712 foundation tests, 17 legacy tests, 34 workspace package tests, source/package boundaries, builds, typechecks, formatting, planning synchronization, Changesets status, production dependency audit, the 98-file AutoForge gate, clean tarballs, and isolated installation. Only readiness-document reconciliation, bounded commit review, remote CI, and explicit approval remain.",
+        "consequences": [
+          "Claude Code can resume from the active AutoForge context packet and independently audit the accumulated changes.",
+          "Exclude claude_resume.md and .autoforge/learning/strategy.json from release commits.",
+          "Do not tag or publish until remote Node 22 CI and explicit maintainer approval pass."
+        ],
+        "scope": [
+          "release",
+          "v0.25"
+        ],
+        "keywords": [
+          "release-checkpoint",
+          "claude-review",
+          "node22"
+        ],
+        "relatedWork": [
+          "issue.prepare-reviewable-v0-25-release-checkpoint-and-remote-verification"
+        ],
+        "supersedes": "decision.autoforge-0-25-0-passes-the-final-local-node-22-release-candidate-audit-and-is-r",
+        "status": "active",
+        "kind": "architecture",
+        "createdAt": "2026-08-25T16:54:10.252Z",
+        "updatedAt": "2026-08-25T16:54:10.252Z"
+      },
+      {
+        "id": "decision.autoforge-guided-agents-must-produce-durable-high-value-code-commentary-at-non-o",
+        "statement": "AutoForge-guided agents must produce durable, high-value code commentary at non-obvious intent and contract boundaries without optimizing for comment volume",
+        "reasoning": "Cross-agent development depends on preserving knowledge that types and implementation alone cannot reliably convey, especially architectural intent, public API expectations, invariants, security constraints, compatibility behavior, unusual tradeoffs, and work-linked follow-ups. Blanket line-by-line comments or density quotas create noise and become stale, so enforcement must target meaningful surfaces and favor explain-why commentary.",
+        "consequences": [
+          "Generated agent context and contracts should instruct agents when comments are required and when they are harmful.",
+          "Public APIs, security-sensitive logic, compatibility shims, non-obvious algorithms, and intentional exceptions should carry concise rationale or contract documentation.",
+          "Comments that merely restate syntax, raw conversational transcripts, stale narratives, and untracked TODOs should be rejected during review.",
+          "Automated validation should cover objective rules such as exported API documentation and structured TODO references; semantic comment quality remains a review responsibility."
+        ],
+        "scope": [
+          "governance",
+          "agent-contracts",
+          "code-quality"
+        ],
+        "keywords": [
+          "comments",
+          "jsdoc",
+          "maintainability"
+        ],
+        "relatedWork": [
+          "issue.define-and-enforce-an-agent-code-commenting-standard"
+        ],
+        "supersedes": null,
+        "status": "active",
+        "kind": "architecture",
+        "createdAt": "2026-08-25T19:09:08.093Z",
+        "updatedAt": "2026-08-25T19:09:08.093Z"
+      },
+      {
+        "id": "decision.issue-define-and-enforce-an-agent-code-commenting-standard-strategic-assessment",
+        "statement": "issue.define-and-enforce-an-agent-code-commenting-standard: strategic assessment recommends next",
+        "reasoning": "This directly improves cross-agent maintainability and knowledge transfer, but introducing a new doctrine and enforcement rules during the frozen v0.25 release checkpoint would expand release scope. Implement immediately after v0.25 with safeguards against noisy or stale comments.",
+        "consequences": [
+          "alignment=high, value=high, risk=medium, cost=medium, evidenceStrength=medium, dependencyPressure=low, complexity=medium, releaseConstraint=low"
+        ],
+        "scope": [
+          "strategy"
+        ],
+        "keywords": [
+          "strategy",
+          "next"
+        ],
+        "relatedWork": [
+          "issue.define-and-enforce-an-agent-code-commenting-standard"
+        ],
+        "supersedes": null,
+        "status": "active",
+        "kind": "feature-note",
+        "createdAt": "2026-08-25T19:09:08.463Z",
+        "updatedAt": "2026-08-25T19:09:08.463Z"
+      },
+      {
+        "id": "decision.commenting-governance-is-deferred-to-autoforge-v0-26-and-is-not-part-of-the-v0-2",
+        "statement": "Commenting governance is deferred to AutoForge v0.26 and is not part of the v0.25 release candidate",
+        "reasoning": "The policy is valuable, but complete enforcement affects doctrines, generated agent contracts, context packets, quality gates, and review behavior. Keeping it out of the already-audited v0.25 candidate preserves release scope and avoids restarting the release audit.",
+        "consequences": [
+          "Complete the v0.25 release checkpoint without implementing commenting-governance behavior.",
+          "Treat issue.define-and-enforce-an-agent-code-commenting-standard as an early v0.26 governance priority.",
+          "Any v0.25 mention should remain planning context only and must not introduce new enforcement."
+        ],
+        "scope": [
+          "release",
+          "governance",
+          "v0.26"
+        ],
+        "keywords": [
+          "comments",
+          "release-scope"
+        ],
+        "relatedWork": [
+          "issue.define-and-enforce-an-agent-code-commenting-standard"
+        ],
+        "supersedes": null,
+        "status": "active",
+        "kind": "architecture",
+        "createdAt": "2026-08-25T19:12:29.150Z",
+        "updatedAt": "2026-08-25T19:12:29.150Z"
+      },
+      {
+        "id": "decision.autoforge-will-preserve-an-optional-intent-compiler-and-portable-design-orchestr",
+        "statement": "AutoForge will preserve an optional Intent Compiler and portable design orchestration as provider-neutral future capabilities outside the v0.25 release gate",
+        "reasoning": "Lightweight models can structure general prompts, propose memory and work organization, formulate research, and prepare design contracts, but deterministic Core must continue to own validation, governance, state, evidence, and approvals. A vendor-neutral contract allows Figma, TypeUI, Stitch, and future platforms to remain replaceable adapters rather than architectural dependencies.",
+        "consequences": [
+          "Use docs/planning/0.25/FUTURE_INTELLIGENCE_AND_DESIGN_ORCHESTRATION.md as the preserved concept baseline.",
+          "Do not treat the documented capability groups or workflow as a committed version sequence.",
+          "Model-generated intents, memories, priorities, research, and designs remain proposals until schema validation and appropriate human approval."
+        ],
+        "scope": [
+          "architecture",
+          "intelligence",
+          "design"
+        ],
+        "keywords": [
+          "intent-compiler",
+          "lightweight-models",
+          "design-contract"
+        ],
+        "relatedWork": [
+          "issue.define-optional-intent-compiler-and-portable-design-orchestration"
+        ],
+        "supersedes": null,
+        "status": "active",
+        "kind": "architecture",
+        "createdAt": "2026-08-25T21:09:41.311Z",
+        "updatedAt": "2026-08-25T21:09:41.311Z"
+      },
+      {
+        "id": "decision.issue-define-optional-intent-compiler-and-portable-design-orchestration-strategi",
+        "statement": "issue.define-optional-intent-compiler-and-portable-design-orchestration: strategic assessment recommends later",
+        "reasoning": "The concept strongly aligns with AutoForge's long-term platform vision, but its contracts, model evaluation, privacy boundaries, design adapters, and customer evidence need exploration. Preserve it now without assigning a release or disturbing the v0.25 checkpoint.",
+        "consequences": [
+          "alignment=high, value=high, risk=high, cost=high, evidenceStrength=low, dependencyPressure=low, complexity=high, releaseConstraint=low"
+        ],
+        "scope": [
+          "strategy"
+        ],
+        "keywords": [
+          "strategy",
+          "later"
+        ],
+        "relatedWork": [
+          "issue.define-optional-intent-compiler-and-portable-design-orchestration"
+        ],
+        "supersedes": null,
+        "status": "active",
+        "kind": "feature-note",
+        "createdAt": "2026-08-25T21:09:42.172Z",
+        "updatedAt": "2026-08-25T21:09:42.172Z"
+      },
+      {
+        "id": "decision.issue-enforce-agent-generated-content-safety-before-writes-and-streaming-strateg",
+        "statement": "issue.enforce-agent-generated-content-safety-before-writes-and-streaming: strategic assessment recommends next",
+        "reasoning": "Code-level output policy is required before experimental Agent or Providers publication, but their independent approval boundary means it does not block the deterministic v0.25 Protocol, Core, SDK, and Core CLI release sequence.",
+        "consequences": [
+          "alignment=high, value=high, risk=high, cost=medium, evidenceStrength=high, dependencyPressure=medium, complexity=medium, releaseConstraint=medium"
+        ],
+        "scope": [
+          "strategy"
+        ],
+        "keywords": [
+          "strategy",
+          "next"
+        ],
+        "relatedWork": [
+          "issue.enforce-agent-generated-content-safety-before-writes-and-streaming"
+        ],
+        "supersedes": null,
+        "status": "active",
+        "kind": "feature-note",
+        "createdAt": "2026-08-25T21:36:53.842Z",
+        "updatedAt": "2026-08-25T21:36:53.842Z"
+      },
+      {
+        "id": "decision.the-v0-25-candidate-is-locally-validated-and-split-into-reviewable-commits-relea",
+        "statement": "The v0.25 candidate is locally validated and split into reviewable commits; release remains held for remote Linux and Windows CI, published-dependency smoke testing, and explicit approval",
+        "reasoning": "Node 22 validation, 712 foundation tests, 17 legacy tests, 34 package tests, the explicit 102-file AutoForge gate, package contents, and isolated installation all pass. Native Windows execution is now represented by a focused workflow but cannot be claimed until pushed CI runs.",
+        "consequences": [
+          "Keep issue.prepare-reviewable-v0-25-release-checkpoint-and-remote-verification active until remote CI and human approval complete.",
+          "Do not tag, publish, or include claude_resume.md or .autoforge/learning/strategy.json in the release checkpoint.",
+          "Require issue.enforce-agent-generated-content-safety-before-writes-and-streaming before independent Agent or Providers publication."
+        ],
+        "scope": [
+          "release",
+          "v0.25"
+        ],
+        "keywords": [
+          "audit",
+          "ci",
+          "approval"
+        ],
+        "relatedWork": [
+          "issue.prepare-reviewable-v0-25-release-checkpoint-and-remote-verification"
+        ],
+        "supersedes": null,
+        "status": "active",
+        "kind": "architecture",
+        "createdAt": "2026-08-25T21:51:26.615Z",
+        "updatedAt": "2026-08-25T21:51:26.615Z"
       }
     ]
   }
