@@ -19,6 +19,7 @@ describe("workflow handoffs", () => {
       },
       new Date("2026-08-20T00:00:00.000Z"),
     );
+    expect(handoff.protocolVersion).toBe("1");
     expect(handoff.createdAt).toBe("2026-08-20T00:00:00.000Z");
     expect(handoff.toStage).toBe("planning");
   });

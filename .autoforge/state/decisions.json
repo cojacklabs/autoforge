@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
-  "revision": 58,
-  "updatedAt": "2026-08-25T00:57:16.781Z",
+  "revision": 59,
+  "updatedAt": "2026-08-25T01:22:27.900Z",
   "data": {
     "decisions": [
       {
@@ -1431,6 +1431,31 @@
         "kind": "architecture",
         "createdAt": "2026-08-25T00:57:16.737Z",
         "updatedAt": "2026-08-25T00:57:16.737Z"
+      },
+      {
+        "id": "decision.autoforge-protocol-v1-is-extracted-as-the-independently-buildable-cojacklabs-aut",
+        "statement": "AutoForge protocol v1 is extracted as the independently buildable @cojacklabs/autoforge-protocol package while released Core source paths remain compatibility facades.",
+        "reasoning": "Stable identifiers, wire-version negotiation, structured error envelopes, agent contracts and capabilities, workflow vocabularies, and handoff schemas are shared across future Core, SDK, Agent, Web, and Service consumers and must not depend on filesystem, Git, network, credentials, or provider implementations.",
+        "consequences": [
+          "The protocol package begins at npm version 0.1.0 with wire version 1, rejects unsupported wire versions through a structured error, accepts legacy unversioned workflow handoffs while emitting protocolVersion 1, and Core consumes the package without breaking v0.24 imports or project fixtures."
+        ],
+        "scope": [
+          "project"
+        ],
+        "keywords": [
+          "architecture",
+          "protocol",
+          "compatibility",
+          "schemas"
+        ],
+        "relatedWork": [
+          "task.extract-versioned-protocol-contracts"
+        ],
+        "supersedes": null,
+        "status": "active",
+        "kind": "architecture",
+        "createdAt": "2026-08-25T01:22:27.876Z",
+        "updatedAt": "2026-08-25T01:22:27.876Z"
       }
     ]
   }

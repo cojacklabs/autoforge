@@ -1,17 +1,16 @@
 import { z } from "zod";
 
+import {
+  featureIdSchema,
+  issueIdSchema,
+  phaseIdSchema,
+  sessionIdSchema,
+  taskIdSchema,
+} from "@cojacklabs/autoforge-protocol";
+
 const timestampSchema = z.string().datetime({ offset: true });
 const entityNameSchema = z.string().trim().min(1).max(200);
 const descriptionSchema = z.string().trim().min(1).max(10_000);
-
-function entityIdSchema(kind: "feature" | "phase" | "task" | "issue") {
-  return z
-    .string()
-    .regex(
-      new RegExp(`^${kind}\\.[a-z0-9][a-z0-9._-]*$`),
-      `Expected a ${kind} ID such as ${kind}.example`,
-    );
-}
 
 function isRepositoryRelativePattern(value: string): boolean {
   if (
@@ -68,23 +67,23 @@ const workItemBaseSchema = z
   .strict();
 
 export const featureSchema = workItemBaseSchema.extend({
-  id: entityIdSchema("feature"),
+  id: featureIdSchema,
 });
 
 export const phaseSchema = workItemBaseSchema.extend({
-  id: entityIdSchema("phase"),
-  featureId: entityIdSchema("feature"),
+  id: phaseIdSchema,
+  featureId: featureIdSchema,
   sequence: z.number().int().positive(),
 });
 
 export const taskSchema = workItemBaseSchema.extend({
-  id: entityIdSchema("task"),
-  phaseId: entityIdSchema("phase"),
+  id: taskIdSchema,
+  phaseId: phaseIdSchema,
   scope: workScopeSchema,
 });
 
 export const issueSchema = workItemBaseSchema.extend({
-  id: entityIdSchema("issue"),
+  id: issueIdSchema,
   scope: workScopeSchema,
 });
 
@@ -92,14 +91,14 @@ export const activeWorkSchema = z.discriminatedUnion("kind", [
   z
     .object({
       kind: z.literal("task"),
-      id: entityIdSchema("task"),
+      id: taskIdSchema,
       startedAt: timestampSchema,
     })
     .strict(),
   z
     .object({
       kind: z.literal("issue"),
-      id: entityIdSchema("issue"),
+      id: issueIdSchema,
       startedAt: timestampSchema,
     })
     .strict(),
@@ -218,7 +217,7 @@ export const workStateSchema = z
 
 export const sessionSchema = z
   .object({
-    id: z.string().regex(/^session\.[a-z0-9][a-z0-9._-]*$/),
+    id: sessionIdSchema,
     status: z.enum(["active", "ended"]),
     startedAt: timestampSchema,
     endedAt: timestampSchema.nullable(),

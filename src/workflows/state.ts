@@ -152,6 +152,7 @@ export class WorkflowStateStore {
       updatedAt: now.toISOString(),
     });
     await this.writeHandoff({
+      protocolVersion: "1",
       workflowId: current.id,
       workflowKind: current.kind,
       fromStage: current.currentStage,

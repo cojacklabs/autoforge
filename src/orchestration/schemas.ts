@@ -1,9 +1,16 @@
 import { z } from "zod";
 
+import {
+  assignmentIdSchema,
+  eventIdSchema,
+  gateIdSchema,
+  leaseIdSchema,
+  workIdSchema,
+} from "@cojacklabs/autoforge-protocol";
+
 import { workScopeSchema } from "../work/schemas.js";
 
 const timestampSchema = z.string().datetime({ offset: true });
-const workIdSchema = z.string().regex(/^(task|issue)\.[a-z0-9][a-z0-9._-]*$/);
 
 export const orchestrationRoleSchema = z.enum([
   "product",
@@ -57,13 +64,13 @@ export const orchestrationNodeSchema = z
 
 export const orchestrationAssignmentSchema = z
   .object({
-    id: z.string().regex(/^assignment\.[a-z0-9][a-z0-9._-]*$/),
+    id: assignmentIdSchema,
     workId: workIdSchema,
     agentId: z.string().trim().min(1),
     role: orchestrationRoleSchema,
     mode: z.enum(["read", "write"]),
     status: z.enum(["active", "completed", "released", "expired"]),
-    leaseId: z.string().regex(/^lease\.[a-z0-9][a-z0-9._-]*$/),
+    leaseId: leaseIdSchema,
     claimedAt: timestampSchema,
     endedAt: timestampSchema.nullable(),
     branch: z.string().min(1).nullable(),
@@ -74,8 +81,8 @@ export const orchestrationAssignmentSchema = z
 
 export const orchestrationLeaseSchema = z
   .object({
-    id: z.string().regex(/^lease\.[a-z0-9][a-z0-9._-]*$/),
-    assignmentId: z.string().regex(/^assignment\.[a-z0-9][a-z0-9._-]*$/),
+    id: leaseIdSchema,
+    assignmentId: assignmentIdSchema,
     workId: workIdSchema,
     mode: z.enum(["read", "write"]),
     scope: workScopeSchema,
@@ -87,7 +94,7 @@ export const orchestrationLeaseSchema = z
 
 export const orchestrationGateSchema = z
   .object({
-    id: z.string().regex(/^gate\.[a-z0-9][a-z0-9._-]*$/),
+    id: gateIdSchema,
     workId: workIdSchema,
     type: z.enum(["architecture", "security", "destructive", "release"]),
     status: z.enum(["pending", "approved", "rejected"]),
@@ -100,7 +107,7 @@ export const orchestrationGateSchema = z
 
 export const orchestrationEventSchema = z
   .object({
-    id: z.string().regex(/^event\.[a-z0-9][a-z0-9._-]*$/),
+    id: eventIdSchema,
     type: z.enum([
       "plan-created",
       "assignment-claimed",
@@ -111,10 +118,7 @@ export const orchestrationEventSchema = z
       "gate-rejected",
     ]),
     workId: workIdSchema.nullable(),
-    assignmentId: z
-      .string()
-      .regex(/^assignment\.[a-z0-9][a-z0-9._-]*$/)
-      .nullable(),
+    assignmentId: assignmentIdSchema.nullable(),
     message: z.string().trim().min(1),
     createdAt: timestampSchema,
   })

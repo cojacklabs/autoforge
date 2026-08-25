@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
-  "revision": 292,
-  "updatedAt": "2026-08-25T00:57:46.093Z",
+  "revision": 295,
+  "updatedAt": "2026-08-25T01:22:51.749Z",
   "data": {
     "features": [
       {
@@ -1371,13 +1371,16 @@
       {
         "name": "Extract versioned protocol contracts",
         "description": "Move shared schemas, stable identifiers, serialized envelopes, errors, capabilities, and handoff contracts into an independently tested package with no I/O dependencies.",
-        "status": "planned",
+        "status": "completed",
         "createdAt": "2026-08-24T14:22:12.867Z",
-        "updatedAt": "2026-08-24T14:22:12.867Z",
+        "updatedAt": "2026-08-25T01:22:51.627Z",
         "id": "task.extract-versioned-protocol-contracts",
         "phaseId": "phase.protocol-and-core-extraction",
         "scope": {
           "include": [
+            "package.json",
+            "pnpm-lock.yaml",
+            "turbo.json",
             "src/**",
             "packages/protocol/**",
             "test/**",
