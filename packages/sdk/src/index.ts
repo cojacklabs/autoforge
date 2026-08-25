@@ -76,6 +76,13 @@ export class AutoForgeSdk<ProjectStatus, StartResult, CompleteResult> {
   }
 }
 
+export function assessIntent(
+  input: IntentAssessmentInput,
+  clock?: Clock,
+): SdkResponse<IntentAssessment> {
+  return response(new ProjectIntelligenceService(clock).assess(input));
+}
+
 export function createAutoForgeSdk<ProjectStatus, StartResult, CompleteResult>(
   options: AutoForgeSdkOptions<ProjectStatus, StartResult, CompleteResult>,
 ): AutoForgeSdk<ProjectStatus, StartResult, CompleteResult> {

@@ -1,13 +1,12 @@
 import { readFile } from "node:fs/promises";
 
+import { assessIntent } from "@cojacklabs/autoforge-sdk";
+
 import { EXIT_CODE, type ExitCode } from "../core/errors.js";
 import type { LogWriter } from "../core/logger.js";
 import { resolveContainedProjectPath } from "../core/paths.js";
 import { discoverProjectRoot } from "../core/project.js";
-import {
-  IntentApplicationService,
-  intentAssessmentInputSchema,
-} from "../intent/service.js";
+import { intentAssessmentInputSchema } from "../intent/service.js";
 import { planningArtifactKindSchema } from "../planning/artifacts.js";
 import { PlanningArtifactStore } from "../planning/store.js";
 import { SpecificationRegistry } from "../specifications/registry.js";
@@ -92,7 +91,7 @@ export async function runIntentCommand(
       planningArtifactKindSchema.parse(artifact),
     ),
   });
-  const result = new IntentApplicationService().assess(parsed);
+  const result = assessIntent(parsed).data;
   const persisted = persist
     ? await Promise.all(
         result.artifacts.map((artifact) =>

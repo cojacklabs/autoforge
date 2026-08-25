@@ -1,5 +1,7 @@
 import { describe, expect, it, vi } from "vitest";
 
+import { AUTOFORGE_HELP as APP_AUTOFORGE_HELP } from "../apps/core-cli/src/help.js";
+import { runCli as runAppCli } from "../apps/core-cli/src/router.js";
 import { AUTOFORGE_HELP } from "../src/cli/help.js";
 import { findPackageVersion, main } from "../src/cli/index.js";
 import { runCli } from "../src/cli/router.js";
@@ -36,6 +38,11 @@ function createDependencies() {
 }
 
 describe("foundation CLI router", () => {
+  it("keeps legacy CLI imports as aliases of the core application boundary", () => {
+    expect(runCli).toBe(runAppCli);
+    expect(AUTOFORGE_HELP).toBe(APP_AUTOFORGE_HELP);
+  });
+
   it("accepts a project selector before the command", async () => {
     const output = { stdout: vi.fn(), stderr: vi.fn() };
 

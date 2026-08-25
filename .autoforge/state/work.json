@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
-  "revision": 304,
-  "updatedAt": "2026-08-25T02:04:11.777Z",
+  "revision": 306,
+  "updatedAt": "2026-08-25T02:28:59.064Z",
   "data": {
     "features": [
       {
@@ -1412,9 +1412,9 @@
       {
         "name": "Migrate deterministic CLI to Core SDK",
         "description": "Move command routing and formatting into apps/core-cli as a thin SDK consumer while preserving the @cojacklabs/autoforge package and autoforge executable.",
-        "status": "planned",
+        "status": "completed",
         "createdAt": "2026-08-24T14:22:28.079Z",
-        "updatedAt": "2026-08-24T14:22:28.079Z",
+        "updatedAt": "2026-08-25T02:28:58.939Z",
         "id": "task.migrate-deterministic-cli-to-core-sdk",
         "phaseId": "phase.deterministic-core-cli",
         "scope": {

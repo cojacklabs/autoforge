@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
-  "revision": 62,
-  "updatedAt": "2026-08-25T02:03:57.611Z",
+  "revision": 63,
+  "updatedAt": "2026-08-25T02:28:53.622Z",
   "data": {
     "decisions": [
       {
@@ -1533,6 +1533,34 @@
         "kind": "architecture",
         "createdAt": "2026-08-25T02:03:57.588Z",
         "updatedAt": "2026-08-25T02:03:57.588Z"
+      },
+      {
+        "id": "decision.the-deterministic-core-cli-now-owns-routing-and-terminal-help-under-apps-core-cl",
+        "statement": "The deterministic Core CLI now owns routing and terminal help under apps/core-cli while legacy src/cli imports remain compatibility re-exports and deterministic intent assessment flows through the internal SDK.",
+        "reasoning": "Relocating routing and formatting first establishes the application boundary without changing the published root manifest, package name, executable, output, or exit codes; the compatibility shims allow command domains to migrate incrementally.",
+        "consequences": [
+          "New deterministic CLI routing and human-oriented formatting belong in apps/core-cli.",
+          "Existing src/cli imports remain supported during the v0.25 relocation.",
+          "Project intelligence commands consume structured SDK results before rendering terminal output."
+        ],
+        "scope": [
+          "apps/core-cli",
+          "src/cli",
+          "packages/sdk"
+        ],
+        "keywords": [
+          "cli",
+          "sdk",
+          "relocation"
+        ],
+        "relatedWork": [
+          "task.migrate-deterministic-cli-to-core-sdk"
+        ],
+        "supersedes": null,
+        "status": "active",
+        "kind": "architecture",
+        "createdAt": "2026-08-25T02:28:53.585Z",
+        "updatedAt": "2026-08-25T02:28:53.585Z"
       }
     ]
   }

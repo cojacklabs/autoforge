@@ -1,8 +1,30 @@
 import { describe, expect, it, vi } from "vitest";
 
-import { createAutoForgeSdk } from "../src/index.js";
+import { assessIntent, createAutoForgeSdk } from "../src/index.js";
 
 describe("internal AutoForge SDK foundation", () => {
+  it("offers deterministic intent assessment without lifecycle adapters", () => {
+    const result = assessIntent(
+      {
+        intent: {
+          raw: "Move the command router.",
+          objective: "Move the CLI behind the SDK.",
+          requirements: ["Preserve compatibility"],
+          assumptions: [],
+          unknowns: [],
+          constraints: [],
+          acceptanceCriteria: ["Existing commands still pass."],
+        },
+        workKind: "implementation",
+        artifacts: [],
+      },
+      { now: () => new Date("2026-08-25T00:00:00.000Z") },
+    );
+
+    expect(result.protocolVersion).toBe("1");
+    expect(result.data.triage.labels).toEqual(["READY_FOR_IMPLEMENTATION"]);
+  });
+
   it("returns deterministic Core assessments in a protocol envelope", () => {
     const sdk = createAutoForgeSdk({
       clock: { now: () => new Date("2026-08-25T00:00:00.000Z") },
