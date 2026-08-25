@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
-  "revision": 60,
-  "updatedAt": "2026-08-25T01:37:51.758Z",
+  "revision": 61,
+  "updatedAt": "2026-08-25T01:52:34.635Z",
   "data": {
     "decisions": [
       {
@@ -1481,6 +1481,31 @@
         "kind": "architecture",
         "createdAt": "2026-08-25T01:37:51.732Z",
         "updatedAt": "2026-08-25T01:37:51.732Z"
+      },
+      {
+        "id": "decision.autoforge-v0-25-establishes-a-narrow-internal-sdk-foundation-before-deterministi",
+        "statement": "AutoForge v0.25 establishes a narrow internal SDK foundation before deterministic CLI migration and reserves public SDK stabilization and publication for the later handoff phase.",
+        "reasoning": "The CLI cannot migrate onto an SDK that does not yet exist, while publishing an unexercised API prematurely would freeze the wrong surface. Building the internal facade first lets the CLI prove its operations before public compatibility and release commitments are made.",
+        "consequences": [
+          "Phase 3 now includes task.establish-internal-autoforge-sdk-foundation; Phase 4 migrates the CLI and implements deterministic behavior through that SDK; Phase 5 stabilizes the exercised API, implements structured handoffs, validates tarballs and compatibility ranges, and requires human approval before publication."
+        ],
+        "scope": [
+          "project"
+        ],
+        "keywords": [
+          "architecture",
+          "sdk",
+          "sequencing",
+          "cli"
+        ],
+        "relatedWork": [
+          "task.reconcile-sdk-first-milestone-sequencing"
+        ],
+        "supersedes": null,
+        "status": "active",
+        "kind": "architecture",
+        "createdAt": "2026-08-25T01:52:34.602Z",
+        "updatedAt": "2026-08-25T01:52:34.602Z"
       }
     ]
   }

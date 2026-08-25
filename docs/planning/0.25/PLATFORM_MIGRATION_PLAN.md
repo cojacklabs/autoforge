@@ -220,17 +220,25 @@ workspace task graph without behavioral changes.
 - Extract versioned schemas and serialized contracts into `packages/protocol`.
 - Extract application/domain services into `packages/core` one bounded domain at
   a time.
+- Establish `packages/sdk` as a narrow internal facade over Core and Protocol
+  before any CLI migration begins. The internal foundation is not a public API
+  stability or publication promise.
+- Define the first protocol-returning lifecycle operations and independently
+  test the SDK boundary without terminal formatting.
 - Inject filesystem, Git, clock, and global-storage dependencies explicitly.
 - Keep project state backward-compatible and readable without destructive
   migration.
 
-Exit gate: protocol tests run independently, Core has no forbidden application
-or provider dependency, and existing project fixtures remain readable.
+Exit gate: Protocol, Core, and the internal SDK foundation test independently;
+Core has no forbidden application or provider dependency; and existing project
+fixtures remain readable.
 
 ### Phase 4: Deterministic Core CLI
 
 - Convert command routing and terminal formatting into `apps/core-cli`.
-- Make the CLI a thin consumer of supported Core/SDK services.
+- Make the CLI a thin consumer of the internal SDK foundation. CLI migration
+  must not create a second application-service facade or bypass the SDK to
+  mutate project state.
 - Add bare status, `status --json`, and status views.
 - Add Git-root-aware `attach --dry-run` and conflict diagnostics.
 - Deprecate the interactive TUI and preserve `tui --snapshot` as a temporary
@@ -239,17 +247,31 @@ or provider dependency, and existing project fixtures remain readable.
 Exit gate: the globally installed command remains compatible, deterministic,
 and noninteractive, with stable structured output and exit codes.
 
-### Phase 5: SDK and handoff protocol
+### Phase 5: Public SDK stabilization and handoff protocol
 
-- Publish supported operations for attachment, status, intent, work, context,
+- Stabilize the operations already exercised by the deterministic CLI, then
+  expand the supported surface for attachment, status, intent, work, context,
   guardrails, assignments, decisions, validation, handoffs, and completion.
 - Formalize the tracked/ignored state split.
 - Implement provider-neutral structured handoffs.
 - Add a Claude-to-Codex handoff fixture proving continuity without transcripts.
 - Begin capability and protocol-version negotiation.
+- Complete public API documentation, compatibility ranges, tarball validation,
+  release evidence, and explicit human approval before publishing
+  `@cojacklabs/autoforge-sdk`.
 
 Exit gate: an external agent can complete the normal work lifecycle without
 parsing human-oriented terminal output.
+
+The reconciled implementation sequence is therefore:
+
+1. Establish the narrow internal SDK foundation.
+2. Migrate the deterministic CLI to that SDK.
+3. Implement status, Git-root-aware attach, and TUI deprecation through the SDK.
+4. Stabilize and publish the exercised SDK surface with structured handoffs.
+
+Package publication remains independently versioned. Creating an internal
+`packages/sdk` workspace does not itself authorize an npm release.
 
 ### Phase 6: Experimental local Agent
 

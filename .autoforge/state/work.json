@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
-  "revision": 298,
-  "updatedAt": "2026-08-25T01:37:52.746Z",
+  "revision": 302,
+  "updatedAt": "2026-08-25T01:52:39.974Z",
   "data": {
     "features": [
       {
@@ -1643,6 +1643,41 @@
             "src/commands/bootstrap.ts",
             "test/bootstrap*.test.ts",
             "docs/**"
+          ],
+          "exclude": []
+        }
+      },
+      {
+        "name": "Reconcile SDK-first milestone sequencing",
+        "description": "Define the internal SDK foundation before CLI migration, preserve deterministic CLI feature sequencing, and reserve public SDK stabilization and publication for the later SDK phase.",
+        "status": "completed",
+        "createdAt": "2026-08-25T01:51:26.312Z",
+        "updatedAt": "2026-08-25T01:52:39.851Z",
+        "id": "task.reconcile-sdk-first-milestone-sequencing",
+        "phaseId": "phase.protocol-and-core-extraction",
+        "scope": {
+          "include": [
+            "docs/planning/0.25/**"
+          ],
+          "exclude": []
+        }
+      },
+      {
+        "name": "Establish internal AutoForge SDK foundation",
+        "description": "Create packages/sdk as a narrow unpublished programmatic facade over Core and Protocol, define protocol-returning lifecycle operations, and validate it independently before the deterministic CLI migrates onto it.",
+        "status": "planned",
+        "createdAt": "2026-08-25T01:51:50.517Z",
+        "updatedAt": "2026-08-25T01:51:50.517Z",
+        "id": "task.establish-internal-autoforge-sdk-foundation",
+        "phaseId": "phase.protocol-and-core-extraction",
+        "scope": {
+          "include": [
+            "package.json",
+            "pnpm-lock.yaml",
+            "packages/sdk/**",
+            "src/**",
+            "test/**",
+            "tests/**"
           ],
           "exclude": []
         }
