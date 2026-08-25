@@ -3,11 +3,77 @@ import { describe, expect, it, vi } from "vitest";
 import {
   assessIntent,
   createAutoForgeSdk,
+  getSdkCapabilities,
   inspectProjectAttachment,
   readProjectStatus,
 } from "../src/index.js";
 
+function supportedOperations() {
+  return {
+    projects: async () => ({ projects: [] }),
+    status: async () => ({ status: "idle" as const }),
+    work: async () => ({ work: [] }),
+    context: async () => ({ packet: "context" }),
+    check: async () => ({ allowed: true }),
+    assignments: async () => ({ assignments: [] }),
+    decisions: async () => ({ decisionId: "decision.sdk" }),
+    validation: async () => ({ passed: true }),
+    handoffs: async () => ({ handoffId: "handoff.sdk" }),
+    startWork: async (input: { kind: "task" | "issue"; id: string }) => input,
+    completeWork: async () => ({ completed: true }),
+  };
+}
+
+function handoffInput() {
+  return {
+    id: "handoff.claude-to-codex",
+    project: { id: "project.autoforge", name: "autoforge" },
+    session: {
+      id: "session.claude",
+      fromAgent: "claude",
+      toAgent: "codex",
+    },
+    activeWork: {
+      kind: "task" as const,
+      id: "task.structured-handoff",
+      name: "Structured handoff",
+      objective: "Transfer project truth.",
+    },
+    scope: { include: ["packages/**"], exclude: [] },
+    git: { head: "abc123" },
+    changedFiles: [],
+    decisions: [],
+    validation: [],
+    risks: [],
+    openQuestions: [],
+    nextAction: "Continue in Codex.",
+    contextFingerprint: "a".repeat(64),
+  };
+}
+
 describe("internal AutoForge SDK foundation", () => {
+  it("advertises the supported protocol operation surface", () => {
+    expect(getSdkCapabilities()).toEqual({
+      protocolVersion: "1",
+      data: {
+        protocolVersion: "1",
+        operations: [
+          "projects",
+          "status",
+          "intent",
+          "work",
+          "context",
+          "checks",
+          "assignments",
+          "decisions",
+          "validation",
+          "handoffs",
+          "completion",
+        ],
+      },
+    });
+  });
+
   it("returns structured attachment inspection without owning effects", async () => {
     await expect(
       inspectProjectAttachment(async () => ({
@@ -92,11 +158,7 @@ describe("internal AutoForge SDK foundation", () => {
   it("returns deterministic Core assessments in a protocol envelope", () => {
     const sdk = createAutoForgeSdk({
       clock: { now: () => new Date("2026-08-25T00:00:00.000Z") },
-      operations: {
-        status: async () => ({ status: "idle" as const }),
-        startWork: async (input) => input,
-        completeWork: async () => ({ completed: true }),
-      },
+      operations: supportedOperations(),
     });
 
     const result = sdk.assessIntent({
@@ -122,16 +184,23 @@ describe("internal AutoForge SDK foundation", () => {
 
   it("delegates lifecycle effects and preserves structured results", async () => {
     const status = vi.fn(async () => ({ status: "idle" as const }));
-    const startWork = vi.fn(async (input: { kind: "task"; id: string }) => ({
-      activeWork: input,
-      revision: 2,
-    }));
+    const startWork = vi.fn(
+      async (input: { kind: "task" | "issue"; id: string }) => ({
+        activeWork: input,
+        revision: 2,
+      }),
+    );
     const completeWork = vi.fn(async () => ({
       completedWork: { kind: "task" as const, id: "task.sdk" },
       revision: 3,
     }));
     const sdk = createAutoForgeSdk({
-      operations: { status, startWork, completeWork },
+      operations: {
+        ...supportedOperations(),
+        status,
+        startWork,
+        completeWork,
+      },
     });
 
     await expect(sdk.status()).resolves.toEqual({
@@ -160,10 +229,72 @@ describe("internal AutoForge SDK foundation", () => {
     });
   });
 
+  it("delegates the complete supported lifecycle without terminal formatting", async () => {
+    const operations = {
+      projects: vi.fn(async (input) => ({ action: input.action })),
+      status: vi.fn(async () => ({ state: "idle" as const })),
+      work: vi.fn(async (input) => ({ action: input.action })),
+      context: vi.fn(async (input) => ({ explained: input.explain ?? false })),
+      check: vi.fn(async (input) => ({ path: input.path ?? null })),
+      assignments: vi.fn(async (input) => ({ action: input.action })),
+      decisions: vi.fn(async (input) => ({ statement: input.statement })),
+      validation: vi.fn(async (input) => ({ paths: input.paths ?? [] })),
+      handoffs: vi.fn(async (input) => ({ handoff: input.handoff })),
+      startWork: vi.fn(async (input) => ({ active: input })),
+      completeWork: vi.fn(async (input) => ({ completion: input })),
+    };
+    const sdk = createAutoForgeSdk({ operations });
+
+    await expect(sdk.projects({ action: "list" })).resolves.toMatchObject({
+      protocolVersion: "1",
+      data: { action: "list" },
+    });
+    await expect(
+      sdk.work({ action: "show", id: "task.sdk" }),
+    ).resolves.toMatchObject({
+      data: { action: "show" },
+    });
+    await expect(sdk.context({ explain: true })).resolves.toMatchObject({
+      data: { explained: true },
+    });
+    await expect(sdk.check({ path: "src/index.ts" })).resolves.toMatchObject({
+      data: { path: "src/index.ts" },
+    });
+    await expect(sdk.assignments({ action: "ready" })).resolves.toMatchObject({
+      data: { action: "ready" },
+    });
+    await expect(
+      sdk.decisions({
+        statement: "Use the SDK.",
+        reasoning: "Avoid terminal parsing.",
+        consequences: ["Agents use structured values."],
+        scope: ["sdk"],
+        keywords: ["sdk"],
+        relatedWork: ["task.sdk"],
+      }),
+    ).resolves.toMatchObject({ data: { statement: "Use the SDK." } });
+    await expect(
+      sdk.validation({ paths: ["src/index.ts"] }),
+    ).resolves.toMatchObject({
+      data: { paths: ["src/index.ts"] },
+    });
+    await expect(
+      sdk.handoffs({ handoff: handoffInput() }),
+    ).resolves.toMatchObject({
+      data: { handoff: { nextAction: "Continue in Codex." } },
+    });
+    await expect(
+      sdk.completeWork({ decisionId: "decision.sdk" }),
+    ).resolves.toMatchObject({
+      data: { completion: { decisionId: "decision.sdk" } },
+    });
+  });
+
   it("does not translate errors from injected operations", async () => {
     const conflict = new Error("active work conflict");
     const sdk = createAutoForgeSdk({
       operations: {
+        ...supportedOperations(),
         status: async () => ({ status: "idle" }),
         startWork: async () => {
           throw conflict;

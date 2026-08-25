@@ -5,36 +5,16 @@ import {
   eventIdSchema,
   gateIdSchema,
   leaseIdSchema,
+  repositoryRelativeScopePatternSchema,
   workIdSchema,
 } from "@cojacklabs/autoforge-protocol";
 
 export const workScopeSchema = z
   .object({
-    include: z.array(z.string().trim().min(1)).min(1),
-    exclude: z.array(z.string().trim().min(1)).default([]),
+    include: z.array(repositoryRelativeScopePatternSchema).min(1),
+    exclude: z.array(repositoryRelativeScopePatternSchema).default([]),
   })
-  .strict()
-  .superRefine((scope, context) => {
-    for (const [kind, patterns] of [
-      ["include", scope.include],
-      ["exclude", scope.exclude],
-    ] as const) {
-      patterns.forEach((value, index) => {
-        if (
-          value.startsWith("/") ||
-          value.startsWith("\\") ||
-          /^[a-zA-Z]:[\\/]/.test(value) ||
-          value.replaceAll("\\", "/").split("/").includes("..")
-        ) {
-          context.addIssue({
-            code: "custom",
-            message: "Scope patterns must be repository-relative",
-            path: [kind, index],
-          });
-        }
-      });
-    }
-  });
+  .strict();
 export type WorkScope = z.infer<typeof workScopeSchema>;
 export const orchestrationRoleSchema = z.enum([
   "product",

@@ -16,6 +16,10 @@
       "types": "./dist/intent.d.ts",
       "import": "./dist/intent.js"
     },
+    "./handoff": {
+      "types": "./dist/handoff.d.ts",
+      "import": "./dist/handoff.js"
+    },
     "./planning": {
       "types": "./dist/planning.d.ts",
       "import": "./dist/planning.js"
@@ -31,10 +35,11 @@
   },
   "files": [
     "dist",
-    "README.md"
+    "README.md",
+    "LICENSE"
   ],
   "scripts": {
-    "build": "tsup src/index.ts src/intent.ts src/planning.ts src/orchestration.ts src/ports.ts --format esm --clean && tsc -p tsconfig.build.json",
+    "build": "tsup src/index.ts src/handoff.ts src/intent.ts src/planning.ts src/orchestration.ts src/ports.ts --format esm --clean && tsc -p tsconfig.build.json",
     "typecheck": "tsc --noEmit",
     "test": "vitest run",
     "format:check": "prettier --check \"src/**/*.ts\" \"test/**/*.ts\" \"*.{json,md}\"",

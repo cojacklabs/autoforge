@@ -1,9 +1,13 @@
+import { builtinModules } from "node:module";
 import { readFile, readdir } from "node:fs/promises";
 import path from "node:path";
 import process from "node:process";
 
 const root = path.resolve(import.meta.dirname, "../../..");
 const INTERNAL_PREFIX = "@cojacklabs/autoforge";
+const BUILTIN_MODULES = new Set(
+  builtinModules.flatMap((name) => [name, `node:${name}`]),
+);
 
 const packagePolicy = new Map([
   ["packages/protocol", { name: `${INTERNAL_PREFIX}-protocol`, allow: [] }],
@@ -149,6 +153,66 @@ function internalDependencies(manifest) {
   ].sort();
 }
 
+function declaredDependencies(manifest) {
+  return new Set(
+    [
+      manifest.dependencies,
+      manifest.devDependencies,
+      manifest.optionalDependencies,
+      manifest.peerDependencies,
+    ].flatMap((section) => Object.keys(section ?? {})),
+  );
+}
+
+function packageName(specifier) {
+  if (
+    specifier.startsWith(".") ||
+    specifier.startsWith("/") ||
+    BUILTIN_MODULES.has(specifier)
+  ) {
+    return null;
+  }
+  const parts = specifier.split("/");
+  return specifier.startsWith("@") ? parts.slice(0, 2).join("/") : parts[0];
+}
+
+function importedPackages(source) {
+  const packages = new Set();
+  const expression =
+    /(?:import|export)\s+(?:[\s\S]*?\s+from\s+)?["']([^"']+)["']|import\s*\(\s*["']([^"']+)["']\s*\)|require\s*\(\s*["']([^"']+)["']\s*\)/g;
+  for (const match of source.matchAll(expression)) {
+    const name = packageName(match[1] ?? match[2] ?? match[3]);
+    if (name) packages.add(name);
+  }
+  return packages;
+}
+
+async function sourceFiles(directory) {
+  const files = [];
+  let entries;
+  try {
+    entries = await readdir(directory, { withFileTypes: true });
+  } catch (error) {
+    if (error instanceof Error && "code" in error && error.code === "ENOENT") {
+      return files;
+    }
+    throw error;
+  }
+  for (const entry of entries) {
+    const entryPath = path.join(directory, entry.name);
+    if (entry.isDirectory()) files.push(...(await sourceFiles(entryPath)));
+    else if (entry.isFile() && /\.[cm]?[jt]sx?$/.test(entry.name))
+      files.push(entryPath);
+  }
+  return files;
+}
+
+async function sourceRoots(workspace) {
+  return workspace === "apps/core-cli"
+    ? [path.join(root, "apps/core-cli/src"), path.join(root, "src")]
+    : [path.join(root, workspace, "src")];
+}
+
 function findCycle(graph) {
   const visiting = new Set();
   const visited = new Set();
@@ -207,6 +271,19 @@ for (const { workspace, manifest } of manifests) {
     manifest.name,
     dependencies.filter((name) => knownNames.has(name)),
   );
+  const declared = declaredDependencies(manifest);
+  for (const sourceRoot of await sourceRoots(workspace)) {
+    for (const file of await sourceFiles(sourceRoot)) {
+      const imports = importedPackages(await readFile(file, "utf8"));
+      for (const dependency of imports) {
+        if (!declared.has(dependency)) {
+          errors.push(
+            `${path.relative(root, file)}: import ${dependency} is not declared by ${manifest.name}`,
+          );
+        }
+      }
+    }
+  }
 }
 
 const cycle = findCycle(graph);
@@ -218,6 +295,6 @@ if (errors.length > 0) {
   process.exitCode = 1;
 } else {
   console.log(
-    `AutoForge package boundaries pass (${manifests.length} workspaces).`,
+    `AutoForge source and package boundaries pass (${manifests.length} workspaces).`,
   );
 }

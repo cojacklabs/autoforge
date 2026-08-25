@@ -1,0 +1,61 @@
+{
+  "protocolVersion": "1",
+  "id": "handoff.claude-to-codex-v0-25",
+  "project": {
+    "id": "project.autoforge",
+    "name": "autoforge"
+  },
+  "session": {
+    "id": "session.claude-planning",
+    "fromAgent": "claude",
+    "toAgent": "codex"
+  },
+  "activeWork": {
+    "kind": "task",
+    "id": "task.implement-structured-cross-agent-handoffs",
+    "name": "Implement structured cross-agent handoffs",
+    "objective": "Continue v0.25 implementation without transferring raw conversation history."
+  },
+  "scope": {
+    "include": [
+      "packages/protocol/**",
+      "packages/core/**",
+      "packages/sdk/**",
+      "test/**",
+      "docs/**"
+    ],
+    "exclude": []
+  },
+  "git": {
+    "head": "af0a439",
+    "branch": "main"
+  },
+  "changedFiles": [
+    {
+      "path": "docs/planning/0.25/PLATFORM_MIGRATION_PLAN.md",
+      "status": "modified"
+    }
+  ],
+  "decisions": [
+    {
+      "id": "decision.autoforge-v0-25-will-establish-separate-core-agent-web-and-hosted-service-bounda",
+      "statement": "Keep Core model-independent and share project truth through supported interfaces."
+    }
+  ],
+  "validation": [
+    {
+      "gateId": "planning-synchronization",
+      "status": "passed",
+      "summary": "The canonical v0.25 planning bundle is synchronized."
+    }
+  ],
+  "risks": [
+    "Provider-specific assumptions must not enter the handoff contract."
+  ],
+  "openQuestions": [
+    "Which provider should the experimental Agent support first?"
+  ],
+  "nextAction": "Implement the provider-neutral handoff schema and persistence boundary.",
+  "contextFingerprint": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+  "createdAt": "2026-08-25T00:00:00.000Z"
+}

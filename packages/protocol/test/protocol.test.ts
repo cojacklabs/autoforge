@@ -5,6 +5,8 @@ import {
   AutoForgeError,
   UnsupportedProtocolVersionError,
   assertSupportedProtocolVersion,
+  agentHandoffSchema,
+  createAgentHandoff,
   createWorkflowHandoff,
   featureIdSchema,
   validateAgentContract,
@@ -82,6 +84,69 @@ describe("AutoForge protocol v1", () => {
         new Date("2026-08-25T00:00:00.000Z"),
       ).protocolVersion,
     ).toBe("1");
+  });
+
+  it("validates provider-neutral cross-agent handoffs without transcripts", () => {
+    const handoff = createAgentHandoff(
+      {
+        id: "handoff.claude-to-codex",
+        project: { id: "project.autoforge", name: "autoforge" },
+        session: {
+          id: "session.claude",
+          fromAgent: "claude",
+          toAgent: "codex",
+        },
+        activeWork: {
+          kind: "task",
+          id: "task.structured-handoff",
+          name: "Structured handoff",
+          objective: "Transfer project truth without a transcript.",
+        },
+        scope: { include: ["packages/**"], exclude: ["dist/**"] },
+        git: { head: "abc123", branch: "main" },
+        changedFiles: [
+          { path: "packages/protocol/src/handoff.ts", status: "added" },
+        ],
+        decisions: [
+          {
+            id: "decision.structured-handoffs",
+            statement: "Use structured state.",
+          },
+        ],
+        validation: [
+          { gateId: "protocol", status: "passed", summary: "Schema passed." },
+        ],
+        risks: [],
+        openQuestions: ["Should hosted sync remain deferred?"],
+        nextAction: "Continue with the Agent CLI.",
+        contextFingerprint: "a".repeat(64),
+      },
+      new Date("2026-08-25T00:00:00.000Z"),
+    );
+    expect(handoff.protocolVersion).toBe("1");
+    expect(handoff.session).toMatchObject({
+      fromAgent: "claude",
+      toAgent: "codex",
+    });
+    expect(() =>
+      agentHandoffSchema.parse({ ...handoff, rawTranscript: "secret" }),
+    ).toThrow();
+    expect(() =>
+      agentHandoffSchema.parse({
+        ...handoff,
+        changedFiles: [{ path: "../outside", status: "modified" }],
+      }),
+    ).toThrow();
+    for (const scope of [
+      { include: ["../outside/**"], exclude: [] },
+      { include: ["/absolute/**"], exclude: [] },
+      { include: ["C:\\outside\\**"], exclude: [] },
+      { include: ["packages/**"], exclude: ["\\\\server\\share\\**"] },
+    ]) {
+      expect(() => agentHandoffSchema.parse({ ...handoff, scope })).toThrow(
+        "Scope patterns must be repository-relative",
+      );
+    }
   });
 
   it("preserves the released agent contract shape", () => {

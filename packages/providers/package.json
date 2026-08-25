@@ -1,8 +1,9 @@
 {
-  "name": "@cojacklabs/autoforge-sdk",
+  "name": "@cojacklabs/autoforge-providers",
   "version": "0.1.0",
   "type": "module",
   "license": "MIT",
+  "private": true,
   "sideEffects": false,
   "engines": {
     "node": ">=20"
@@ -13,23 +14,15 @@
       "import": "./dist/index.js"
     }
   },
-  "files": [
-    "dist",
-    "README.md",
-    "LICENSE"
-  ],
-  "publishConfig": {
-    "access": "public"
-  },
   "scripts": {
     "build": "tsup src/index.ts --format esm --clean && tsc -p tsconfig.build.json",
     "typecheck": "tsc --noEmit",
-    "test": "vitest run",
-    "format:check": "prettier --check \"src/**/*.ts\" \"test/**/*.ts\" \"*.{json,md}\"",
+    "test": "vitest run --passWithNoTests",
+    "format:check": "prettier --check \"src/**/*.ts\" \"*.{json,md}\"",
     "boundaries": "node ../config/src/check-boundaries.mjs"
   },
   "dependencies": {
-    "@cojacklabs/autoforge-core": "workspace:^",
+    "@ai-sdk/openai": "^3.0.0",
     "@cojacklabs/autoforge-protocol": "workspace:^"
   },
   "devDependencies": {
@@ -40,7 +33,7 @@
   },
   "turbo": {
     "tags": [
-      "public",
+      "private",
       "library"
     ]
   }

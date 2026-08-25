@@ -7,6 +7,11 @@
 .autoforge/agent-contract.json
 .autoforge/state/*.json.bak
 .autoforge/orchestration/
+# Sensitive or reproducible Agent runtime state; canonical handoffs remain tracked.
+.autoforge/transcripts/
+.autoforge/provider-cache/
+.autoforge/provider-logs/
+.autoforge/credentials/
 **/logs/deployments/*
 **/logs/mastermind/*
 **/logs/security/*

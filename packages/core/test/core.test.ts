@@ -1,7 +1,16 @@
 import { describe, expect, it } from "vitest";
 
 import { ProjectIntelligenceService } from "../src/project-intelligence.js";
-import { planFromWorkState, scopesOverlap } from "../src/orchestration.js";
+import {
+  AgentHandoffService,
+  type AgentHandoffRepository,
+} from "../src/handoff.js";
+import type { AgentHandoff } from "@cojacklabs/autoforge-protocol";
+import {
+  planFromWorkState,
+  scopesOverlap,
+  workScopeSchema,
+} from "../src/orchestration.js";
 import type {
   Clock,
   FileSystemPort,
@@ -56,6 +65,9 @@ describe("model-independent AutoForge Core", () => {
         { include: ["src/core/**"], exclude: [] },
       ),
     ).toBe(true);
+    expect(() => workScopeSchema.parse({ include: ["../outside/**"] })).toThrow(
+      "Scope patterns must be repository-relative",
+    );
   });
 
   it("defines effects as injectable ports", () => {
@@ -79,5 +91,46 @@ describe("model-independent AutoForge Core", () => {
     expect(filesystem).toBeDefined();
     expect(git).toBeDefined();
     expect(globalStorage).toBeDefined();
+  });
+
+  it("creates and persists handoffs through an injected repository", async () => {
+    const handoffs = new Map<string, AgentHandoff>();
+    const repository: AgentHandoffRepository = {
+      write: async (handoff) => {
+        handoffs.set(handoff.id, handoff);
+        return `.autoforge/handoffs/${handoff.id}.json`;
+      },
+      read: async (id) => handoffs.get(id) ?? null,
+      list: async () => [...handoffs.values()],
+    };
+    const service = new AgentHandoffService(repository, {
+      clock: { now: () => new Date("2026-08-25T00:00:00.000Z") },
+    });
+    const result = await service.create({
+      id: "handoff.claude-to-codex",
+      project: { id: "project.autoforge", name: "autoforge" },
+      session: { id: "session.claude", fromAgent: "claude", toAgent: "codex" },
+      activeWork: {
+        kind: "task",
+        id: "task.structured-handoff",
+        name: "Structured handoff",
+        objective: "Transfer project truth.",
+      },
+      scope: { include: ["packages/**"], exclude: [] },
+      git: { head: "abc123" },
+      changedFiles: [],
+      decisions: [],
+      validation: [],
+      risks: [],
+      openQuestions: [],
+      nextAction: "Continue in Codex.",
+      contextFingerprint: "a".repeat(64),
+    });
+    expect(result.location).toBe(
+      ".autoforge/handoffs/handoff.claude-to-codex.json",
+    );
+    await expect(service.read(result.handoff.id)).resolves.toEqual(
+      result.handoff,
+    );
   });
 });
