@@ -1,6 +1,6 @@
 {
   "name": "@cojacklabs/autoforge",
-  "version": "0.25.0",
+  "version": "0.25.1",
   "packageManager": "pnpm@11.22.0",
   "type": "module",
   "private": false,

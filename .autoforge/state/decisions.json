@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
-  "revision": 97,
-  "updatedAt": "2026-08-26T00:00:46.109Z",
+  "revision": 98,
+  "updatedAt": "2026-08-26T01:42:51.210Z",
   "data": {
     "decisions": [
       {
@@ -2415,6 +2415,31 @@
         "kind": "architecture",
         "createdAt": "2026-08-26T00:00:46.081Z",
         "updatedAt": "2026-08-26T00:00:46.081Z"
+      },
+      {
+        "id": "decision.the-supported-v0-25-milestone-release-uses-core-cli-version-0-25-1-after-the-mis",
+        "statement": "The supported v0.25 milestone release uses Core CLI version 0.25.1 after the mistaken 0.25.0 npm artifact was withdrawn",
+        "reasoning": "npm permanently reserves a package name and version after first publication, even when that version is unpublished, so the corrected artifact cannot reuse 0.25.0",
+        "consequences": [
+          "Publish and tag the corrected Core CLI as 0.25.1 while Protocol, Core, and SDK retain their independently planned initial 0.1.0 versions",
+          "Treat 0.25.0 as withdrawn and never recreate it in npm or GitHub release metadata"
+        ],
+        "scope": [
+          "release",
+          "v0.25"
+        ],
+        "keywords": [
+          "npm",
+          "versioning"
+        ],
+        "relatedWork": [
+          "issue.prepare-reviewable-v0-25-release-checkpoint-and-remote-verification"
+        ],
+        "supersedes": null,
+        "status": "active",
+        "kind": "bugfix",
+        "createdAt": "2026-08-26T01:42:51.181Z",
+        "updatedAt": "2026-08-26T01:42:51.181Z"
       }
     ]
   }

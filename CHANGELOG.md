@@ -10,13 +10,13 @@ All notable changes to this project will be documented in this file.
 <!-- autoforge:changelog:start -->
 <!-- autoforge:changelog:end -->
 
-## [0.25.0] - 2026-08-25
+## [0.25.1] - 2026-08-25
 
 ### Package releases
 
 | Package                           | Version  | Release status                                          |
 | --------------------------------- | -------- | ------------------------------------------------------- |
-| `@cojacklabs/autoforge`           | `0.25.0` | Core CLI compatibility release; approval pending        |
+| `@cojacklabs/autoforge`           | `0.25.1` | Core CLI compatibility release; approval pending        |
 | `@cojacklabs/autoforge-protocol`  | `0.1.0`  | Initial public protocol contract; approval pending      |
 | `@cojacklabs/autoforge-core`      | `0.1.0`  | Initial public model-independent Core; approval pending |
 | `@cojacklabs/autoforge-sdk`       | `0.1.0`  | Initial public programmatic facade; approval pending    |
@@ -27,6 +27,10 @@ This release set is the Changesets baseline import. Candidate versions were
 assigned before Changesets was installed, so no additional version bump is
 pending for the entries above. All subsequent public-package changes require a
 changeset.
+
+`0.25.1` is the first supported registry release for this milestone. A mistaken
+`0.25.0` npm publication was withdrawn before release approval; npm's immutable
+version policy requires the corrected artifact to use a new patch version.
 
 ### Added
 
@@ -39,7 +43,7 @@ changeset.
 - AutoForge Agent stores local provider credentials only in native operating-system credential facilities behind an Agent-owned injected vault, with hidden terminal entry and no plaintext fallback. (decision.autoforge-agent-stores-local-provider-credentials-only-in-native-operating-syste)
 - Core delegates eligible bare invocation and the allowlisted credentials namespace to a separately installed AutoForge Agent through versioned process negotiation while every explicit Core command and noninteractive bare invocation remain deterministic. (decision.core-delegates-eligible-bare-invocation-and-the-allowlisted-credentials-namespac)
 - v0.25 compatibility is anchored by a frozen v0.24 project fixture and a provider-neutral Claude-to-Codex handoff fixture rather than raw conversational transcripts. (decision.v0-25-compatibility-is-anchored-by-a-frozen-v0-24-project-fixture-and-a-provider)
-- AutoForge 0.25.0 is prepared as an audited release candidate with compatibility migration guidance, independently versioned Protocol/Core/SDK packages, corrected publishable dependency ranges, and complete local validation evidence; publication remains pending explicit maintainer approval. (decision.autoforge-0-25-0-is-prepared-as-an-audited-release-candidate-with-compatibility)
+- AutoForge 0.25.1 is prepared as an audited release candidate with compatibility migration guidance, independently versioned Protocol/Core/SDK packages, corrected publishable dependency ranges, and complete local validation evidence; publication remains pending explicit maintainer approval. (decision.autoforge-0-25-0-is-prepared-as-an-audited-release-candidate-with-compatibility)
 
 ### Fixed
 

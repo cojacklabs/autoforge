@@ -13,7 +13,7 @@ Upgrade through the existing global installation path, then verify both the
 installation and each project:
 
 ```bash
-npm install --global @cojacklabs/autoforge@0.25.0
+npm install --global @cojacklabs/autoforge@0.25.1
 autoforge version
 autoforge --project "$PWD" doctor
 autoforge --project "$PWD" bootstrap status

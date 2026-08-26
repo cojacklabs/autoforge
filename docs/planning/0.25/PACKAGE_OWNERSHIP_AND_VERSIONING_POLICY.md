@@ -135,7 +135,7 @@ notes and migration guidance.
 
 Packages and deployable applications use independent semantic versions:
 
-- `@cojacklabs/autoforge` advances from `0.24.x` to `0.25.0` for the Core CLI
+- `@cojacklabs/autoforge` advances from `0.24.x` to `0.25.1` for the Core CLI
   migration and remains the public product version users see today.
 - Newly extracted public libraries begin at `0.1.0` when first published. They
   may exist as private `0.0.0` workspace packages before their public contract

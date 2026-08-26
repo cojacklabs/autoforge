@@ -2,7 +2,7 @@
 
 ## Status
 
-Locally audited release checkpoint; remote verification pending.
+Locally audited release checkpoint; final 0.25.1 remote verification pending.
 
 The implementation milestone and local codebase audits are complete, but
 publication remains deliberately blocked on pushed CI, the published-dependency
@@ -16,7 +16,7 @@ publication, or hosted deployment is authorized by this document.
 | `@cojacklabs/autoforge-protocol`  |           `0.1.0` | Versioned contracts and capabilities                 |
 | `@cojacklabs/autoforge-core`      |           `0.1.0` | Model-independent project intelligence               |
 | `@cojacklabs/autoforge-sdk`       |           `0.1.0` | Supported programmatic facade                        |
-| `@cojacklabs/autoforge`           |          `0.25.0` | Deterministic Core CLI and optional Agent launcher   |
+| `@cojacklabs/autoforge`           |          `0.25.1` | Deterministic Core CLI and optional Agent launcher   |
 | `@cojacklabs/autoforge-agent`     |           `0.1.0` | Experimental local Agent; independent approval       |
 | `@cojacklabs/autoforge-providers` |           `0.1.0` | Experimental provider boundary; independent approval |
 
@@ -25,33 +25,33 @@ Production Web and hosted Service packages are explicitly deferred.
 ## Validation Evidence
 
 Validated locally on 2026-08-25 with the release runtime, Node.js 22.19.0,
-and pnpm 11.22.0. Native Windows verification is configured in CI and remains
-pending until the candidate commits are pushed.
+and pnpm 11.22.0. The repaired Node.js 22 Linux jobs and native Windows launcher
+job passed remotely; the final 0.25.1 identity commit must reproduce that result.
 
-| Gate                         | Result         | Evidence                                                                                                                                 |
-| ---------------------------- | -------------- | ---------------------------------------------------------------------------------------------------------------------------------------- |
-| Frozen install               | Pass           | `pnpm install --frozen-lockfile --offline`                                                                                               |
-| Workspace dependency policy  | Pass           | Repository boundary checker: 6 workspaces                                                                                                |
-| Authored-source boundaries   | Pass           | Repository source/package checker; 6 workspaces, no issues                                                                               |
-| Package builds               | Pass           | Protocol, Core, SDK, Providers, and Agent                                                                                                |
-| Package typechecks           | Pass           | All 5 package workspaces                                                                                                                 |
-| Package tests                | Pass           | 34 tests across Protocol, Core, SDK, Providers, and Agent                                                                                |
-| Package formatting           | Pass           | All 5 package workspaces                                                                                                                 |
-| Root typecheck               | Pass           | `tsc --noEmit`                                                                                                                           |
-| Root formatting              | Pass           | Full repository Prettier check                                                                                                           |
-| Planning synchronization     | Pass           | Canonical planning bundle synchronized                                                                                                   |
-| AutoForge selected-file gate | Pass           | Installation, containment, secret scan, structured syntax, typecheck, format, and tests                                                  |
-| Foundation suite             | Pass           | 150 test files, 712 passed and 1 native-Windows test skipped locally                                                                     |
-| Legacy suite                 | Pass           | 17 Node tests                                                                                                                            |
-| Compatibility fixture        | Pass           | Frozen 0.24 work/session state loads without mutation                                                                                    |
-| Cross-agent continuity       | Pass           | Claude-to-Codex handoff validates without transcript/message fields                                                                      |
-| Launcher matrix              | Pass           | TTY eligibility, CI/pipes/disable/recursion fallback, missing/incompatible Agent, exit codes, signals, and platform invocation selection |
-| Native Windows launcher      | Pending remote | A focused `windows-latest` job executes an npm-style `.cmd` shim through the production process host; the workflow must pass after push  |
-| Optional-store recovery      | Pass           | Missing bootstrap manifest returns actionable `not-scaffolded` status                                                                    |
-| Relocation recovery          | Pass           | Existing Agent contract root is repaired; missing contract is accepted                                                                   |
-| Package contents             | Pass           | Core CLI tarball contains only license, README, bin, bundle, source map, and manifest                                                    |
-| Isolated package-set install | Pass           | Locally packed Protocol/Core/SDK/Core CLI plus cached public dependencies install and report `AutoForge 0.25.0`                          |
-| Release metadata             | Pass           | Changesets configured for independent public packages; v0.25 recorded as the already-versioned baseline import                           |
+| Gate                         | Result | Evidence                                                                                                                                                              |
+| ---------------------------- | ------ | --------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Frozen install               | Pass   | `pnpm install --frozen-lockfile --offline`                                                                                                                            |
+| Workspace dependency policy  | Pass   | Repository boundary checker: 6 workspaces                                                                                                                             |
+| Authored-source boundaries   | Pass   | Repository source/package checker; 6 workspaces, no issues                                                                                                            |
+| Package builds               | Pass   | Protocol, Core, SDK, Providers, and Agent                                                                                                                             |
+| Package typechecks           | Pass   | All 5 package workspaces                                                                                                                                              |
+| Package tests                | Pass   | 34 tests across Protocol, Core, SDK, Providers, and Agent                                                                                                             |
+| Package formatting           | Pass   | All 5 package workspaces                                                                                                                                              |
+| Root typecheck               | Pass   | `tsc --noEmit`                                                                                                                                                        |
+| Root formatting              | Pass   | Full repository Prettier check                                                                                                                                        |
+| Planning synchronization     | Pass   | Canonical planning bundle synchronized                                                                                                                                |
+| AutoForge selected-file gate | Pass   | Installation, containment, secret scan, structured syntax, typecheck, format, and tests                                                                               |
+| Foundation suite             | Pass   | 150 test files, 712 passed and 1 native-Windows test skipped locally                                                                                                  |
+| Legacy suite                 | Pass   | 17 Node tests                                                                                                                                                         |
+| Compatibility fixture        | Pass   | Frozen 0.24 work/session state loads without mutation                                                                                                                 |
+| Cross-agent continuity       | Pass   | Claude-to-Codex handoff validates without transcript/message fields                                                                                                   |
+| Launcher matrix              | Pass   | TTY eligibility, CI/pipes/disable/recursion fallback, missing/incompatible Agent, exit codes, signals, and platform invocation selection                              |
+| Native Windows launcher      | Pass   | The focused `windows-latest` job passed through the production process host in [CI run 32919412472](https://github.com/cojacklabs/autoforge/actions/runs/32919412472) |
+| Optional-store recovery      | Pass   | Missing bootstrap manifest returns actionable `not-scaffolded` status                                                                                                 |
+| Relocation recovery          | Pass   | Existing Agent contract root is repaired; missing contract is accepted                                                                                                |
+| Package contents             | Pass   | Core CLI tarball contains only license, README, bin, bundle, source map, and manifest                                                                                 |
+| Isolated package-set install | Pass   | Locally packed Protocol/Core/SDK/Core CLI plus cached public dependencies install and report `AutoForge 0.25.1`                                                       |
+| Release metadata             | Pass   | Changesets configured for independent public packages; v0.25 recorded as the already-versioned baseline import                                                        |
 
 An earlier evidence-collection run executed `npm pack` concurrently with the
 foundation suite. Because `prepack` intentionally cleans and rebuilds `dist/`,
@@ -137,7 +137,7 @@ sanitization as a required issue before Agent or Providers publication.
       prevention, fallback behavior, and Windows executable handling.
 - [ ] Before separate Agent approval, exercise native credential-store behavior
       on macOS, Linux, and Windows.
-- [ ] Confirm the pushed Node.js 22 Linux jobs and focused native Windows
+- [x] Confirm the pushed Node.js 22 Linux jobs and focused native Windows
       launcher job pass in GitHub Actions.
 - [ ] Re-run a normal isolated npm install after Protocol, Core, and SDK are
       published.
@@ -147,7 +147,7 @@ sanitization as a required issue before Agent or Providers publication.
 ## Known Non-Release State
 
 - The globally installed 0.24.0 CLI still throws `ENOENT` for an absent
-  bootstrap manifest; the 0.25.0 worktree bundle returns actionable
+  bootstrap manifest; the 0.25.1 worktree bundle returns actionable
   `not-scaffolded` output. This is the bug the upgrade resolves.
 - Production Web, Service, payments, cloud synchronization, hosted credential
   custody, multi-model autonomy, native OS installers, and raw transcript
