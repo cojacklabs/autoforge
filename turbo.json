@@ -47,6 +47,11 @@
       "outputs": []
     },
     "//#core:build": {
+      "dependsOn": [
+        "@cojacklabs/autoforge-protocol#build",
+        "@cojacklabs/autoforge-core#build",
+        "@cojacklabs/autoforge-sdk#build"
+      ],
       "outputs": ["dist/**", "build/**"]
     },
     "//#core:typecheck": {
