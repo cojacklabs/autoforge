@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
-  "revision": 386,
-  "updatedAt": "2026-08-26T16:46:35.026Z",
+  "revision": 389,
+  "updatedAt": "2026-08-26T20:44:11.698Z",
   "data": {
     "features": [
       {
@@ -2424,6 +2424,22 @@
             "src/commands/evidence.ts",
             "test/**",
             "docs/**"
+          ],
+          "exclude": []
+        }
+      },
+      {
+        "name": "Adopt the official AutoForge product tagline",
+        "description": "Establish 'Human intent. AI execution. One shared understanding.' as AutoForge's official product tagline. Place it in the primary README and authoritative ultimate north-star, distinguish it from the longer company mission, and record the decision so future documentation and product surfaces use the wording consistently.",
+        "status": "completed",
+        "createdAt": "2026-08-26T20:40:56.375Z",
+        "updatedAt": "2026-08-26T20:44:11.562Z",
+        "id": "issue.adopt-the-official-autoforge-product-tagline",
+        "scope": {
+          "include": [
+            "README.md",
+            "docs/planning/0.26/ULTIMATE_AUTOFORGE_AI_NORTH_STAR.md",
+            ".autoforge/state/**"
           ],
           "exclude": []
         }

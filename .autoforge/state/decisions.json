@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
-  "revision": 110,
-  "updatedAt": "2026-08-26T16:46:35.718Z",
+  "revision": 111,
+  "updatedAt": "2026-08-26T20:41:44.864Z",
   "data": {
     "decisions": [
       {
@@ -2743,6 +2743,32 @@
         "kind": "feature-note",
         "createdAt": "2026-08-26T16:46:35.684Z",
         "updatedAt": "2026-08-26T16:46:35.684Z"
+      },
+      {
+        "id": "decision.autoforge-s-official-product-tagline-is-human-intent-ai-execution-one-shared-und",
+        "statement": "AutoForge's official product tagline is: Human intent. AI execution. One shared understanding.",
+        "reasoning": "The line concisely expresses AutoForge's enduring product promise: translate human intent into governed AI execution while preserving durable understanding across people and agents.",
+        "consequences": [
+          "Use this exact wording and punctuation as the primary product tagline across documentation, onboarding, interfaces, and marketing.",
+          "Keep the broader company mission—eliminating communication barriers between humans and AI for good—distinct from the product tagline.",
+          "A future replacement should supersede this decision explicitly rather than silently changing the wording."
+        ],
+        "scope": [
+          "product",
+          "brand"
+        ],
+        "keywords": [
+          "tagline",
+          "messaging"
+        ],
+        "relatedWork": [
+          "issue.adopt-the-official-autoforge-product-tagline"
+        ],
+        "supersedes": null,
+        "status": "active",
+        "kind": "feature-note",
+        "createdAt": "2026-08-26T20:41:44.838Z",
+        "updatedAt": "2026-08-26T20:41:44.838Z"
       }
     ]
   }

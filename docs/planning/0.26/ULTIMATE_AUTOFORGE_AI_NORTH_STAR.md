@@ -3,6 +3,17 @@
 Status: Authoritative product destination; delivery horizons remain provisional  
 Established: 2026-08-26
 
+## Product Promise
+
+AutoForge's official product tagline is:
+
+> **Human intent. AI execution. One shared understanding.**
+
+It describes the product's central promise: translate what people mean into
+governed AI action while preserving durable context that humans and agents can
+understand together. The broader company mission remains **eliminating
+communication barriers between humans and AI—for good**.
+
 ## North-Star Statement
 
 AutoForge is a trusted, persistent, provider-neutral AI operator that

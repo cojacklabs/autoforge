@@ -1,5 +1,7 @@
 # AutoForge
 
+> **Human intent. AI execution. One shared understanding.**
+
 AutoForge is a project-intelligence and orchestration framework for continuous
 AI-assisted software development. It turns brainstorming, research, planning,
 design, implementation, validation, and handoff into durable project state that
