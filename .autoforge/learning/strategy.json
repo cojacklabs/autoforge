@@ -1,0 +1,75 @@
+{
+  "schemaVersion": 1,
+  "revision": 3,
+  "updatedAt": "2026-08-25T21:36:53.934Z",
+  "data": {
+    "assessments": [
+      {
+        "id": "strategy.issue-define-and-enforce-an-agent-code-commenting-standard",
+        "workId": "issue.define-and-enforce-an-agent-code-commenting-standard",
+        "factors": {
+          "alignment": "high",
+          "value": "high",
+          "risk": "medium",
+          "cost": "medium",
+          "evidenceStrength": "medium",
+          "dependencyPressure": "low",
+          "complexity": "medium",
+          "releaseConstraint": "low"
+        },
+        "decision": "next",
+        "rationale": "This directly improves cross-agent maintainability and knowledge transfer, but introducing a new doctrine and enforcement rules during the frozen v0.25 release checkpoint would expand release scope. Implement immediately after v0.25 with safeguards against noisy or stale comments.",
+        "evidenceIds": [],
+        "resultingDecision": "decision.issue-define-and-enforce-an-agent-code-commenting-standard-strategic-assessment",
+        "supersedes": null,
+        "status": "active",
+        "createdAt": "2026-08-25T19:09:08.454Z",
+        "updatedAt": "2026-08-25T19:09:08.454Z"
+      },
+      {
+        "id": "strategy.issue-define-optional-intent-compiler-and-portable-design-orchestration",
+        "workId": "issue.define-optional-intent-compiler-and-portable-design-orchestration",
+        "factors": {
+          "alignment": "high",
+          "value": "high",
+          "risk": "high",
+          "cost": "high",
+          "evidenceStrength": "low",
+          "dependencyPressure": "low",
+          "complexity": "high",
+          "releaseConstraint": "low"
+        },
+        "decision": "later",
+        "rationale": "The concept strongly aligns with AutoForge's long-term platform vision, but its contracts, model evaluation, privacy boundaries, design adapters, and customer evidence need exploration. Preserve it now without assigning a release or disturbing the v0.25 checkpoint.",
+        "evidenceIds": [],
+        "resultingDecision": "decision.issue-define-optional-intent-compiler-and-portable-design-orchestration-strategi",
+        "supersedes": null,
+        "status": "active",
+        "createdAt": "2026-08-25T21:09:42.154Z",
+        "updatedAt": "2026-08-25T21:09:42.154Z"
+      },
+      {
+        "id": "strategy.issue-enforce-agent-generated-content-safety-before-writes-and-streaming",
+        "workId": "issue.enforce-agent-generated-content-safety-before-writes-and-streaming",
+        "factors": {
+          "alignment": "high",
+          "value": "high",
+          "risk": "high",
+          "cost": "medium",
+          "evidenceStrength": "high",
+          "dependencyPressure": "medium",
+          "complexity": "medium",
+          "releaseConstraint": "medium"
+        },
+        "decision": "next",
+        "rationale": "Code-level output policy is required before experimental Agent or Providers publication, but their independent approval boundary means it does not block the deterministic v0.25 Protocol, Core, SDK, and Core CLI release sequence.",
+        "evidenceIds": [],
+        "resultingDecision": "decision.issue-enforce-agent-generated-content-safety-before-writes-and-streaming-strateg",
+        "supersedes": null,
+        "status": "active",
+        "createdAt": "2026-08-25T21:36:53.834Z",
+        "updatedAt": "2026-08-25T21:36:53.834Z"
+      }
+    ]
+  }
+}
