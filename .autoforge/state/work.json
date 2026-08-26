@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
-  "revision": 367,
-  "updatedAt": "2026-08-25T21:36:48.669Z",
+  "revision": 368,
+  "updatedAt": "2026-08-26T02:47:47.761Z",
   "data": {
     "features": [
       {
@@ -2289,6 +2289,24 @@
             "apps/agent-cli/**",
             "packages/providers/**",
             "test/**",
+            "docs/**"
+          ],
+          "exclude": []
+        }
+      },
+      {
+        "name": "Make release readiness use superseding gate evidence",
+        "description": "Preserve historical validation evidence while evaluating readiness from the latest applicable required result for each gate and work context, so corrected reruns can supersede earlier failures without deleting audit history.",
+        "status": "planned",
+        "createdAt": "2026-08-26T02:47:47.731Z",
+        "updatedAt": "2026-08-26T02:47:47.731Z",
+        "id": "issue.make-release-readiness-use-superseding-gate-evidence",
+        "scope": {
+          "include": [
+            "src/quality/**",
+            "src/commands/evidence.ts",
+            "test/quality-readiness.test.ts",
+            "test/evidence-command.test.ts",
             "docs/**"
           ],
           "exclude": []

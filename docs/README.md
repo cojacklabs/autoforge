@@ -51,8 +51,9 @@ next action that another participant needs.
 - [Independent Claude Audit](planning/0.25/CLAUDE_AUDIT_REPORT.md)
 - [Future Intelligence and Design Orchestration](planning/0.25/FUTURE_INTELLIGENCE_AND_DESIGN_ORCHESTRATION.md)
 
-The planning documents describe architecture and release gates; they do not
-authorize a tag or npm publication.
+The planning documents preserve the architecture, release gates, audit trail,
+and publication record. Experimental Agent and Providers work remains subject
+to its own approval gates.
 
 ## Specialist References
 

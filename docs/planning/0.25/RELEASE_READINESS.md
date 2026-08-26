@@ -2,12 +2,12 @@
 
 ## Status
 
-Locally audited release checkpoint; final 0.25.2 remote verification pending.
+Approved and published npm release; Git tag and GitHub release closure remain.
 
-The implementation milestone and local codebase audits are complete, but
-publication remains deliberately blocked on pushed CI, the published-dependency
-smoke test, and explicit release approval. No tag, GitHub release, npm
-publication, or hosted deployment is authorized by this document.
+The implementation milestone, local audits, final pushed CI, published-package
+installation, and explicit release approval are complete. Protocol, Core, SDK,
+and the deterministic Core CLI are published. Agent, Providers, and hosted
+deployment remain independently gated and are not authorized by this record.
 
 ## Release Set
 
@@ -25,8 +25,8 @@ Production Web and hosted Service packages are explicitly deferred.
 ## Validation Evidence
 
 Validated locally on 2026-08-25 with the release runtime, Node.js 22.19.0,
-and pnpm 11.22.0. The repaired Node.js 22 Linux jobs and native Windows launcher
-job passed remotely; the final 0.25.2 identity commit must reproduce that result.
+and pnpm 11.22.0. The final 0.25.2 identity commit passed the Node.js 22 Linux,
+planning-validation, and native Windows launcher jobs remotely.
 
 | Gate                         | Result | Evidence                                                                                                                                                              |
 | ---------------------------- | ------ | --------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -46,11 +46,11 @@ job passed remotely; the final 0.25.2 identity commit must reproduce that result
 | Compatibility fixture        | Pass   | Frozen 0.24 work/session state loads without mutation                                                                                                                 |
 | Cross-agent continuity       | Pass   | Claude-to-Codex handoff validates without transcript/message fields                                                                                                   |
 | Launcher matrix              | Pass   | TTY eligibility, CI/pipes/disable/recursion fallback, missing/incompatible Agent, exit codes, signals, and platform invocation selection                              |
-| Native Windows launcher      | Pass   | The focused `windows-latest` job passed through the production process host in [CI run 32919412472](https://github.com/cojacklabs/autoforge/actions/runs/32919412472) |
+| Native Windows launcher      | Pass   | The focused `windows-latest` job passed through the production process host in [CI run 32922633823](https://github.com/cojacklabs/autoforge/actions/runs/32922633823) |
 | Optional-store recovery      | Pass   | Missing bootstrap manifest returns actionable `not-scaffolded` status                                                                                                 |
 | Relocation recovery          | Pass   | Existing Agent contract root is repaired; missing contract is accepted                                                                                                |
 | Package contents             | Pass   | Core CLI tarball contains only license, README, bin, bundle, source map, and manifest                                                                                 |
-| Isolated package-set install | Pass   | Locally packed Protocol/Core/SDK/Core CLI plus cached public dependencies install and report `AutoForge 0.25.2`                                                       |
+| Isolated package-set install | Pass   | A clean pnpm tarball install selected Protocol 0.1.0, Core 0.1.1, SDK 0.1.1, and Core CLI 0.25.2; the maintainer's subsequent global reinstall also succeeded         |
 | Release metadata             | Pass   | Changesets configured for independent public packages; v0.25 recorded as the already-versioned baseline import                                                        |
 
 An earlier evidence-collection run executed `npm pack` concurrently with the
@@ -64,8 +64,9 @@ the counts above come from the subsequent isolated, uncontended run.
    against the package manifest, retaining coverage across future releases.
 2. The root public manifest used `workspace:^` for Protocol, Core, and SDK.
    `npm pack` preserved those values and a consumer install failed with
-   `EUNSUPPORTEDPROTOCOL`. The public Core CLI now records `^0.1.0` compatibility
-   ranges while the lockfile continues linking the matching local workspaces.
+   `EUNSUPPORTEDPROTOCOL`. The public Core CLI now requires Protocol `^0.1.0`
+   and the corrected Core and SDK patches at `^0.1.1`, while the lockfile
+   continues linking the matching local workspaces.
 3. Nine historical documentation/test files failed the repository-wide
    formatting gate. They were mechanically normalized without behavioral edits.
 4. The previous standalone Turborepo boundary scanner could include generated
@@ -115,16 +116,20 @@ model-generated file contents rely on prompt-level prohibitions before being
 written. AutoForge now tracks code-level content validation and stream
 sanitization as a required issue before Agent or Providers publication.
 
-## Required Publication Order
+## Publication Record
 
-1. Audit and approve Protocol, then publish `@cojacklabs/autoforge-protocol`.
-2. Audit and approve Core, then publish `@cojacklabs/autoforge-core`.
-3. Audit and approve SDK, then publish `@cojacklabs/autoforge-sdk`.
-4. Re-run the normal npm tarball-install smoke test against those published
-   dependency versions.
-5. Audit and approve the Core CLI, create the matching tag, and publish
-   `@cojacklabs/autoforge`.
-6. Approve Agent and Providers independently; neither blocks local Core use.
+1. Published `@cojacklabs/autoforge-protocol@0.1.0`.
+2. Replaced the unsupported Core and SDK 0.1.0 artifacts with corrected
+   `@cojacklabs/autoforge-core@0.1.1` and `@cojacklabs/autoforge-sdk@0.1.1`.
+3. Published `@cojacklabs/autoforge@0.25.2` with dependency floors that cannot
+   select those unsupported artifacts.
+4. Verified a clean package-set install and a maintainer global reinstall.
+5. Reserved Agent and Providers for independent audit and approval; neither
+   blocks local Core use.
+
+The withdrawn CLI 0.25.0 version cannot be reused. CLI 0.25.1 and Core/SDK
+0.1.0 are unsupported and should remain deprecated in npm so consumers receive
+an upgrade warning without erasing the registry audit trail.
 
 ## Maintainer Audit Checklist
 
@@ -143,31 +148,40 @@ sanitization as a required issue before Agent or Providers publication.
       on macOS, Linux, and Windows.
 - [x] Confirm the pushed Node.js 22 Linux jobs and focused native Windows
       launcher job pass in GitHub Actions.
-- [ ] Re-run a normal isolated npm install after Protocol, Core, and SDK are
+- [x] Re-run a normal isolated npm install after Protocol, Core, and SDK are
       published.
 - [ ] Verify the tag exactly matches the root package version.
-- [ ] Record explicit human approval before any publication.
+- [x] Record explicit human approval before publication.
 
 ## Known Non-Release State
 
-- The globally installed 0.24.0 CLI still throws `ENOENT` for an absent
-  bootstrap manifest; the 0.25.2 worktree bundle returns actionable
-  `not-scaffolded` output. This is the bug the upgrade resolves.
+- The globally installed 0.25.2 CLI returns actionable `not-scaffolded` output
+  for an absent bootstrap manifest, resolving the 0.24.0 `ENOENT` failure.
 - Production Web, Service, payments, cloud synchronization, hosted credential
   custody, multi-model autonomy, native OS installers, and raw transcript
   storage are not part of this release.
 - Experimental Agent and Providers publication is blocked separately on
   code-level generated-content validation and sanitization. This does not block
   Protocol, Core, SDK, or deterministic Core CLI publication.
-- Candidate implementation, release tooling, documentation, and AutoForge state
-  are split into bounded local commits for remote review.
+- Implementation, release tooling, documentation, and AutoForge state are split
+  into bounded commits with passing remote review gates.
 - The public Core CLI is packaged from the repository root for v0.25. Moving its
   manifest and binary into `apps/core-cli` is a later packaging migration, not a
-  requirement for this release candidate.
+  requirement for this release.
+
+AutoForge's current evidence summary retains all historical required failures
+alongside their later passing reruns, so its aggregate `ready` flag remains
+false even when the latest authoritative gate executions pass. Historical
+evidence will not be deleted to manufacture readiness. A follow-up issue tracks
+latest-applicable/superseding gate semantics; the final CI run and installation
+results above are the v0.25.2 closure authority.
 
 ## Approval
 
-Release approval: **PENDING**
+Release approval: **APPROVED**
 
-Approver and timestamp must be recorded here or in the release workflow before
-publication.
+- Approver: Colton Jackson
+- Approved at: 2026-08-25 22:45 EDT
+
+Approval covers Protocol 0.1.0, Core 0.1.1, SDK 0.1.1, and Core CLI 0.25.2.
+It does not cover Agent, Providers, Web, Service, or hosted deployment.

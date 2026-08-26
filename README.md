@@ -10,9 +10,9 @@ agent. The Core CLI gives every agent the same scoped work, decisions,
 governance, evidence, and next action instead of making each conversation start
 from scratch.
 
-> This repository contains the v0.25 release candidate. Until v0.25 is
-> published, the globally installed npm release may still report v0.24. Always
-> begin with `autoforge version` and use explicit Core subcommands in automation.
+> AutoForge v0.25.2 is the first supported registry release for the v0.25
+> architecture. Always begin with `autoforge version` and use explicit Core
+> subcommands in automation.
 
 ## What v0.25 Provides
 
@@ -225,8 +225,8 @@ pnpm exec turbo run build typecheck test format:check
 pnpm release:status
 ```
 
-The release sequence and outstanding approval gates are documented in
-[v0.25 Release Readiness](docs/planning/0.25/RELEASE_READINESS.md). Nothing in
-this README authorizes tagging or publication.
+The completed release sequence, validation evidence, known exclusions, and
+follow-up work are documented in
+[v0.25 Release Readiness](docs/planning/0.25/RELEASE_READINESS.md).
 
 Released under the [MIT License](LICENSE).

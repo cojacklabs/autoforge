@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
-  "revision": 100,
-  "updatedAt": "2026-08-26T02:20:38.549Z",
+  "revision": 101,
+  "updatedAt": "2026-08-26T02:47:48.402Z",
   "data": {
     "decisions": [
       {
@@ -2490,6 +2490,30 @@
         "kind": "bugfix",
         "createdAt": "2026-08-26T02:20:38.522Z",
         "updatedAt": "2026-08-26T02:20:38.522Z"
+      },
+      {
+        "id": "decision.close-v0-25-2-against-the-latest-authoritative-ci-and-installation-results-while",
+        "statement": "Close v0.25.2 against the latest authoritative CI and installation results while retaining all historical validation evidence",
+        "reasoning": "The evidence store correctly preserves earlier required failures, but its current aggregate readiness calculation does not model later superseding passes. Deleting failures would damage the audit trail; final CI run 32922633823 and successful clean and global installs are the authoritative closure evidence.",
+        "consequences": [
+          "The v0.25.2 release record documents the aggregate limitation, and a follow-up issue owns latest-applicable gate semantics without expanding the released code."
+        ],
+        "scope": [
+          "release",
+          "evidence"
+        ],
+        "keywords": [
+          "v0.25.2",
+          "readiness"
+        ],
+        "relatedWork": [
+          "issue.prepare-reviewable-v0-25-release-checkpoint-and-remote-verification"
+        ],
+        "supersedes": null,
+        "status": "active",
+        "kind": "architecture",
+        "createdAt": "2026-08-26T02:47:48.376Z",
+        "updatedAt": "2026-08-26T02:47:48.376Z"
       }
     ]
   }
