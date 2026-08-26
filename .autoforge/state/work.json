@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
-  "revision": 372,
-  "updatedAt": "2026-08-26T03:30:56.230Z",
+  "revision": 376,
+  "updatedAt": "2026-08-26T04:49:07.053Z",
   "data": {
     "features": [
       {
@@ -2324,6 +2324,41 @@
             "docs/planning/0.26/**",
             "docs/README.md",
             ".autoforge/state/**"
+          ],
+          "exclude": []
+        }
+      },
+      {
+        "name": "Adopt AutoForgeAI orchestration ideas into the north-star roadmap",
+        "description": "Document the independently reimplemented mission-control, role-specialized agent, atomic work claiming, dependency-aware parallelism, human-input, scheduling, live-progress, browser and terminal review, and recovery concepts observed in AutoForgeAI/autoforge; map each capability to AutoForge architectural owners and candidate milestones while prohibiting AGPL source copying and provider lock-in.",
+        "status": "completed",
+        "createdAt": "2026-08-26T04:43:57.292Z",
+        "updatedAt": "2026-08-26T04:49:06.797Z",
+        "id": "issue.adopt-autoforgeai-orchestration-ideas-into-the-north-star-roadmap",
+        "scope": {
+          "include": [
+            "docs/planning/0.26/**",
+            "docs/README.md",
+            ".autoforge/state/**"
+          ],
+          "exclude": []
+        }
+      },
+      {
+        "name": "Define and benchmark the hybrid SQLite storage boundary",
+        "description": "Design and benchmark a file-canonical, database-accelerated storage architecture: tracked Markdown and JSON remain authoritative project truth; optional SQLite stores must be rebuildable indexes or local operational Agent state with schema migrations, source fingerprints, deletion recovery, transactions, WAL where justified, retention policy, and SDK-only access. Do not add SQLite until measurable concurrency, query, scale, or latency evidence justifies it.",
+        "status": "planned",
+        "createdAt": "2026-08-26T04:48:16.644Z",
+        "updatedAt": "2026-08-26T04:48:16.644Z",
+        "id": "issue.define-and-benchmark-the-hybrid-sqlite-storage-boundary",
+        "scope": {
+          "include": [
+            "packages/core/**",
+            "packages/sdk/**",
+            "packages/agent/**",
+            "src/**",
+            "test/**",
+            "docs/**"
           ],
           "exclude": []
         }

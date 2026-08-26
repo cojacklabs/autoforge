@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
-  "revision": 102,
-  "updatedAt": "2026-08-26T03:30:18.302Z",
+  "revision": 104,
+  "updatedAt": "2026-08-26T04:48:26.269Z",
   "data": {
     "decisions": [
       {
@@ -2540,6 +2540,57 @@
         "kind": "architecture",
         "createdAt": "2026-08-26T03:30:18.276Z",
         "updatedAt": "2026-08-26T03:30:18.276Z"
+      },
+      {
+        "id": "decision.issue-define-and-benchmark-the-hybrid-sqlite-storage-boundary-strategic-assessme",
+        "statement": "issue.define-and-benchmark-the-hybrid-sqlite-storage-boundary: strategic assessment recommends next",
+        "reasoning": "Agent runs, atomic claims, live events, scheduling, and future mission control need a deliberate storage boundary before implementation. A benchmarked hybrid design preserves Git-readable truth while enabling concurrency and query performance without prematurely making SQLite canonical.",
+        "consequences": [
+          "alignment=high, value=high, risk=medium, cost=medium, evidenceStrength=medium, dependencyPressure=high, complexity=high, releaseConstraint=medium"
+        ],
+        "scope": [
+          "strategy"
+        ],
+        "keywords": [
+          "strategy",
+          "next"
+        ],
+        "relatedWork": [
+          "issue.define-and-benchmark-the-hybrid-sqlite-storage-boundary"
+        ],
+        "supersedes": null,
+        "status": "active",
+        "kind": "feature-note",
+        "createdAt": "2026-08-26T04:48:17.209Z",
+        "updatedAt": "2026-08-26T04:48:17.209Z"
+      },
+      {
+        "id": "decision.autoforge-will-independently-implement-the-adopted-orchestration-capability-port",
+        "statement": "AutoForge will independently implement the adopted orchestration capability portfolio through provider-neutral contracts and a file-canonical database-accelerated architecture",
+        "reasoning": "Role-specialized agents, atomic dependency-aware execution, verifier roles, human-input pauses, live progress, mission control, scheduling, terminal and browser review, and crash recovery materially advance the north-star. They must extend AutoForge's existing work, assignment, evidence, and handoff truth instead of importing the reviewed AGPL implementation, locking Core to Claude, or creating a competing feature database.",
+        "consequences": [
+          "Use docs/planning/0.26/AUTOFORGEAI_ORCHESTRATION_CAPABILITY_ADOPTION.md as the clean-room ownership and milestone map for the adopted concepts.",
+          "Keep tracked Markdown and JSON authoritative for portable project truth; introduce SQLite only for justified rebuildable indexes or local operational Agent state, with migrations, retention, recovery, and supported SDK access.",
+          "Decompose each adopted capability into bounded work with protocol, safety, compatibility, evidence, and license-contamination gates before implementation."
+        ],
+        "scope": [
+          "roadmap",
+          "architecture",
+          "storage"
+        ],
+        "keywords": [
+          "orchestration",
+          "sqlite",
+          "clean-room"
+        ],
+        "relatedWork": [
+          "issue.adopt-autoforgeai-orchestration-ideas-into-the-north-star-roadmap"
+        ],
+        "supersedes": null,
+        "status": "active",
+        "kind": "architecture",
+        "createdAt": "2026-08-26T04:48:26.239Z",
+        "updatedAt": "2026-08-26T04:48:26.239Z"
       }
     ]
   }

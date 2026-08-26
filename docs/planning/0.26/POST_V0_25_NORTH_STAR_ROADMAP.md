@@ -73,6 +73,26 @@ The following boundaries apply throughout the roadmap:
 12. Each public package or deployable product retains an independent version
     and release gate.
 
+## Adopted Agent-Orchestration Capabilities
+
+AutoForge intends to implement, through its own provider-neutral architecture,
+the strongest product concepts identified during the clean-room review of the
+separately developed `AutoForgeAI/autoforge` project. These include
+role-specialized agents, specification-to-work initialization, atomic work
+claiming, dependency-aware parallel execution, independent regression agents,
+structured human-input pauses, live run events, mission-control interfaces,
+scheduled execution, terminal and browser review surfaces, and structured
+crash recovery.
+
+[`AUTOFORGEAI_ORCHESTRATION_CAPABILITY_ADOPTION.md`](./AUTOFORGEAI_ORCHESTRATION_CAPABILITY_ADOPTION.md)
+maps each idea to Protocol, Core, SDK, Agent, Providers, Service, Web, and Core
+CLI. It also defines a file-canonical, database-accelerated storage boundary:
+tracked Markdown and JSON remain authoritative project truth, while SQLite may
+serve rebuildable indexes and high-frequency local Agent state. The document
+records clean-room, licensing, brand-collision, and explicit non-adoption
+boundaries; the reviewed AGPL source must not be copied into this MIT repository
+without separate legal and license approval.
+
 ## v0.26 Candidate Charter: Trustworthy Portable Foundation
 
 v0.26 should improve trust, evidence, and portability before AutoForge expands
@@ -114,6 +134,18 @@ the experimental Agent or introduces hosted infrastructure.
 - Add provider-neutral conformance fixtures without requiring paid model calls.
 - Document capability discovery and read-only versus mutating permissions.
 
+### 4.1 Agent execution contract preparation
+
+- Define candidate provider-neutral agent-role and capability contracts.
+- Define a durable `HumanInputRequest` boundary for clarification and approval
+  pauses.
+- Define the run lifecycle and sanitized execution-event vocabulary needed by
+  future TUI, Web, MCP, ACP, SDK, and embedded clients.
+- Ensure operational run state remains linked to, but does not replace,
+  durable work, decisions, evidence, and handoffs.
+- Define the file-canonical and optional SQLite projection/runtime boundary
+  before introducing a database dependency.
+
 ### 5. Compatibility cleanup
 
 - Decide whether the deprecated `autoforge tui` alias is removed in v0.27.
@@ -145,6 +177,13 @@ Candidate outcomes:
 - support streaming responses and continuous follow-up;
 - provide plan, review, approve, execute, and verify interaction;
 - support interruption, recovery, and durable structured handoffs;
+- support role-specialized planning, implementation, verification, research,
+  design, review, and release execution;
+- select dependency-ready work through atomic assignments and scoped leases;
+- expose start, steer, pause, resume, cancel, retry, and inspect controls;
+- stream provider-neutral run events and structured human-input requests;
+- provide local mission-control, terminal, browser, diff, and evidence review;
+- support bounded local schedules under the same governance as interactive runs;
 - negotiate provider and model capabilities;
 - add approved OpenAI, Anthropic, Gemini, and OpenRouter adapters;
 - expose token, cost, latency, and context-use information;
@@ -207,6 +246,7 @@ Candidate outcomes:
 - tenant isolation and authorization;
 - audit logging and observability;
 - hosted model gateway and routing policies;
+- durable scheduled and background execution with retries and recovery;
 - usage metering, quotas, and cost controls;
 - provider-secret custody design;
 - backup, recovery, and incident-response foundations.
@@ -222,6 +262,8 @@ Candidate outcomes:
 
 - account, organization, and project management;
 - work, decision, evidence, release, and agent-run views;
+- dependency, schedule, human-input, terminal, and browser mission-control
+  views;
 - team-memory review and promotion;
 - provider and cloud synchronization configuration;
 - roles, permissions, approvals, and audit history;
@@ -262,8 +304,11 @@ The proposed next sequence is:
 3. Define and enforce the Agent code-commenting standard.
 4. Implement generated-content validation and stream sanitization.
 5. Define portable handoff and adapter mappings with conformance fixtures.
-6. Complete compatibility, security, documentation, and release audits.
-7. Release v0.26 before expanding or publishing the production Agent.
+6. Define the initial role, run, event, human-input, and hybrid-storage
+   contracts needed by the adopted orchestration capability portfolio.
+7. Complete compatibility, security, clean-room, documentation, and release
+   audits.
+8. Release v0.26 before expanding or publishing the production Agent.
 
 Existing AutoForge issues supply the initial work queue:
 

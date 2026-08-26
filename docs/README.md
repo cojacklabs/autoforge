@@ -58,6 +58,7 @@ to its own approval gates.
 ## Post-v0.25 North-Star Roadmap
 
 - [v0.26 and Beyond: Trust, Portability, Agent, Memory, Integration, and Cloud](planning/0.26/POST_V0_25_NORTH_STAR_ROADMAP.md)
+- [AutoForgeAI Orchestration Capability Adoption](planning/0.26/AUTOFORGEAI_ORCHESTRATION_CAPABILITY_ADOPTION.md)
 
 This roadmap is the proposed planning baseline for development after v0.25. Its
 later version assignments are candidate sequencing, not automatic authorization

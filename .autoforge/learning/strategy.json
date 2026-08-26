@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
-  "revision": 3,
-  "updatedAt": "2026-08-25T21:36:53.934Z",
+  "revision": 4,
+  "updatedAt": "2026-08-26T04:48:17.302Z",
   "data": {
     "assessments": [
       {
@@ -69,6 +69,28 @@
         "status": "active",
         "createdAt": "2026-08-25T21:36:53.834Z",
         "updatedAt": "2026-08-25T21:36:53.834Z"
+      },
+      {
+        "id": "strategy.issue-define-and-benchmark-the-hybrid-sqlite-storage-boundary",
+        "workId": "issue.define-and-benchmark-the-hybrid-sqlite-storage-boundary",
+        "factors": {
+          "alignment": "high",
+          "value": "high",
+          "risk": "medium",
+          "cost": "medium",
+          "evidenceStrength": "medium",
+          "dependencyPressure": "high",
+          "complexity": "high",
+          "releaseConstraint": "medium"
+        },
+        "decision": "next",
+        "rationale": "Agent runs, atomic claims, live events, scheduling, and future mission control need a deliberate storage boundary before implementation. A benchmarked hybrid design preserves Git-readable truth while enabling concurrency and query performance without prematurely making SQLite canonical.",
+        "evidenceIds": [],
+        "resultingDecision": "decision.issue-define-and-benchmark-the-hybrid-sqlite-storage-boundary-strategic-assessme",
+        "supersedes": null,
+        "status": "active",
+        "createdAt": "2026-08-26T04:48:17.197Z",
+        "updatedAt": "2026-08-26T04:48:17.197Z"
       }
     ]
   }
