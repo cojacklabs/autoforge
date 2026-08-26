@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
-  "revision": 108,
-  "updatedAt": "2026-08-26T13:55:34.905Z",
+  "revision": 110,
+  "updatedAt": "2026-08-26T16:46:35.718Z",
   "data": {
     "decisions": [
       {
@@ -2692,6 +2692,57 @@
         "kind": "feature-note",
         "createdAt": "2026-08-26T13:55:34.877Z",
         "updatedAt": "2026-08-26T13:55:34.877Z"
+      },
+      {
+        "id": "decision.release-readiness-is-computed-from-authoritative-required-gate-evidence-while-ev",
+        "statement": "Release readiness is computed from authoritative required gate evidence while every historical validation record remains immutable audit history.",
+        "reasoning": "Treating every historical failure as current made corrected reruns unable to establish readiness. Authority must follow evidence coverage: the latest conclusive result for a gate and work can supersede its earlier results; a work-scoped pass cannot clear another work item's failure; a later project-wide result can cover earlier scoped results; and newer scoped regressions remain visible after that baseline. Skipped and advisory results cannot silently waive a conclusive required failure.",
+        "consequences": [
+          "Historical passed, failed, skipped, and total counts remain unchanged in evidence summaries.",
+          "Readiness uses deterministic authoritative required results ordered by capturedAt and evidence ID, with structured supersedes lists and effective status counts in JSON.",
+          "Project-wide gate evidence may supersede earlier work-scoped evidence for the same gate, while later work-scoped evidence remains independently authoritative for its work.",
+          "Skipped reruns do not supersede prior conclusive results, and advisory evidence never blocks readiness."
+        ],
+        "scope": [
+          "project",
+          "readiness"
+        ],
+        "keywords": [
+          "evidence",
+          "supersession",
+          "validation"
+        ],
+        "relatedWork": [
+          "issue.make-release-readiness-use-superseding-gate-evidence"
+        ],
+        "supersedes": null,
+        "status": "active",
+        "kind": "architecture",
+        "createdAt": "2026-08-26T16:42:47.995Z",
+        "updatedAt": "2026-08-26T16:42:47.995Z"
+      },
+      {
+        "id": "decision.issue-bind-validation-evidence-to-revision-environment-and-gate-definition-strat",
+        "statement": "issue.bind-validation-evidence-to-revision-environment-and-gate-definition: strategic assessment recommends next",
+        "reasoning": "Gate/work supersession fixes the released aggregate blocker defect, while revision, environment, and gate-definition fingerprints are the remaining applicability boundary promised by the v0.26 roadmap. Keep it explicit and independently testable before the v0.26 exit gate without expanding the completed issue's governed scope.",
+        "consequences": [
+          "alignment=high, value=high, risk=medium, cost=medium, evidenceStrength=high, dependencyPressure=high, complexity=medium, releaseConstraint=high"
+        ],
+        "scope": [
+          "strategy"
+        ],
+        "keywords": [
+          "strategy",
+          "next"
+        ],
+        "relatedWork": [
+          "issue.bind-validation-evidence-to-revision-environment-and-gate-definition"
+        ],
+        "supersedes": null,
+        "status": "active",
+        "kind": "feature-note",
+        "createdAt": "2026-08-26T16:46:35.684Z",
+        "updatedAt": "2026-08-26T16:46:35.684Z"
       }
     ]
   }

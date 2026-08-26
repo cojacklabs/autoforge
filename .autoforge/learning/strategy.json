@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
-  "revision": 6,
-  "updatedAt": "2026-08-26T13:55:34.977Z",
+  "revision": 7,
+  "updatedAt": "2026-08-26T16:46:35.795Z",
   "data": {
     "assessments": [
       {
@@ -135,6 +135,28 @@
         "status": "active",
         "createdAt": "2026-08-26T13:55:34.868Z",
         "updatedAt": "2026-08-26T13:55:34.868Z"
+      },
+      {
+        "id": "strategy.issue-bind-validation-evidence-to-revision-environment-and-gate-definition",
+        "workId": "issue.bind-validation-evidence-to-revision-environment-and-gate-definition",
+        "factors": {
+          "alignment": "high",
+          "value": "high",
+          "risk": "medium",
+          "cost": "medium",
+          "evidenceStrength": "high",
+          "dependencyPressure": "high",
+          "complexity": "medium",
+          "releaseConstraint": "high"
+        },
+        "decision": "next",
+        "rationale": "Gate/work supersession fixes the released aggregate blocker defect, while revision, environment, and gate-definition fingerprints are the remaining applicability boundary promised by the v0.26 roadmap. Keep it explicit and independently testable before the v0.26 exit gate without expanding the completed issue's governed scope.",
+        "evidenceIds": [],
+        "resultingDecision": "decision.issue-bind-validation-evidence-to-revision-environment-and-gate-definition-strat",
+        "supersedes": null,
+        "status": "active",
+        "createdAt": "2026-08-26T16:46:35.675Z",
+        "updatedAt": "2026-08-26T16:46:35.675Z"
       }
     ]
   }

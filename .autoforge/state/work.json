@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
-  "revision": 383,
-  "updatedAt": "2026-08-26T13:55:29.272Z",
+  "revision": 386,
+  "updatedAt": "2026-08-26T16:46:35.026Z",
   "data": {
     "features": [
       {
@@ -2297,9 +2297,9 @@
       {
         "name": "Make release readiness use superseding gate evidence",
         "description": "Preserve historical validation evidence while evaluating readiness from the latest applicable required result for each gate and work context, so corrected reruns can supersede earlier failures without deleting audit history.",
-        "status": "planned",
+        "status": "completed",
         "createdAt": "2026-08-26T02:47:47.731Z",
-        "updatedAt": "2026-08-26T02:47:47.731Z",
+        "updatedAt": "2026-08-26T16:45:31.208Z",
         "id": "issue.make-release-readiness-use-superseding-gate-evidence",
         "scope": {
           "include": [
@@ -2405,6 +2405,24 @@
         "id": "issue.reserve-autoforge-sh-domain-when-funding-permits",
         "scope": {
           "include": [
+            "docs/**"
+          ],
+          "exclude": []
+        }
+      },
+      {
+        "name": "Bind validation evidence to revision environment and gate definition",
+        "description": "Complete the v0.26 evidence applicability contract by recording source revision or working-tree identity, normalized execution environment, and a deterministic gate-definition fingerprint on new validation evidence. Define compatibility behavior for legacy records, prevent evidence from one revision, platform lane, or materially changed gate definition from silently validating another, expose the applicability explanation in evidence summaries, and preserve all existing audit history.",
+        "status": "planned",
+        "createdAt": "2026-08-26T16:46:34.978Z",
+        "updatedAt": "2026-08-26T16:46:34.978Z",
+        "id": "issue.bind-validation-evidence-to-revision-environment-and-gate-definition",
+        "scope": {
+          "include": [
+            "src/quality/**",
+            "src/commands/gate.ts",
+            "src/commands/evidence.ts",
+            "test/**",
             "docs/**"
           ],
           "exclude": []

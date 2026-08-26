@@ -105,6 +105,11 @@ the experimental Agent or introduces hosted infrastructure.
 
 ### 1. Superseding validation evidence
 
+Source status: gate and work-scope supersession was implemented and validated
+on 2026-08-26. Source-revision, environment, and gate-definition fingerprints
+remain follow-up contract enrichment before the v0.26 exit gate. Publication
+remains independently gated.
+
 - Evaluate readiness from the latest applicable required gate execution.
 - Retain earlier failures as immutable audit history.
 - Bind evidence to work, source revision, environment, and gate definition.

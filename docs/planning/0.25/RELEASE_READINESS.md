@@ -175,12 +175,17 @@ warning without erasing the registry audit trail.
   manifest and binary into `apps/core-cli` is a later packaging migration, not a
   requirement for this release.
 
-AutoForge's current evidence summary retains all historical required failures
-alongside their later passing reruns, so its aggregate `ready` flag remains
-false even when the latest authoritative gate executions pass. Historical
-evidence will not be deleted to manufacture readiness. A follow-up issue tracks
-latest-applicable/superseding gate semantics; the final CI run and installation
-results above are the v0.25.2 closure authority.
+At the time v0.25.2 was approved, AutoForge's evidence summary treated every
+historical required failure as a current blocker. The release therefore relied
+on the documented final CI and installation results above rather than deleting
+audit history to manufacture readiness.
+
+Post-v0.25 source now implements superseding evidence semantics. Historical
+counts and records remain intact, while readiness uses authoritative required
+results by gate and scope. A later project-wide run can supersede earlier
+work-scoped failures; one work item cannot validate another; skipped runs do
+not erase conclusive results. This correction does not rewrite the historical
+v0.25.2 approval or imply that the behavior existed in its published binary.
 
 ## Approval
 

@@ -268,6 +268,20 @@ autoforge twin query [--type <type>] [--relationship <name>] [--depth <n>] [--li
 autoforge version
 ```
 
+`evidence list` preserves every recorded gate result as audit history.
+`evidence summary` reports both historical counts and the authoritative
+required results used for current readiness. Its JSON response includes
+`effectiveTotal`, effective status counts, blockers, and
+`authoritativeEvidence`; each authority identifies the evidence it supersedes.
+
+Readiness uses the latest conclusive required result for each gate and
+applicable scope. A work-scoped result can supersede earlier results for the
+same work, but cannot clear another work item's failure. A later project-wide
+result can supersede earlier work-scoped results for that gate; newer scoped
+results remain visible after that baseline. Skipped checks do not erase an
+earlier pass or failure, advisory evidence remains historical and nonblocking,
+and timestamp ties resolve by evidence ID for deterministic output.
+
 Bootstrap approvals update `.autoforge/bootstrap/manifest.json` atomically and
 record approval time and evidence. Completed workflow IDs are accepted as
 evidence; active workflow runs are rejected.

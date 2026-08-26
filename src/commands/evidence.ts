@@ -50,7 +50,7 @@ export async function runEvidenceCommand(
     if (json) options.output.stdout(JSON.stringify(summary, null, 2));
     else
       options.output.stdout(
-        `Validation evidence: ${summary.passed} passed, ${summary.failed} failed, ${summary.skipped} skipped.`,
+        `Validation evidence: ${summary.passed} passed, ${summary.failed} failed, ${summary.skipped} skipped historically; ${summary.effectiveTotal} authoritative required result(s), ${summary.requiredFailures} blocker(s).`,
       );
     return readiness.ready ? EXIT_CODE.success : EXIT_CODE.invalidState;
   }

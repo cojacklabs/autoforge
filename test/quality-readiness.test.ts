@@ -3,29 +3,244 @@ import { evaluateReadiness } from "../src/quality/readiness.js";
 import type { ValidationEvidence } from "../src/quality/evidence.js";
 
 const evidence = (
+  id: string,
   status: ValidationEvidence["status"],
-  severity: ValidationEvidence["severity"],
-  gateId: string,
+  options: Partial<ValidationEvidence> = {},
 ): ValidationEvidence => ({
-  id: `evidence.${gateId}`,
-  gateId,
+  id: `evidence.${id}`,
+  gateId: "tests",
   status,
-  severity,
+  severity: "required",
   traceIds: [],
-  reason: `${gateId} result`,
+  reason: `${id} result`,
   capturedAt: "2026-08-22T00:00:00.000Z",
+  ...options,
 });
 
 describe("quality readiness", () => {
   it("blocks readiness on required failures only", () => {
     expect(
       evaluateReadiness([
-        evidence("passed", "required", "tests"),
-        evidence("failed", "advisory", "lint"),
+        evidence("tests", "passed"),
+        evidence("lint", "failed", {
+          gateId: "lint",
+          severity: "advisory",
+        }),
       ]),
-    ).toMatchObject({ ready: true, total: 2, failed: 1, blockers: [] });
+    ).toMatchObject({
+      ready: true,
+      total: 2,
+      failed: 1,
+      effectiveTotal: 1,
+      effectivePassed: 1,
+      blockers: [],
+    });
+    expect(evaluateReadiness([evidence("tests", "failed")])).toMatchObject({
+      ready: false,
+      blockers: ["tests: tests result"],
+    });
+  });
+
+  it("uses the latest conclusive result for the same gate and work", () => {
+    const result = evaluateReadiness([
+      evidence("tests-failed", "failed", {
+        workId: "issue.checkout",
+        capturedAt: "2026-08-22T00:00:00.000Z",
+      }),
+      evidence("tests-passed", "passed", {
+        workId: "issue.checkout",
+        capturedAt: "2026-08-22T00:01:00.000Z",
+      }),
+    ]);
+
+    expect(result).toMatchObject({
+      ready: true,
+      total: 2,
+      failed: 1,
+      effectiveTotal: 1,
+      effectivePassed: 1,
+      blockers: [],
+      authoritativeEvidence: [
+        {
+          evidenceId: "evidence.tests-passed",
+          workId: "issue.checkout",
+          supersedes: ["evidence.tests-failed"],
+        },
+      ],
+    });
+  });
+
+  it("does not let one work item supersede another work item's failure", () => {
+    const result = evaluateReadiness([
+      evidence("checkout-failed", "failed", {
+        workId: "issue.checkout",
+        capturedAt: "2026-08-22T00:00:00.000Z",
+      }),
+      evidence("search-passed", "passed", {
+        workId: "issue.search",
+        capturedAt: "2026-08-22T00:01:00.000Z",
+      }),
+    ]);
+
+    expect(result).toMatchObject({
+      ready: false,
+      effectiveTotal: 2,
+      effectivePassed: 1,
+      effectiveFailed: 1,
+      blockers: ["tests [issue.checkout]: checkout-failed result"],
+    });
+  });
+
+  it("lets a later project-wide run supersede earlier work-scoped results", () => {
+    const result = evaluateReadiness([
+      evidence("checkout-failed", "failed", {
+        workId: "issue.checkout",
+        capturedAt: "2026-08-22T00:00:00.000Z",
+      }),
+      evidence("project-passed", "passed", {
+        capturedAt: "2026-08-22T00:01:00.000Z",
+      }),
+    ]);
+
+    expect(result).toMatchObject({
+      ready: true,
+      effectiveTotal: 1,
+      effectivePassed: 1,
+      authoritativeEvidence: [
+        {
+          evidenceId: "evidence.project-passed",
+          workId: null,
+          supersedes: ["evidence.checkout-failed"],
+        },
+      ],
+    });
+  });
+
+  it("keeps a later work failure visible after a project-wide pass", () => {
+    const result = evaluateReadiness([
+      evidence("project-passed", "passed", {
+        capturedAt: "2026-08-22T00:00:00.000Z",
+      }),
+      evidence("checkout-failed", "failed", {
+        workId: "issue.checkout",
+        capturedAt: "2026-08-22T00:01:00.000Z",
+      }),
+      evidence("search-passed", "passed", {
+        workId: "issue.search",
+        capturedAt: "2026-08-22T00:02:00.000Z",
+      }),
+    ]);
+
+    expect(result).toMatchObject({
+      ready: false,
+      effectiveTotal: 3,
+      effectivePassed: 2,
+      effectiveFailed: 1,
+      blockers: ["tests [issue.checkout]: checkout-failed result"],
+    });
+  });
+
+  it("does not let a skipped rerun erase a conclusive failure", () => {
+    const result = evaluateReadiness([
+      evidence("tests-failed", "failed", {
+        workId: "issue.checkout",
+        capturedAt: "2026-08-22T00:00:00.000Z",
+      }),
+      evidence("tests-skipped", "skipped", {
+        workId: "issue.checkout",
+        capturedAt: "2026-08-22T00:01:00.000Z",
+      }),
+    ]);
+
+    expect(result).toMatchObject({
+      ready: false,
+      effectiveTotal: 1,
+      effectiveFailed: 1,
+      effectiveSkipped: 0,
+      authoritativeEvidence: [
+        { evidenceId: "evidence.tests-failed", supersedes: [] },
+      ],
+    });
+  });
+
+  it("uses evidence IDs to resolve timestamp ties independent of input order", () => {
+    const failed = evidence("tests-a", "failed", {
+      workId: "issue.checkout",
+    });
+    const passed = evidence("tests-z", "passed", {
+      workId: "issue.checkout",
+    });
+
+    for (const records of [
+      [failed, passed],
+      [passed, failed],
+    ]) {
+      expect(evaluateReadiness(records)).toMatchObject({
+        ready: true,
+        effectiveTotal: 1,
+        authoritativeEvidence: [
+          {
+            evidenceId: "evidence.tests-z",
+            supersedes: ["evidence.tests-a"],
+          },
+        ],
+      });
+    }
+  });
+
+  it("evaluates an explicit work from its own and project-wide evidence", () => {
+    const records = [
+      evidence("project-passed", "passed", {
+        capturedAt: "2026-08-22T00:00:00.000Z",
+      }),
+      evidence("checkout-failed", "failed", {
+        workId: "issue.checkout",
+        capturedAt: "2026-08-22T00:01:00.000Z",
+      }),
+      evidence("search-passed", "passed", {
+        workId: "issue.search",
+        capturedAt: "2026-08-22T00:02:00.000Z",
+      }),
+    ];
+
     expect(
-      evaluateReadiness([evidence("failed", "required", "tests")]),
-    ).toMatchObject({ ready: false, blockers: ["tests: tests result"] });
+      evaluateReadiness(records, { workId: "issue.checkout" }),
+    ).toMatchObject({
+      ready: false,
+      effectiveTotal: 2,
+      effectivePassed: 1,
+      effectiveFailed: 1,
+      blockers: ["tests [issue.checkout]: checkout-failed result"],
+    });
+    expect(
+      evaluateReadiness(records, { workId: "issue.search" }),
+    ).toMatchObject({
+      ready: true,
+      effectiveTotal: 2,
+      effectivePassed: 2,
+    });
+  });
+
+  it("does not let narrower work evidence clear a project-wide failure", () => {
+    const result = evaluateReadiness(
+      [
+        evidence("project-failed", "failed", {
+          capturedAt: "2026-08-22T00:00:00.000Z",
+        }),
+        evidence("checkout-passed", "passed", {
+          workId: "issue.checkout",
+          capturedAt: "2026-08-22T00:01:00.000Z",
+        }),
+      ],
+      { workId: "issue.checkout" },
+    );
+
+    expect(result).toMatchObject({
+      ready: false,
+      effectiveTotal: 2,
+      effectivePassed: 1,
+      effectiveFailed: 1,
+      blockers: ["tests: project-failed result"],
+    });
   });
 });
