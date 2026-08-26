@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
-  "revision": 101,
-  "updatedAt": "2026-08-26T02:47:48.402Z",
+  "revision": 102,
+  "updatedAt": "2026-08-26T03:30:18.302Z",
   "data": {
     "decisions": [
       {
@@ -2514,6 +2514,32 @@
         "kind": "architecture",
         "createdAt": "2026-08-26T02:47:48.376Z",
         "updatedAt": "2026-08-26T02:47:48.376Z"
+      },
+      {
+        "id": "decision.autoforge-adopts-the-post-v0-25-roadmap-as-a-proposed-planning-baseline-beginnin",
+        "statement": "AutoForge adopts the post-v0.25 roadmap as a proposed planning baseline beginning with a v0.26 trustworthy portable foundation",
+        "reasoning": "The v0.25 platform boundaries are released, while Agent safety, evidence semantics, portable context, memory, integrations, cloud services, and team collaboration remain unevenly specified. A staged roadmap preserves the ultimate north-star without coupling Core to providers or treating speculative later versions as commitments.",
+        "consequences": [
+          "Use docs/planning/0.26/POST_V0_25_NORTH_STAR_ROADMAP.md to plan v0.26 trust, evidence, safety, adapter, and compatibility work.",
+          "Treat v0.27 through v0.31 labels as candidate sequencing that may change with customer evidence, security review, dependencies, and explicit approval.",
+          "Keep Core deterministic, provider-neutral, local-first, and account-free while Agent and Service own model and hosted behavior."
+        ],
+        "scope": [
+          "roadmap",
+          "architecture"
+        ],
+        "keywords": [
+          "v0.26",
+          "north-star"
+        ],
+        "relatedWork": [
+          "issue.document-the-post-v0-25-north-star-roadmap"
+        ],
+        "supersedes": null,
+        "status": "active",
+        "kind": "architecture",
+        "createdAt": "2026-08-26T03:30:18.276Z",
+        "updatedAt": "2026-08-26T03:30:18.276Z"
       }
     ]
   }

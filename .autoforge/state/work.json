@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
-  "revision": 369,
-  "updatedAt": "2026-08-26T02:55:03.690Z",
+  "revision": 372,
+  "updatedAt": "2026-08-26T03:30:56.230Z",
   "data": {
     "features": [
       {
@@ -2308,6 +2308,22 @@
             "test/quality-readiness.test.ts",
             "test/evidence-command.test.ts",
             "docs/**"
+          ],
+          "exclude": []
+        }
+      },
+      {
+        "name": "Document the post-v0.25 north-star roadmap",
+        "description": "Preserve the proposed v0.26 trust-and-portability charter, candidate later milestone sequence, architectural invariants, exit gates, and immediate implementation order as the authoritative planning starting point for development beyond v0.25.",
+        "status": "completed",
+        "createdAt": "2026-08-26T03:28:35.459Z",
+        "updatedAt": "2026-08-26T03:30:55.962Z",
+        "id": "issue.document-the-post-v0-25-north-star-roadmap",
+        "scope": {
+          "include": [
+            "docs/planning/0.26/**",
+            "docs/README.md",
+            ".autoforge/state/**"
           ],
           "exclude": []
         }
