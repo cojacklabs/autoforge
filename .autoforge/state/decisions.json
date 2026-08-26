@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
-  "revision": 104,
-  "updatedAt": "2026-08-26T04:48:26.269Z",
+  "revision": 107,
+  "updatedAt": "2026-08-26T05:03:45.914Z",
   "data": {
     "decisions": [
       {
@@ -2591,6 +2591,84 @@
         "kind": "architecture",
         "createdAt": "2026-08-26T04:48:26.239Z",
         "updatedAt": "2026-08-26T04:48:26.239Z"
+      },
+      {
+        "id": "decision.issue-make-release-readiness-use-superseding-gate-evidence-strategic-assessment",
+        "statement": "issue.make-release-readiness-use-superseding-gate-evidence: strategic assessment recommends now",
+        "reasoning": "This is the first v0.26 implementation item because every later milestone depends on trustworthy readiness calculations that retain historical failures while recognizing authoritative superseding passes.",
+        "consequences": [
+          "alignment=high, value=high, risk=low, cost=medium, evidenceStrength=high, dependencyPressure=high, complexity=medium, releaseConstraint=high"
+        ],
+        "scope": [
+          "strategy"
+        ],
+        "keywords": [
+          "strategy",
+          "now"
+        ],
+        "relatedWork": [
+          "issue.make-release-readiness-use-superseding-gate-evidence"
+        ],
+        "supersedes": null,
+        "status": "active",
+        "kind": "feature-note",
+        "createdAt": "2026-08-26T04:54:02.205Z",
+        "updatedAt": "2026-08-26T04:54:02.205Z"
+      },
+      {
+        "id": "decision.autoforge-s-ultimate-north-star-is-a-trusted-persistent-provider-neutral-ai-oper",
+        "statement": "AutoForge's ultimate north-star is a trusted, persistent, provider-neutral AI operator delivered through deterministic Core and independently gated Agent, Provider, Connector, Service, Web, memory, and intelligence layers.",
+        "reasoning": "This unifies the current software-governance foundation with the long-term everyday personal and organizational AI vision while preserving local-first operation, explicit authority, durable structured truth, clean-room implementation, and replaceable model providers.",
+        "consequences": [
+          "Use docs/planning/0.26/ULTIMATE_AUTOFORGE_AI_NORTH_STAR.md as the authoritative product destination and the post-v0.25 roadmap as provisional delivery sequencing.",
+          "Implement superseding validation evidence as the first v0.26 item before relying on readiness for later gates.",
+          "Do not require a proprietary foundation model in the near term; route providers and consider specialized small models only when evidence justifies them.",
+          "Retain tracked Markdown and JSON as canonical project truth while limiting SQLite to rebuildable indexes and justified operational state."
+        ],
+        "scope": [
+          "project",
+          "architecture"
+        ],
+        "keywords": [
+          "north-star",
+          "trust",
+          "agent",
+          "platform"
+        ],
+        "relatedWork": [
+          "issue.reconcile-v0-26-priority-and-document-the-ultimate-autoforge-ai-north-star"
+        ],
+        "supersedes": null,
+        "status": "active",
+        "kind": "architecture",
+        "createdAt": "2026-08-26T04:58:49.483Z",
+        "updatedAt": "2026-08-26T04:58:49.483Z"
+      },
+      {
+        "id": "decision.idle-project-status-ranks-startable-work-by-its-active-strategy-decision-before",
+        "statement": "Idle project status ranks startable work by its active strategy decision before lifecycle status and stable state order.",
+        "reasoning": "The status command previously recommended the first stored planned item even when canonical strategy marked another item now, creating a visible contradiction between status, strategy, orchestration, and the roadmap. Active strategy is durable project state and should govern the concise next-work recommendation, while absent strategy memory must retain legacy deterministic behavior without creating files.",
+        "consequences": [
+          "Status recommendation order is now, next, later, unassessed, then backlog; equal strategy ranks prefer ready over planned and then preserve work-state order.",
+          "Projects without strategy memory retain the existing ready/planned stable fallback and v0.24 status remains read-only compatible."
+        ],
+        "scope": [
+          "project",
+          "cli"
+        ],
+        "keywords": [
+          "status",
+          "strategy",
+          "priority"
+        ],
+        "relatedWork": [
+          "issue.make-project-status-respect-active-strategy-priority"
+        ],
+        "supersedes": null,
+        "status": "active",
+        "kind": "architecture",
+        "createdAt": "2026-08-26T05:03:45.851Z",
+        "updatedAt": "2026-08-26T05:03:45.851Z"
       }
     ]
   }

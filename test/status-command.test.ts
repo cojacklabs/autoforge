@@ -12,6 +12,7 @@ import { initializeProject } from "../src/commands/init.js";
 import { runStartCommand } from "../src/commands/start.js";
 import { EXIT_CODE } from "../src/core/errors.js";
 import { createWorkStateStore } from "../src/state/kernel.js";
+import { StrategyStore } from "../src/strategy/strategy-store.js";
 import { WorkService } from "../src/work/service.js";
 
 const temporaryDirectories: string[] = [];
@@ -61,6 +62,102 @@ describe("project status command", () => {
     );
     expect(output.stdout).toHaveBeenCalledWith(
       expect.stringContaining("autoforge help"),
+    );
+  });
+
+  it("recommends active now work ahead of earlier next work", async () => {
+    const projectRoot = await createProject();
+    const planning = new WorkService(createWorkStateStore(projectRoot));
+    const first = await planning.createIssue({
+      name: "Commenting governance",
+      description: "Add the next governance policy",
+      scope: { include: ["src/**"], exclude: [] },
+    });
+    const evidence = await planning.createIssue({
+      name: "Superseding evidence",
+      description: "Correct release-readiness evidence",
+      scope: { include: ["src/**"], exclude: [] },
+    });
+    const strategyStore = new StrategyStore(projectRoot);
+    await strategyStore.ensure();
+    const { state } = await strategyStore.state.read();
+    await strategyStore.state.write(
+      {
+        assessments: [
+          {
+            id: "strategy.commenting",
+            workId: first.entity.id,
+            factors: {
+              alignment: "high",
+              value: "high",
+              risk: "low",
+              cost: "medium",
+              evidenceStrength: "high",
+              dependencyPressure: "medium",
+              complexity: "medium",
+              releaseConstraint: "medium",
+            },
+            decision: "next",
+            rationale: "Important after the trust prerequisite.",
+            evidenceIds: [],
+            resultingDecision: null,
+            supersedes: null,
+            status: "active",
+            createdAt: "2026-08-25T00:00:00.000Z",
+            updatedAt: "2026-08-25T00:00:00.000Z",
+          },
+          {
+            id: "strategy.evidence",
+            workId: evidence.entity.id,
+            factors: {
+              alignment: "high",
+              value: "high",
+              risk: "low",
+              cost: "medium",
+              evidenceStrength: "high",
+              dependencyPressure: "high",
+              complexity: "medium",
+              releaseConstraint: "high",
+            },
+            decision: "now",
+            rationale: "Every later release gate depends on it.",
+            evidenceIds: [],
+            resultingDecision: null,
+            supersedes: null,
+            status: "active",
+            createdAt: "2026-08-25T00:01:00.000Z",
+            updatedAt: "2026-08-25T00:01:00.000Z",
+          },
+        ],
+      },
+      { expectedRevision: state.revision },
+    );
+
+    const status = await loadProjectStatus(projectRoot);
+
+    expect(status.nextCommands[0]).toBe(
+      `autoforge start issue ${evidence.entity.id}`,
+    );
+  });
+
+  it("keeps the stable work-state fallback when strategy memory is absent", async () => {
+    const projectRoot = await createProject();
+    const planning = new WorkService(createWorkStateStore(projectRoot));
+    const first = await planning.createIssue({
+      name: "First unassessed issue",
+      description: "Preserve legacy selection",
+      scope: { include: ["src/**"], exclude: [] },
+    });
+    await planning.createIssue({
+      name: "Second unassessed issue",
+      description: "Remain second",
+      scope: { include: ["src/**"], exclude: [] },
+    });
+
+    const status = await loadProjectStatus(projectRoot);
+
+    expect(status.nextCommands[0]).toBe(
+      `autoforge start issue ${first.entity.id}`,
     );
   });
 

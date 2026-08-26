@@ -11,6 +11,11 @@ the order shown. AutoForge strategy assessments, customer evidence, technical
 constraints, security review, and explicit release approval may reorder or
 split later milestones.
 
+The
+[`ULTIMATE_AUTOFORGE_AI_NORTH_STAR.md`](./ULTIMATE_AUTOFORGE_AI_NORTH_STAR.md)
+is authoritative for the enduring product destination. This document is the
+candidate delivery plan for moving toward it.
+
 ## North-Star Outcome
 
 AutoForge should become the persistent, provider-neutral operating system for
@@ -312,10 +317,18 @@ The proposed next sequence is:
 
 Existing AutoForge issues supply the initial work queue:
 
-- `issue.make-release-readiness-use-superseding-gate-evidence`;
-- `issue.define-and-enforce-an-agent-code-commenting-standard`;
-- `issue.enforce-agent-generated-content-safety-before-writes-and-streaming`;
-- `issue.define-optional-intent-compiler-and-portable-design-orchestration`.
+- `issue.make-release-readiness-use-superseding-gate-evidence` — `now`, first;
+- `issue.define-and-enforce-an-agent-code-commenting-standard` — `next`;
+- `issue.enforce-agent-generated-content-safety-before-writes-and-streaming` —
+  `next`;
+- `issue.define-and-benchmark-the-hybrid-sqlite-storage-boundary` — `next`;
+- `issue.define-optional-intent-compiler-and-portable-design-orchestration` —
+  `later`.
+
+This explicit order reconciles the earlier status recommendation that surfaced
+commenting governance ahead of evidence supersession. Trustworthy readiness is
+the prerequisite for evaluating every later release gate, so evidence remains
+the first v0.26 implementation item.
 
 Portable adapter preparation and compatibility cleanup require new bounded work
 items when the v0.26 charter is approved for implementation.

@@ -57,12 +57,15 @@ to its own approval gates.
 
 ## Post-v0.25 North-Star Roadmap
 
+- [Ultimate AutoForge AI North-Star](planning/0.26/ULTIMATE_AUTOFORGE_AI_NORTH_STAR.md)
 - [v0.26 and Beyond: Trust, Portability, Agent, Memory, Integration, and Cloud](planning/0.26/POST_V0_25_NORTH_STAR_ROADMAP.md)
 - [AutoForgeAI Orchestration Capability Adoption](planning/0.26/AUTOFORGEAI_ORCHESTRATION_CAPABILITY_ADOPTION.md)
 
-This roadmap is the proposed planning baseline for development after v0.25. Its
-later version assignments are candidate sequencing, not automatic authorization
-to implement or publish every described capability.
+The ultimate north-star is the authoritative product destination. The roadmap
+is the proposed delivery baseline after v0.25, and the capability-adoption
+document preserves the clean-room orchestration portfolio. Later version
+assignments are candidate sequencing, not automatic authorization to implement
+or publish every described capability.
 
 ## Specialist References
 

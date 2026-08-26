@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
-  "revision": 4,
-  "updatedAt": "2026-08-26T04:48:17.302Z",
+  "revision": 5,
+  "updatedAt": "2026-08-26T04:54:02.282Z",
   "data": {
     "assessments": [
       {
@@ -91,6 +91,28 @@
         "status": "active",
         "createdAt": "2026-08-26T04:48:17.197Z",
         "updatedAt": "2026-08-26T04:48:17.197Z"
+      },
+      {
+        "id": "strategy.issue-make-release-readiness-use-superseding-gate-evidence",
+        "workId": "issue.make-release-readiness-use-superseding-gate-evidence",
+        "factors": {
+          "alignment": "high",
+          "value": "high",
+          "risk": "low",
+          "cost": "medium",
+          "evidenceStrength": "high",
+          "dependencyPressure": "high",
+          "complexity": "medium",
+          "releaseConstraint": "high"
+        },
+        "decision": "now",
+        "rationale": "This is the first v0.26 implementation item because every later milestone depends on trustworthy readiness calculations that retain historical failures while recognizing authoritative superseding passes.",
+        "evidenceIds": [],
+        "resultingDecision": "decision.issue-make-release-readiness-use-superseding-gate-evidence-strategic-assessment",
+        "supersedes": null,
+        "status": "active",
+        "createdAt": "2026-08-26T04:54:02.193Z",
+        "updatedAt": "2026-08-26T04:54:02.193Z"
       }
     ]
   }

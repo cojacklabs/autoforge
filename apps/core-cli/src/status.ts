@@ -1,3 +1,4 @@
+import { access } from "node:fs/promises";
 import path from "node:path";
 
 import {
@@ -12,6 +13,9 @@ import {
   createSessionStateStore,
   createWorkStateStore,
 } from "../../../src/state/kernel.js";
+import type { StrategyDecision } from "../../../src/strategy/strategy-schemas.js";
+import { StrategyStore } from "../../../src/strategy/strategy-store.js";
+import type { Issue, Task } from "../../../src/work/schemas.js";
 import { WorkRecapService } from "../../../src/work/recap.js";
 
 export const STATUS_VIEWS = ["summary", "work", "next"] as const;
@@ -27,6 +31,56 @@ export interface StatusCommandOptions {
 interface StatusArguments {
   json: boolean;
   view: StatusView;
+}
+
+const STRATEGY_PRIORITY: Record<StrategyDecision, number> = {
+  now: 0,
+  next: 1,
+  later: 2,
+  backlog: 4,
+};
+
+async function activeStrategyPriority(
+  projectRoot: string,
+): Promise<Map<string, number>> {
+  const store = new StrategyStore(projectRoot);
+  try {
+    await access(store.state.filePath);
+  } catch (error) {
+    if (error instanceof Error && "code" in error && error.code === "ENOENT") {
+      return new Map();
+    }
+    throw error;
+  }
+  const { state } = await store.state.read();
+  return new Map(
+    state.data.assessments
+      .filter((assessment) => assessment.status === "active")
+      .map((assessment) => [
+        assessment.workId,
+        STRATEGY_PRIORITY[assessment.decision],
+      ]),
+  );
+}
+
+function selectNextWork(
+  candidates: Array<Task | Issue>,
+  strategyPriority: ReadonlyMap<string, number>,
+): Task | Issue | undefined {
+  return candidates
+    .map((item, index) => ({ item, index }))
+    .filter(({ item }) => item.status === "ready" || item.status === "planned")
+    .sort((left, right) => {
+      const strategyDifference =
+        (strategyPriority.get(left.item.id) ?? 3) -
+        (strategyPriority.get(right.item.id) ?? 3);
+      if (strategyDifference !== 0) return strategyDifference;
+
+      const statusDifference =
+        (left.item.status === "ready" ? 0 : 1) -
+        (right.item.status === "ready" ? 0 : 1);
+      return statusDifference || left.index - right.index;
+    })[0]?.item;
 }
 
 function usage(output: LogWriter): undefined {
@@ -65,18 +119,17 @@ export async function loadProjectStatus(
   now?: () => Date,
 ): Promise<ProjectStatus> {
   const workStore = createWorkStateStore(projectRoot);
-  const [{ state: work }, recap] = await Promise.all([
+  const [{ state: work }, recap, strategyPriority] = await Promise.all([
     workStore.read(),
     new WorkRecapService(
       workStore,
       createSessionStateStore(projectRoot),
       now ? { now } : {},
     ).read(),
+    activeStrategyPriority(projectRoot),
   ]);
   const candidates = [...work.data.tasks, ...work.data.issues];
-  const nextWork =
-    candidates.find((item) => item.status === "ready") ??
-    candidates.find((item) => item.status === "planned");
+  const nextWork = selectNextWork(candidates, strategyPriority);
   const nextCommands =
     recap.status === "active"
       ? [

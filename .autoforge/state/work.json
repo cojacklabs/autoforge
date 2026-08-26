@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
-  "revision": 376,
-  "updatedAt": "2026-08-26T04:49:07.053Z",
+  "revision": 382,
+  "updatedAt": "2026-08-26T05:04:26.600Z",
   "data": {
     "features": [
       {
@@ -2358,6 +2358,39 @@
             "packages/agent/**",
             "src/**",
             "test/**",
+            "docs/**"
+          ],
+          "exclude": []
+        }
+      },
+      {
+        "name": "Reconcile v0.26 priority and document the ultimate AutoForge AI north-star",
+        "description": "Make superseding validation evidence the explicit first v0.26 implementation priority, preserve commenting governance, Agent safety, hybrid storage, and intent/design work in ordered sequence, and create one authoritative ultimate north-star vision spanning provider-neutral project intelligence, first-party Agent, general-purpose personal and organizational AI, channels, connectors, memory, orchestration, storage, Service, Web, safety, and candidate delivery horizons.",
+        "status": "completed",
+        "createdAt": "2026-08-26T04:53:52.307Z",
+        "updatedAt": "2026-08-26T04:59:57.401Z",
+        "id": "issue.reconcile-v0-26-priority-and-document-the-ultimate-autoforge-ai-north-star",
+        "scope": {
+          "include": [
+            "docs/planning/0.26/**",
+            "docs/README.md",
+            ".autoforge/state/**",
+            ".autoforge/learning/strategy.json"
+          ],
+          "exclude": []
+        }
+      },
+      {
+        "name": "Make project status respect active strategy priority",
+        "description": "Reconcile project-status next-work recommendations with AutoForge strategy by ranking ready and planned tasks/issues by active now, next, later, backlog assessments before stable work-state order. Preserve deterministic fallback for unassessed and legacy projects, add focused status tests, and ensure the documented v0.26 evidence-first priority appears in the bare status command.",
+        "status": "completed",
+        "createdAt": "2026-08-26T05:01:12.332Z",
+        "updatedAt": "2026-08-26T05:04:26.341Z",
+        "id": "issue.make-project-status-respect-active-strategy-priority",
+        "scope": {
+          "include": [
+            "apps/core-cli/src/status.ts",
+            "test/status-command.test.ts",
             "docs/**"
           ],
           "exclude": []
