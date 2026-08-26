@@ -14,8 +14,8 @@ publication, or hosted deployment is authorized by this document.
 | Package                           | Candidate version | Role                                                 |
 | --------------------------------- | ----------------: | ---------------------------------------------------- |
 | `@cojacklabs/autoforge-protocol`  |           `0.1.0` | Versioned contracts and capabilities                 |
-| `@cojacklabs/autoforge-core`      |           `0.1.0` | Model-independent project intelligence               |
-| `@cojacklabs/autoforge-sdk`       |           `0.1.0` | Supported programmatic facade                        |
+| `@cojacklabs/autoforge-core`      |           `0.1.1` | Model-independent project intelligence               |
+| `@cojacklabs/autoforge-sdk`       |           `0.1.1` | Supported programmatic facade                        |
 | `@cojacklabs/autoforge`           |          `0.25.1` | Deterministic Core CLI and optional Agent launcher   |
 | `@cojacklabs/autoforge-agent`     |           `0.1.0` | Experimental local Agent; independent approval       |
 | `@cojacklabs/autoforge-providers` |           `0.1.0` | Experimental provider boundary; independent approval |
@@ -95,6 +95,10 @@ the counts above come from the subsequent isolated, uncontended run.
     `docs/README.md` separates operational guidance from historical plans, and
     stale v0.4/v0.7 agent instructions no longer advertise removed commands as
     current v0.25 behavior.
+11. The first Core and SDK registry artifacts preserved `workspace:^` ranges
+    because they were published with npm rather than the repository's pnpm
+    release path. Their corrected `0.1.1` manifests use explicit public ranges;
+    the unusable `0.1.0` artifacts are excluded from supported installation.
 
 ## Independent Review
 

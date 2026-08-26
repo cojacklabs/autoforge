@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
-  "revision": 98,
-  "updatedAt": "2026-08-26T01:42:51.210Z",
+  "revision": 99,
+  "updatedAt": "2026-08-26T02:04:50.544Z",
   "data": {
     "decisions": [
       {
@@ -2440,6 +2440,31 @@
         "kind": "bugfix",
         "createdAt": "2026-08-26T01:42:51.181Z",
         "updatedAt": "2026-08-26T01:42:51.181Z"
+      },
+      {
+        "id": "decision.core-and-sdk-0-1-1-replace-the-unusable-0-1-0-registry-artifacts-with-explicit-n",
+        "statement": "Core and SDK 0.1.1 replace the unusable 0.1.0 registry artifacts with explicit npm-compatible dependency ranges",
+        "reasoning": "Publishing the workspace manifests with npm preserved workspace:^ specifiers, which external pnpm consumers cannot resolve outside the monorepo",
+        "consequences": [
+          "Publish Core 0.1.1 with Protocol ^0.1.0, then SDK 0.1.1 with Core ^0.1.1 and Protocol ^0.1.0",
+          "Deprecate or unpublish Core and SDK 0.1.0 and require an isolated public-registry pnpm install before closing the v0.25.1 release"
+        ],
+        "scope": [
+          "release",
+          "v0.25"
+        ],
+        "keywords": [
+          "pnpm",
+          "packaging"
+        ],
+        "relatedWork": [
+          "issue.prepare-reviewable-v0-25-release-checkpoint-and-remote-verification"
+        ],
+        "supersedes": null,
+        "status": "active",
+        "kind": "bugfix",
+        "createdAt": "2026-08-26T02:04:50.516Z",
+        "updatedAt": "2026-08-26T02:04:50.516Z"
       }
     ]
   }

@@ -1,6 +1,6 @@
 {
   "name": "@cojacklabs/autoforge-sdk",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "type": "module",
   "license": "MIT",
   "sideEffects": false,
@@ -29,8 +29,8 @@
     "boundaries": "node ../config/src/check-boundaries.mjs"
   },
   "dependencies": {
-    "@cojacklabs/autoforge-core": "workspace:^",
-    "@cojacklabs/autoforge-protocol": "workspace:^"
+    "@cojacklabs/autoforge-core": "^0.1.1",
+    "@cojacklabs/autoforge-protocol": "^0.1.0"
   },
   "devDependencies": {
     "prettier": "^3.3.3",

@@ -14,14 +14,14 @@ All notable changes to this project will be documented in this file.
 
 ### Package releases
 
-| Package                           | Version  | Release status                                          |
-| --------------------------------- | -------- | ------------------------------------------------------- |
-| `@cojacklabs/autoforge`           | `0.25.1` | Core CLI compatibility release; approval pending        |
-| `@cojacklabs/autoforge-protocol`  | `0.1.0`  | Initial public protocol contract; approval pending      |
-| `@cojacklabs/autoforge-core`      | `0.1.0`  | Initial public model-independent Core; approval pending |
-| `@cojacklabs/autoforge-sdk`       | `0.1.0`  | Initial public programmatic facade; approval pending    |
-| `@cojacklabs/autoforge-agent`     | `0.1.0`  | Private experimental package; independently gated       |
-| `@cojacklabs/autoforge-providers` | `0.1.0`  | Private experimental package; independently gated       |
+| Package                           | Version  | Release status                                    |
+| --------------------------------- | -------- | ------------------------------------------------- |
+| `@cojacklabs/autoforge`           | `0.25.1` | Core CLI compatibility release                    |
+| `@cojacklabs/autoforge-protocol`  | `0.1.0`  | Initial public protocol contract                  |
+| `@cojacklabs/autoforge-core`      | `0.1.1`  | Corrected initial public Core package             |
+| `@cojacklabs/autoforge-sdk`       | `0.1.1`  | Corrected initial public programmatic facade      |
+| `@cojacklabs/autoforge-agent`     | `0.1.0`  | Private experimental package; independently gated |
+| `@cojacklabs/autoforge-providers` | `0.1.0`  | Private experimental package; independently gated |
 
 This release set is the Changesets baseline import. Candidate versions were
 assigned before Changesets was installed, so no additional version bump is
@@ -47,6 +47,9 @@ version policy requires the corrected artifact to use a new patch version.
 
 ### Fixed
 
+- Core and SDK `0.1.1` replace workspace-only dependency ranges from their
+  unsupported `0.1.0` artifacts with npm-compatible ranges, allowing pnpm and
+  other external package managers to install the public package set.
 - Completed project relocation repairs an existing generated Agent contract to the destination project root, while absent optional contracts and bootstrap manifests remain valid uninitialized state. (decision.completed-project-relocation-repairs-an-existing-generated-agent-contract-to-the)
 
 ## [0.24.0] - 2026-08-23

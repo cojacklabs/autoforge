@@ -164,6 +164,20 @@ function declaredDependencies(manifest) {
   );
 }
 
+function publishedDependencyEntries(manifest) {
+  return [
+    ["dependencies", manifest.dependencies],
+    ["optionalDependencies", manifest.optionalDependencies],
+    ["peerDependencies", manifest.peerDependencies],
+  ].flatMap(([sectionName, section]) =>
+    Object.entries(section ?? {}).map(([name, range]) => ({
+      name,
+      range,
+      sectionName,
+    })),
+  );
+}
+
 function packageName(specifier) {
   if (
     specifier.startsWith(".") ||
@@ -261,6 +275,20 @@ for (const { workspace, manifest } of manifests) {
   }
   if (policy.private === true && manifest.private !== true) {
     errors.push(`${workspace}: package must remain private`);
+  }
+  if (
+    manifest.private !== true &&
+    manifest.publishConfig?.access === "public"
+  ) {
+    for (const { name, range, sectionName } of publishedDependencyEntries(
+      manifest,
+    )) {
+      if (typeof range === "string" && range.startsWith("workspace:")) {
+        errors.push(
+          `${workspace}: public ${sectionName} entry ${name} must use a registry-compatible range, found ${range}`,
+        );
+      }
+    }
   }
   const dependencies = internalDependencies(manifest);
   const forbidden = dependencies.filter((name) => !policy.allow.includes(name));

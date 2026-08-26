@@ -93,8 +93,8 @@ AutoForge account, or a hosted service.
 The first public library versions are independently versioned:
 
 - `@cojacklabs/autoforge-protocol@^0.1.0`
-- `@cojacklabs/autoforge-core@^0.1.0`
-- `@cojacklabs/autoforge-sdk@^0.1.0`
+- `@cojacklabs/autoforge-core@^0.1.1`
+- `@cojacklabs/autoforge-sdk@^0.1.1`
 
 Protocol defines serialized contracts and capability negotiation. Core owns
 project intelligence and accepts external effects through injected ports. SDK

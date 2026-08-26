@@ -95,7 +95,7 @@ importers:
   packages/core:
     dependencies:
       '@cojacklabs/autoforge-protocol':
-        specifier: workspace:^
+        specifier: ^0.1.0
         version: link:../protocol
       zod:
         specifier: ^4.4.3
@@ -158,10 +158,10 @@ importers:
   packages/sdk:
     dependencies:
       '@cojacklabs/autoforge-core':
-        specifier: workspace:^
+        specifier: ^0.1.1
         version: link:../core
       '@cojacklabs/autoforge-protocol':
-        specifier: workspace:^
+        specifier: ^0.1.0
         version: link:../protocol
     devDependencies:
       prettier:

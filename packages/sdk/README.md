@@ -52,7 +52,7 @@ preserved so callers can handle the structured Core error contract.
 ## Compatibility
 
 - SDK package: `@cojacklabs/autoforge-sdk` `0.1.x`
-- Core package: `@cojacklabs/autoforge-core` `^0.1.0`
+- Core package: `@cojacklabs/autoforge-core` `^0.1.1`
 - Protocol package: `@cojacklabs/autoforge-protocol` `^0.1.0`
 - Wire protocol: `1`, negotiated independently from npm package versions
 - Node.js: 20 or newer
