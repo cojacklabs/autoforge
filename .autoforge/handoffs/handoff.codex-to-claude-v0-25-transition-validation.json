@@ -1,0 +1,177 @@
+{
+  "protocolVersion": "1",
+  "id": "handoff.codex-to-claude-v0-25-transition-validation",
+  "project": {
+    "id": "project.autoforge",
+    "name": "autoforge"
+  },
+  "session": {
+    "id": "session.f1375d08-5735-4cdb-8586-76ae87be82da",
+    "fromAgent": "codex",
+    "toAgent": "claude"
+  },
+  "activeWork": {
+    "kind": "issue",
+    "id": "issue.independently-validate-the-post-v0-25-transition-checkpoint",
+    "name": "Independently validate the post-v0.25 transition checkpoint",
+    "objective": "Independently audit the seven local commits after the published v0.25.2 closure, report any blockers, and confirm whether the checkpoint is safe to push before further v0.26 implementation."
+  },
+  "scope": {
+    "include": [
+      "**"
+    ],
+    "exclude": [
+      ".autoforge/context/**",
+      ".autoforge/transcripts/**",
+      ".autoforge/provider-cache/**",
+      ".autoforge/provider-logs/**"
+    ]
+  },
+  "git": {
+    "head": "e7eee316a5cb5bfb91886acbbf0469f507cb208b",
+    "base": "fb62d8dac7a7ed5c54baca9eefb8c3182c9b87e4",
+    "branch": "main"
+  },
+  "changedFiles": [
+    {
+      "path": ".autoforge/handoffs/handoff.codex-to-claude-v0-25-transition-validation.json",
+      "status": "added"
+    },
+    {
+      "path": ".autoforge/learning/strategy.json",
+      "status": "modified"
+    },
+    {
+      "path": ".autoforge/state/decisions.json",
+      "status": "modified"
+    },
+    {
+      "path": ".autoforge/state/work.json",
+      "status": "modified"
+    },
+    {
+      "path": "README.md",
+      "status": "modified"
+    },
+    {
+      "path": "apps/core-cli/src/status.ts",
+      "status": "modified"
+    },
+    {
+      "path": "docs/AUTOFORGE_CLI_REFERENCE.md",
+      "status": "modified"
+    },
+    {
+      "path": "docs/README.md",
+      "status": "modified"
+    },
+    {
+      "path": "docs/planning/0.25/RELEASE_READINESS.md",
+      "status": "modified"
+    },
+    {
+      "path": "docs/planning/0.26/AUTOFORGEAI_ORCHESTRATION_CAPABILITY_ADOPTION.md",
+      "status": "added"
+    },
+    {
+      "path": "docs/planning/0.26/POST_V0_25_NORTH_STAR_ROADMAP.md",
+      "status": "added"
+    },
+    {
+      "path": "docs/planning/0.26/ULTIMATE_AUTOFORGE_AI_NORTH_STAR.md",
+      "status": "added"
+    },
+    {
+      "path": "src/commands/evidence.ts",
+      "status": "modified"
+    },
+    {
+      "path": "src/quality/readiness.ts",
+      "status": "modified"
+    },
+    {
+      "path": "test/evidence-command.test.ts",
+      "status": "modified"
+    },
+    {
+      "path": "test/quality-readiness.test.ts",
+      "status": "modified"
+    },
+    {
+      "path": "test/status-command.test.ts",
+      "status": "modified"
+    }
+  ],
+  "decisions": [
+    {
+      "id": "decision.close-v0-25-2-against-the-latest-authoritative-ci-and-installation-results-while",
+      "statement": "Close v0.25.2 against the latest authoritative CI and installation results while retaining all historical validation evidence"
+    },
+    {
+      "id": "decision.release-readiness-is-computed-from-authoritative-required-gate-evidence-while-ev",
+      "statement": "Release readiness is computed from authoritative required gate evidence while every historical validation record remains immutable audit history."
+    },
+    {
+      "id": "decision.autoforge-s-ultimate-north-star-is-a-trusted-persistent-provider-neutral-ai-oper",
+      "statement": "AutoForge's ultimate north-star is a trusted, persistent, provider-neutral AI operator delivered through deterministic Core and independently gated Agent, Provider, Connector, Service, Web, memory, and intelligence layers."
+    },
+    {
+      "id": "decision.autoforge-s-official-product-tagline-is-human-intent-ai-execution-one-shared-und",
+      "statement": "AutoForge's official product tagline is: Human intent. AI execution. One shared understanding."
+    },
+    {
+      "id": "decision.the-v0-25-platform-migration-feature-and-all-seven-parent-phases-are-completed",
+      "statement": "The v0.25 platform migration feature and all seven parent phases are completed"
+    }
+  ],
+  "validation": [
+    {
+      "gateId": "v0.25.2-release-closure",
+      "status": "passed",
+      "summary": "The approved release record confirms Protocol 0.1.0, Core 0.1.1, SDK 0.1.1, and Core CLI 0.25.2 are public with matching GitHub release, registry-install verification, and remote Linux and Windows CI."
+    },
+    {
+      "gateId": "source-evidence-readiness",
+      "status": "passed",
+      "summary": "The source-built CLI reports ready=true with 266 historical records, 37 preserved historical failures, 56 effective results, and zero effective required failures."
+    },
+    {
+      "gateId": "v0.25-parent-hierarchy",
+      "status": "passed",
+      "summary": "AutoForge doctor passes and the v0.25 feature, all seven phases, and all 22 child tasks report completed."
+    },
+    {
+      "gateId": "latest-scoped-quality",
+      "status": "passed",
+      "summary": "The latest scoped gate passed installation, file access, secret scan, typecheck, format, and tests for the official product-tagline documentation change."
+    },
+    {
+      "gateId": "handoff-protocol-contract",
+      "status": "passed",
+      "summary": "The built @cojacklabs/autoforge-protocol agentHandoffSchema accepts this complete payload."
+    },
+    {
+      "gateId": "handoff-quality-gate",
+      "status": "passed",
+      "summary": "AutoForge gate check passed installation, containment, secret scanning, structured syntax, typecheck, format, and tests for this handoff and the updated work registry."
+    },
+    {
+      "gateId": "working-tree-handoff",
+      "status": "skipped",
+      "summary": "Remote CI for the seven local commits cannot run until explicit approval to push; the next agent must independently validate the commit range first."
+    }
+  ],
+  "risks": [
+    "The seven commits after origin/main are local only, so no remote CI result exists for the combined checkpoint.",
+    "The globally installed 0.25.2 CLI predates superseding-evidence semantics and therefore reports historical failures as current blockers; validate the new behavior through the source-built CLI until a later release contains it.",
+    "The orchestration plan still projects two already-completed issues as ready, so orchestration state may require a separate reconciliation before it is used to assign v0.26 work.",
+    "The experimental Agent and Providers remain independently gated on generated-content safety and native credential-store validation; they were not approved by the Core v0.25.2 release."
+  ],
+  "openQuestions": [
+    "Does an independent review find any correctness, security, documentation, or release-history blocker in origin/main..HEAD?",
+    "Should stale completed nodes in the current orchestration plan be reconciled before the next v0.26 implementation assignment?"
+  ],
+  "nextAction": "Run the documented AutoForge startup sequence, inspect this handoff and origin/main..HEAD, execute proportional source and package validation without editing or pushing, and report findings against issue.independently-validate-the-post-v0-25-transition-checkpoint.",
+  "contextFingerprint": "0a6be5102fd6bd4d6c0f1348e804e4919596693e300cc909317f6048dc4cd2aa",
+  "createdAt": "2026-08-26T21:09:36Z"
+}

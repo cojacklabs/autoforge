@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
-  "revision": 393,
-  "updatedAt": "2026-08-26T21:03:51.840Z",
+  "revision": 394,
+  "updatedAt": "2026-08-26T21:09:30.530Z",
   "data": {
     "features": [
       {
@@ -2456,6 +2456,25 @@
             ".autoforge/state/**"
           ],
           "exclude": []
+        }
+      },
+      {
+        "name": "Independently validate the post-v0.25 transition checkpoint",
+        "description": "Perform an independent read-only validation of the seven commits after the published v0.25.2 closure: confirm the v0.25 parent hierarchy is completed, review the post-v0.25 north-star documentation and tagline, audit superseding-evidence semantics and tests, verify the worktree and package/release state, run proportional quality gates, and report blockers before the commits are pushed or v0.26 implementation continues.",
+        "status": "planned",
+        "createdAt": "2026-08-26T21:09:30.505Z",
+        "updatedAt": "2026-08-26T21:09:30.505Z",
+        "id": "issue.independently-validate-the-post-v0-25-transition-checkpoint",
+        "scope": {
+          "include": [
+            "**"
+          ],
+          "exclude": [
+            ".autoforge/context/**",
+            ".autoforge/transcripts/**",
+            ".autoforge/provider-cache/**",
+            ".autoforge/provider-logs/**"
+          ]
         }
       }
     ],
