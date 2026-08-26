@@ -2,7 +2,7 @@
 
 ## Status
 
-Approved and published npm release; Git tag and GitHub release closure remain.
+Approved npm release and matching Git tag; GitHub release closure remains.
 
 The implementation milestone, local audits, final pushed CI, published-package
 installation, and explicit release approval are complete. Protocol, Core, SDK,
@@ -124,7 +124,9 @@ sanitization as a required issue before Agent or Providers publication.
 3. Published `@cojacklabs/autoforge@0.25.2` with dependency floors that cannot
    select those unsupported artifacts.
 4. Verified a clean package-set install and a maintainer global reinstall.
-5. Reserved Agent and Providers for independent audit and approval; neither
+5. Tagged the published package identity commit
+   `ef6c8de54d123a92a4c566458b38553d536bbae9` as `v0.25.2`.
+6. Reserved Agent and Providers for independent audit and approval; neither
    blocks local Core use.
 
 The withdrawn CLI 0.25.0 version cannot be reused. CLI 0.25.1 and Core/SDK
@@ -150,7 +152,7 @@ an upgrade warning without erasing the registry audit trail.
       launcher job pass in GitHub Actions.
 - [x] Re-run a normal isolated npm install after Protocol, Core, and SDK are
       published.
-- [ ] Verify the tag exactly matches the root package version.
+- [x] Verify the tag exactly matches the root package version.
 - [x] Record explicit human approval before publication.
 
 ## Known Non-Release State
