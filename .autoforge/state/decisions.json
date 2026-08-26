@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
-  "revision": 96,
-  "updatedAt": "2026-08-25T21:51:26.653Z",
+  "revision": 97,
+  "updatedAt": "2026-08-26T00:00:46.109Z",
   "data": {
     "decisions": [
       {
@@ -2388,6 +2388,33 @@
         "kind": "architecture",
         "createdAt": "2026-08-25T21:51:26.615Z",
         "updatedAt": "2026-08-25T21:51:26.615Z"
+      },
+      {
+        "id": "decision.v0-25-uses-readme-md-as-the-product-entry-point-docs-readme-md-as-the-canonical",
+        "statement": "v0.25 uses README.md as the product entry point, docs/README.md as the canonical human-and-agent walkthrough, and the installed help and CLI reference as exact command authority",
+        "reasoning": "The prior documentation mixed current platform behavior with v0.4 and v0.7 command models, duplicated a long onboarding procedure, and left agents without a clear path from brainstorming through handoff. One short README prompt can now route agents into maintained guidance while historical documents remain available without masquerading as current instructions.",
+        "consequences": [
+          "Humans and agents begin with the README and docs/README.md, then select the current guide for their stage of work.",
+          "The README onboarding prompt stays concise and delegates procedural detail to maintained documentation.",
+          "Historical planning, dev, and AI playbooks must be verified against autoforge help and the current CLI reference before use."
+        ],
+        "scope": [
+          "documentation",
+          "release"
+        ],
+        "keywords": [
+          "onboarding",
+          "lifecycle",
+          "v0.25"
+        ],
+        "relatedWork": [
+          "issue.prepare-reviewable-v0-25-release-checkpoint-and-remote-verification"
+        ],
+        "supersedes": null,
+        "status": "active",
+        "kind": "architecture",
+        "createdAt": "2026-08-26T00:00:46.081Z",
+        "updatedAt": "2026-08-26T00:00:46.081Z"
       }
     ]
   }

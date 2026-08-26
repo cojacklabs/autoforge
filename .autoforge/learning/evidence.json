@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
-  "revision": 7,
-  "updatedAt": "2026-08-25T21:51:26.726Z",
+  "revision": 9,
+  "updatedAt": "2026-08-26T00:00:46.177Z",
   "data": {
     "evidence": [
       {
@@ -36,6 +36,17 @@
         "relatedWork": "issue.prepare-reviewable-v0-25-release-checkpoint-and-remote-verification",
         "resultingDecision": "decision.the-v0-25-candidate-is-locally-validated-and-split-into-reviewable-commits-relea",
         "capturedAt": "2026-08-25T21:47:25.314Z"
+      },
+      {
+        "id": "evidence.the-v0-25-documentation-usability-audit-reconciled-ten-current-guides-formatting",
+        "kind": "ai-evaluation",
+        "summary": "The v0.25 documentation usability audit reconciled ten current guides: formatting, local links, planning synchronization, containment, secret scanning, typecheck, and tests all pass. README now provides a concise agent one-liner and docs/README.md is the maintained lifecycle walkthrough and authority map.",
+        "source": "docs/README.md",
+        "experimentId": null,
+        "hypothesisId": null,
+        "relatedWork": "issue.prepare-reviewable-v0-25-release-checkpoint-and-remote-verification",
+        "resultingDecision": "decision.v0-25-uses-readme-md-as-the-product-entry-point-docs-readme-md-as-the-canonical",
+        "capturedAt": "2026-08-26T00:00:34.669Z"
       }
     ]
   }
