@@ -90,6 +90,11 @@ the counts above come from the subsequent isolated, uncontended run.
 9. Repository formatting now ignores Claude's machine-local settings file, so
    local quality gates are deterministic without committing or rewriting that
    user-specific artifact.
+10. The release documentation now has one current entry point for humans and
+    agents. The README explains the continuous idea-to-handoff lifecycle,
+    `docs/README.md` separates operational guidance from historical plans, and
+    stale v0.4/v0.7 agent instructions no longer advertise removed commands as
+    current v0.25 behavior.
 
 ## Independent Review
 

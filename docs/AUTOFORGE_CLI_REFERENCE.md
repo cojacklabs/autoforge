@@ -13,9 +13,8 @@ Use `use` when operating on a named project from outside its directory.
 ## Lifecycle
 
 ```bash
-autoforge init
+autoforge attach "$PWD"
 autoforge doctor
-autoforge
 autoforge status
 autoforge status --json
 autoforge status --view <summary|work|next>
@@ -27,6 +26,10 @@ autoforge gate check
 autoforge done
 autoforge recap
 ```
+
+Use `attach` for a persistent project because it initializes local state and
+registers the repository globally. Use `init` only for a deliberately local-only
+installation that should not appear in `autoforge projects list`.
 
 Bare `autoforge` delegates to the separately installed `autoforge-agent` only
 in an eligible interactive terminal. CI, pipes, redirected output, recursive
@@ -262,7 +265,6 @@ autoforge evidence summary [--json]
 autoforge twin generate [--json]
 autoforge twin show [--json]
 autoforge twin query [--type <type>] [--relationship <name>] [--depth <n>] [--limit <n>] [--json]
-autoforge update
 autoforge version
 ```
 

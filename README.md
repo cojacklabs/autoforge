@@ -1,151 +1,199 @@
 # AutoForge
 
-AutoForge is a task-specific context and control plane for AI-assisted software development. It gives Codex, Claude Code, Gemini/Antigravity, Grok Build, Cursor, and generic agents durable project memory, governed work lifecycle, scoped edits, and explainable build packets.
+AutoForge is a project-intelligence and orchestration framework for continuous
+AI-assisted software development. It turns brainstorming, research, planning,
+design, implementation, validation, and handoff into durable project state that
+humans and different coding agents can share.
 
-## Install
+AutoForge does not replace Codex, Claude Code, Cursor, Gemini, Grok, or another
+agent. The Core CLI gives every agent the same scoped work, decisions,
+governance, evidence, and next action instead of making each conversation start
+from scratch.
 
-Install AutoForge globally so every project on the machine shares one CLI,
-one global workspace registry, and one update path:
+> This repository contains the v0.25 release candidate. Until v0.25 is
+> published, the globally installed npm release may still report v0.24. Always
+> begin with `autoforge version` and use explicit Core subcommands in automation.
+
+## What v0.25 Provides
+
+| Layer    | Package                          | Responsibility                                                                                 |
+| -------- | -------------------------------- | ---------------------------------------------------------------------------------------------- |
+| Protocol | `@cojacklabs/autoforge-protocol` | Versioned contracts, capabilities, launch negotiation, and handoffs                            |
+| Core     | `@cojacklabs/autoforge-core`     | Deterministic, model-independent project intelligence                                          |
+| SDK      | `@cojacklabs/autoforge-sdk`      | Supported programmatic facade with injected filesystem, Git, clock, and storage effects        |
+| Core CLI | `@cojacklabs/autoforge`          | Project lifecycle, memory, governance, orchestration, validation, and optional Agent launching |
+| Agent    | `@cojacklabs/autoforge-agent`    | Experimental interactive model runtime; separately approved and installed                      |
+
+Core remains usable without an account, model provider, hosted service, or
+Agent installation. Production Web, hosted Service, billing, cloud sync, and
+multi-provider autonomy are later platform milestones.
+
+## Install and Attach a Project
+
+Use one global installation so projects share a workspace registry and update
+path:
 
 ```bash
 npm install --global @cojacklabs/autoforge
-# or: yarn global add @cojacklabs/autoforge
 # or: pnpm add --global @cojacklabs/autoforge
+# or: yarn global add @cojacklabs/autoforge
 
+autoforge version
 autoforge attach "$PWD"
-autoforge doctor
+autoforge --project "$PWD" doctor
+autoforge projects list
 ```
 
-Install as a local dev dependency only for environments that cannot hold a
-persistent global install — a dedicated CI runner or container with only
-Node available and no retained global package cache:
+`attach` initializes local `.autoforge/` state and registers the Git repository
+root globally. A nested path still attaches the whole repository. Use
+`autoforge init` only for an intentionally local-only environment such as a
+disposable CI container.
+
+For a local dependency instead, prefix commands with `npx`:
 
 ```bash
 npm install --save-dev @cojacklabs/autoforge
-npx autoforge attach "$PWD"
+npx autoforge init
 npx autoforge doctor
 ```
 
-See `docs/QUICKSTART.md` for the full first-session walkthrough (adding
-work, running it, and querying project memory).
+Upgrading from v0.24? Read the
+[v0.25 migration guide](docs/planning/0.25/MIGRATION_GUIDE.md).
 
-Existing installations upgrading across the platform split should review the
-[migration guide](docs/planning/0.25/MIGRATION_GUIDE.md). The deterministic
-Core CLI remains locally usable without an account; the separately installed
-Agent is optional and experimental.
+## The Continuous AutoForge Loop
 
-## Starting From Scratch
+AutoForge is most effective when it stays involved throughout the product
+lifecycle, not only when code is written.
 
-For a new project, an existing project, an AutoForge upgrade, or a newly assigned agent, use this canonical one-liner:
+| Stage      | Human or agent activity                                              | AutoForge capability                               |
+| ---------- | -------------------------------------------------------------------- | -------------------------------------------------- |
+| Brainstorm | Capture an idea without prematurely coding it                        | `intent assess`, `intent register`                 |
+| Research   | Preserve findings and provenance                                     | `research register`, `knowledge`                   |
+| Govern     | Check standing rules and domain invariants                           | `constitution`, `domain`, `doctrine`               |
+| Design     | Validate screens, components, flows, states, and relationships       | `design validate`, `design import`, `design check` |
+| Plan       | Turn intent into features, phases, tasks, issues, or workflows       | `planning`, `workflow`, `add`                      |
+| Prioritize | Explain why work is now, next, later, or backlog                     | `strategy assess`                                  |
+| Execute    | Open a scoped session and resolve the relevant context               | `start`, `context --explain`, `check`              |
+| Validate   | Run retained quality/security checks and preserve evidence           | `gate check`, `evidence`                           |
+| Remember   | Record why a choice was made and what it changes                     | `decide`, `why`, `changelog`                       |
+| Handoff    | Transfer structured state between agents without transcripts         | `recap`, Protocol handoffs, `orchestrate handoff`  |
+| Learn      | Connect hypotheses, experiments, and observations to later decisions | `learning`                                         |
+| Reorganize | Reassess dependencies, priority, impact, and project location        | `orchestrate`, `trace`, `twin`, `projects`         |
 
-```markdown
-We will use the globally installed AutoForge CLI for this repository (available via https://github.com/cojacklabs/autoforge): run `autoforge version`, `autoforge --project "$PWD" doctor`, and `autoforge --project "$PWD" bootstrap status`; review `AGENTS.md` when present and inspect `.autoforge/`; if `.autoforge/` is absent, run `autoforge attach "$PWD"` to initialize the project and register it in the global workspace in one step (`autoforge init` alone only creates local `.autoforge/` state — it does not register the project, so it will not appear in `autoforge projects list`; use plain `init` only when you deliberately want a local-only install with no global registry entry, such as a disposable CI container); refresh your understanding after AutoForge updates, and when active work exists run `autoforge --project "$PWD" context --explain`; read `docs/AUTOFORGE_CLI_REFERENCE.md` for the complete current command surface so you can govern, scaffold, categorize, organize, prioritize, and reorganize this project's work using the full AutoForge CLI; summarize the project structure, active work, governance rules, relevant decisions, and validation requirements before making changes.
-```
-
-Use this prompt at initialization, after upgrading AutoForge, and whenever a new agent joins the project. It ensures agents use the current global CLI rather than a stale local bundle.
-
-### Project Constitution (v0.15)
-
-Projects can make governance explicit and reviewable through the constitution workflow:
-
-```bash
-autoforge constitution init
-autoforge constitution list
-autoforge constitution show <rule-id>
-autoforge constitution check "<objective>"
-```
-
-`constitution check` evaluates the objective against scoped governance rules and reports conflicts before implementation. Existing projects remain compatible; initialization is additive and stores the constitution under `.autoforge/governance/`.
-
-See `docs/AUTOFORGE_AGENT_SETUP_GUIDE.md` for the complete safe setup procedure.
-Agent behavior and long-prompt handling are documented in `docs/AUTOFORGE_AGENTIC_AI_GUIDE.md`.
-
-### Bootstrap Artifacts and Gates
-
-Bootstrap tracks required artifacts while the intent, workflow, planning,
-design, and research commands produce them. Connect completed work back to the
-bootstrap manifest with evidence-backed approval:
+Start every session by asking what is already true:
 
 ```bash
-autoforge bootstrap approve architecture --evidence architecture-v1
-autoforge bootstrap gates
+autoforge --project "$PWD" doctor
+autoforge --project "$PWD" recap
+autoforge --project "$PWD" status --view next
 ```
 
-See `docs/BOOTSTRAP_PIPELINE.md` for the complete end-to-end flow.
-
-After initialization, generate and validate the agent contract:
+When work is active, resolve the bounded execution packet before editing:
 
 ```bash
-autoforge contract generate generic
-autoforge contract validate
+autoforge --project "$PWD" context --explain
 ```
 
-## Canonical Workflow
+## From an Idea to Validated Work
+
+Before creating structured JSON, inspect the installed schema rather than
+guessing its shape:
 
 ```bash
-autoforge add feature --name "Payments" --description "Add payment support"
-autoforge add phase --feature <feature-id> --name "Checkout" --description "Implement checkout"
-autoforge add task --phase <phase-id> --name "Create checkout" --description "..." --include "src/**"
+autoforge schemas list
+autoforge intent assess --schema
+```
+
+Then assess the idea, create scoped work, and complete it with durable rationale:
+
+```bash
+autoforge intent assess product-idea.json --kind planning
+
+autoforge add feature --name "Customer onboarding" --description "Guide new customers to first value"
+autoforge add phase --feature <feature-id> --name "First-run flow" --description "Design and implement onboarding"
+autoforge add task --phase <phase-id> --name "Build first-run flow" --description "Implement the approved design" --include "src/**" --include "test/**"
+
 autoforge start task <task-id>
 autoforge context --explain
-autoforge check --path src/checkout.ts
+autoforge check --path src/onboarding.ts
 autoforge gate check
-autoforge decide --statement "..." --reasoning "..." --consequence "..." --scope checkout --keyword payments --work <task-id> --kind feature-note
+autoforge decide --statement "..." --reasoning "..." --consequence "..." --scope onboarding --keyword first-run --work <task-id> --kind feature-note
 autoforge done
 ```
 
-`autoforge done` on a task or issue requires at least one decision whose
-`--work` links to the active work item — this is what makes the last two
-lines above ordered, not optional. Pass
-`autoforge done --no-decision "<reason>"` to bypass for trivial work; the
-reason is itself recorded as an auditable decision.
+`done` requires a decision linked with `--work` so completed work leaves an
+explanation, not merely a changed Git tree. For genuinely trivial work, use
+`autoforge done --no-decision "<reason>"`; the bypass remains auditable.
 
-## Multi-Agent Orchestration
+For a new application idea that needs formal discovery, architecture, design,
+data, and security approval, follow the
+[bootstrap pipeline](docs/BOOTSTRAP_PIPELINE.md).
 
-For parallel planning, design, implementation, testing, and validation, create
-a dependency-aware orchestration plan instead of starting multiple agents
-against the same checkout:
+## Give This Prompt to Any Coding Agent
+
+Use this at project onboarding, after an AutoForge update, or when switching
+between Claude, Codex, Cursor, Gemini, Grok, and another repository-aware agent:
+
+```text
+Use the globally installed AutoForge CLI for this repository. Review `README.md` and follow the current documentation walkthrough in `docs/README.md` to use AutoForge continuously throughout brainstorming, planning, documentation, design, bootstrapping, development, validation, decision-making, and handoff; follow every applicable `AGENTS.md` and summarize the project's current AutoForge state before making changes.
+```
+
+The complete procedure is in the
+[Agent Setup Guide](docs/AUTOFORGE_AGENT_SETUP_GUIDE.md), and behavioral
+guidance is in the [Agentic AI Guide](docs/AUTOFORGE_AGENTIC_AI_GUIDE.md).
+
+## Humans and Agents Share One Source of Truth
+
+Durable project truth includes work, decisions, doctrines, governance, domain
+knowledge, specifications, traceability, approved evidence, and structured
+handoffs. Reproducible context packets, leases, provider caches, logs,
+credentials, and raw transcripts are operational state and should not become
+portable project memory.
+
+Useful continuity commands:
+
+```bash
+autoforge recap
+autoforge why --query "checkout"
+autoforge evidence summary
+autoforge twin generate
+autoforge twin query --type decision
+```
+
+See [Cross-Agent Handoffs](docs/CROSS_AGENT_HANDOFFS.md) and
+[Governance and Memory](docs/GOVERNANCE_AND_MEMORY.md).
+
+## Parallel Agent Work
+
+Do not run multiple writing agents against the same checkout. Build a
+dependency-aware orchestration plan, then let AutoForge assign isolated
+worktrees and reject overlapping write scopes:
 
 ```bash
 autoforge orchestrate plan orchestration-plan.json
 autoforge orchestrate ready
 autoforge orchestrate claim <work-id> --agent codex --role backend
-autoforge orchestrate status
 autoforge orchestrate explain <work-id>
-autoforge orchestrate prioritize <work-id> 100
+autoforge orchestrate status
 autoforge orchestrate handoff <assignment-id> handoff.json
+autoforge orchestrate release <assignment-id>
 ```
 
-Mutating assignments receive isolated Git worktrees under the global
-AutoForge home, and overlapping write scopes are rejected. Read-only research
-sessions may run concurrently. High-risk architecture, security, and release
-work must pass explicit approval gates before it becomes ready.
+If `orchestrate explain` reports stale or unavailable context, stop, release the
+claim, and reclaim it before editing.
 
-Every claim compiles a role-aware context packet from canonical AutoForge work,
-doctrines, decisions, specifications, and the configured context budget. Run
-`autoforge orchestrate explain <work-id>` before continuing an assignment; a
-`stale` context result means canonical sources changed and the work should be
-released and reclaimed before editing continues.
+## Core CLI and Experimental Agent
 
-## Memory and Design
+Explicit subcommands are deterministic. Automation should use commands such as
+`autoforge status --json`, `autoforge recap`, and `autoforge gate check --json`.
 
-```bash
-autoforge decide --statement "..." --reasoning "..." --consequence "..." --scope payments --keyword checkout --kind bugfix
-autoforge why --query checkout
-autoforge why --history
-autoforge changelog compile
-autoforge doctrine
-autoforge design validate dev/design/screen.md
-autoforge design import dev/design/screen.md
-```
+After the separately versioned Agent is approved and installed, bare
+`autoforge` can launch it in an eligible interactive terminal. CI, pipes,
+redirected output, `AUTOFORGE_NO_AGENT=1`, recursion, and missing or incompatible
+Agent installations retain deterministic status behavior. The old interactive
+Core TUI is deprecated; `autoforge tui` is temporarily a read-only status alias.
 
-Use `autoforge recap` for handoffs, `autoforge status --json` for automation,
-and `autoforge doctor` for installation health. The former interactive
-`autoforge tui` is deprecated and temporarily aliases deterministic status
-output. With the separate AutoForge Agent installed, bare `autoforge` launches
-it in an interactive terminal; CI, pipes, redirected output, and unavailable
-Agent installations retain deterministic status. Local provider credentials
-can be managed through the allowlisted Core proxy:
+Provider credentials remain in the operating-system credential store:
 
 ```bash
 autoforge credentials set openai
@@ -153,59 +201,32 @@ autoforge credentials status openai
 autoforge credentials delete openai
 ```
 
-When a registered project changes location, preserve its global history with:
+See [Local Provider Credentials](docs/LOCAL_PROVIDER_CREDENTIALS.md).
+
+## Documentation Map
+
+Start with [docs/README.md](docs/README.md). It identifies current operational
+guides, v0.25 release material, specialist references, and historical documents.
+The installed command remains the final authority for syntax:
 
 ```bash
-autoforge projects relocate <path|project_name> <new-path> --planned
-# Move the directory, then complete the registry and storage migration:
-autoforge projects relocate <path|project_name> <new-path>
-```
-
-`autoforge projects move` is an equivalent alias.
-
-## JSON Input Schemas
-
-Commands that accept JSON files expose their runtime schemas directly:
-
-```bash
+autoforge help
 autoforge schemas list
-autoforge schemas show intent-assess
-autoforge intent assess --schema
-autoforge workflow handoff --schema
 ```
 
-## Migration and Upgrade
+## Development and Release Validation
 
-For an existing 0.6 project, preview migration before changing state:
+This repository uses pnpm 11 and Turborepo. From a clean checkout:
 
 ```bash
-autoforge migrate --dry-run
-autoforge migrate
+pnpm install --frozen-lockfile
+pnpm workspace:check
+pnpm exec turbo run build typecheck test format:check
+pnpm release:status
 ```
 
-Update a global installation to the version currently published on npm:
-
-```bash
-autoforge update
-```
-
-The command resolves the npm version, installs that exact version, and uses `--global` when the running AutoForge installation is global. Verify with `autoforge version` and `autoforge doctor`.
-
-## Supported Commands
-
-The canonical command reference is `autoforge help`; it includes the complete current command surface, including `update` for safely upgrading a global installation.
-
-Legacy orchestration, research, compliance, telemetry, snapshot, and prompt-loading commands are not supported in v0.7. See `dev/AutoForge_0.7.0_Subcommand_Lifecycle_Audit.md` for lifecycle decisions and future roadmap mapping.
-
-## Development
-
-```bash
-npm run format:check
-npm run typecheck
-npm test
-npm run build
-```
-
-See `dev/AutoForge_0.7.0_Rewrite_Development_Plan.md` and `dev/AutoForge_Development_Roadmap_0.8-0.10.md` for architecture and future direction.
+The release sequence and outstanding approval gates are documented in
+[v0.25 Release Readiness](docs/planning/0.25/RELEASE_READINESS.md). Nothing in
+this README authorizes tagging or publication.
 
 Released under the [MIT License](LICENSE).

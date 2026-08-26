@@ -14,6 +14,27 @@ Review these sources in order:
 5. `autoforge --project "$PWD" recap` for active work and handoffs.
 6. `autoforge --project "$PWD" context --explain` for the scoped execution packet when active work exists.
 
+Use [`docs/README.md`](README.md) to distinguish current guides from historical
+plans. Treat `autoforge help`, runtime schemas, and the project-local contract
+as more authoritative than examples in an older design document.
+
+## Continuous Interaction Contract
+
+AutoForge should remain synchronized throughout the conversation:
+
+1. At intake, classify the request as brainstorming, research, architecture,
+   design, planning, implementation, data, or security work.
+2. Before implementation, persist the intent, unknowns, acceptance criteria,
+   governance, design contracts, and scoped work that matter.
+3. During implementation, update durable decisions, evidence, risks, and work
+   status when reality changes the plan.
+4. At every handoff, preserve structured project truth and one next action.
+5. At completion, run validation, link rationale to the work item, and close the
+   session through AutoForge.
+
+Do not create an AutoForge artifact for every sentence. Persist information
+that another person or agent would need after the conversation disappears.
+
 ## Handling Unstructured Prompts
 
 Do not immediately translate a long prompt into code. First:
@@ -36,8 +57,10 @@ Do not immediately translate a long prompt into code. First:
 
 ## Initialization
 
-For a new project, run `autoforge --project "$PWD" init` only when `.autoforge/`
-does not already exist. Then generate and validate the contract:
+For a new persistent project, run `autoforge attach "$PWD"` only when
+`.autoforge/` does not already exist. This initializes the Git repository root
+and registers it globally. Use `autoforge init` only for a deliberately
+local-only environment. Then generate and validate the contract:
 
 ```bash
 autoforge --project "$PWD" contract generate <agent-id>
@@ -45,6 +68,10 @@ autoforge --project "$PWD" contract validate
 ```
 
 Never delete or replace existing `.autoforge/` state without explicit approval.
+
+When no work is active, assess or create scoped work before editing. When work
+is active, do not broaden its include/exclude patterns without explicit human
+direction and a durable planning update.
 
 ## Bootstrap Production and Approval
 

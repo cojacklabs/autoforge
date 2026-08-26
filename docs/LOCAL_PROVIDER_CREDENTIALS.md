@@ -26,6 +26,15 @@ autoforge-agent credentials status openai
 autoforge-agent credentials delete openai
 ```
 
+When the compatible Agent is installed, the deterministic Core CLI exposes the
+same allowlisted namespace without importing provider or credential code:
+
+```bash
+autoforge credentials set openai
+autoforge credentials status openai
+autoforge credentials delete openai
+```
+
 `set` requires an interactive terminal and reads through a hidden prompt.
 Secrets are not accepted as command-line arguments because arguments may be
 visible to other local processes. `status` emits only `configured` or
@@ -34,6 +43,10 @@ visible to other local processes. `status` emits only `configured` or
 The current provider is OpenAI. Additional providers require an explicit
 provider identifier and a distinct fixed keyring account; they must not add
 credential handling to Core or the provider adapter package.
+
+The Agent and Providers packages remain experimental and require independent
+publication approval. These commands become available through Core only when a
+compatible Agent installation can be discovered.
 
 ## Recovery
 

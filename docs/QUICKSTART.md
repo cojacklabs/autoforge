@@ -1,6 +1,7 @@
 # AutoForge Quickstart
 
-Get up and running with AutoForge in a few minutes.
+Get from an idea to one validated, resumable work item in a few minutes. For
+the broader documentation map, start at [`docs/README.md`](README.md).
 
 ## Install
 
@@ -42,13 +43,34 @@ project globally.
 ## Existing project on a new machine or with a new agent
 
 ```bash
+autoforge version
 autoforge --project "$PWD" doctor
 autoforge --project "$PWD" bootstrap status
+autoforge --project "$PWD" recap
 ```
 
 Then read `docs/AUTOFORGE_CLI_REFERENCE.md` for the complete current command
-surface, and `AGENTS.md` when present. See README's "Starting From Scratch"
-section for the canonical onboarding prompt to hand a newly assigned agent.
+surface, and `AGENTS.md` when present. See README's "Give This Prompt to Any
+Coding Agent" section for the canonical onboarding prompt.
+
+If work is active, run `autoforge --project "$PWD" context --explain` before
+editing. If no work is active, capture the request as intent or create scoped
+work instead of relying on the current chat as the plan.
+
+## Assess an idea before coding
+
+Inspect the runtime schema, create a project-contained JSON file, and assess
+the intent:
+
+```bash
+autoforge intent assess --schema
+autoforge intent assess product-idea.json --kind planning
+```
+
+The assessment recommends deterministic workflow stages. Use `research`,
+`design`, `planning`, and `workflow` when the idea needs evidence, UI/UX
+contracts, generated planning artifacts, or formal approvals before it becomes
+an implementation task.
 
 ## Add and run work
 
@@ -83,6 +105,24 @@ autoforge recap
 and session state — the fastest way to answer "what's next" at the start of
 a session.
 
+For a handoff to another agent, also preserve validation, risks, open questions,
+changed files, and one next action. Use structured handoffs rather than copying
+the raw transcript; see [`CROSS_AGENT_HANDOFFS.md`](CROSS_AGENT_HANDOFFS.md).
+
+## Continue the loop
+
+After one item completes:
+
+```bash
+autoforge recap
+autoforge strategy list --decision next
+autoforge orchestrate ready
+autoforge trace impact <artifact>
+```
+
+Not every project uses orchestration or traceability. These commands make the
+next step explicit when the project grows beyond a linear task list.
+
 ## Keep the installation current
 
 ```bash
@@ -102,3 +142,4 @@ Resolves the version currently published on npm, installs it, and uses
 - `docs/BOOTSTRAP_PIPELINE.md` — the end-to-end bootstrap-to-release flow.
 - `README.md` — project overview, multi-agent orchestration, and the
   canonical onboarding prompt.
+- `docs/README.md` — current documentation map and historical-material policy.
