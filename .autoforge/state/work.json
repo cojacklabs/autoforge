@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
-  "revision": 368,
-  "updatedAt": "2026-08-26T02:47:47.761Z",
+  "revision": 369,
+  "updatedAt": "2026-08-26T02:55:03.690Z",
   "data": {
     "features": [
       {
@@ -2217,9 +2217,9 @@
       {
         "name": "Prepare reviewable v0.25 release checkpoint and remote verification",
         "description": "After release blockers are fixed, split the accumulated worktree into bounded commits while excluding claude_resume.md and local .autoforge/learning/strategy.json, verify exact Changesets baseline/release-set metadata, push for Node 22 GitHub CI, re-run release verification, record explicit approval, and publish Protocol then Core then SDK then Core CLI. Do not tag or publish before every gate passes.",
-        "status": "active",
+        "status": "completed",
         "createdAt": "2026-08-25T15:34:14.057Z",
-        "updatedAt": "2026-08-25T16:53:13.208Z",
+        "updatedAt": "2026-08-26T02:55:03.162Z",
         "id": "issue.prepare-reviewable-v0-25-release-checkpoint-and-remote-verification",
         "scope": {
           "include": [
@@ -2313,10 +2313,6 @@
         }
       }
     ],
-    "activeWork": {
-      "kind": "issue",
-      "id": "issue.prepare-reviewable-v0-25-release-checkpoint-and-remote-verification",
-      "startedAt": "2026-08-25T16:53:13.208Z"
-    }
+    "activeWork": null
   }
 }

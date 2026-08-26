@@ -2,7 +2,9 @@
 
 ## Status
 
-Approved npm release and matching Git tag; GitHub release closure remains.
+Release closed. The supported npm package set, matching Git tag, and
+[GitHub Release](https://github.com/cojacklabs/autoforge/releases/tag/v0.25.2)
+are public.
 
 The implementation milestone, local audits, final pushed CI, published-package
 installation, and explicit release approval are complete. Protocol, Core, SDK,
@@ -126,12 +128,14 @@ sanitization as a required issue before Agent or Providers publication.
 4. Verified a clean package-set install and a maintainer global reinstall.
 5. Tagged the published package identity commit
    `ef6c8de54d123a92a4c566458b38553d536bbae9` as `v0.25.2`.
-6. Reserved Agent and Providers for independent audit and approval; neither
+6. Published the GitHub Release and deprecated CLI 0.25.1 plus Core/SDK 0.1.0
+   with upgrade guidance in npm.
+7. Reserved Agent and Providers for independent audit and approval; neither
    blocks local Core use.
 
 The withdrawn CLI 0.25.0 version cannot be reused. CLI 0.25.1 and Core/SDK
-0.1.0 are unsupported and should remain deprecated in npm so consumers receive
-an upgrade warning without erasing the registry audit trail.
+0.1.0 are unsupported and deprecated in npm so consumers receive an upgrade
+warning without erasing the registry audit trail.
 
 ## Maintainer Audit Checklist
 
