@@ -2,7 +2,7 @@
 
 ## Status
 
-Locally audited release checkpoint; final 0.25.1 remote verification pending.
+Locally audited release checkpoint; final 0.25.2 remote verification pending.
 
 The implementation milestone and local codebase audits are complete, but
 publication remains deliberately blocked on pushed CI, the published-dependency
@@ -16,7 +16,7 @@ publication, or hosted deployment is authorized by this document.
 | `@cojacklabs/autoforge-protocol`  |           `0.1.0` | Versioned contracts and capabilities                 |
 | `@cojacklabs/autoforge-core`      |           `0.1.1` | Model-independent project intelligence               |
 | `@cojacklabs/autoforge-sdk`       |           `0.1.1` | Supported programmatic facade                        |
-| `@cojacklabs/autoforge`           |          `0.25.1` | Deterministic Core CLI and optional Agent launcher   |
+| `@cojacklabs/autoforge`           |          `0.25.2` | Deterministic Core CLI and optional Agent launcher   |
 | `@cojacklabs/autoforge-agent`     |           `0.1.0` | Experimental local Agent; independent approval       |
 | `@cojacklabs/autoforge-providers` |           `0.1.0` | Experimental provider boundary; independent approval |
 
@@ -26,7 +26,7 @@ Production Web and hosted Service packages are explicitly deferred.
 
 Validated locally on 2026-08-25 with the release runtime, Node.js 22.19.0,
 and pnpm 11.22.0. The repaired Node.js 22 Linux jobs and native Windows launcher
-job passed remotely; the final 0.25.1 identity commit must reproduce that result.
+job passed remotely; the final 0.25.2 identity commit must reproduce that result.
 
 | Gate                         | Result | Evidence                                                                                                                                                              |
 | ---------------------------- | ------ | --------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -50,7 +50,7 @@ job passed remotely; the final 0.25.1 identity commit must reproduce that result
 | Optional-store recovery      | Pass   | Missing bootstrap manifest returns actionable `not-scaffolded` status                                                                                                 |
 | Relocation recovery          | Pass   | Existing Agent contract root is repaired; missing contract is accepted                                                                                                |
 | Package contents             | Pass   | Core CLI tarball contains only license, README, bin, bundle, source map, and manifest                                                                                 |
-| Isolated package-set install | Pass   | Locally packed Protocol/Core/SDK/Core CLI plus cached public dependencies install and report `AutoForge 0.25.1`                                                       |
+| Isolated package-set install | Pass   | Locally packed Protocol/Core/SDK/Core CLI plus cached public dependencies install and report `AutoForge 0.25.2`                                                       |
 | Release metadata             | Pass   | Changesets configured for independent public packages; v0.25 recorded as the already-versioned baseline import                                                        |
 
 An earlier evidence-collection run executed `npm pack` concurrently with the
@@ -151,7 +151,7 @@ sanitization as a required issue before Agent or Providers publication.
 ## Known Non-Release State
 
 - The globally installed 0.24.0 CLI still throws `ENOENT` for an absent
-  bootstrap manifest; the 0.25.1 worktree bundle returns actionable
+  bootstrap manifest; the 0.25.2 worktree bundle returns actionable
   `not-scaffolded` output. This is the bug the upgrade resolves.
 - Production Web, Service, payments, cloud synchronization, hosted credential
   custody, multi-model autonomy, native OS installers, and raw transcript

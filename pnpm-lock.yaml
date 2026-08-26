@@ -9,13 +9,13 @@ importers:
   .:
     dependencies:
       '@cojacklabs/autoforge-core':
-        specifier: ^0.1.0
+        specifier: ^0.1.1
         version: link:packages/core
       '@cojacklabs/autoforge-protocol':
         specifier: ^0.1.0
         version: link:packages/protocol
       '@cojacklabs/autoforge-sdk':
-        specifier: ^0.1.0
+        specifier: ^0.1.1
         version: link:packages/sdk
       yaml:
         specifier: ^2.9.0

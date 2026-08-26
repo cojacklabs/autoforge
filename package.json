@@ -1,6 +1,6 @@
 {
   "name": "@cojacklabs/autoforge",
-  "version": "0.25.1",
+  "version": "0.25.2",
   "packageManager": "pnpm@11.22.0",
   "type": "module",
   "private": false,
@@ -44,9 +44,9 @@
     "LICENSE"
   ],
   "dependencies": {
-    "@cojacklabs/autoforge-core": "^0.1.0",
+    "@cojacklabs/autoforge-core": "^0.1.1",
     "@cojacklabs/autoforge-protocol": "^0.1.0",
-    "@cojacklabs/autoforge-sdk": "^0.1.0",
+    "@cojacklabs/autoforge-sdk": "^0.1.1",
     "yaml": "^2.9.0",
     "zod": "^4.4.3"
   },

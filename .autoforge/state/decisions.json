@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
-  "revision": 99,
-  "updatedAt": "2026-08-26T02:04:50.544Z",
+  "revision": 100,
+  "updatedAt": "2026-08-26T02:20:38.549Z",
   "data": {
     "decisions": [
       {
@@ -2436,10 +2436,10 @@
           "issue.prepare-reviewable-v0-25-release-checkpoint-and-remote-verification"
         ],
         "supersedes": null,
-        "status": "active",
+        "status": "superseded",
         "kind": "bugfix",
         "createdAt": "2026-08-26T01:42:51.181Z",
-        "updatedAt": "2026-08-26T01:42:51.181Z"
+        "updatedAt": "2026-08-26T02:20:38.522Z"
       },
       {
         "id": "decision.core-and-sdk-0-1-1-replace-the-unusable-0-1-0-registry-artifacts-with-explicit-n",
@@ -2465,6 +2465,31 @@
         "kind": "bugfix",
         "createdAt": "2026-08-26T02:04:50.516Z",
         "updatedAt": "2026-08-26T02:04:50.516Z"
+      },
+      {
+        "id": "decision.the-supported-v0-25-milestone-release-uses-core-cli-version-0-25-2-with-core-and",
+        "statement": "The supported v0.25 milestone release uses Core CLI version 0.25.2 with Core and SDK dependency floors at 0.1.1",
+        "reasoning": "The published 0.25.1 CLI predates the corrected library artifacts and permits 0.1.0, allowing pnpm supply-chain-aware subdependency resolution to retain the unsupported Core package",
+        "consequences": [
+          "Publish 0.25.2 only after a clean public-registry pnpm install selects Core 0.1.1 and SDK 0.1.1",
+          "Deprecate CLI 0.25.1 together with Core and SDK 0.1.0 after the corrected release is verified"
+        ],
+        "scope": [
+          "release",
+          "v0.25"
+        ],
+        "keywords": [
+          "pnpm",
+          "versioning"
+        ],
+        "relatedWork": [
+          "issue.prepare-reviewable-v0-25-release-checkpoint-and-remote-verification"
+        ],
+        "supersedes": "decision.the-supported-v0-25-milestone-release-uses-core-cli-version-0-25-1-after-the-mis",
+        "status": "active",
+        "kind": "bugfix",
+        "createdAt": "2026-08-26T02:20:38.522Z",
+        "updatedAt": "2026-08-26T02:20:38.522Z"
       }
     ]
   }
