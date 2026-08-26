@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
-  "revision": 382,
-  "updatedAt": "2026-08-26T05:04:26.600Z",
+  "revision": 383,
+  "updatedAt": "2026-08-26T13:55:29.272Z",
   "data": {
     "features": [
       {
@@ -2391,6 +2391,20 @@
           "include": [
             "apps/core-cli/src/status.ts",
             "test/status-command.test.ts",
+            "docs/**"
+          ],
+          "exclude": []
+        }
+      },
+      {
+        "name": "Reserve autoforge.sh domain when funding permits",
+        "description": "Business backburner reminder: consider acquiring autoforge.sh through Cloudflare when SaaS business funding comfortably supports the user-reported approximately  annual cost. Reconfirm current pricing and availability before purchase, and complete the already-planned brand, package, executable-name, and legal collision review before treating the domain as the public identity. Do not purchase or promote this item without explicit user approval.",
+        "status": "planned",
+        "createdAt": "2026-08-26T13:55:29.136Z",
+        "updatedAt": "2026-08-26T13:55:29.136Z",
+        "id": "issue.reserve-autoforge-sh-domain-when-funding-permits",
+        "scope": {
+          "include": [
             "docs/**"
           ],
           "exclude": []

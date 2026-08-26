@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
-  "revision": 107,
-  "updatedAt": "2026-08-26T05:03:45.914Z",
+  "revision": 108,
+  "updatedAt": "2026-08-26T13:55:34.905Z",
   "data": {
     "decisions": [
       {
@@ -2669,6 +2669,29 @@
         "kind": "architecture",
         "createdAt": "2026-08-26T05:03:45.851Z",
         "updatedAt": "2026-08-26T05:03:45.851Z"
+      },
+      {
+        "id": "decision.issue-reserve-autoforge-sh-domain-when-funding-permits-strategic-assessment-reco",
+        "statement": "issue.reserve-autoforge-sh-domain-when-funding-permits: strategic assessment recommends backlog",
+        "reasoning": "autoforge.sh is the preferred domain candidate, but acquisition should wait for available SaaS business funding, current price and availability confirmation, and the separate AutoForge brand and legal collision review. No current development or release depends on purchasing it.",
+        "consequences": [
+          "alignment=high, value=medium, risk=medium, cost=low, evidenceStrength=uncertain, dependencyPressure=low, complexity=low, releaseConstraint=low"
+        ],
+        "scope": [
+          "strategy"
+        ],
+        "keywords": [
+          "strategy",
+          "backlog"
+        ],
+        "relatedWork": [
+          "issue.reserve-autoforge-sh-domain-when-funding-permits"
+        ],
+        "supersedes": null,
+        "status": "active",
+        "kind": "feature-note",
+        "createdAt": "2026-08-26T13:55:34.877Z",
+        "updatedAt": "2026-08-26T13:55:34.877Z"
       }
     ]
   }
