@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
-  "revision": 389,
-  "updatedAt": "2026-08-26T20:44:11.698Z",
+  "revision": 393,
+  "updatedAt": "2026-08-26T21:03:51.840Z",
   "data": {
     "features": [
       {
@@ -63,9 +63,9 @@
       {
         "name": "v0.25 Platform Architecture Migration",
         "description": "Extract a stable model-independent Core, protocol, SDK, and deterministic CLI; deprecate the Core TUI; and prove the boundary with an experimental local AutoForge Agent while preserving v0.24 compatibility.",
-        "status": "planned",
+        "status": "completed",
         "createdAt": "2026-08-24T14:21:30.575Z",
-        "updatedAt": "2026-08-24T14:21:30.575Z",
+        "updatedAt": "2026-08-26T21:05:00.000Z",
         "id": "feature.v0-25-platform-architecture-migration"
       }
     ],
@@ -133,9 +133,9 @@
       {
         "name": "Architecture and Governance",
         "description": "Approve the revised product boundary, reconcile north-star documentation, preserve superseded TUI work, and define package ownership and versioning.",
-        "status": "planned",
+        "status": "completed",
         "createdAt": "2026-08-24T14:21:40.397Z",
-        "updatedAt": "2026-08-24T14:21:40.397Z",
+        "updatedAt": "2026-08-26T21:05:00.000Z",
         "id": "phase.architecture-and-governance",
         "featureId": "feature.v0-25-platform-architecture-migration",
         "sequence": 1
@@ -143,9 +143,9 @@
       {
         "name": "Workspace Foundation",
         "description": "Introduce the monorepo workspace and dependency-aware task graph without changing v0.24 behavior.",
-        "status": "planned",
+        "status": "completed",
         "createdAt": "2026-08-24T14:21:40.735Z",
-        "updatedAt": "2026-08-24T14:21:40.735Z",
+        "updatedAt": "2026-08-26T21:05:00.000Z",
         "id": "phase.workspace-foundation",
         "featureId": "feature.v0-25-platform-architecture-migration",
         "sequence": 2
@@ -153,9 +153,9 @@
       {
         "name": "Protocol and Core Extraction",
         "description": "Extract versioned contracts and model-independent application services behind enforceable boundaries.",
-        "status": "planned",
+        "status": "completed",
         "createdAt": "2026-08-24T14:21:41.122Z",
-        "updatedAt": "2026-08-24T14:21:41.122Z",
+        "updatedAt": "2026-08-26T21:05:00.000Z",
         "id": "phase.protocol-and-core-extraction",
         "featureId": "feature.v0-25-platform-architecture-migration",
         "sequence": 3
@@ -163,9 +163,9 @@
       {
         "name": "Deterministic Core CLI",
         "description": "Make the existing CLI a thin Core consumer, add status and Git-root-aware attachment, and deprecate the interactive TUI.",
-        "status": "planned",
+        "status": "completed",
         "createdAt": "2026-08-24T14:21:41.515Z",
-        "updatedAt": "2026-08-24T14:21:41.515Z",
+        "updatedAt": "2026-08-26T21:05:00.000Z",
         "id": "phase.deterministic-core-cli",
         "featureId": "feature.v0-25-platform-architecture-migration",
         "sequence": 4
@@ -173,9 +173,9 @@
       {
         "name": "SDK and Structured Handoffs",
         "description": "Publish the programmatic integration boundary and provider-neutral cross-agent handoff contract.",
-        "status": "planned",
+        "status": "completed",
         "createdAt": "2026-08-24T14:21:41.886Z",
-        "updatedAt": "2026-08-24T14:21:41.886Z",
+        "updatedAt": "2026-08-26T21:05:00.000Z",
         "id": "phase.sdk-and-structured-handoffs",
         "featureId": "feature.v0-25-platform-architecture-migration",
         "sequence": 5
@@ -183,9 +183,9 @@
       {
         "name": "Experimental Local Agent",
         "description": "Prove the Core boundary with an account-free local agent using one model provider and explicit approvals.",
-        "status": "planned",
+        "status": "completed",
         "createdAt": "2026-08-24T14:21:42.268Z",
-        "updatedAt": "2026-08-24T14:21:42.268Z",
+        "updatedAt": "2026-08-26T21:05:00.000Z",
         "id": "phase.experimental-local-agent",
         "featureId": "feature.v0-25-platform-architecture-migration",
         "sequence": 6
@@ -193,9 +193,9 @@
       {
         "name": "Compatibility Hardening and Release",
         "description": "Validate v0.24 compatibility, repair known state failures, and assemble v0.25 release evidence.",
-        "status": "planned",
+        "status": "completed",
         "createdAt": "2026-08-24T14:21:42.640Z",
-        "updatedAt": "2026-08-24T14:21:42.640Z",
+        "updatedAt": "2026-08-26T21:05:00.000Z",
         "id": "phase.compatibility-hardening-and-release",
         "featureId": "feature.v0-25-platform-architecture-migration",
         "sequence": 7
@@ -2439,6 +2439,20 @@
           "include": [
             "README.md",
             "docs/planning/0.26/ULTIMATE_AUTOFORGE_AI_NORTH_STAR.md",
+            ".autoforge/state/**"
+          ],
+          "exclude": []
+        }
+      },
+      {
+        "name": "Reconcile completed v0.25 parent hierarchy",
+        "description": "Correct the v0.25 platform migration feature and all seven phases from planned to completed now that every one of their 22 child tasks is completed and the v0.25.2 release record is approved and closed.",
+        "status": "completed",
+        "createdAt": "2026-08-26T21:02:57.093Z",
+        "updatedAt": "2026-08-26T21:03:51.741Z",
+        "id": "issue.reconcile-completed-v0-25-parent-hierarchy",
+        "scope": {
+          "include": [
             ".autoforge/state/**"
           ],
           "exclude": []

@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
-  "revision": 111,
-  "updatedAt": "2026-08-26T20:41:44.864Z",
+  "revision": 112,
+  "updatedAt": "2026-08-26T21:03:51.365Z",
   "data": {
     "decisions": [
       {
@@ -2769,6 +2769,32 @@
         "kind": "feature-note",
         "createdAt": "2026-08-26T20:41:44.838Z",
         "updatedAt": "2026-08-26T20:41:44.838Z"
+      },
+      {
+        "id": "decision.the-v0-25-platform-migration-feature-and-all-seven-parent-phases-are-completed",
+        "statement": "The v0.25 platform migration feature and all seven parent phases are completed",
+        "reasoning": "Every one of the feature's 22 child tasks is completed, v0.25.2 is approved and publicly released, and the remaining planned parent statuses were stale bookkeeping. The current CLI exposes lifecycle transitions only for tasks and issues, so the schema-valid parent correction was applied directly as a bounded state reconciliation.",
+        "consequences": [
+          "Treat feature.v0-25-platform-architecture-migration and its seven phases as completed historical work.",
+          "Do not interpret experimental Agent and Providers publication gates as incomplete Core v0.25 scope; they remain separately governed follow-up work.",
+          "A future lifecycle enhancement may add derived or explicit feature and phase completion commands to prevent stale parent statuses."
+        ],
+        "scope": [
+          "release",
+          "v0.25"
+        ],
+        "keywords": [
+          "hierarchy",
+          "completion"
+        ],
+        "relatedWork": [
+          "issue.reconcile-completed-v0-25-parent-hierarchy"
+        ],
+        "supersedes": null,
+        "status": "active",
+        "kind": "feature-note",
+        "createdAt": "2026-08-26T21:03:51.339Z",
+        "updatedAt": "2026-08-26T21:03:51.339Z"
       }
     ]
   }
