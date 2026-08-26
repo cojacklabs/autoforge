@@ -60,12 +60,15 @@ to its own approval gates.
 - [Ultimate AutoForge AI North-Star](planning/0.26/ULTIMATE_AUTOFORGE_AI_NORTH_STAR.md)
 - [v0.26 and Beyond: Trust, Portability, Agent, Memory, Integration, and Cloud](planning/0.26/POST_V0_25_NORTH_STAR_ROADMAP.md)
 - [AutoForgeAI Orchestration Capability Adoption](planning/0.26/AUTOFORGEAI_ORCHESTRATION_CAPABILITY_ADOPTION.md)
+- [Agentic SDLC Product Track](planning/0.26/AGENTIC_SDLC_PRODUCT_TRACK.md)
 
 The ultimate north-star is the authoritative product destination. The roadmap
 is the proposed delivery baseline after v0.25, and the capability-adoption
 document preserves the clean-room orchestration portfolio. Later version
 assignments are candidate sequencing, not automatic authorization to implement
-or publish every described capability.
+or publish every described capability. The Agentic SDLC product track is the
+first concrete vertical beneath that destination and separates interactive,
+supervised, hosted, and shared-foundation responsibilities.
 
 ## Specialist References
 

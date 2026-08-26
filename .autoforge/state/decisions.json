@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
-  "revision": 112,
-  "updatedAt": "2026-08-26T21:03:51.365Z",
+  "revision": 113,
+  "updatedAt": "2026-08-26T23:30:38.488Z",
   "data": {
     "decisions": [
       {
@@ -2795,6 +2795,34 @@
         "kind": "feature-note",
         "createdAt": "2026-08-26T21:03:51.339Z",
         "updatedAt": "2026-08-26T21:03:51.339Z"
+      },
+      {
+        "id": "decision.continuous-agentic-sdlc-automation-is-autoforge-s-first-concrete-product-vertica",
+        "statement": "Continuous Agentic SDLC automation is AutoForge's first concrete product vertical beneath the ultimate north-star",
+        "reasoning": "The strategy gives AutoForge a commercially useful path from its deterministic project-intelligence foundation to a Cursor/TRAE-like local Agent, supervised review-ready automation, and later hosted continuous delivery while preserving the existing Core, Agent, Service, Web, storage, authority, and release boundaries.",
+        "consequences": [
+          "Use docs/planning/0.26/AGENTIC_SDLC_PRODUCT_TRACK.md as the authoritative product-track baseline and retain the dev strategy as source brainstorming.",
+          "Keep v0.26 focused on trust and provider-neutral execution contracts; do not require hosted intake, queues, databases, or Web infrastructure for its exit gate.",
+          "Develop interactive Agent, local review-ready automation, integrations, hosted Service, and Web team operations as compatible profiles mapped provisionally across later horizons.",
+          "Register the proposed feature hierarchy and bounded implementation work only after the independent post-v0.25 transition audit and separate strategy assessment."
+        ],
+        "scope": [
+          "product",
+          "architecture",
+          "roadmap"
+        ],
+        "keywords": [
+          "agentic-sdlc",
+          "automation"
+        ],
+        "relatedWork": [
+          "issue.reconcile-the-agentic-sdlc-product-track-into-the-north-star"
+        ],
+        "supersedes": null,
+        "status": "active",
+        "kind": "feature-note",
+        "createdAt": "2026-08-26T23:30:38.460Z",
+        "updatedAt": "2026-08-26T23:30:38.460Z"
       }
     ]
   }

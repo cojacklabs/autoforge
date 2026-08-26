@@ -98,6 +98,22 @@ records clean-room, licensing, brand-collision, and explicit non-adoption
 boundaries; the reviewed AGPL source must not be copied into this MIT repository
 without separate legal and license approval.
 
+## Agentic SDLC Product Track
+
+Continuous Agentic SDLC automation is the first concrete product vertical
+beneath the ultimate north-star. It combines four compatible profiles: a
+Cursor/TRAE-like interactive local Agent, supervised request-to-review
+automation, a later hosted continuous Service, and the shared deterministic
+foundation used by both.
+
+The
+[`AGENTIC_SDLC_PRODUCT_TRACK.md`](./AGENTIC_SDLC_PRODUCT_TRACK.md)
+defines the operating loop, architecture ownership, canonical contracts,
+autonomy policy, storage and audit boundaries, candidate delivery mapping,
+future work hierarchy, and success measures. It preserves v0.26 as a trust and
+contract milestone; database-backed intake, durable hosted queues, and team
+mission control remain later Service and Web horizons.
+
 ## v0.26 Candidate Charter: Trustworthy Portable Foundation
 
 v0.26 should improve trust, evidence, and portability before AutoForge expands

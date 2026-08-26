@@ -14,7 +14,7 @@
     "kind": "issue",
     "id": "issue.independently-validate-the-post-v0-25-transition-checkpoint",
     "name": "Independently validate the post-v0.25 transition checkpoint",
-    "objective": "Independently audit the seven local commits after the published v0.25.2 closure, report any blockers, and confirm whether the checkpoint is safe to push before further v0.26 implementation."
+    "objective": "Independently audit every local commit after the published v0.25.2 closure, including the reconciled Agentic SDLC product track, report any blockers, and confirm whether the checkpoint is safe to push before further v0.26 implementation."
   },
   "scope": {
     "include": [
@@ -74,11 +74,19 @@
       "status": "added"
     },
     {
+      "path": "docs/planning/0.26/AGENTIC_SDLC_PRODUCT_TRACK.md",
+      "status": "added"
+    },
+    {
       "path": "docs/planning/0.26/POST_V0_25_NORTH_STAR_ROADMAP.md",
       "status": "added"
     },
     {
       "path": "docs/planning/0.26/ULTIMATE_AUTOFORGE_AI_NORTH_STAR.md",
+      "status": "added"
+    },
+    {
+      "path": "dev/AutoForge_Agentic_SDLC_Automation_Strategy.md",
       "status": "added"
     },
     {
@@ -122,6 +130,10 @@
     {
       "id": "decision.the-v0-25-platform-migration-feature-and-all-seven-parent-phases-are-completed",
       "statement": "The v0.25 platform migration feature and all seven parent phases are completed"
+    },
+    {
+      "id": "decision.continuous-agentic-sdlc-automation-is-autoforge-s-first-concrete-product-vertica",
+      "statement": "Continuous Agentic SDLC automation is AutoForge's first concrete product vertical beneath the ultimate north-star"
     }
   ],
   "validation": [
@@ -162,7 +174,7 @@
     }
   ],
   "risks": [
-    "The seven commits after origin/main are local only, so no remote CI result exists for the combined checkpoint.",
+    "All commits after origin/main are local only, so no remote CI result exists for the combined checkpoint.",
     "The globally installed 0.25.2 CLI predates superseding-evidence semantics and therefore reports historical failures as current blockers; validate the new behavior through the source-built CLI until a later release contains it.",
     "The orchestration plan still projects two already-completed issues as ready, so orchestration state may require a separate reconciliation before it is used to assign v0.26 work.",
     "The experimental Agent and Providers remain independently gated on generated-content safety and native credential-store validation; they were not approved by the Core v0.25.2 release."
@@ -171,7 +183,7 @@
     "Does an independent review find any correctness, security, documentation, or release-history blocker in origin/main..HEAD?",
     "Should stale completed nodes in the current orchestration plan be reconciled before the next v0.26 implementation assignment?"
   ],
-  "nextAction": "Run the documented AutoForge startup sequence, inspect this handoff and origin/main..HEAD, execute proportional source and package validation without editing or pushing, and report findings against issue.independently-validate-the-post-v0-25-transition-checkpoint.",
-  "contextFingerprint": "0a6be5102fd6bd4d6c0f1348e804e4919596693e300cc909317f6048dc4cd2aa",
+  "nextAction": "Run the documented AutoForge startup sequence, inspect this handoff and origin/main..HEAD, verify that the Agentic SDLC product track preserves the authoritative north-star and release boundaries, execute proportional source and package validation without editing or pushing, and report findings against issue.independently-validate-the-post-v0-25-transition-checkpoint.",
+  "contextFingerprint": "cfb09ca096cda200710fd6a7be1ab75bfef0a7dd97f3734f749dfc059732414e",
   "createdAt": "2026-08-26T21:09:36Z"
 }

@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
-  "revision": 394,
-  "updatedAt": "2026-08-26T21:09:30.530Z",
+  "revision": 397,
+  "updatedAt": "2026-08-26T23:33:45.462Z",
   "data": {
     "features": [
       {
@@ -2475,6 +2475,24 @@
             ".autoforge/provider-cache/**",
             ".autoforge/provider-logs/**"
           ]
+        }
+      },
+      {
+        "name": "Reconcile the Agentic SDLC product track into the north-star",
+        "description": "Promote the revised continuous Agentic SDLC strategy into authoritative planning without replacing the ultimate north-star or pulling hosted infrastructure into v0.26. Separate interactive Agent, supervised automation, hosted Service, and shared foundation responsibilities; map the vertical across candidate horizons; preserve architectural invariants; define the future AutoForge hierarchy and initial contract work; and refresh the independent-validation handoff.",
+        "status": "completed",
+        "createdAt": "2026-08-26T23:29:05.446Z",
+        "updatedAt": "2026-08-26T23:33:45.368Z",
+        "id": "issue.reconcile-the-agentic-sdlc-product-track-into-the-north-star",
+        "scope": {
+          "include": [
+            "docs/planning/0.26/**",
+            "docs/README.md",
+            "dev/AutoForge_Agentic_SDLC_Automation_Strategy.md",
+            ".autoforge/handoffs/**",
+            ".autoforge/state/**"
+          ],
+          "exclude": []
         }
       }
     ],

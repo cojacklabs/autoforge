@@ -184,6 +184,20 @@ The long-term execution system should include:
 The detailed clean-room capability portfolio and ownership mapping live in
 [AutoForgeAI Orchestration Capability Adoption](./AUTOFORGEAI_ORCHESTRATION_CAPABILITY_ADOPTION.md).
 
+### First Product Vertical: Agentic SDLC
+
+AutoForge's first complete vertical should convert validated software requests
+into governed, evidence-backed, review-ready changes. The vertical progresses
+from a Cursor/TRAE-like interactive local Agent, through supervised local
+request-to-review automation, into later integration, hosted Service, and team
+mission-control capabilities without moving model calls or hosted dependencies
+into Core.
+
+The authoritative
+[Agentic SDLC Product Track](./AGENTIC_SDLC_PRODUCT_TRACK.md) separates these
+execution profiles, defines their shared contracts and authority boundaries,
+and maps them onto the candidate delivery horizons below.
+
 ## Storage Boundaries
 
 Storage follows a file-canonical, database-accelerated model:
