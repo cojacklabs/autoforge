@@ -33,7 +33,7 @@ function compareEvidence(
   right: ValidationEvidence,
 ): number {
   return (
-    left.capturedAt.localeCompare(right.capturedAt) ||
+    Date.parse(left.capturedAt) - Date.parse(right.capturedAt) ||
     left.id.localeCompare(right.id)
   );
 }
@@ -66,9 +66,11 @@ function isAfterAuthority(
   evidence: ValidationEvidence,
   authority: AuthoritativeEvidence,
 ): boolean {
+  const instantDifference =
+    Date.parse(evidence.capturedAt) - Date.parse(authority.capturedAt);
   return (
-    evidence.capturedAt.localeCompare(authority.capturedAt) > 0 ||
-    (evidence.capturedAt === authority.capturedAt &&
+    instantDifference > 0 ||
+    (instantDifference === 0 &&
       evidence.id.localeCompare(authority.evidenceId) > 0)
   );
 }

@@ -70,6 +70,31 @@ describe("quality readiness", () => {
     });
   });
 
+  it("orders offset timestamps by chronological instant for the same work", () => {
+    const result = evaluateReadiness([
+      evidence("tests-z-older", "failed", {
+        workId: "issue.checkout",
+        capturedAt: "2026-08-22T01:00:00+02:00",
+      }),
+      evidence("tests-a-newer", "passed", {
+        workId: "issue.checkout",
+        capturedAt: "2026-08-22T00:30:00Z",
+      }),
+    ]);
+
+    expect(result).toMatchObject({
+      ready: true,
+      effectiveTotal: 1,
+      effectivePassed: 1,
+      authoritativeEvidence: [
+        {
+          evidenceId: "evidence.tests-a-newer",
+          supersedes: ["evidence.tests-z-older"],
+        },
+      ],
+    });
+  });
+
   it("does not let one work item supersede another work item's failure", () => {
     const result = evaluateReadiness([
       evidence("checkout-failed", "failed", {
@@ -99,6 +124,31 @@ describe("quality readiness", () => {
       }),
       evidence("project-passed", "passed", {
         capturedAt: "2026-08-22T00:01:00.000Z",
+      }),
+    ]);
+
+    expect(result).toMatchObject({
+      ready: true,
+      effectiveTotal: 1,
+      effectivePassed: 1,
+      authoritativeEvidence: [
+        {
+          evidenceId: "evidence.project-passed",
+          workId: null,
+          supersedes: ["evidence.checkout-failed"],
+        },
+      ],
+    });
+  });
+
+  it("applies an offset-aware project-wide baseline to work evidence", () => {
+    const result = evaluateReadiness([
+      evidence("checkout-failed", "failed", {
+        workId: "issue.checkout",
+        capturedAt: "2026-08-22T01:00:00+02:00",
+      }),
+      evidence("project-passed", "passed", {
+        capturedAt: "2026-08-22T00:30:00Z",
       }),
     ]);
 
@@ -166,9 +216,11 @@ describe("quality readiness", () => {
   it("uses evidence IDs to resolve timestamp ties independent of input order", () => {
     const failed = evidence("tests-a", "failed", {
       workId: "issue.checkout",
+      capturedAt: "2026-08-22T00:00:00Z",
     });
     const passed = evidence("tests-z", "passed", {
       workId: "issue.checkout",
+      capturedAt: "2026-08-22T01:00:00+01:00",
     });
 
     for (const records of [

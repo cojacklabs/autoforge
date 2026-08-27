@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
-  "revision": 401,
-  "updatedAt": "2026-08-27T13:58:23.517Z",
+  "revision": 403,
+  "updatedAt": "2026-08-27T14:08:18.751Z",
   "data": {
     "features": [
       {
@@ -2498,9 +2498,9 @@
       {
         "name": "Order superseding evidence by chronological instant",
         "description": "Fix readiness authority ordering to compare capturedAt as chronological instants rather than raw ISO strings. validationEvidenceSchema accepts timezone offsets, and lexicographic comparison can reverse valid timestamps with different offsets, causing stale evidence to supersede newer evidence. Normalize or parse timestamps deterministically, preserve evidence-ID tie breaking for equal instants, and add offset-form regression tests for selection and project-baseline comparisons.",
-        "status": "planned",
+        "status": "completed",
         "createdAt": "2026-08-27T13:55:47.382Z",
-        "updatedAt": "2026-08-27T13:55:47.382Z",
+        "updatedAt": "2026-08-27T14:08:18.624Z",
         "id": "issue.order-superseding-evidence-by-chronological-instant",
         "scope": {
           "include": [

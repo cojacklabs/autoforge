@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
-  "revision": 114,
-  "updatedAt": "2026-08-27T13:58:23.244Z",
+  "revision": 115,
+  "updatedAt": "2026-08-27T14:08:18.209Z",
   "data": {
     "decisions": [
       {
@@ -2845,6 +2845,32 @@
         "kind": "skip-reason",
         "createdAt": "2026-08-27T13:58:23.183Z",
         "updatedAt": "2026-08-27T13:58:23.183Z"
+      },
+      {
+        "id": "decision.superseding-evidence-is-ordered-by-chronological-instant-before-deterministic-ev",
+        "statement": "Superseding evidence is ordered by chronological instant before deterministic evidence-ID tie breaking",
+        "reasoning": "Validation timestamps permit timezone offsets, so lexicographic ISO-string ordering can reverse two valid chronological instants and select stale evidence as authoritative. Parsing each capturedAt value preserves true temporal order, while the evidence ID remains a stable tie breaker when different timestamp strings represent the same instant.",
+        "consequences": [
+          "Readiness authority selection and project-wide baseline comparisons use parsed timestamp instants.",
+          "Equivalent instants with different offsets remain deterministic through evidence-ID ordering.",
+          "Offset-form regression tests protect same-work supersession and project-wide coverage behavior."
+        ],
+        "scope": [
+          "quality",
+          "evidence"
+        ],
+        "keywords": [
+          "readiness",
+          "timestamp"
+        ],
+        "relatedWork": [
+          "issue.order-superseding-evidence-by-chronological-instant"
+        ],
+        "supersedes": null,
+        "status": "active",
+        "kind": "bugfix",
+        "createdAt": "2026-08-27T14:08:18.181Z",
+        "updatedAt": "2026-08-27T14:08:18.181Z"
       }
     ]
   }
