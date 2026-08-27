@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
-  "revision": 8,
-  "updatedAt": "2026-08-27T15:26:52.627Z",
+  "revision": 9,
+  "updatedAt": "2026-08-27T15:44:22.745Z",
   "data": {
     "assessments": [
       {
@@ -179,6 +179,28 @@
         "status": "active",
         "createdAt": "2026-08-27T15:26:52.525Z",
         "updatedAt": "2026-08-27T15:26:52.525Z"
+      },
+      {
+        "id": "strategy.issue-reserve-autoforgerai-com-when-funding-and-review-permit",
+        "workId": "issue.reserve-autoforgerai-com-when-funding-and-review-permit",
+        "factors": {
+          "alignment": "high",
+          "value": "medium",
+          "risk": "medium",
+          "cost": "low",
+          "evidenceStrength": "uncertain",
+          "dependencyPressure": "low",
+          "complexity": "low",
+          "releaseConstraint": "low"
+        },
+        "decision": "backlog",
+        "rationale": "autoforgerai.com is a useful product-domain candidate alongside autoforge.sh, but acquisition should wait for business funding, current availability and renewal-price verification, comparative brand review, legal collision review, ownership planning, and explicit spending approval. No current engineering or release work depends on it.",
+        "evidenceIds": [],
+        "resultingDecision": "decision.issue-reserve-autoforgerai-com-when-funding-and-review-permit-strategic-assessme",
+        "supersedes": null,
+        "status": "active",
+        "createdAt": "2026-08-27T15:44:22.666Z",
+        "updatedAt": "2026-08-27T15:44:22.666Z"
       }
     ]
   }

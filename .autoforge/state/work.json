@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
-  "revision": 404,
-  "updatedAt": "2026-08-27T15:26:45.556Z",
+  "revision": 405,
+  "updatedAt": "2026-08-27T15:44:16.942Z",
   "data": {
     "features": [
       {
@@ -2546,6 +2546,22 @@
             "test/**",
             "docs/**",
             ".autoforge/**"
+          ],
+          "exclude": []
+        }
+      },
+      {
+        "name": "Reserve autoforgerai.com when funding and review permit",
+        "description": "Keep autoforgerai.com as an explicit AutoForge product-domain candidate alongside autoforge.sh. Before acquisition, verify current availability and renewal price, compare brand clarity and discoverability with autoforge.sh, complete the separate brand and legal collision review, confirm DNS and account ownership strategy, and obtain explicit spending approval. No current development, validation, publication, or hosted-service milestone depends on purchasing this domain.",
+        "status": "planned",
+        "createdAt": "2026-08-27T15:44:16.916Z",
+        "updatedAt": "2026-08-27T15:44:16.916Z",
+        "id": "issue.reserve-autoforgerai-com-when-funding-and-review-permit",
+        "scope": {
+          "include": [
+            "docs/**",
+            ".autoforge/state/**",
+            ".autoforge/learning/strategy.json"
           ],
           "exclude": []
         }
