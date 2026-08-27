@@ -325,8 +325,10 @@ for the preserved concept baseline.
 The ultimate interactive experience is a governed visual canvas where users
 can inspect and refine AutoForge's interpretation of a prompt, then carry the
 same typed intent through prototyping, design, bootstrapping, implementation,
-preview, and validation. This is a long-horizon product destination rather
-than an expansion of the v0.26 charter.
+preview, validation, deployment, operation, and continued evolution. Visual
+manipulation and direct raw-code interaction are equal first-class modes over
+the same project. This is a long-horizon product destination rather than an
+expansion of the v0.26 charter.
 
 Candidate outcomes:
 
@@ -334,6 +336,8 @@ Candidate outcomes:
   applications;
 - visual editing of flows, screens, components, tokens, states, responsive
   behavior, accessibility, assets, and data relationships;
+- an integrated code workspace for files, diffs, dependencies, schemas, APIs,
+  tests, infrastructure, logs, and runtime evidence;
 - conversational, canvas, and code edits converging on versioned canonical
   artifacts with provenance and approval history;
 - bidirectional design-to-code and code-to-design synchronization with drift
@@ -342,6 +346,9 @@ Candidate outcomes:
   recoverable version history;
 - high-quality design-system and UX constraints whose compliance is validated
   independently from visual generation;
+- a governed prototype-to-production path covering architecture, frontend and
+  backend implementation, data, identity, security, testing, deployment,
+  observability, documentation, incident readiness, and ongoing support;
 - portable exports and provider-neutral adapters for Framer, Figma, Stitch,
   TypeUI, and future visual platforms.
 
@@ -352,9 +359,10 @@ and editor over canonical project truth; it must not create a competing state
 system.
 
 Exit evidence: a user can move a representative application from natural
-language to an inspectable canvas, refine it visually or conversationally,
-generate and edit portable code, detect round-trip drift, and validate the
-result without losing intent, provenance, or control.
+language to an inspectable canvas, refine it visually, conversationally, or in
+raw code, detect round-trip drift, and carry it through a credible production
+and support lifecycle without losing intent, provenance, portability, or
+control.
 
 ## Immediate Implementation Order
 

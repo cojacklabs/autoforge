@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
-  "revision": 119,
-  "updatedAt": "2026-08-27T19:17:27.123Z",
+  "revision": 121,
+  "updatedAt": "2026-08-27T19:26:50.798Z",
   "data": {
     "decisions": [
       {
@@ -2969,6 +2969,57 @@
         "kind": "feature-note",
         "createdAt": "2026-08-27T19:17:27.051Z",
         "updatedAt": "2026-08-27T19:17:27.051Z"
+      },
+      {
+        "id": "decision.issue-clarify-the-visual-product-studio-as-a-code-first-production-workspace-str",
+        "statement": "issue.clarify-the-visual-product-studio-as-a-code-first-production-workspace: strategic assessment recommends now",
+        "reasoning": "This is a bounded clarification of the already-adopted long-horizon product destination. Recording raw-code parity and the prototype-to-production lifecycle now prevents the visual canvas from being misread as a mockup-only tool while leaving implementation sequencing unchanged.",
+        "consequences": [
+          "alignment=high, value=medium, risk=low, cost=low, evidenceStrength=medium, dependencyPressure=low, complexity=low, releaseConstraint=low"
+        ],
+        "scope": [
+          "strategy"
+        ],
+        "keywords": [
+          "strategy",
+          "now"
+        ],
+        "relatedWork": [
+          "issue.clarify-the-visual-product-studio-as-a-code-first-production-workspace"
+        ],
+        "supersedes": null,
+        "status": "active",
+        "kind": "feature-note",
+        "createdAt": "2026-08-27T19:26:11.168Z",
+        "updatedAt": "2026-08-27T19:26:11.168Z"
+      },
+      {
+        "id": "decision.the-visual-product-studio-treats-raw-code-and-visual-manipulation-as-equal-first",
+        "statement": "The Visual Product Studio treats raw code and visual manipulation as equal first-class editing modes across the complete prototype-to-production lifecycle.",
+        "reasoning": "AutoForge's destination is not another mockup generator. Users need one governed workspace that preserves intent while exposing the real implementation and supports architecture, delivery, operation, and long-term maintenance.",
+        "consequences": [
+          "The canvas must expose a direct code workspace for files, diffs, dependencies, schemas, APIs, tests, infrastructure, logs, and runtime evidence.",
+          "Prototype completion is not product completion; production readiness requires independent architecture, security, testing, deployment, observability, documentation, and support evidence.",
+          "Conversation, canvas manipulation, and raw-code edits converge on the same versioned canonical artifacts."
+        ],
+        "scope": [
+          "product",
+          "design",
+          "architecture"
+        ],
+        "keywords": [
+          "raw-code",
+          "visual-workspace",
+          "prototype-to-production"
+        ],
+        "relatedWork": [
+          "issue.clarify-the-visual-product-studio-as-a-code-first-production-workspace"
+        ],
+        "supersedes": null,
+        "status": "active",
+        "kind": "feature-note",
+        "createdAt": "2026-08-27T19:26:50.764Z",
+        "updatedAt": "2026-08-27T19:26:50.764Z"
       }
     ]
   }

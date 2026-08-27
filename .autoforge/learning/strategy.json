@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
-  "revision": 10,
-  "updatedAt": "2026-08-27T19:15:46.102Z",
+  "revision": 11,
+  "updatedAt": "2026-08-27T19:26:11.272Z",
   "data": {
     "assessments": [
       {
@@ -223,6 +223,28 @@
         "status": "active",
         "createdAt": "2026-08-27T19:15:45.977Z",
         "updatedAt": "2026-08-27T19:15:45.977Z"
+      },
+      {
+        "id": "strategy.issue-clarify-the-visual-product-studio-as-a-code-first-production-workspace",
+        "workId": "issue.clarify-the-visual-product-studio-as-a-code-first-production-workspace",
+        "factors": {
+          "alignment": "high",
+          "value": "medium",
+          "risk": "low",
+          "cost": "low",
+          "evidenceStrength": "medium",
+          "dependencyPressure": "low",
+          "complexity": "low",
+          "releaseConstraint": "low"
+        },
+        "decision": "now",
+        "rationale": "This is a bounded clarification of the already-adopted long-horizon product destination. Recording raw-code parity and the prototype-to-production lifecycle now prevents the visual canvas from being misread as a mockup-only tool while leaving implementation sequencing unchanged.",
+        "evidenceIds": [],
+        "resultingDecision": "decision.issue-clarify-the-visual-product-studio-as-a-code-first-production-workspace-str",
+        "supersedes": null,
+        "status": "active",
+        "createdAt": "2026-08-27T19:26:11.156Z",
+        "updatedAt": "2026-08-27T19:26:11.156Z"
       }
     ]
   }

@@ -109,21 +109,31 @@ permissions and must never share an implicit authority level.
 AutoForge should ultimately let a person describe an idea and see the system's
 interpretation take shape in a first-party visual canvas before consequential
 work is accepted. The experience should support anything from a standard file
-or simple prototype to a high-quality, production-oriented application:
+or flagship prototype to a fully fledged, thoroughly architected,
+support-grade product ready for production deployment:
 
 ```text
-Prompt -> Structured intent -> Visual canvas -> Human refinement
-       -> Approved artifacts -> Code and preview -> Validation -> Iteration
+Prompt -> Structured intent -> Visual canvas <-> Raw code workspace
+       -> Human refinement -> Approved artifacts -> Preview and execution
+       -> Architecture and validation -> Deploy -> Operate -> Evolve
 ```
 
 The canvas should make screens, components, design tokens, user flows, states,
 responsive behavior, accessibility requirements, assets, data relationships,
-and implementation status inspectable. Users should be able to refine the same
-understanding through conversation, direct manipulation, or code while
-AutoForge records provenance, proposals, approvals, validation, and version
-history. Sandboxed previews should demonstrate behavior without implying that
-visual polish proves correctness, accessibility, security, or release
-readiness.
+and implementation status inspectable. An integrated raw-code workspace should
+make files, diffs, dependencies, schemas, APIs, tests, infrastructure, and
+runtime evidence directly accessible rather than hiding implementation behind
+generated previews. Users should be able to refine the same understanding
+through conversation, direct manipulation, or code while AutoForge records
+provenance, proposals, approvals, validation, and version history.
+
+The product journey does not end when a prototype looks complete. AutoForge
+should help mature the same project through system architecture, frontend and
+backend implementation, data and identity boundaries, testing, security,
+deployment, observability, documentation, incident readiness, and ongoing
+support. Sandboxed previews should demonstrate behavior without implying that
+visual polish proves correctness, accessibility, security, scalability,
+operability, or release readiness.
 
 The canvas is an editor and projection over canonical typed artifacts, not a
 second source of truth. Prompt-to-canvas, canvas-to-artifact, design-to-code,

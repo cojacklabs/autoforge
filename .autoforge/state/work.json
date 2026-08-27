@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
-  "revision": 409,
-  "updatedAt": "2026-08-27T19:22:11.398Z",
+  "revision": 412,
+  "updatedAt": "2026-08-27T19:29:10.492Z",
   "data": {
     "features": [
       {
@@ -2599,6 +2599,21 @@
             "docs/planning/0.26/**",
             ".autoforge/state/**",
             ".autoforge/learning/strategy.json"
+          ],
+          "exclude": []
+        }
+      },
+      {
+        "name": "Clarify the Visual Product Studio as a code-first production workspace",
+        "description": "Expand the ultimate Visual Product Studio vision so raw code and visual manipulation are equal first-class editing modes, and define the intended journey from flagship prototype through thoroughly architected, deployable, operable, support-grade SaaS applications and finished products without changing near-term milestone priority.",
+        "status": "completed",
+        "createdAt": "2026-08-27T19:26:02.853Z",
+        "updatedAt": "2026-08-27T19:29:10.390Z",
+        "id": "issue.clarify-the-visual-product-studio-as-a-code-first-production-workspace",
+        "scope": {
+          "include": [
+            "docs/planning/0.26/**",
+            ".autoforge/state/**"
           ],
           "exclude": []
         }
