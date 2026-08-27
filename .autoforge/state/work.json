@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
-  "revision": 397,
-  "updatedAt": "2026-08-26T23:33:45.462Z",
+  "revision": 401,
+  "updatedAt": "2026-08-27T13:58:23.517Z",
   "data": {
     "features": [
       {
@@ -2461,9 +2461,9 @@
       {
         "name": "Independently validate the post-v0.25 transition checkpoint",
         "description": "Perform an independent read-only validation of the seven commits after the published v0.25.2 closure: confirm the v0.25 parent hierarchy is completed, review the post-v0.25 north-star documentation and tagline, audit superseding-evidence semantics and tests, verify the worktree and package/release state, run proportional quality gates, and report blockers before the commits are pushed or v0.26 implementation continues.",
-        "status": "planned",
+        "status": "completed",
         "createdAt": "2026-08-26T21:09:30.505Z",
-        "updatedAt": "2026-08-26T21:09:30.505Z",
+        "updatedAt": "2026-08-27T13:58:23.339Z",
         "id": "issue.independently-validate-the-post-v0-25-transition-checkpoint",
         "scope": {
           "include": [
@@ -2491,6 +2491,39 @@
             "dev/AutoForge_Agentic_SDLC_Automation_Strategy.md",
             ".autoforge/handoffs/**",
             ".autoforge/state/**"
+          ],
+          "exclude": []
+        }
+      },
+      {
+        "name": "Order superseding evidence by chronological instant",
+        "description": "Fix readiness authority ordering to compare capturedAt as chronological instants rather than raw ISO strings. validationEvidenceSchema accepts timezone offsets, and lexicographic comparison can reverse valid timestamps with different offsets, causing stale evidence to supersede newer evidence. Normalize or parse timestamps deterministically, preserve evidence-ID tie breaking for equal instants, and add offset-form regression tests for selection and project-baseline comparisons.",
+        "status": "planned",
+        "createdAt": "2026-08-27T13:55:47.382Z",
+        "updatedAt": "2026-08-27T13:55:47.382Z",
+        "id": "issue.order-superseding-evidence-by-chronological-instant",
+        "scope": {
+          "include": [
+            "src/quality/readiness.ts",
+            "test/quality-readiness.test.ts",
+            "test/evidence-command.test.ts",
+            "docs/**"
+          ],
+          "exclude": []
+        }
+      },
+      {
+        "name": "Refresh the transition handoff after audit fixes",
+        "description": "After all audit blockers are fixed and committed, regenerate or update the tracked Codex-to-Claude transition handoff so git.head identifies the exact audited checkpoint, the changed-file inventory and commit count are current, the context fingerprint is reproducible, validation reflects the final gates, and the next agent can verify immutable Git refs before push.",
+        "status": "planned",
+        "createdAt": "2026-08-27T13:55:47.826Z",
+        "updatedAt": "2026-08-27T13:55:47.826Z",
+        "id": "issue.refresh-the-transition-handoff-after-audit-fixes",
+        "scope": {
+          "include": [
+            ".autoforge/handoffs/**",
+            ".autoforge/state/**",
+            "docs/**"
           ],
           "exclude": []
         }

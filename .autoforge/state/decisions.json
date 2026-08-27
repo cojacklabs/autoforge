@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
-  "revision": 113,
-  "updatedAt": "2026-08-26T23:30:38.488Z",
+  "revision": 114,
+  "updatedAt": "2026-08-27T13:58:23.244Z",
   "data": {
     "decisions": [
       {
@@ -2823,6 +2823,28 @@
         "kind": "feature-note",
         "createdAt": "2026-08-26T23:30:38.460Z",
         "updatedAt": "2026-08-26T23:30:38.460Z"
+      },
+      {
+        "id": "decision.skipped-documentation-for-issue-independently-validate-the-post-v0-25-transition",
+        "statement": "Skipped documentation for issue.independently-validate-the-post-v0-25-transition-checkpoint",
+        "reasoning": "Read-only Codex audit completed with passing automated gates; two bounded follow-up issues record the chronological evidence-ordering blocker and final handoff-metadata reconciliation.",
+        "consequences": [
+          "issue.independently-validate-the-post-v0-25-transition-checkpoint was closed without a linked decision."
+        ],
+        "scope": [
+          "issue"
+        ],
+        "keywords": [
+          "skip-reason"
+        ],
+        "relatedWork": [
+          "issue.independently-validate-the-post-v0-25-transition-checkpoint"
+        ],
+        "supersedes": null,
+        "status": "active",
+        "kind": "skip-reason",
+        "createdAt": "2026-08-27T13:58:23.183Z",
+        "updatedAt": "2026-08-27T13:58:23.183Z"
       }
     ]
   }
