@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
-  "revision": 403,
-  "updatedAt": "2026-08-27T14:08:18.751Z",
+  "revision": 404,
+  "updatedAt": "2026-08-27T15:26:45.556Z",
   "data": {
     "features": [
       {
@@ -2524,6 +2524,28 @@
             ".autoforge/handoffs/**",
             ".autoforge/state/**",
             "docs/**"
+          ],
+          "exclude": []
+        }
+      },
+      {
+        "name": "Make the AutoForge artifact registry the default for agent-produced planning",
+        "description": "Define and implement a tracked, typed artifact registry under .autoforge/ as the default destination for agent-produced brainstorming, research, requirements, plans, architecture, design, validation, review, and handoff artifacts. Artifacts must be human-reviewable, schema-versioned, attributable to an agent and work item, revision-aware, approval-capable, and portable across Claude, Codex, Cursor, TRAE, Grok, Gemini, and other agents. Generated agent contracts, context packets, doctrines, and applicable guardrails should direct agents through canonical artifact operations rather than scattering unregistered planning documents, while preserving explicit exceptions for product documentation such as README and docs/. Existing documents must be registerable by reference or migrated without destructive moves, and approved artifacts must be superseded rather than silently overwritten.",
+        "status": "planned",
+        "createdAt": "2026-08-27T15:26:45.530Z",
+        "updatedAt": "2026-08-27T15:26:45.530Z",
+        "id": "issue.make-the-autoforge-artifact-registry-the-default-for-agent-produced-planning",
+        "scope": {
+          "include": [
+            "packages/protocol/**",
+            "packages/core/**",
+            "packages/sdk/**",
+            "src/**",
+            "apps/core-cli/**",
+            "apps/agent-cli/**",
+            "test/**",
+            "docs/**",
+            ".autoforge/**"
           ],
           "exclude": []
         }

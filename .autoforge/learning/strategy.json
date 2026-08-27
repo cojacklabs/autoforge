@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
-  "revision": 7,
-  "updatedAt": "2026-08-26T16:46:35.795Z",
+  "revision": 8,
+  "updatedAt": "2026-08-27T15:26:52.627Z",
   "data": {
     "assessments": [
       {
@@ -157,6 +157,28 @@
         "status": "active",
         "createdAt": "2026-08-26T16:46:35.675Z",
         "updatedAt": "2026-08-26T16:46:35.675Z"
+      },
+      {
+        "id": "strategy.issue-make-the-autoforge-artifact-registry-the-default-for-agent-produced-planni",
+        "workId": "issue.make-the-autoforge-artifact-registry-the-default-for-agent-produced-planning",
+        "factors": {
+          "alignment": "high",
+          "value": "high",
+          "risk": "medium",
+          "cost": "high",
+          "evidenceStrength": "high",
+          "dependencyPressure": "high",
+          "complexity": "high",
+          "releaseConstraint": "medium"
+        },
+        "decision": "next",
+        "rationale": "Shared typed artifacts directly advance AutoForge's cross-agent continuity promise and reduce scattered, agent-specific planning files. The feature should follow the transition-handoff repair and be designed alongside v0.26 portable execution contracts because it affects Protocol schemas, Core truth, SDK operations, agent contracts, approval semantics, migration, and guardrails; implementing storage or hard enforcement before those contracts are agreed would risk creating another project-truth boundary.",
+        "evidenceIds": [],
+        "resultingDecision": "decision.issue-make-the-autoforge-artifact-registry-the-default-for-agent-produced-planni",
+        "supersedes": null,
+        "status": "active",
+        "createdAt": "2026-08-27T15:26:52.525Z",
+        "updatedAt": "2026-08-27T15:26:52.525Z"
       }
     ]
   }
