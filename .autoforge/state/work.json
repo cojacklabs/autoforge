@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
-  "revision": 405,
-  "updatedAt": "2026-08-27T15:44:16.942Z",
+  "revision": 409,
+  "updatedAt": "2026-08-27T19:22:11.398Z",
   "data": {
     "features": [
       {
@@ -2560,6 +2560,43 @@
         "scope": {
           "include": [
             "docs/**",
+            ".autoforge/state/**",
+            ".autoforge/learning/strategy.json"
+          ],
+          "exclude": []
+        }
+      },
+      {
+        "name": "Define the AutoForge visual product canvas and design-to-code contracts",
+        "description": "Long-horizon product vision: define a first-party visual canvas where users can see and refine AutoForge's interpretation of natural-language intent while prototyping, bootstrapping, designing, and evolving anything from standard files to complex applications. The canvas must project canonical typed intent, requirements, architecture, design systems, screens, flows, states, responsive behavior, accessibility, assets, code, previews, and validation rather than create a competing source of truth. Define bidirectional prompt-to-canvas, canvas-to-artifact, design-to-code, code-to-design, collaboration, provenance, approval, export, and drift-detection contracts; preserve provider neutrality and clean adapter boundaries for Framer, Figma, Stitch, TypeUI, and future visual platforms; and require high-quality UX evidence instead of treating visual generation as proof of correctness.",
+        "status": "planned",
+        "createdAt": "2026-08-27T19:15:34.315Z",
+        "updatedAt": "2026-08-27T19:15:34.315Z",
+        "id": "issue.define-the-autoforge-visual-product-canvas-and-design-to-code-contracts",
+        "scope": {
+          "include": [
+            "packages/protocol/**",
+            "packages/core/**",
+            "packages/sdk/**",
+            "apps/agent-cli/**",
+            "apps/web/**",
+            "docs/**",
+            "test/**",
+            ".autoforge/**"
+          ],
+          "exclude": []
+        }
+      },
+      {
+        "name": "Incorporate the visual product studio into the ultimate north-star",
+        "description": "Document AutoForge's long-horizon visual product studio: a governed canvas that makes prompt interpretation visible, supports collaborative refinement, connects intent and design artifacts to high-quality code and previews, and remains a projection of canonical project truth. Map it as a later horizon without changing v0.26 priorities or prematurely authorizing implementation.",
+        "status": "completed",
+        "createdAt": "2026-08-27T19:15:46.783Z",
+        "updatedAt": "2026-08-27T19:22:11.159Z",
+        "id": "issue.incorporate-the-visual-product-studio-into-the-ultimate-north-star",
+        "scope": {
+          "include": [
+            "docs/planning/0.26/**",
             ".autoforge/state/**",
             ".autoforge/learning/strategy.json"
           ],

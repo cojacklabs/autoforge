@@ -320,6 +320,42 @@ See
 [`../0.25/FUTURE_INTELLIGENCE_AND_DESIGN_ORCHESTRATION.md`](../0.25/FUTURE_INTELLIGENCE_AND_DESIGN_ORCHESTRATION.md)
 for the preserved concept baseline.
 
+### Later: Visual Product Studio
+
+The ultimate interactive experience is a governed visual canvas where users
+can inspect and refine AutoForge's interpretation of a prompt, then carry the
+same typed intent through prototyping, design, bootstrapping, implementation,
+preview, and validation. This is a long-horizon product destination rather
+than an expansion of the v0.26 charter.
+
+Candidate outcomes:
+
+- prompt-to-canvas generation for simple files, prototypes, and complex
+  applications;
+- visual editing of flows, screens, components, tokens, states, responsive
+  behavior, accessibility, assets, and data relationships;
+- conversational, canvas, and code edits converging on versioned canonical
+  artifacts with provenance and approval history;
+- bidirectional design-to-code and code-to-design synchronization with drift
+  and conflict evidence;
+- secure live previews, collaborative review, comments, approvals, and
+  recoverable version history;
+- high-quality design-system and UX constraints whose compliance is validated
+  independently from visual generation;
+- portable exports and provider-neutral adapters for Framer, Figma, Stitch,
+  TypeUI, and future visual platforms.
+
+Prerequisites include mature typed artifact contracts, a publishable local
+Agent, portable design contracts, isolated preview execution, generated-content
+safety, and evidence-backed customer demand. The canvas remains a projection
+and editor over canonical project truth; it must not create a competing state
+system.
+
+Exit evidence: a user can move a representative application from natural
+language to an inspectable canvas, refine it visually or conversationally,
+generate and edit portable code, detect round-trip drift, and validate the
+result without losing intent, provenance, or control.
+
 ## Immediate Implementation Order
 
 The proposed next sequence is:
@@ -345,6 +381,8 @@ Existing AutoForge issues supply the initial work queue:
 - `issue.define-and-benchmark-the-hybrid-sqlite-storage-boundary` — `next`;
 - `issue.define-optional-intent-compiler-and-portable-design-orchestration` —
   `later`.
+- `issue.define-the-autoforge-visual-product-canvas-and-design-to-code-contracts`
+  — `later`.
 
 This explicit order reconciles the earlier status recommendation that surfaced
 commenting governance ahead of evidence supersession. Trustworthy readiness is

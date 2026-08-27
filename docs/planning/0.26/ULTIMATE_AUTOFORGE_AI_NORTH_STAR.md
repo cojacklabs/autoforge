@@ -104,6 +104,34 @@ messages, coordinate projects, or act inside a SaaS product. Reading, sending,
 deleting, refunding, publishing, and changing production data are not equivalent
 permissions and must never share an implicit authority level.
 
+## Ultimate Experience: Visual Product Studio
+
+AutoForge should ultimately let a person describe an idea and see the system's
+interpretation take shape in a first-party visual canvas before consequential
+work is accepted. The experience should support anything from a standard file
+or simple prototype to a high-quality, production-oriented application:
+
+```text
+Prompt -> Structured intent -> Visual canvas -> Human refinement
+       -> Approved artifacts -> Code and preview -> Validation -> Iteration
+```
+
+The canvas should make screens, components, design tokens, user flows, states,
+responsive behavior, accessibility requirements, assets, data relationships,
+and implementation status inspectable. Users should be able to refine the same
+understanding through conversation, direct manipulation, or code while
+AutoForge records provenance, proposals, approvals, validation, and version
+history. Sandboxed previews should demonstrate behavior without implying that
+visual polish proves correctness, accessibility, security, or release
+readiness.
+
+The canvas is an editor and projection over canonical typed artifacts, not a
+second source of truth. Prompt-to-canvas, canvas-to-artifact, design-to-code,
+and code-to-design changes must use versioned contracts, bidirectional drift
+detection, and explicit conflict handling. Export must remain portable, and
+adapters for Framer, Figma, Stitch, TypeUI, and future visual platforms must
+remain replaceable behind provider-neutral boundaries.
+
 ## Platform Architecture
 
 | Layer                   | Enduring responsibility                                                                                                     |
@@ -238,21 +266,23 @@ The benchmark and adoption gates are defined in the
     gate.
 12. External product concepts are implemented clean-room under AutoForge's own
     contracts and license boundaries.
+13. Visual representations project canonical typed artifacts and cannot become
+    an ungoverned parallel source of project truth.
 
 ## Candidate Delivery Horizons
 
 Version labels communicate a possible sequence, not a promise that features
 must ship together or in this exact order.
 
-| Horizon        | Candidate outcome                                                                                                                               |
-| -------------- | ----------------------------------------------------------------------------------------------------------------------------------------------- |
-| v0.26          | Trust foundation: superseding evidence, commenting governance, generated-content safety, portable contracts, storage boundary, compatibility    |
-| v0.27          | Safe, publishable local Agent with streaming, roles, tools, recovery, approvals, and provider routing                                           |
-| v0.28          | Governed portable memory and continuity across agents, sessions, machines, and teams                                                            |
-| v0.29          | Integration control plane through SDK, MCP, ACP, adapters, and conformance contracts                                                            |
-| v0.30          | Hosted Service foundation for secure synchronization, execution, organizations, secrets, schedules, and metering                                |
-| v0.31          | Web and team collaboration for cloud interaction, mission control, billing, policy, and shared work                                             |
-| Later horizons | Everyday-work connectors and channels, embedded AI, mobile and voice experiences, marketplace, and evidence-backed specialized AutoForge models |
+| Horizon        | Candidate outcome                                                                                                                                                               |
+| -------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| v0.26          | Trust foundation: superseding evidence, commenting governance, generated-content safety, portable contracts, storage boundary, compatibility                                    |
+| v0.27          | Safe, publishable local Agent with streaming, roles, tools, recovery, approvals, and provider routing                                                                           |
+| v0.28          | Governed portable memory and continuity across agents, sessions, machines, and teams                                                                                            |
+| v0.29          | Integration control plane through SDK, MCP, ACP, adapters, and conformance contracts                                                                                            |
+| v0.30          | Hosted Service foundation for secure synchronization, execution, organizations, secrets, schedules, and metering                                                                |
+| v0.31          | Web and team collaboration for cloud interaction, mission control, billing, policy, and shared work                                                                             |
+| Later horizons | Governed visual product studio, everyday-work connectors and channels, embedded AI, mobile and voice experiences, marketplace, and evidence-backed specialized AutoForge models |
 
 ## Reconciled Immediate Priority
 
@@ -264,6 +294,8 @@ The current implementation sequence is:
 4. hybrid SQLite storage boundary and benchmark (`next`);
 5. role, run, event, human-input, and adapter contract decomposition;
 6. optional intent compiler and portable design orchestration (`later`).
+7. visual product canvas and bidirectional design-to-code contracts (`later`,
+   after the required artifact, Agent, preview, and design foundations).
 
 This ordering resolves the prior mismatch between the roadmap, which required
 trustworthy evidence first, and a status recommendation that surfaced

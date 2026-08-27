@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
-  "revision": 9,
-  "updatedAt": "2026-08-27T15:44:22.745Z",
+  "revision": 10,
+  "updatedAt": "2026-08-27T19:15:46.102Z",
   "data": {
     "assessments": [
       {
@@ -201,6 +201,28 @@
         "status": "active",
         "createdAt": "2026-08-27T15:44:22.666Z",
         "updatedAt": "2026-08-27T15:44:22.666Z"
+      },
+      {
+        "id": "strategy.issue-define-the-autoforge-visual-product-canvas-and-design-to-code-contracts",
+        "workId": "issue.define-the-autoforge-visual-product-canvas-and-design-to-code-contracts",
+        "factors": {
+          "alignment": "high",
+          "value": "high",
+          "risk": "high",
+          "cost": "high",
+          "evidenceStrength": "low",
+          "dependencyPressure": "low",
+          "complexity": "high",
+          "releaseConstraint": "low"
+        },
+        "decision": "later",
+        "rationale": "A visual prompt-to-product canvas strongly advances AutoForge's ultimate all-in-one Agent destination, but it depends on mature typed artifacts, design contracts, Agent execution, multimodal models, preview sandboxes, bidirectional code synchronization, accessibility evaluation, and substantial customer evidence. Preserve the target now and revisit sequencing after the v0.26 trust foundation and publishable local Agent are proven.",
+        "evidenceIds": [],
+        "resultingDecision": "decision.issue-define-the-autoforge-visual-product-canvas-and-design-to-code-contracts-st",
+        "supersedes": null,
+        "status": "active",
+        "createdAt": "2026-08-27T19:15:45.977Z",
+        "updatedAt": "2026-08-27T19:15:45.977Z"
       }
     ]
   }

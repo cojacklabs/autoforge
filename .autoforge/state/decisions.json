@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
-  "revision": 117,
-  "updatedAt": "2026-08-27T15:44:22.697Z",
+  "revision": 119,
+  "updatedAt": "2026-08-27T19:17:27.123Z",
   "data": {
     "decisions": [
       {
@@ -2917,6 +2917,58 @@
         "kind": "feature-note",
         "createdAt": "2026-08-27T15:44:22.673Z",
         "updatedAt": "2026-08-27T15:44:22.673Z"
+      },
+      {
+        "id": "decision.issue-define-the-autoforge-visual-product-canvas-and-design-to-code-contracts-st",
+        "statement": "issue.define-the-autoforge-visual-product-canvas-and-design-to-code-contracts: strategic assessment recommends later",
+        "reasoning": "A visual prompt-to-product canvas strongly advances AutoForge's ultimate all-in-one Agent destination, but it depends on mature typed artifacts, design contracts, Agent execution, multimodal models, preview sandboxes, bidirectional code synchronization, accessibility evaluation, and substantial customer evidence. Preserve the target now and revisit sequencing after the v0.26 trust foundation and publishable local Agent are proven.",
+        "consequences": [
+          "alignment=high, value=high, risk=high, cost=high, evidenceStrength=low, dependencyPressure=low, complexity=high, releaseConstraint=low"
+        ],
+        "scope": [
+          "strategy"
+        ],
+        "keywords": [
+          "strategy",
+          "later"
+        ],
+        "relatedWork": [
+          "issue.define-the-autoforge-visual-product-canvas-and-design-to-code-contracts"
+        ],
+        "supersedes": null,
+        "status": "active",
+        "kind": "feature-note",
+        "createdAt": "2026-08-27T19:15:45.995Z",
+        "updatedAt": "2026-08-27T19:15:45.995Z"
+      },
+      {
+        "id": "decision.autoforge-s-ultimate-north-star-includes-a-governed-visual-product-studio-that-m",
+        "statement": "AutoForge's ultimate north-star includes a governed visual product studio that makes prompt interpretation inspectable and carries typed intent through design, code, previews, and validation.",
+        "reasoning": "A shared visual representation can materially reduce the communication gap between a user's idea and Agent execution, but only if it remains synchronized with durable project truth and preserves human authority.",
+        "consequences": [
+          "The visual canvas is a projection and editor over versioned canonical artifacts, not a parallel source of truth.",
+          "Prompt, canvas, and code changes require provenance, approval, bidirectional synchronization, drift detection, conflict handling, and independent validation.",
+          "Framer, Figma, Stitch, TypeUI, and future visual systems integrate through clean, provider-neutral adapter boundaries.",
+          "This remains a later horizon and does not displace the v0.26 trust foundation or the publishable local Agent."
+        ],
+        "scope": [
+          "product",
+          "architecture",
+          "design"
+        ],
+        "keywords": [
+          "visual-canvas",
+          "prompt-to-product",
+          "design-to-code"
+        ],
+        "relatedWork": [
+          "issue.incorporate-the-visual-product-studio-into-the-ultimate-north-star"
+        ],
+        "supersedes": null,
+        "status": "active",
+        "kind": "feature-note",
+        "createdAt": "2026-08-27T19:17:27.051Z",
+        "updatedAt": "2026-08-27T19:17:27.051Z"
       }
     ]
   }
