@@ -58,6 +58,7 @@ export interface ProjectStatus {
       ready: number;
       active: number;
       blocked: number;
+      paused: number;
       completed: number;
       canceled: number;
     };

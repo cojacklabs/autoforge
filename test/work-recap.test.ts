@@ -85,6 +85,7 @@ describe("work recap service", () => {
         ready: 0,
         active: 1,
         blocked: 0,
+        paused: 0,
         completed: 0,
         canceled: 0,
       },

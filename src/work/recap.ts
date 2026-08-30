@@ -1,26 +1,23 @@
 import { AutoForgeError, EXIT_CODE } from "../core/errors.js";
 import type { AtomicStateStore } from "../state/store.js";
-import type {
-  ActiveWork,
-  Feature,
-  Issue,
-  Phase,
-  Session,
-  SessionState,
-  Task,
-  WorkScope,
-  WorkState,
-  WorkStatus,
+import {
+  workStatusSchema,
+  type ActiveWork,
+  type Feature,
+  type Issue,
+  type Phase,
+  type Session,
+  type SessionState,
+  type Task,
+  type WorkScope,
+  type WorkState,
+  type WorkStatus,
 } from "./schemas.js";
 
-const WORK_STATUSES: readonly WorkStatus[] = [
-  "planned",
-  "ready",
-  "active",
-  "blocked",
-  "completed",
-  "canceled",
-];
+// Derived from workStatusSchema so this list can never drift from the
+// authoritative status enum (a hand-maintained copy previously omitted
+// "paused", producing NaN counts once any item was paused).
+const WORK_STATUSES: readonly WorkStatus[] = workStatusSchema.options;
 
 export interface RecapInventory {
   features: number;

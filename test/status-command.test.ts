@@ -9,6 +9,7 @@ import {
   runStatusCommand,
 } from "../apps/core-cli/src/status.js";
 import { initializeProject } from "../src/commands/init.js";
+import { runPauseCommand } from "../src/commands/pause.js";
 import { runStartCommand } from "../src/commands/start.js";
 import { EXIT_CODE } from "../src/core/errors.js";
 import { createWorkStateStore } from "../src/state/kernel.js";
@@ -228,6 +229,40 @@ describe("project status command", () => {
       sessionId: "session.status-test",
     });
     expect(status.nextCommands).toContain("autoforge done");
+  });
+
+  it("counts a paused item correctly instead of producing NaN", async () => {
+    const projectRoot = await createProject();
+    const planning = new WorkService(createWorkStateStore(projectRoot));
+    const { entity: issue } = await planning.createIssue({
+      name: "Paused issue",
+      description: "Verify paused items count correctly in status.",
+      scope: { include: ["src/**"], exclude: [] },
+    });
+    await runStartCommand({
+      args: ["issue", issue.id],
+      output: { stdout: vi.fn(), stderr: vi.fn() },
+      startDirectory: projectRoot,
+      sessionId: () => "session.status-pause-test",
+    });
+    await runPauseCommand({
+      args: ["Waiting on account access."],
+      output: { stdout: vi.fn(), stderr: vi.fn() },
+      startDirectory: projectRoot,
+    });
+
+    const status = await loadProjectStatus(projectRoot);
+    expect(status.work.counts.paused).toBe(1);
+    expect(Number.isNaN(status.work.counts.paused)).toBe(false);
+
+    const output = { stdout: vi.fn(), stderr: vi.fn() };
+    await runStatusCommand({
+      args: ["--view", "work"],
+      output,
+      startDirectory: projectRoot,
+    });
+    expect(output.stdout.mock.calls[0]?.[0]).toContain("paused=1");
+    expect(output.stdout.mock.calls[0]?.[0]).not.toContain("NaN");
   });
 
   it("rejects unknown or duplicated options", async () => {

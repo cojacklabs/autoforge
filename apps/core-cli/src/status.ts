@@ -186,7 +186,7 @@ function renderWork(status: ProjectStatus): string {
   const lines = [
     `AutoForge work — ${status.project.name}`,
     `Status: ${status.work.state}`,
-    `Counts: planned=${counts.planned} ready=${counts.ready} active=${counts.active} blocked=${counts.blocked} completed=${counts.completed} canceled=${counts.canceled}`,
+    `Counts: planned=${counts.planned} ready=${counts.ready} active=${counts.active} blocked=${counts.blocked} paused=${counts.paused} completed=${counts.completed} canceled=${counts.canceled}`,
   ];
   if (status.work.active) {
     lines.push(

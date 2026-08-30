@@ -60,7 +60,7 @@ describe("recap command", () => {
     expect(output.stdout).toHaveBeenCalledWith(`AutoForge recap
 Status: idle
 Inventory: features=0 phases=0 tasks=0 issues=1
-Actionable: planned=1 ready=0 active=0 blocked=0 completed=0 canceled=0
+Actionable: planned=1 ready=0 active=0 blocked=0 paused=0 completed=0 canceled=0
 Active: none`);
   });
 
@@ -91,6 +91,26 @@ Active: none`);
       "Session: session.recap-command",
     );
     expect(output.stdout.mock.calls[0]?.[0]).toContain("Elapsed: 1h 2m 3s");
+  });
+
+  it("counts a paused item correctly instead of producing NaN", async () => {
+    const { issue, projectRoot, sessionStore, workStore } =
+      await createFixture();
+    await new WorkLifecycleService(workStore, sessionStore, {
+      now: () => new Date(STARTED_AT),
+      sessionId: () => "session.recap-pause",
+    }).start({ kind: "issue", id: issue.entity.id });
+    await new WorkLifecycleService(workStore, sessionStore, {
+      now: () => new Date(STARTED_AT),
+    }).pause("Waiting on account access.");
+    const output = { stdout: vi.fn(), stderr: vi.fn() };
+
+    await expect(
+      runRecapCommand({ args: [], output, startDirectory: projectRoot }),
+    ).resolves.toBe(EXIT_CODE.success);
+    expect(output.stdout.mock.calls[0]?.[0]).toContain(
+      "Actionable: planned=0 ready=0 active=0 blocked=0 paused=1 completed=0 canceled=0",
+    );
   });
 
   it("rejects command arguments", async () => {
