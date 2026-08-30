@@ -26,6 +26,15 @@ All notable changes to this project will be documented in this file.
 - Evidence ordering now sorts by chronological instant rather than insertion
   order.
 
+### Added
+
+- A `paused` work status, alongside `autoforge pause "<reason>"` and
+  `autoforge resume <task|issue> <id>` commands, so a task or issue can stop
+  mid-flight (session ends, status becomes `paused`, reason is recorded)
+  without being marked `completed` or left misleadingly `active`. Resuming
+  moves the item back to `active` and opens a new session, mirroring
+  `autoforge start`'s conflict rules exactly.
+
 ## [0.25.2] - 2026-08-25
 
 ### Fixed
