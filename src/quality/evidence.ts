@@ -14,6 +14,22 @@ export const validationEvidenceSchema = z
     traceIds: z.array(z.string().trim().min(1).max(200)),
     reason: z.string().trim().min(1).max(4_000),
     capturedAt: timestampSchema,
+    revision: z
+      .object({
+        sha: z.string().trim().min(1),
+        dirty: z.boolean(),
+      })
+      .strict()
+      .optional(),
+    environment: z
+      .object({
+        platform: z.string().trim().min(1),
+        nodeMajor: z.number().int().positive(),
+        ci: z.boolean(),
+      })
+      .strict()
+      .optional(),
+    gateDefinitionFingerprint: z.string().trim().min(1).optional(),
   })
   .strict();
 
