@@ -2,6 +2,10 @@ import { EXIT_CODE, type ExitCode } from "../core/errors.js";
 import type { LogWriter } from "../core/logger.js";
 import { ValidationEvidenceStore } from "../quality/evidence.js";
 import { evaluateReadiness } from "../quality/readiness.js";
+import {
+  computeCurrentEnvironment,
+  computeCurrentRevision,
+} from "../quality/scope.js";
 
 export interface EvidenceCommandOptions {
   args: readonly string[];
@@ -42,16 +46,28 @@ export async function runEvidenceCommand(
     return EXIT_CODE.success;
   }
   if (action === "summary") {
-    const readiness = evaluateReadiness(state.evidence);
+    const revision = await computeCurrentRevision(options.startDirectory);
+    const environment = computeCurrentEnvironment();
+    const readiness = evaluateReadiness(state.evidence, {
+      currentScope: {
+        ...(revision !== undefined ? { revision } : {}),
+        environment,
+      },
+    });
     const summary = {
       ...readiness,
       requiredFailures: readiness.blockers.length,
     };
     if (json) options.output.stdout(JSON.stringify(summary, null, 2));
-    else
+    else {
+      const outOfScopeClause =
+        summary.outOfScopeCount > 0
+          ? `; ${summary.outOfScopeCount} excluded (different revision/environment)`
+          : "";
       options.output.stdout(
-        `Validation evidence: ${summary.passed} passed, ${summary.failed} failed, ${summary.skipped} skipped historically; ${summary.effectiveTotal} authoritative required result(s), ${summary.requiredFailures} blocker(s).`,
+        `Validation evidence: ${summary.passed} passed, ${summary.failed} failed, ${summary.skipped} skipped historically; ${summary.effectiveTotal} authoritative required result(s), ${summary.requiredFailures} blocker(s)${outOfScopeClause}.`,
       );
+    }
     return readiness.ready ? EXIT_CODE.success : EXIT_CODE.invalidState;
   }
   return usage(options.output);
