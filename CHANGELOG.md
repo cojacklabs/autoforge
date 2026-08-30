@@ -10,6 +10,22 @@ All notable changes to this project will be documented in this file.
 <!-- autoforge:changelog:start -->
 <!-- autoforge:changelog:end -->
 
+## [0.25.3] - 2026-08-30
+
+### Fixed
+
+- `autoforge contract generate <agent-id>` now derives `validationCommands`
+  from the project's `.autoforge/config.json` `qualityGates`, matching the
+  orchestration path's existing behavior, instead of unconditionally
+  hardcoding `npm test`. Falls back to `npm test` only when no quality gates
+  are configured.
+- Validation-evidence readiness now evaluates authoritative, superseding
+  gate results by gate and scope instead of treating every historical
+  required failure as a current blocker (`autoforge evidence` output and
+  `src/quality/readiness.ts`).
+- Evidence ordering now sorts by chronological instant rather than insertion
+  order.
+
 ## [0.25.2] - 2026-08-25
 
 ### Fixed

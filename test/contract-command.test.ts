@@ -1,4 +1,4 @@
-import { mkdir, mkdtemp, rm } from "node:fs/promises";
+import { mkdir, mkdtemp, readFile, rm, writeFile } from "node:fs/promises";
 import os from "node:os";
 import path from "node:path";
 
@@ -49,6 +49,74 @@ describe("contract command", () => {
         startDirectory: projectRoot,
       }),
     ).resolves.toBe(EXIT_CODE.success);
+  });
+
+  it("derives validationCommands from configured quality gates instead of hardcoding npm", async () => {
+    const projectRoot = await mkdtemp(
+      path.join(os.tmpdir(), "autoforge-contract-gates-"),
+    );
+    directories.push(projectRoot);
+    await mkdir(path.join(projectRoot, ".git"));
+    await initializeProject({ projectRoot });
+
+    const configPath = path.join(projectRoot, ".autoforge", "config.json");
+    const config = JSON.parse(await readFile(configPath, "utf8"));
+    config.qualityGates = [
+      { id: "test", command: "pnpm", args: ["test"], timeoutMs: 120_000 },
+      {
+        id: "typecheck",
+        command: "pnpm",
+        args: ["typecheck"],
+        timeoutMs: 120_000,
+      },
+    ];
+    await writeFile(configPath, JSON.stringify(config, null, 2));
+
+    const output = { stdout: vi.fn(), stderr: vi.fn() };
+    await expect(
+      runContractCommand({
+        args: ["generate", "generic"],
+        output,
+        startDirectory: projectRoot,
+      }),
+    ).resolves.toBe(EXIT_CODE.success);
+    await expect(
+      runContractCommand({
+        args: ["show"],
+        output,
+        startDirectory: projectRoot,
+      }),
+    ).resolves.toBe(EXIT_CODE.success);
+
+    const shown = output.stdout.mock.calls[1]?.[0] as string;
+    expect(shown).toContain("pnpm test");
+    expect(shown).toContain("pnpm typecheck");
+    expect(shown).not.toMatch(/(?<!p)npm test/);
+  });
+
+  it("falls back to npm test when no quality gates are configured", async () => {
+    const projectRoot = await mkdtemp(
+      path.join(os.tmpdir(), "autoforge-contract-no-gates-"),
+    );
+    directories.push(projectRoot);
+    await mkdir(path.join(projectRoot, ".git"));
+    await initializeProject({ projectRoot });
+    const output = { stdout: vi.fn(), stderr: vi.fn() };
+    await expect(
+      runContractCommand({
+        args: ["generate", "generic"],
+        output,
+        startDirectory: projectRoot,
+      }),
+    ).resolves.toBe(EXIT_CODE.success);
+    await expect(
+      runContractCommand({
+        args: ["show"],
+        output,
+        startDirectory: projectRoot,
+      }),
+    ).resolves.toBe(EXIT_CODE.success);
+    expect(output.stdout.mock.calls[1]?.[0]).toContain("npm test");
   });
 
   it("rejects unsupported agent identities", async () => {

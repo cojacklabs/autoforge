@@ -1,3 +1,4 @@
+import { inspectInstallation } from "./init.js";
 import { EXIT_CODE, type ExitCode } from "../core/errors.js";
 import type { LogWriter } from "../core/logger.js";
 import { discoverProjectRoot } from "../core/project.js";
@@ -7,6 +8,19 @@ import {
 } from "../contract/generator.js";
 import { assertAgentContractCompatibility } from "../contract/capabilities.js";
 import { reportCommandError } from "../cli/command-error.js";
+
+const FALLBACK_VALIDATION_COMMANDS: readonly string[] = ["npm test"];
+
+async function resolveValidationCommands(
+  projectRoot: string,
+): Promise<string[]> {
+  const installation = await inspectInstallation(projectRoot);
+  const qualityGates = installation.config?.qualityGates;
+  if (!qualityGates || qualityGates.length === 0) {
+    return [...FALLBACK_VALIDATION_COMMANDS];
+  }
+  return qualityGates.map(({ command, args }) => [command, ...args].join(" "));
+}
 
 export interface ContractCommandOptions {
   args: readonly string[];
@@ -47,7 +61,7 @@ export async function runContractCommand(
       const contract = generateAgentContract({
         agentId: agentId!,
         projectRoot: project.path,
-        validationCommands: ["npm test"],
+        validationCommands: await resolveValidationCommands(project.path),
       });
       await store.write(contract);
       options.output.stdout("Generated .autoforge/agent-contract.json");
