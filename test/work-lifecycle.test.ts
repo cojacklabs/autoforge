@@ -288,3 +288,154 @@ describe("work completion lifecycle", () => {
     });
   });
 });
+
+describe("work pause lifecycle", () => {
+  it("pauses active work, records the reason, and ends the session", async () => {
+    const { lifecycle, sessionStore, task, workStore } = await createFixture();
+    await lifecycle.start({ kind: "task", id: task.entity.id });
+
+    await expect(
+      lifecycle.pause("Waiting on account access."),
+    ).resolves.toMatchObject({
+      pausedWork: { kind: "task", id: task.entity.id },
+      sessionId: "session.test",
+      pausedAt: TIMESTAMP,
+      workRevision: 6,
+      sessionRevision: 2,
+    });
+    await expect(workStore.read()).resolves.toMatchObject({
+      state: {
+        data: {
+          tasks: [
+            {
+              id: task.entity.id,
+              status: "paused",
+              pauseReason: "Waiting on account access.",
+            },
+          ],
+          activeWork: null,
+        },
+      },
+    });
+    await expect(sessionStore.read()).resolves.toMatchObject({
+      state: {
+        data: {
+          current: null,
+          previous: [
+            {
+              id: "session.test",
+              status: "ended",
+              endedAt: TIMESTAMP,
+              activeWork: { kind: "task", id: task.entity.id },
+            },
+          ],
+        },
+      },
+    });
+  });
+
+  it("rejects pausing when nothing is active", async () => {
+    const { lifecycle, workStore } = await createFixture();
+
+    await expect(lifecycle.pause("No active work.")).rejects.toMatchObject({
+      code: "STATE_CONFLICT",
+    });
+    await expect(workStore.read()).resolves.toMatchObject({
+      state: { revision: 4 },
+    });
+  });
+
+  it("restores active work when session archival fails during pause", async () => {
+    const { lifecycle, sessionStore, task, workStore } = await createFixture();
+    await lifecycle.start({ kind: "task", id: task.entity.id });
+    await writeFile(sessionStore.lockPath, "competing-session\n");
+
+    await expect(lifecycle.pause("Blocked.")).rejects.toMatchObject({
+      code: "STATE_CONFLICT",
+    });
+    await expect(workStore.read()).resolves.toMatchObject({
+      state: {
+        revision: 7,
+        data: {
+          tasks: [{ id: task.entity.id, status: "active" }],
+          activeWork: { kind: "task", id: task.entity.id },
+        },
+      },
+    });
+  });
+});
+
+describe("work resume lifecycle", () => {
+  it("resumes a paused task and opens a new session", async () => {
+    const { lifecycle, sessionStore, task, workStore } = await createFixture();
+    await lifecycle.start({ kind: "task", id: task.entity.id });
+    await lifecycle.pause("Waiting on account access.");
+
+    // Real usage generates a fresh session ID per start/resume call (see
+    // src/commands/resume.ts's randomUUID()-based default). The fixture's
+    // `lifecycle` was constructed with a session ID fixed at "session.test",
+    // which is now archived in `previous` from the pause above — reusing it
+    // for resume would collide with sessionStateSchema's cross-session
+    // uniqueness invariant. Build a second service instance sharing the same
+    // stores but with its own session ID, exactly as the CLI command does.
+    const resumeLifecycle = new WorkLifecycleService(workStore, sessionStore, {
+      now: () => new Date(TIMESTAMP),
+      sessionId: () => "session.resumed",
+    });
+
+    await expect(
+      resumeLifecycle.resume({ kind: "task", id: task.entity.id }),
+    ).resolves.toMatchObject({
+      activeWork: { kind: "task", id: task.entity.id, startedAt: TIMESTAMP },
+      sessionId: "session.resumed",
+      workRevision: 7,
+      sessionRevision: 3,
+    });
+    await expect(workStore.read()).resolves.toMatchObject({
+      state: {
+        data: {
+          tasks: [{ id: task.entity.id, status: "active", pauseReason: null }],
+          activeWork: { kind: "task", id: task.entity.id },
+        },
+      },
+    });
+    await expect(sessionStore.read()).resolves.toMatchObject({
+      state: {
+        data: {
+          current: {
+            id: "session.resumed",
+            status: "active",
+            activeWork: { kind: "task", id: task.entity.id },
+          },
+        },
+      },
+    });
+  });
+
+  it("rejects resuming a task that is not paused", async () => {
+    const { lifecycle, task } = await createFixture();
+
+    await expect(
+      lifecycle.resume({ kind: "task", id: task.entity.id }),
+    ).rejects.toMatchObject({
+      code: "STATE_CONFLICT",
+      details: { status: "planned" },
+    });
+  });
+
+  it("rejects resuming while other work is active", async () => {
+    const { issue, lifecycle, sessionStore, task, workStore } =
+      await createFixture();
+    await lifecycle.start({ kind: "task", id: task.entity.id });
+    await lifecycle.pause("Paused for later.");
+    const secondLifecycle = new WorkLifecycleService(workStore, sessionStore, {
+      now: () => new Date(TIMESTAMP),
+      sessionId: () => "session.second",
+    });
+    await secondLifecycle.start({ kind: "issue", id: issue.entity.id });
+
+    await expect(
+      secondLifecycle.resume({ kind: "task", id: task.entity.id }),
+    ).rejects.toMatchObject({ code: "STATE_CONFLICT" });
+  });
+});

@@ -31,6 +31,14 @@ export interface CompleteWorkResult {
   sessionRevision: number;
 }
 
+export interface PauseWorkResult {
+  pausedWork: ActiveWork;
+  sessionId: string;
+  pausedAt: string;
+  workRevision: number;
+  sessionRevision: number;
+}
+
 export interface WorkLifecycleServiceOptions {
   now?: () => Date;
   sessionId?: () => string;
@@ -57,10 +65,24 @@ function assertStartableStatus(
   id: string,
   status: WorkStatus,
 ): void {
-  if (status === "completed" || status === "canceled") {
+  if (status === "completed" || status === "canceled" || status === "paused") {
     throw lifecycleError(
       "STATE_CONFLICT",
       `Cannot start ${status} ${kind} ${id}`,
+      { kind, id, status },
+    );
+  }
+}
+
+function assertResumableStatus(
+  kind: StartableWorkKind,
+  id: string,
+  status: WorkStatus,
+): void {
+  if (status !== "paused") {
+    throw lifecycleError(
+      "STATE_CONFLICT",
+      `Cannot resume ${kind} ${id} because it is ${status}, not paused`,
       { kind, id, status },
     );
   }
@@ -250,6 +272,174 @@ export class WorkLifecycleService {
     }
   }
 
+  async pause(reason: string): Promise<PauseWorkResult> {
+    const [{ state: workState }, { state: sessionState }] = await Promise.all([
+      this.workStore.read(),
+      this.sessionStore.read(),
+    ]);
+    const activeWork = workState.data.activeWork;
+    const currentSession = sessionState.data.current;
+    if (activeWork === null && currentSession === null) {
+      throw lifecycleError(
+        "STATE_CONFLICT",
+        "There is no active work to pause",
+        {},
+      );
+    }
+    if (
+      activeWork === null ||
+      currentSession === null ||
+      currentSession.activeWork === null ||
+      currentSession.activeWork.kind !== activeWork.kind ||
+      currentSession.activeWork.id !== activeWork.id
+    ) {
+      throw lifecycleError(
+        "INVALID_STATE",
+        "Active work and the current session do not agree",
+        { activeWork, currentSession },
+      );
+    }
+
+    const pausedAt = this.now().toISOString();
+    const nextWorkState = this.pauseActiveWork(
+      workState.data,
+      activeWork,
+      reason,
+      pausedAt,
+    );
+    const committedWork = await this.workStore.write(nextWorkState, {
+      expectedRevision: workState.revision,
+    });
+
+    try {
+      const committedSession = await this.sessionStore.write(
+        {
+          current: null,
+          previous: [
+            ...sessionState.data.previous,
+            {
+              ...currentSession,
+              status: "ended",
+              endedAt: pausedAt,
+            },
+          ],
+        },
+        { expectedRevision: sessionState.revision },
+      );
+      return {
+        pausedWork: activeWork,
+        sessionId: currentSession.id,
+        pausedAt,
+        workRevision: committedWork.revision,
+        sessionRevision: committedSession.revision,
+      };
+    } catch (sessionError) {
+      try {
+        await this.workStore.write(workState.data, {
+          expectedRevision: committedWork.revision,
+        });
+      } catch (compensationError) {
+        throw new AutoForgeError(
+          "INVALID_STATE",
+          "Pausing work failed and the work state could not be restored",
+          {
+            cause: sessionError,
+            details: {
+              kind: activeWork.kind,
+              id: activeWork.id,
+              compensationError:
+                compensationError instanceof Error
+                  ? compensationError.message
+                  : String(compensationError),
+            },
+            exitCode: EXIT_CODE.invalidState,
+          },
+        );
+      }
+      throw sessionError;
+    }
+  }
+
+  async resume(input: StartWorkInput): Promise<StartWorkResult> {
+    const [{ state: workState }, { state: sessionState }] = await Promise.all([
+      this.workStore.read(),
+      this.sessionStore.read(),
+    ]);
+
+    if (workState.data.activeWork !== null) {
+      throw lifecycleError(
+        "STATE_CONFLICT",
+        `Work is already active: ${workState.data.activeWork.id}`,
+        { activeWork: workState.data.activeWork },
+      );
+    }
+    if (sessionState.data.current !== null) {
+      throw lifecycleError(
+        "STATE_CONFLICT",
+        `Session is already active: ${sessionState.data.current.id}`,
+        { sessionId: sessionState.data.current.id },
+      );
+    }
+
+    const timestamp = this.now().toISOString();
+    const activeWork: ActiveWork = {
+      kind: input.kind,
+      id: input.id,
+      startedAt: timestamp,
+    };
+    const nextWorkState = this.resumeWork(workState.data, input, timestamp);
+    const committedWork = await this.workStore.write(nextWorkState, {
+      expectedRevision: workState.revision,
+    });
+
+    const sessionId = this.sessionId();
+    try {
+      const committedSession = await this.sessionStore.write(
+        {
+          ...sessionState.data,
+          current: {
+            id: sessionId,
+            status: "active",
+            startedAt: timestamp,
+            endedAt: null,
+            activeWork,
+          },
+        },
+        { expectedRevision: sessionState.revision },
+      );
+      return {
+        activeWork,
+        sessionId,
+        workRevision: committedWork.revision,
+        sessionRevision: committedSession.revision,
+      };
+    } catch (sessionError) {
+      try {
+        await this.workStore.write(workState.data, {
+          expectedRevision: committedWork.revision,
+        });
+      } catch (compensationError) {
+        throw new AutoForgeError(
+          "INVALID_STATE",
+          "Resuming work failed and the work state could not be restored",
+          {
+            cause: sessionError,
+            details: {
+              kind: input.kind,
+              id: input.id,
+              compensationError:
+                compensationError instanceof Error
+                  ? compensationError.message
+                  : String(compensationError),
+            },
+            exitCode: EXIT_CODE.invalidState,
+          },
+        );
+      }
+      throw sessionError;
+    }
+  }
+
   private activateWork(
     state: WorkState,
     input: StartWorkInput,
@@ -319,6 +509,99 @@ export class WorkLifecycleService {
           : issue,
       ),
       activeWork: null,
+    };
+  }
+
+  private pauseActiveWork(
+    state: WorkState,
+    activeWork: ActiveWork,
+    reason: string,
+    timestamp: string,
+  ): WorkState {
+    if (activeWork.kind === "task") {
+      return {
+        ...state,
+        tasks: state.tasks.map((task) =>
+          task.id === activeWork.id
+            ? {
+                ...task,
+                status: "paused",
+                pauseReason: reason,
+                updatedAt: timestamp,
+              }
+            : task,
+        ),
+        activeWork: null,
+      };
+    }
+
+    return {
+      ...state,
+      issues: state.issues.map((issue) =>
+        issue.id === activeWork.id
+          ? {
+              ...issue,
+              status: "paused",
+              pauseReason: reason,
+              updatedAt: timestamp,
+            }
+          : issue,
+      ),
+      activeWork: null,
+    };
+  }
+
+  private resumeWork(
+    state: WorkState,
+    input: StartWorkInput,
+    timestamp: string,
+  ): WorkState {
+    if (input.kind === "task") {
+      const task = state.tasks.find((candidate) => candidate.id === input.id);
+      if (!task) {
+        throw lifecycleError("INVALID_ARGUMENT", `Unknown task ${input.id}`, {
+          kind: input.kind,
+          id: input.id,
+        });
+      }
+      assertResumableStatus(input.kind, input.id, task.status);
+      return {
+        ...state,
+        tasks: state.tasks.map((candidate) =>
+          candidate.id === input.id
+            ? {
+                ...candidate,
+                status: "active",
+                pauseReason: null,
+                updatedAt: timestamp,
+              }
+            : candidate,
+        ),
+        activeWork: { kind: input.kind, id: input.id, startedAt: timestamp },
+      };
+    }
+
+    const issue = state.issues.find((candidate) => candidate.id === input.id);
+    if (!issue) {
+      throw lifecycleError("INVALID_ARGUMENT", `Unknown issue ${input.id}`, {
+        kind: input.kind,
+        id: input.id,
+      });
+    }
+    assertResumableStatus(input.kind, input.id, issue.status);
+    return {
+      ...state,
+      issues: state.issues.map((candidate) =>
+        candidate.id === input.id
+          ? {
+              ...candidate,
+              status: "active",
+              pauseReason: null,
+              updatedAt: timestamp,
+            }
+          : candidate,
+      ),
+      activeWork: { kind: input.kind, id: input.id, startedAt: timestamp },
     };
   }
 }
