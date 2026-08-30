@@ -10,6 +10,12 @@ export interface AuthoritativeEvidence {
   supersedes: string[];
 }
 
+export interface EvidenceScope {
+  revision?: { sha: string; dirty: boolean };
+  environment?: { platform: string; nodeMajor: number; ci: boolean };
+  gateDefinitionFingerprint?: string;
+}
+
 export interface ReadinessReport {
   ready: boolean;
   total: number;
@@ -22,10 +28,13 @@ export interface ReadinessReport {
   effectiveSkipped: number;
   blockers: string[];
   authoritativeEvidence: AuthoritativeEvidence[];
+  outOfScopeCount: number;
+  outOfScopeReasons: string[];
 }
 
 export interface EvaluateReadinessOptions {
   workId?: string;
+  currentScope?: EvidenceScope;
 }
 
 function compareEvidence(
@@ -40,6 +49,47 @@ function compareEvidence(
 
 function isConclusive(evidence: ValidationEvidence): boolean {
   return evidence.status === "passed" || evidence.status === "failed";
+}
+
+function scopeMismatchReason(
+  evidence: ValidationEvidence,
+  currentScope: EvidenceScope,
+): string | undefined {
+  if (
+    evidence.revision &&
+    currentScope.revision &&
+    evidence.revision.sha !== currentScope.revision.sha
+  ) {
+    return "different revision";
+  }
+  if (evidence.environment && currentScope.environment) {
+    const { platform, nodeMajor, ci } = evidence.environment;
+    const current = currentScope.environment;
+    if (
+      platform !== current.platform ||
+      nodeMajor !== current.nodeMajor ||
+      ci !== current.ci
+    ) {
+      return "different environment";
+    }
+  }
+  if (
+    evidence.gateDefinitionFingerprint &&
+    currentScope.gateDefinitionFingerprint &&
+    evidence.gateDefinitionFingerprint !==
+      currentScope.gateDefinitionFingerprint
+  ) {
+    return "different gate definition";
+  }
+  return undefined;
+}
+
+export function scopeMatches(
+  evidence: ValidationEvidence,
+  currentScope: EvidenceScope | undefined,
+): boolean {
+  if (!currentScope) return true;
+  return scopeMismatchReason(evidence, currentScope) === undefined;
 }
 
 function selectAuthority(
@@ -145,15 +195,28 @@ export function evaluateReadiness(
   const requiredEvidence = evidence.filter(
     (item) => item.severity === "required",
   );
+  const inScope: ValidationEvidence[] = [];
+  const outOfScopeReasons: string[] = [];
+  for (const item of requiredEvidence) {
+    const reason = options.currentScope
+      ? scopeMismatchReason(item, options.currentScope)
+      : undefined;
+    if (reason) {
+      outOfScopeReasons.push(`${item.id}: ${reason}`);
+    } else {
+      inScope.push(item);
+    }
+  }
+  outOfScopeReasons.sort((left, right) => left.localeCompare(right));
   const authoritativeEvidence = (
     options.workId
       ? projectAuthorities(
-          requiredEvidence.filter(
+          inScope.filter(
             (item) =>
               item.workId === undefined || item.workId === options.workId,
           ),
         )
-      : projectAuthorities(requiredEvidence)
+      : projectAuthorities(inScope)
   ).sort(
     (left, right) =>
       left.gateId.localeCompare(right.gateId) ||
@@ -186,5 +249,7 @@ export function evaluateReadiness(
     ).length,
     blockers,
     authoritativeEvidence,
+    outOfScopeCount: outOfScopeReasons.length,
+    outOfScopeReasons,
   };
 }

@@ -295,4 +295,130 @@ describe("quality readiness", () => {
       blockers: ["tests: project-failed result"],
     });
   });
+
+  it("excludes evidence from a different revision when currentScope is supplied", () => {
+    const result = evaluateReadiness(
+      [
+        evidence("tests-old-revision", "passed", {
+          capturedAt: "2026-08-22T00:00:00.000Z",
+          revision: { sha: "old-sha", dirty: false },
+        }),
+      ],
+      {
+        currentScope: { revision: { sha: "new-sha", dirty: false } },
+      },
+    );
+
+    expect(result).toMatchObject({
+      ready: true,
+      effectiveTotal: 0,
+      authoritativeEvidence: [],
+      outOfScopeCount: 1,
+    });
+    expect(result.outOfScopeReasons[0]).toContain(
+      "evidence.tests-old-revision",
+    );
+  });
+
+  it("excludes evidence from a different environment when currentScope is supplied", () => {
+    const result = evaluateReadiness(
+      [
+        evidence("tests-linux", "passed", {
+          capturedAt: "2026-08-22T00:00:00.000Z",
+          environment: { platform: "linux", nodeMajor: 22, ci: true },
+        }),
+      ],
+      {
+        currentScope: {
+          environment: { platform: "darwin", nodeMajor: 22, ci: false },
+        },
+      },
+    );
+
+    expect(result).toMatchObject({
+      ready: true,
+      effectiveTotal: 0,
+      outOfScopeCount: 1,
+    });
+  });
+
+  it("excludes evidence from a different gate-definition fingerprint when currentScope is supplied", () => {
+    const result = evaluateReadiness(
+      [
+        evidence("tests-old-gate", "passed", {
+          capturedAt: "2026-08-22T00:00:00.000Z",
+          gateDefinitionFingerprint: "old-fingerprint",
+        }),
+      ],
+      {
+        currentScope: { gateDefinitionFingerprint: "new-fingerprint" },
+      },
+    );
+
+    expect(result).toMatchObject({
+      ready: true,
+      effectiveTotal: 0,
+      outOfScopeCount: 1,
+    });
+  });
+
+  it("includes evidence whose full scope matches currentScope", () => {
+    const scope = {
+      revision: { sha: "current-sha", dirty: false },
+      environment: { platform: "darwin", nodeMajor: 22, ci: false },
+      gateDefinitionFingerprint: "current-fingerprint",
+    };
+    const result = evaluateReadiness(
+      [
+        evidence("tests-matching", "passed", {
+          ...scope,
+          capturedAt: "2026-08-22T00:00:00.000Z",
+        }),
+      ],
+      { currentScope: scope },
+    );
+
+    expect(result).toMatchObject({
+      ready: true,
+      effectiveTotal: 1,
+      effectivePassed: 1,
+      outOfScopeCount: 0,
+    });
+  });
+
+  it("does not exclude legacy evidence (missing scope fields) even when currentScope is supplied", () => {
+    const result = evaluateReadiness(
+      [
+        evidence("tests-legacy", "passed", {
+          capturedAt: "2026-08-22T00:00:00.000Z",
+        }),
+      ],
+      {
+        currentScope: { revision: { sha: "current-sha", dirty: false } },
+      },
+    );
+
+    expect(result).toMatchObject({
+      ready: true,
+      effectiveTotal: 1,
+      effectivePassed: 1,
+      outOfScopeCount: 0,
+    });
+  });
+
+  it("does not exclude anything when currentScope is not supplied, matching prior behavior", () => {
+    const result = evaluateReadiness([
+      evidence("tests-old-revision", "passed", {
+        capturedAt: "2026-08-22T00:00:00.000Z",
+        revision: { sha: "any-sha", dirty: false },
+      }),
+    ]);
+
+    expect(result).toMatchObject({
+      ready: true,
+      effectiveTotal: 1,
+      effectivePassed: 1,
+      outOfScopeCount: 0,
+    });
+  });
 });
