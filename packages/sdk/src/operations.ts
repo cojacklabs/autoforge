@@ -37,7 +37,13 @@ export interface WorkInput {
   include?: string[];
   exclude?: string[];
   status?:
-    "planned" | "ready" | "active" | "blocked" | "completed" | "canceled";
+    | "planned"
+    | "ready"
+    | "active"
+    | "blocked"
+    | "paused"
+    | "completed"
+    | "canceled";
 }
 
 export interface ContextInput {
