@@ -20,6 +20,7 @@ import { runKnowledgeCommand } from "../commands/knowledge.js";
 import { runPlanningCommand } from "../commands/planning.js";
 import { runWorkflowCommand } from "../commands/workflow.js";
 import { runOrchestrateCommand } from "../commands/orchestrate.js";
+import { runPauseCommand } from "../commands/pause.js";
 import { runSchemasCommand } from "../commands/schemas.js";
 import { runContractCommand } from "../commands/contract.js";
 import { runProjectsCommand } from "../commands/projects.js";
@@ -39,6 +40,7 @@ import { runTwinCommand } from "../commands/twin.js";
 import { runMigrateCommand } from "../commands/migrate.js";
 import { runRecapCommand } from "../commands/recap.js";
 import { runStartCommand } from "../commands/start.js";
+import { runResumeCommand } from "../commands/resume.js";
 import { runTuiCommand } from "../commands/tui.js";
 import { runWhyCommand } from "../commands/why.js";
 import { runStrategyCommand } from "../commands/strategy.js";
@@ -238,6 +240,12 @@ export async function main(
             output,
             startDirectory,
           }),
+        pause: (commandArgs) =>
+          runPauseCommand({
+            args: commandArgs,
+            output,
+            startDirectory,
+          }),
         schemas: (commandArgs) =>
           runSchemasCommand({ args: commandArgs, output }),
         contract: (commandArgs) =>
@@ -300,6 +308,12 @@ export async function main(
           }),
         start: (commandArgs) =>
           runStartCommand({
+            args: commandArgs,
+            output,
+            startDirectory,
+          }),
+        resume: (commandArgs) =>
+          runResumeCommand({
             args: commandArgs,
             output,
             startDirectory,

@@ -25,6 +25,7 @@ export interface CliDependencies {
     planning?(args: readonly string[]): Promise<ExitCode>;
     workflow?(args: readonly string[]): Promise<ExitCode>;
     orchestrate?(args: readonly string[]): Promise<ExitCode>;
+    pause?(args: readonly string[]): Promise<ExitCode>;
     schemas?(args: readonly string[]): Promise<ExitCode>;
     contract?(args: readonly string[]): Promise<ExitCode>;
     projects?(args: readonly string[]): Promise<ExitCode>;
@@ -44,6 +45,7 @@ export interface CliDependencies {
     twin?(args: readonly string[]): Promise<ExitCode>;
     migrate(args: readonly string[]): Promise<ExitCode>;
     recap(args: readonly string[]): Promise<ExitCode>;
+    resume?(args: readonly string[]): Promise<ExitCode>;
     start(args: readonly string[]): Promise<ExitCode>;
     status(args: readonly string[]): Promise<ExitCode>;
     tui(args: readonly string[]): Promise<ExitCode>;
@@ -261,6 +263,16 @@ export async function runCli(
 
     case "start":
       return dependencies.commands.start(commandArgs);
+
+    case "pause":
+      return dependencies.commands.pause
+        ? dependencies.commands.pause(commandArgs)
+        : EXIT_CODE.usage;
+
+    case "resume":
+      return dependencies.commands.resume
+        ? dependencies.commands.resume(commandArgs)
+        : EXIT_CODE.usage;
 
     case "status":
       return dependencies.commands.status(commandArgs);

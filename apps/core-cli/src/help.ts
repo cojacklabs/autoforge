@@ -26,6 +26,7 @@ Commands:
   planning   Inspect generated planning artifacts and freshness
   workflow   Start, inspect, and advance workflow runs
   orchestrate Coordinate concurrent agent assignments and scoped leases
+  pause      Pause active work and close its session
   schemas    List and inspect JSON input schemas
   contract   Generate and validate the agent execution contract
   projects   List and register globally known projects
@@ -38,6 +39,7 @@ Commands:
   migrate    Back up and migrate a legacy AutoForge installation
   update     Check, preview, or apply a global AutoForge update
   recap      Summarize current work and session state
+  resume     Resume paused work and open a new session
   start      Start a task or issue and open a session
   status     Show concise project status and relevant next commands
   tui        Deprecated compatibility alias for status
@@ -82,6 +84,8 @@ Work lifecycle:
   autoforge start <task|issue> <id>
   autoforge recap
   autoforge done [--no-decision "<reason>"]
+  autoforge pause "<reason>"
+  autoforge resume <task|issue> <id>
 
 Agent credentials:
   autoforge credentials set openai
