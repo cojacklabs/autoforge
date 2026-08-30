@@ -1,6 +1,7 @@
 import { execFile } from "node:child_process";
 import { promisify } from "node:util";
 
+import { inspectInstallation } from "./init.js";
 import { EXIT_CODE, type ExitCode } from "../core/errors.js";
 import type { LogWriter } from "../core/logger.js";
 import { matchesRepositoryPattern } from "../core/patterns.js";
@@ -8,6 +9,11 @@ import { discoverProjectRoot } from "../core/project.js";
 import { runQualityGate } from "../quality/service.js";
 import type { QualityGateReport } from "../quality/schemas.js";
 import { ValidationEvidenceStore } from "../quality/evidence.js";
+import {
+  computeCurrentEnvironment,
+  computeCurrentRevision,
+  computeGateDefinitionFingerprint,
+} from "../quality/scope.js";
 import { createWorkStateStore } from "../state/kernel.js";
 import type { WorkState } from "../work/schemas.js";
 
@@ -171,6 +177,12 @@ export async function runGateCommand(
   });
   const workState = (await createWorkStateStore(project.path).read()).state
     .data;
+  const inspection = await inspectInstallation(project.path);
+  const qualityGates = inspection.config?.qualityGates ?? [];
+  const [revision, environment] = await Promise.all([
+    computeCurrentRevision(project.path),
+    Promise.resolve(computeCurrentEnvironment()),
+  ]);
   const files = await selectGateFiles(
     parsed.files,
     project.path,
@@ -185,6 +197,10 @@ export async function runGateCommand(
   const capturedAt = new Date().toISOString();
   const activeWorkId = workState.activeWork?.id;
   for (const check of report.checks) {
+    const gateDefinitionFingerprint = await computeGateDefinitionFingerprint(
+      check.id,
+      { qualityGates },
+    );
     await evidenceStore.record({
       id: `evidence.${check.id}.${Date.now()}`,
       gateId: check.id,
@@ -199,6 +215,9 @@ export async function runGateCommand(
       traceIds: [],
       reason: check.message,
       capturedAt,
+      ...(revision ? { revision } : {}),
+      environment,
+      gateDefinitionFingerprint,
     });
   }
   if (parsed.json) {

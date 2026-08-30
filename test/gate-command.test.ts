@@ -1,6 +1,8 @@
+import { execFile } from "node:child_process";
 import { mkdir, mkdtemp, rm, writeFile } from "node:fs/promises";
 import os from "node:os";
 import path from "node:path";
+import { promisify } from "node:util";
 
 import { afterEach, describe, expect, it, vi } from "vitest";
 
@@ -14,6 +16,7 @@ import { WorkService } from "../src/work/service.js";
 
 const PROJECT_ID = "f45b8e3d-e9d8-465b-8489-3bc5e5e5a4dd";
 const temporaryDirectories: string[] = [];
+const execFileAsync = promisify(execFile);
 
 async function createProject(): Promise<string> {
   const projectRoot = await mkdtemp(
@@ -193,5 +196,42 @@ describe("gate command", () => {
     expect(output.stderr).toHaveBeenCalledWith(
       expect.stringContaining(message),
     );
+  });
+});
+
+describe("gate check evidence scope", () => {
+  it("records revision, environment, and gate-definition scope on captured evidence", async () => {
+    const root = await mkdtemp(path.join(os.tmpdir(), "autoforge-gate-scope-"));
+    temporaryDirectories.push(root);
+    await execFileAsync("git", ["-C", root, "init", "-q"]);
+    await execFileAsync("git", [
+      "-C",
+      root,
+      "config",
+      "user.email",
+      "test@example.com",
+    ]);
+    await execFileAsync("git", ["-C", root, "config", "user.name", "Test"]);
+    await initializeProject({ projectRoot: root, projectId: PROJECT_ID });
+    await execFileAsync("git", ["-C", root, "add", "."]);
+    await execFileAsync("git", ["-C", root, "commit", "-q", "-m", "initial"]);
+
+    await runGateCommand({
+      args: ["check"],
+      output: { stdout: vi.fn(), stderr: vi.fn() },
+      startDirectory: root,
+      changedFileReader: async () => [],
+    });
+
+    const state = await new ValidationEvidenceStore(root).read();
+    expect(state.evidence.length).toBeGreaterThan(0);
+    for (const item of state.evidence) {
+      expect(item.revision).toMatchObject({ dirty: false });
+      expect(item.revision?.sha).toMatch(/^[0-9a-f]{40}$/);
+      expect(item.environment).toMatchObject({
+        platform: process.platform,
+      });
+      expect(item.gateDefinitionFingerprint).toBeTruthy();
+    }
   });
 });
