@@ -17,7 +17,7 @@ item `completed`. There is no way to stop working on an in-progress item
 without either lying (`completed`) or leaving it `active` — which blocks
 starting any other work, since only one item may be active at a time.
 
-`blocked` does not fit: it implies an external dependency prevents *any*
+`blocked` does not fit: it implies an external dependency prevents _any_
 progress, whereas the pause case is "real progress happened, more is
 planned, just not right now."
 

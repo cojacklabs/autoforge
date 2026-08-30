@@ -21,10 +21,12 @@
 ### Task 1: Add `paused` status and `pauseReason` field to the work schema
 
 **Files:**
+
 - Modify: `src/work/schemas.ts:31-38` (status enum), `src/work/schemas.ts:59-67` (`workItemBaseSchema`)
 - Test: `test/work-schemas.test.ts`
 
 **Interfaces:**
+
 - Consumes: nothing new.
 - Produces: `workStatusSchema` now includes `"paused"` as a valid `WorkStatus` value. `workItemBaseSchema` (and therefore `featureSchema`, `phaseSchema`, `taskSchema`, `issueSchema`) gains `pauseReason: string | null` (default `null`). Later tasks rely on this field name (`pauseReason`) exactly.
 
@@ -170,10 +172,12 @@ Claude-Session: https://claude.ai/code/session_01HTP99nx36hpQfVrcPrChg1"
 ### Task 2: Add `pause()` and `resume()` to `WorkLifecycleService`
 
 **Files:**
+
 - Modify: `src/work/lifecycle.ts`
 - Test: `test/work-lifecycle.test.ts`
 
 **Interfaces:**
+
 - Consumes: `WorkStatus`, `pauseReason` field from Task 1's schema changes; existing `AtomicStateStore<WorkState>`/`AtomicStateStore<SessionState>`, `lifecycleError()`, `assertStartableStatus()` from this same file.
 - Produces:
   - `PauseWorkResult` interface: `{ pausedWork: ActiveWork; sessionId: string; pausedAt: string; workRevision: number; sessionRevision: number }`
@@ -292,9 +296,7 @@ describe("work resume lifecycle", () => {
     await expect(workStore.read()).resolves.toMatchObject({
       state: {
         data: {
-          tasks: [
-            { id: task.entity.id, status: "active", pauseReason: null },
-          ],
+          tasks: [{ id: task.entity.id, status: "active", pauseReason: null }],
           activeWork: { kind: "task", id: task.entity.id },
         },
       },
@@ -372,11 +374,7 @@ function assertStartableStatus(
   id: string,
   status: WorkStatus,
 ): void {
-  if (
-    status === "completed" ||
-    status === "canceled" ||
-    status === "paused"
-  ) {
+  if (status === "completed" || status === "canceled" || status === "paused") {
     throw lifecycleError(
       "STATE_CONFLICT",
       `Cannot start ${status} ${kind} ${id}`,
@@ -698,10 +696,12 @@ Claude-Session: https://claude.ai/code/session_01HTP99nx36hpQfVrcPrChg1"
 ### Task 3: Add `autoforge pause` command
 
 **Files:**
+
 - Create: `src/commands/pause.ts`
 - Test: `test/pause.test.ts`
 
 **Interfaces:**
+
 - Consumes: `WorkLifecycleService.pause(reason: string): Promise<PauseWorkResult>` from Task 2; `discoverProjectRoot`, `createSessionStateStore`, `createWorkStateStore`, `createDoctrineSessionStore`, `createDoctrineStore`, `DoctrineSessionService`, `EXIT_CODE`, `LogWriter` — all exactly as used by `src/commands/done.ts`.
 - Produces: `export async function runPauseCommand(options: PauseCommandOptions): Promise<ExitCode>` and `export interface PauseCommandOptions { args: readonly string[]; output: LogWriter; startDirectory: string; now?: () => Date }` — Task 5 (CLI router) imports this exact function and interface.
 
@@ -734,9 +734,7 @@ import { WorkService } from "../src/work/service.js";
 const temporaryDirectories: string[] = [];
 
 async function createFixture() {
-  const projectRoot = await mkdtemp(
-    path.join(os.tmpdir(), "autoforge-pause-"),
-  );
+  const projectRoot = await mkdtemp(path.join(os.tmpdir(), "autoforge-pause-"));
   temporaryDirectories.push(projectRoot);
   await mkdir(path.join(projectRoot, ".git"));
   await initializeProject({ projectRoot });
@@ -773,8 +771,13 @@ afterEach(async () => {
 
 describe("pause command", () => {
   it("pauses active work from a nested project directory", async () => {
-    const { doctrineSessionStore, issue, projectRoot, sessionStore, workStore } =
-      await createFixture();
+    const {
+      doctrineSessionStore,
+      issue,
+      projectRoot,
+      sessionStore,
+      workStore,
+    } = await createFixture();
     const nested = path.join(projectRoot, "packages", "app");
     await mkdir(nested, { recursive: true });
     const output = { stdout: vi.fn(), stderr: vi.fn() };
@@ -988,10 +991,12 @@ Claude-Session: https://claude.ai/code/session_01HTP99nx36hpQfVrcPrChg1"
 ### Task 4: Add `autoforge resume` command
 
 **Files:**
+
 - Create: `src/commands/resume.ts`
 - Test: `test/resume.test.ts`
 
 **Interfaces:**
+
 - Consumes: `WorkLifecycleService.resume(input: { kind, id }): Promise<StartWorkResult>` from Task 2; same store/doctrine imports as `src/commands/start.ts`.
 - Produces: `export async function runResumeCommand(options: ResumeCommandOptions): Promise<ExitCode>` and `export interface ResumeCommandOptions { args: readonly string[]; output: LogWriter; startDirectory: string; now?: () => Date; sessionId?: () => string }` — Task 5 imports this exact function and interface.
 
@@ -1256,11 +1261,13 @@ Claude-Session: https://claude.ai/code/session_01HTP99nx36hpQfVrcPrChg1"
 ### Task 5: Wire `pause`/`resume` into the CLI router and help text
 
 **Files:**
+
 - Modify: `src/cli/index.ts` (import block near line 14/41, command router object near line 187/301)
 - Modify: `apps/core-cli/src/help.ts` (command list line 17/41, "Work lifecycle" section lines 80-84)
 - Test: `test/cli.test.ts` if it exists and enumerates commands (check first), otherwise rely on Tasks 3/4's own command tests plus a manual CLI smoke check in Step 4 below.
 
 **Interfaces:**
+
 - Consumes: `runPauseCommand` from `../commands/pause.js` (Task 3), `runResumeCommand` from `../commands/resume.js` (Task 4).
 - Produces: `autoforge pause` and `autoforge resume` become reachable through the built CLI binary.
 
@@ -1333,13 +1340,16 @@ Work lifecycle:
 - [ ] **Step 4: Rebuild and smoke-test the CLI manually**
 
 Run:
+
 ```bash
 npm run build
 node dist/cli.js --help | grep -A2 "pause\|resume"
 ```
+
 Expected: both new commands appear in the `Commands:` list and the `Work lifecycle:` usage section.
 
 Then, in a scratch directory, exercise the full cycle end-to-end:
+
 ```bash
 TMPDIR=$(mktemp -d) && cd "$TMPDIR" && git init -q
 node /Users/coltonajackson/Code/Business/autoforge/dist/cli.js init
@@ -1351,17 +1361,20 @@ node /Users/coltonajackson/Code/Business/autoforge/dist/cli.js resume issue "$IS
 node /Users/coltonajackson/Code/Business/autoforge/dist/cli.js done --no-decision "Smoke test cleanup."
 cd - && rm -rf "$TMPDIR"
 ```
+
 Expected: `pause` succeeds and prints `Paused issue ...; ended session....`, `resume` succeeds and prints `Resumed issue ... in session....`, `done` succeeds after. If `status --json`'s shape differs from what this script assumes, inspect its actual output first (`node dist/cli.js status --json | head -50`) and adjust the extraction accordingly — the point of this step is manual confirmation the wiring works, not a fixed script.
 
 - [ ] **Step 5: Run the full suite, typecheck, format, and boundary checks**
 
 Run:
+
 ```bash
 npx vitest run
 npx tsc --noEmit
 npx prettier --check src/cli/index.ts apps/core-cli/src/help.ts
 node packages/config/src/check-boundaries.mjs
 ```
+
 Expected: all green. Fix formatting with `npx prettier --write src/cli/index.ts apps/core-cli/src/help.ts` if needed.
 
 - [ ] **Step 6: Commit**
@@ -1379,10 +1392,12 @@ Claude-Session: https://claude.ai/code/session_01HTP99nx36hpQfVrcPrChg1"
 ### Task 6: Update CHANGELOG, version, and release documentation
 
 **Files:**
+
 - Modify: `CHANGELOG.md` (fold into the existing `[0.25.3]` entry — do not add a new version section)
 - Modify: `docs/planning/0.25/RELEASE_READINESS.md` if it references the exact commit/feature set of 0.25.3 (check first)
 
 **Interfaces:**
+
 - Consumes: nothing code-level.
 - Produces: an updated changelog entry describing pause/resume; no new interfaces.
 
