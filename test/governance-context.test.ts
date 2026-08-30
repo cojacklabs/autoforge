@@ -11,6 +11,7 @@ describe("governance context integration", () => {
           name: "Governance context",
           description: "Validate governance packet rendering.",
           status: "active" as const,
+          pauseReason: null,
           scope: { include: ["src/context/**"], exclude: [] },
           createdAt: "2026-08-21T00:00:00.000Z",
           updatedAt: "2026-08-21T00:00:00.000Z",

@@ -33,6 +33,7 @@ export const workStatusSchema = z.enum([
   "ready",
   "active",
   "blocked",
+  "paused",
   "completed",
   "canceled",
 ]);
@@ -61,6 +62,7 @@ const workItemBaseSchema = z
     name: entityNameSchema,
     description: descriptionSchema,
     status: workStatusSchema,
+    pauseReason: z.string().trim().min(1).max(2_000).nullable().default(null),
     createdAt: timestampSchema,
     updatedAt: timestampSchema,
   })

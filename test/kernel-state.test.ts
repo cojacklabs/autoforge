@@ -82,6 +82,7 @@ describe("kernel state persistence", () => {
             name: "Persist state",
             description: "Prove state survives store instances.",
             status: "ready",
+            pauseReason: null,
             scope: { include: ["src/state/**"], exclude: [] },
             createdAt: TIMESTAMP,
             updatedAt: TIMESTAMP,

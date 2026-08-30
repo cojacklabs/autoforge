@@ -33,6 +33,7 @@ async function createFixture() {
     name: "Secure API",
     description: "Add backend authentication tests.",
     status: "planned",
+    pauseReason: null,
     scope: { include: ["src/api/**"], exclude: [] },
     createdAt: TIMESTAMP,
     updatedAt: TIMESTAMP,

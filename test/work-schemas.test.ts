@@ -2,8 +2,10 @@ import { describe, expect, it } from "vitest";
 
 import {
   sessionStateSchema,
+  taskSchema,
   workScopeSchema,
   workStateSchema,
+  workStatusSchema,
 } from "../src/work/schemas.js";
 
 const TIMESTAMP = "2026-08-19T22:00:00.000Z";
@@ -16,6 +18,7 @@ function validWorkState() {
         name: "Control kernel",
         description: "Manage persistent project work.",
         status: "active",
+        pauseReason: null,
         createdAt: TIMESTAMP,
         updatedAt: TIMESTAMP,
       },
@@ -28,6 +31,7 @@ function validWorkState() {
         name: "Domain contracts",
         description: "Define the work model.",
         status: "active",
+        pauseReason: null,
         createdAt: TIMESTAMP,
         updatedAt: TIMESTAMP,
       },
@@ -39,6 +43,7 @@ function validWorkState() {
         name: "Implement contracts",
         description: "Add validated domain schemas.",
         status: "active",
+        pauseReason: null,
         scope: { include: ["src/work/**"], exclude: ["dist/**"] },
         createdAt: TIMESTAMP,
         updatedAt: TIMESTAMP,
@@ -119,6 +124,7 @@ describe("control-kernel work schemas", () => {
       name: "Fix doctor",
       description: "Correct a focused diagnostic defect.",
       status: "active",
+      pauseReason: null,
       scope: { include: ["src/commands/doctor.ts"] },
       createdAt: TIMESTAMP,
       updatedAt: TIMESTAMP,
@@ -226,5 +232,44 @@ describe("control-kernel session schemas", () => {
         ],
       }).success,
     ).toBe(false);
+  });
+});
+
+describe("paused work status", () => {
+  it("accepts paused as a valid work status", () => {
+    expect(workStatusSchema.safeParse("paused").success).toBe(true);
+  });
+
+  it("defaults pauseReason to null and accepts an explicit reason", () => {
+    const base = {
+      id: "task.example",
+      phaseId: "phase.example",
+      name: "Example",
+      description: "Example task.",
+      status: "paused",
+      scope: { include: ["src/**"], exclude: [] },
+      createdAt: "2026-08-30T00:00:00.000Z",
+      updatedAt: "2026-08-30T00:00:00.000Z",
+    };
+    expect(taskSchema.parse(base).pauseReason).toBeNull();
+    expect(
+      taskSchema.parse({ ...base, pauseReason: "Waiting on account access." })
+        .pauseReason,
+    ).toBe("Waiting on account access.");
+  });
+
+  it("rejects a blank pauseReason", () => {
+    const base = {
+      id: "task.example",
+      phaseId: "phase.example",
+      name: "Example",
+      description: "Example task.",
+      status: "paused",
+      scope: { include: ["src/**"], exclude: [] },
+      createdAt: "2026-08-30T00:00:00.000Z",
+      updatedAt: "2026-08-30T00:00:00.000Z",
+      pauseReason: "   ",
+    };
+    expect(taskSchema.safeParse(base).success).toBe(false);
   });
 });
