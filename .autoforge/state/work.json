@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
-  "revision": 412,
-  "updatedAt": "2026-08-27T19:29:10.492Z",
+  "revision": 417,
+  "updatedAt": "2026-08-30T15:41:34.916Z",
   "data": {
     "features": [
       {
@@ -2614,6 +2614,60 @@
           "include": [
             "docs/planning/0.26/**",
             ".autoforge/state/**"
+          ],
+          "exclude": []
+        }
+      },
+      {
+        "name": "Reconcile AutoForge as a framework-only engineering control plane",
+        "description": "Adopt the August 30 framework-only north-star, separate all first-party generalist AI and prompt-to-product ambitions into a future CoJack Labs AI portfolio, supersede conflicting product-direction decisions, reconcile authoritative documentation and planned work, and preserve the current AutoForge name until a distinct replacement passes naming review. Do not rename packages, executables, state directories, or code in this issue.",
+        "status": "completed",
+        "createdAt": "2026-08-30T15:31:48.897Z",
+        "updatedAt": "2026-08-30T15:41:34.812Z",
+        "id": "issue.reconcile-autoforge-as-a-framework-only-engineering-control-plane",
+        "scope": {
+          "include": [
+            "README.md",
+            "docs/**",
+            "dev/AUTOFORGE_NORTH_STAR_ARCHITECTURE_2026-08-30.md",
+            ".autoforge/state/**",
+            ".autoforge/learning/strategy.json"
+          ],
+          "exclude": []
+        }
+      },
+      {
+        "name": "Audit and retire first-party AutoForge Agent compatibility surfaces",
+        "description": "Inventory the historical @cojacklabs/autoforge-agent, Providers, bare-command delegation, credentials, launcher protocol, package boundaries, tests, and documentation; distinguish reusable third-party agent contracts from abandoned first-party AI product behavior; then propose a compatibility-first retirement or extraction plan before code removal.",
+        "status": "planned",
+        "createdAt": "2026-08-30T15:37:33.197Z",
+        "updatedAt": "2026-08-30T15:37:33.197Z",
+        "id": "issue.audit-and-retire-first-party-autoforge-agent-compatibility-surfaces",
+        "scope": {
+          "include": [
+            "apps/**",
+            "packages/**",
+            "src/**",
+            "test/**",
+            "docs/**",
+            "package.json",
+            ".changeset/**",
+            ".autoforge/**"
+          ],
+          "exclude": []
+        }
+      },
+      {
+        "name": "Select a distinctive framework name and compatibility migration plan",
+        "description": "Evaluate replacement framework names, including but not limited to Forger, across GitHub, npm and other registries, executable names, domains, searchability, relevant trademark risk, international meaning, product semantics, and CoJack Labs portfolio fit; recommend a name only with an alias, package, state-directory, environment-variable, credential, documentation, deprecation, and rollback migration plan. No rename or purchase is authorized by this issue.",
+        "status": "planned",
+        "createdAt": "2026-08-30T15:37:34.069Z",
+        "updatedAt": "2026-08-30T15:37:34.069Z",
+        "id": "issue.select-a-distinctive-framework-name-and-compatibility-migration-plan",
+        "scope": {
+          "include": [
+            "docs/**",
+            ".autoforge/**"
           ],
           "exclude": []
         }

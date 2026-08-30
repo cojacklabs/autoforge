@@ -1,12 +1,18 @@
 # AutoForgeAI Orchestration Capability Adoption
 
-Status: Approved conceptual adoption for clean-room planning  
+Status: Reframed on 2026-08-30; framework-compatible capabilities only
 Reviewed source: [`AutoForgeAI/autoforge`](https://github.com/AutoForgeAI/autoforge)
 at commit
 [`427c228`](https://github.com/AutoForgeAI/autoforge/commit/427c228ed1e15c5d9f5be4b8b15539034ce6c878)  
 Reviewed: 2026-08-26
 
 ## Purpose and Clean-Room Boundary
+
+> Role contracts, assignments, leases, approvals, events, evidence, recovery,
+> and project projections remain relevant framework concepts. First-party model
+> execution, Agent UX, hosted AI operation, and provider ownership are no
+> longer AutoForge product responsibilities. Read this document through the
+> [AutoForge Framework North-Star](./AUTOFORGE_FRAMEWORK_NORTH_STAR.md).
 
 This document adopts useful product and orchestration concepts observed in the
 separately developed `AutoForgeAI/autoforge` project into CoJack Labs

@@ -1,8 +1,14 @@
 # Agentic SDLC Product Track
 
-Status: Adopted product-track baseline; delivery horizons remain provisional  
+Status: Superseded on 2026-08-30; reusable framework contracts retained
 Reconciled: 2026-08-26  
 Source concept: [`dev/AutoForge_Agentic_SDLC_Automation_Strategy.md`](../../../dev/AutoForge_Agentic_SDLC_Automation_Strategy.md)
+
+> The first-party Agent, hosted execution, and Web product profiles now belong
+> to the future CoJack Labs AI portfolio. AutoForge retains only the reusable
+> project-intelligence, governance, orchestration, handoff, and validation
+> contracts described by the
+> [AutoForge Framework North-Star](./AUTOFORGE_FRAMEWORK_NORTH_STAR.md).
 
 ## Purpose
 

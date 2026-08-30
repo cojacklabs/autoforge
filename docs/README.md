@@ -55,20 +55,20 @@ The planning documents preserve the architecture, release gates, audit trail,
 and publication record. Experimental Agent and Providers work remains subject
 to its own approval gates.
 
-## Post-v0.25 North-Star Roadmap
+## Current Framework North-Star
 
-- [Ultimate AutoForge AI North-Star](planning/0.26/ULTIMATE_AUTOFORGE_AI_NORTH_STAR.md)
-- [v0.26 and Beyond: Trust, Portability, Agent, Memory, Integration, and Cloud](planning/0.26/POST_V0_25_NORTH_STAR_ROADMAP.md)
+- [AutoForge Framework North-Star](planning/0.26/AUTOFORGE_FRAMEWORK_NORTH_STAR.md)
+- [AutoForge Framework Roadmap](planning/0.26/AUTOFORGE_FRAMEWORK_ROADMAP.md)
+- [Separated Future AI Product Portfolio](planning/0.26/SEPARATED_FUTURE_AI_PRODUCT_PORTFOLIO.md)
 - [AutoForgeAI Orchestration Capability Adoption](planning/0.26/AUTOFORGEAI_ORCHESTRATION_CAPABILITY_ADOPTION.md)
 - [Agentic SDLC Product Track](planning/0.26/AGENTIC_SDLC_PRODUCT_TRACK.md)
 
-The ultimate north-star is the authoritative product destination. The roadmap
-is the proposed delivery baseline after v0.25, and the capability-adoption
-document preserves the clean-room orchestration portfolio. Later version
-assignments are candidate sequencing, not automatic authorization to implement
-or publish every described capability. The Agentic SDLC product track is the
-first concrete vertical beneath that destination and separates interactive,
-supervised, hosted, and shared-foundation responsibilities.
+The framework north-star and framework roadmap are authoritative. AutoForge is
+not a first-party AI agent; compatible external agents reason and execute while
+AutoForge supplies persistent project intelligence, governance, context,
+coordination, and validation. Earlier AI-operator, Agentic SDLC product, and
+Visual Product Studio plans are historical or transferred concepts and do not
+authorize implementation in this repository.
 
 ## Specialist References
 

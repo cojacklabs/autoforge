@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
-  "revision": 121,
-  "updatedAt": "2026-08-27T19:26:50.798Z",
+  "revision": 136,
+  "updatedAt": "2026-08-30T15:38:47.918Z",
   "data": {
     "decisions": [
       {
@@ -2536,10 +2536,10 @@
           "issue.document-the-post-v0-25-north-star-roadmap"
         ],
         "supersedes": null,
-        "status": "active",
+        "status": "superseded",
         "kind": "architecture",
         "createdAt": "2026-08-26T03:30:18.276Z",
-        "updatedAt": "2026-08-26T03:30:18.276Z"
+        "updatedAt": "2026-08-30T15:36:33.418Z"
       },
       {
         "id": "decision.issue-define-and-benchmark-the-hybrid-sqlite-storage-boundary-strategic-assessme",
@@ -2639,10 +2639,10 @@
           "issue.reconcile-v0-26-priority-and-document-the-ultimate-autoforge-ai-north-star"
         ],
         "supersedes": null,
-        "status": "active",
+        "status": "superseded",
         "kind": "architecture",
         "createdAt": "2026-08-26T04:58:49.483Z",
-        "updatedAt": "2026-08-26T04:58:49.483Z"
+        "updatedAt": "2026-08-30T15:36:53.439Z"
       },
       {
         "id": "decision.idle-project-status-ranks-startable-work-by-its-active-strategy-decision-before",
@@ -2819,10 +2819,10 @@
           "issue.reconcile-the-agentic-sdlc-product-track-into-the-north-star"
         ],
         "supersedes": null,
-        "status": "active",
+        "status": "superseded",
         "kind": "feature-note",
         "createdAt": "2026-08-26T23:30:38.460Z",
-        "updatedAt": "2026-08-26T23:30:38.460Z"
+        "updatedAt": "2026-08-30T15:36:32.795Z"
       },
       {
         "id": "decision.skipped-documentation-for-issue-independently-validate-the-post-v0-25-transition",
@@ -2965,10 +2965,10 @@
           "issue.incorporate-the-visual-product-studio-into-the-ultimate-north-star"
         ],
         "supersedes": null,
-        "status": "active",
+        "status": "superseded",
         "kind": "feature-note",
         "createdAt": "2026-08-27T19:17:27.051Z",
-        "updatedAt": "2026-08-27T19:17:27.051Z"
+        "updatedAt": "2026-08-30T15:36:31.283Z"
       },
       {
         "id": "decision.issue-clarify-the-visual-product-studio-as-a-code-first-production-workspace-str",
@@ -3016,10 +3016,367 @@
           "issue.clarify-the-visual-product-studio-as-a-code-first-production-workspace"
         ],
         "supersedes": null,
-        "status": "active",
+        "status": "superseded",
         "kind": "feature-note",
         "createdAt": "2026-08-27T19:26:50.764Z",
-        "updatedAt": "2026-08-27T19:26:50.764Z"
+        "updatedAt": "2026-08-30T15:36:53.875Z"
+      },
+      {
+        "id": "decision.issue-reconcile-autoforge-as-a-framework-only-engineering-control-plane-strategi",
+        "statement": "issue.reconcile-autoforge-as-a-framework-only-engineering-control-plane: strategic assessment recommends now",
+        "reasoning": "The newly approved framework-versus-generalist-AI boundary contradicts the current ultimate-AI north-star and several later-horizon work items. Reconciliation must precede additional implementation so agents do not execute against conflicting product identities; package and executable renaming remains a separate decision after collision research.",
+        "consequences": [
+          "alignment=high, value=high, risk=medium, cost=medium, evidenceStrength=high, dependencyPressure=high, complexity=medium, releaseConstraint=low"
+        ],
+        "scope": [
+          "strategy"
+        ],
+        "keywords": [
+          "strategy",
+          "now"
+        ],
+        "relatedWork": [
+          "issue.reconcile-autoforge-as-a-framework-only-engineering-control-plane"
+        ],
+        "supersedes": null,
+        "status": "active",
+        "kind": "feature-note",
+        "createdAt": "2026-08-30T15:31:49.299Z",
+        "updatedAt": "2026-08-30T15:31:49.299Z"
+      },
+      {
+        "id": "decision.the-visual-product-studio-and-raw-code-canvas-belong-to-the-future-cojack-labs-a",
+        "statement": "The Visual Product Studio and raw-code canvas belong to the future CoJack Labs AI product, not the AutoForge framework.",
+        "reasoning": "A conversational prompt-to-product workspace owns model reasoning and an end-user creation experience, while AutoForge is restricted to repository-native project intelligence and governance.",
+        "consequences": [
+          "Preserve repository-native design specifications, adapters, traceability, approvals, drift evidence, and validation contracts in AutoForge.",
+          "Preserve the interactive canvas and prototype-to-production product experience in the separated future-AI portfolio without authorizing implementation here."
+        ],
+        "scope": [
+          "product",
+          "architecture"
+        ],
+        "keywords": [
+          "framework-boundary",
+          "future-ai"
+        ],
+        "relatedWork": [
+          "issue.reconcile-autoforge-as-a-framework-only-engineering-control-plane"
+        ],
+        "supersedes": "decision.autoforge-s-ultimate-north-star-includes-a-governed-visual-product-studio-that-m",
+        "status": "active",
+        "kind": "architecture",
+        "createdAt": "2026-08-30T15:36:31.283Z",
+        "updatedAt": "2026-08-30T15:36:31.283Z"
+      },
+      {
+        "id": "decision.continuous-agentic-sdlc-is-a-client-workflow-enabled-by-autoforge-contracts-not",
+        "statement": "Continuous Agentic SDLC is a client workflow enabled by AutoForge contracts, not a first-party AutoForge Agent product vertical.",
+        "reasoning": "External agents and the future CoJack Labs AI may perform continuous development while AutoForge supplies scoped knowledge, coordination, authority, evidence, and handoffs.",
+        "consequences": [
+          "Retain reusable run, role, assignment, approval, event, recovery, and validation contracts in the framework.",
+          "Move interactive Agent, hosted execution, model routing, and Web product experiences outside AutoForge's product roadmap."
+        ],
+        "scope": [
+          "product",
+          "architecture"
+        ],
+        "keywords": [
+          "framework-boundary",
+          "future-ai"
+        ],
+        "relatedWork": [
+          "issue.reconcile-autoforge-as-a-framework-only-engineering-control-plane"
+        ],
+        "supersedes": "decision.continuous-agentic-sdlc-automation-is-autoforge-s-first-concrete-product-vertica",
+        "status": "active",
+        "kind": "architecture",
+        "createdAt": "2026-08-30T15:36:32.795Z",
+        "updatedAt": "2026-08-30T15:36:32.795Z"
+      },
+      {
+        "id": "decision.the-autoforge-framework-roadmap-replaces-the-post-v0-25-ai-platform-roadmap-as-t",
+        "statement": "The AutoForge framework roadmap replaces the post-v0.25 AI-platform roadmap as the current planning baseline.",
+        "reasoning": "The earlier roadmap assumes first-party Agent, Provider, Service, Web, personal-memory, and Visual Product Studio products that conflict with the approved framework-only identity.",
+        "consequences": [
+          "Prioritize evidence integrity, artifact governance, project graph and context quality, agent interoperability, and software/data/AI engineering depth.",
+          "Treat the prior roadmap as historical planning and separately transfer non-framework concepts."
+        ],
+        "scope": [
+          "product",
+          "architecture"
+        ],
+        "keywords": [
+          "framework-boundary",
+          "future-ai"
+        ],
+        "relatedWork": [
+          "issue.reconcile-autoforge-as-a-framework-only-engineering-control-plane"
+        ],
+        "supersedes": "decision.autoforge-adopts-the-post-v0-25-roadmap-as-a-proposed-planning-baseline-beginnin",
+        "status": "active",
+        "kind": "architecture",
+        "createdAt": "2026-08-30T15:36:33.418Z",
+        "updatedAt": "2026-08-30T15:36:33.418Z"
+      },
+      {
+        "id": "decision.autoforge-is-an-independently-usable-engineering-control-plane-and-is-not-an-ai",
+        "statement": "AutoForge is an independently usable engineering control plane and is not an AI agent or general-purpose assistant.",
+        "reasoning": "The framework preserves repository-owned project intelligence, governance, context resolution, orchestration, and validation across replaceable agents. General conversation, personal memory, model reasoning, and prompt-to-product experiences belong to a separately named CoJack Labs AI.",
+        "consequences": [
+          "Use docs/planning/0.26/AUTOFORGE_FRAMEWORK_NORTH_STAR.md as the authoritative destination and AUTOFORGE_FRAMEWORK_ROADMAP.md as the planning baseline.",
+          "Do not rename packages, executables, state directories, or the repository until a separate naming and compatibility decision is approved."
+        ],
+        "scope": [
+          "product",
+          "architecture"
+        ],
+        "keywords": [
+          "framework-boundary",
+          "future-ai"
+        ],
+        "relatedWork": [
+          "issue.reconcile-autoforge-as-a-framework-only-engineering-control-plane"
+        ],
+        "supersedes": "decision.autoforge-s-ultimate-north-star-is-a-trusted-persistent-provider-neutral-ai-oper",
+        "status": "active",
+        "kind": "architecture",
+        "createdAt": "2026-08-30T15:36:53.439Z",
+        "updatedAt": "2026-08-30T15:36:53.439Z"
+      },
+      {
+        "id": "decision.raw-code-and-visual-editing-parity-is-a-future-cojack-labs-ai-experience-that-ma",
+        "statement": "Raw-code and visual editing parity is a future CoJack Labs AI experience that may use AutoForge as its technical governance layer.",
+        "reasoning": "The concept remains valuable, but assigning the integrated canvas to AutoForge would make the framework an IDE and first-party reasoning product contrary to the approved boundary.",
+        "consequences": [
+          "AutoForge owns canonical technical artifacts and validation interfaces.",
+          "The future product owns conversation, canvas, raw-code workspace, and product UX."
+        ],
+        "scope": [
+          "product",
+          "design"
+        ],
+        "keywords": [
+          "visual-product-studio",
+          "future-ai"
+        ],
+        "relatedWork": [
+          "issue.reconcile-autoforge-as-a-framework-only-engineering-control-plane"
+        ],
+        "supersedes": "decision.the-visual-product-studio-treats-raw-code-and-visual-manipulation-as-equal-first",
+        "status": "active",
+        "kind": "architecture",
+        "createdAt": "2026-08-30T15:36:53.875Z",
+        "updatedAt": "2026-08-30T15:36:53.875Z"
+      },
+      {
+        "id": "decision.issue-define-the-autoforge-visual-product-canvas-and-design-to-code-contracts-st-2",
+        "statement": "issue.define-the-autoforge-visual-product-canvas-and-design-to-code-contracts: strategic assessment recommends backlog",
+        "reasoning": "The visual canvas is now owned by the separately named future CoJack Labs AI. AutoForge may later define portable design, artifact, drift, approval, and validation contracts, but this framework repository must not implement the end-user canvas or raw-code product experience.",
+        "consequences": [
+          "alignment=low, value=medium, risk=high, cost=high, evidenceStrength=low, dependencyPressure=low, complexity=high, releaseConstraint=low"
+        ],
+        "scope": [
+          "strategy"
+        ],
+        "keywords": [
+          "strategy",
+          "backlog"
+        ],
+        "relatedWork": [
+          "issue.define-the-autoforge-visual-product-canvas-and-design-to-code-contracts"
+        ],
+        "supersedes": null,
+        "status": "active",
+        "kind": "feature-note",
+        "createdAt": "2026-08-30T15:37:16.157Z",
+        "updatedAt": "2026-08-30T15:37:16.157Z"
+      },
+      {
+        "id": "decision.issue-enforce-agent-generated-content-safety-before-writes-and-streaming-strateg-2",
+        "statement": "issue.enforce-agent-generated-content-safety-before-writes-and-streaming: strategic assessment recommends backlog",
+        "reasoning": "Streaming model output and first-party Agent publication are no longer AutoForge product goals. Retain the issue only as source material for a future external-agent proposal validation boundary or transfer it to the future AI product.",
+        "consequences": [
+          "alignment=medium, value=medium, risk=medium, cost=medium, evidenceStrength=medium, dependencyPressure=low, complexity=medium, releaseConstraint=low"
+        ],
+        "scope": [
+          "strategy"
+        ],
+        "keywords": [
+          "strategy",
+          "backlog"
+        ],
+        "relatedWork": [
+          "issue.enforce-agent-generated-content-safety-before-writes-and-streaming"
+        ],
+        "supersedes": null,
+        "status": "active",
+        "kind": "feature-note",
+        "createdAt": "2026-08-30T15:37:16.697Z",
+        "updatedAt": "2026-08-30T15:37:16.697Z"
+      },
+      {
+        "id": "decision.issue-define-optional-intent-compiler-and-portable-design-orchestration-strategi-2",
+        "statement": "issue.define-optional-intent-compiler-and-portable-design-orchestration: strategic assessment recommends later",
+        "reasoning": "AutoForge may define deterministic intent schemas, design specifications, research provenance, escalation metadata, and adapter contracts. Model-based prompt compilation and design generation belong to external agents or the future CoJack Labs AI and must not enter Core.",
+        "consequences": [
+          "alignment=medium, value=medium, risk=medium, cost=medium, evidenceStrength=low, dependencyPressure=low, complexity=medium, releaseConstraint=low"
+        ],
+        "scope": [
+          "strategy"
+        ],
+        "keywords": [
+          "strategy",
+          "later"
+        ],
+        "relatedWork": [
+          "issue.define-optional-intent-compiler-and-portable-design-orchestration"
+        ],
+        "supersedes": null,
+        "status": "active",
+        "kind": "feature-note",
+        "createdAt": "2026-08-30T15:37:17.271Z",
+        "updatedAt": "2026-08-30T15:37:17.271Z"
+      },
+      {
+        "id": "decision.issue-define-and-benchmark-the-hybrid-sqlite-storage-boundary-strategic-assessme-2",
+        "statement": "issue.define-and-benchmark-the-hybrid-sqlite-storage-boundary: strategic assessment recommends next",
+        "reasoning": "The benchmark remains framework work for rebuildable project indexes, graph queries, status projections, and safe assignment coordination. Remove personal-memory, model-run, and first-party Agent storage as adoption drivers.",
+        "consequences": [
+          "alignment=high, value=high, risk=medium, cost=medium, evidenceStrength=medium, dependencyPressure=medium, complexity=medium, releaseConstraint=low"
+        ],
+        "scope": [
+          "strategy"
+        ],
+        "keywords": [
+          "strategy",
+          "next"
+        ],
+        "relatedWork": [
+          "issue.define-and-benchmark-the-hybrid-sqlite-storage-boundary"
+        ],
+        "supersedes": null,
+        "status": "active",
+        "kind": "feature-note",
+        "createdAt": "2026-08-30T15:37:17.905Z",
+        "updatedAt": "2026-08-30T15:37:17.905Z"
+      },
+      {
+        "id": "decision.issue-reserve-autoforgerai-com-when-funding-and-review-permit-strategic-assessme-2",
+        "statement": "issue.reserve-autoforgerai-com-when-funding-and-review-permit: strategic assessment recommends backlog",
+        "reasoning": "The AutoForgeAI domain is not automatically assigned to either the framework or the unnamed future AI and should not be purchased until the naming architecture and collision review select a product identity.",
+        "consequences": [
+          "alignment=low, value=low, risk=medium, cost=low, evidenceStrength=high, dependencyPressure=low, complexity=low, releaseConstraint=low"
+        ],
+        "scope": [
+          "strategy"
+        ],
+        "keywords": [
+          "strategy",
+          "backlog"
+        ],
+        "relatedWork": [
+          "issue.reserve-autoforgerai-com-when-funding-and-review-permit"
+        ],
+        "supersedes": null,
+        "status": "active",
+        "kind": "feature-note",
+        "createdAt": "2026-08-30T15:37:18.437Z",
+        "updatedAt": "2026-08-30T15:37:18.437Z"
+      },
+      {
+        "id": "decision.issue-reserve-autoforge-sh-domain-when-funding-permits-strategic-assessment-reco-2",
+        "statement": "issue.reserve-autoforge-sh-domain-when-funding-permits: strategic assessment recommends backlog",
+        "reasoning": "AutoForge is now a compatibility name pending replacement-name research. Domain acquisition should wait for naming, collision, legal, migration, and ownership decisions rather than reinforce a possibly retired brand.",
+        "consequences": [
+          "alignment=low, value=low, risk=medium, cost=low, evidenceStrength=high, dependencyPressure=low, complexity=low, releaseConstraint=low"
+        ],
+        "scope": [
+          "strategy"
+        ],
+        "keywords": [
+          "strategy",
+          "backlog"
+        ],
+        "relatedWork": [
+          "issue.reserve-autoforge-sh-domain-when-funding-permits"
+        ],
+        "supersedes": null,
+        "status": "active",
+        "kind": "feature-note",
+        "createdAt": "2026-08-30T15:37:19.052Z",
+        "updatedAt": "2026-08-30T15:37:19.052Z"
+      },
+      {
+        "id": "decision.issue-audit-and-retire-first-party-autoforge-agent-compatibility-surfaces-strate",
+        "statement": "issue.audit-and-retire-first-party-autoforge-agent-compatibility-surfaces: strategic assessment recommends next",
+        "reasoning": "The released v0.25 compatibility surface still contains a first-party Agent launcher and private Agent/Provider packages that conflict with the new boundary. Audit before removal so public CLI, SDK, Protocol, package, credential, and Windows compatibility are not broken.",
+        "consequences": [
+          "alignment=high, value=high, risk=high, cost=medium, evidenceStrength=high, dependencyPressure=medium, complexity=high, releaseConstraint=medium"
+        ],
+        "scope": [
+          "strategy"
+        ],
+        "keywords": [
+          "strategy",
+          "next"
+        ],
+        "relatedWork": [
+          "issue.audit-and-retire-first-party-autoforge-agent-compatibility-surfaces"
+        ],
+        "supersedes": null,
+        "status": "active",
+        "kind": "feature-note",
+        "createdAt": "2026-08-30T15:37:33.613Z",
+        "updatedAt": "2026-08-30T15:37:33.613Z"
+      },
+      {
+        "id": "decision.issue-select-a-distinctive-framework-name-and-compatibility-migration-plan-strat",
+        "statement": "issue.select-a-distinctive-framework-name-and-compatibility-migration-plan: strategic assessment recommends next",
+        "reasoning": "AutoForge collides with an established project, while Forger and Forge are already occupied in adjacent developer-tool categories. A distinctive identity and compatibility plan should precede the next material public expansion, but must not interrupt this architecture reconciliation.",
+        "consequences": [
+          "alignment=high, value=high, risk=medium, cost=medium, evidenceStrength=high, dependencyPressure=medium, complexity=medium, releaseConstraint=medium"
+        ],
+        "scope": [
+          "strategy"
+        ],
+        "keywords": [
+          "strategy",
+          "next"
+        ],
+        "relatedWork": [
+          "issue.select-a-distinctive-framework-name-and-compatibility-migration-plan"
+        ],
+        "supersedes": null,
+        "status": "active",
+        "kind": "feature-note",
+        "createdAt": "2026-08-30T15:37:34.462Z",
+        "updatedAt": "2026-08-30T15:37:34.462Z"
+      },
+      {
+        "id": "decision.forger-is-a-naming-candidate-but-is-not-approved-as-the-framework-name",
+        "statement": "Forger is a naming candidate but is not approved as the framework name.",
+        "reasoning": "The name better avoids implying autonomous operation, but the unscoped npm package is occupied and a directly adjacent AI-development framework already uses FORGER and the forger CLI. A rename would also affect public packages, executables, state directories, environment variables, credentials, documentation, and user migration.",
+        "consequences": [
+          "Keep AutoForge as the compatibility identity until the recorded naming issue recommends a distinctive replacement and migration plan.",
+          "Do not acquire a domain, rename code, or publish new package identities from this architecture issue."
+        ],
+        "scope": [
+          "brand",
+          "compatibility"
+        ],
+        "keywords": [
+          "forger",
+          "naming"
+        ],
+        "relatedWork": [
+          "issue.reconcile-autoforge-as-a-framework-only-engineering-control-plane"
+        ],
+        "supersedes": null,
+        "status": "active",
+        "kind": "architecture",
+        "createdAt": "2026-08-30T15:38:47.886Z",
+        "updatedAt": "2026-08-30T15:38:47.886Z"
       }
     ]
   }

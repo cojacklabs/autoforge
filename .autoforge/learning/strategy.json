@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
-  "revision": 11,
-  "updatedAt": "2026-08-27T19:26:11.272Z",
+  "revision": 20,
+  "updatedAt": "2026-08-30T15:37:34.554Z",
   "data": {
     "assessments": [
       {
@@ -44,9 +44,9 @@
         "evidenceIds": [],
         "resultingDecision": "decision.issue-define-optional-intent-compiler-and-portable-design-orchestration-strategi",
         "supersedes": null,
-        "status": "active",
+        "status": "superseded",
         "createdAt": "2026-08-25T21:09:42.154Z",
-        "updatedAt": "2026-08-25T21:09:42.154Z"
+        "updatedAt": "2026-08-30T15:37:17.262Z"
       },
       {
         "id": "strategy.issue-enforce-agent-generated-content-safety-before-writes-and-streaming",
@@ -66,9 +66,9 @@
         "evidenceIds": [],
         "resultingDecision": "decision.issue-enforce-agent-generated-content-safety-before-writes-and-streaming-strateg",
         "supersedes": null,
-        "status": "active",
+        "status": "superseded",
         "createdAt": "2026-08-25T21:36:53.834Z",
-        "updatedAt": "2026-08-25T21:36:53.834Z"
+        "updatedAt": "2026-08-30T15:37:16.688Z"
       },
       {
         "id": "strategy.issue-define-and-benchmark-the-hybrid-sqlite-storage-boundary",
@@ -88,9 +88,9 @@
         "evidenceIds": [],
         "resultingDecision": "decision.issue-define-and-benchmark-the-hybrid-sqlite-storage-boundary-strategic-assessme",
         "supersedes": null,
-        "status": "active",
+        "status": "superseded",
         "createdAt": "2026-08-26T04:48:17.197Z",
-        "updatedAt": "2026-08-26T04:48:17.197Z"
+        "updatedAt": "2026-08-30T15:37:17.894Z"
       },
       {
         "id": "strategy.issue-make-release-readiness-use-superseding-gate-evidence",
@@ -132,9 +132,9 @@
         "evidenceIds": [],
         "resultingDecision": "decision.issue-reserve-autoforge-sh-domain-when-funding-permits-strategic-assessment-reco",
         "supersedes": null,
-        "status": "active",
+        "status": "superseded",
         "createdAt": "2026-08-26T13:55:34.868Z",
-        "updatedAt": "2026-08-26T13:55:34.868Z"
+        "updatedAt": "2026-08-30T15:37:19.042Z"
       },
       {
         "id": "strategy.issue-bind-validation-evidence-to-revision-environment-and-gate-definition",
@@ -198,9 +198,9 @@
         "evidenceIds": [],
         "resultingDecision": "decision.issue-reserve-autoforgerai-com-when-funding-and-review-permit-strategic-assessme",
         "supersedes": null,
-        "status": "active",
+        "status": "superseded",
         "createdAt": "2026-08-27T15:44:22.666Z",
-        "updatedAt": "2026-08-27T15:44:22.666Z"
+        "updatedAt": "2026-08-30T15:37:18.429Z"
       },
       {
         "id": "strategy.issue-define-the-autoforge-visual-product-canvas-and-design-to-code-contracts",
@@ -220,9 +220,9 @@
         "evidenceIds": [],
         "resultingDecision": "decision.issue-define-the-autoforge-visual-product-canvas-and-design-to-code-contracts-st",
         "supersedes": null,
-        "status": "active",
+        "status": "superseded",
         "createdAt": "2026-08-27T19:15:45.977Z",
-        "updatedAt": "2026-08-27T19:15:45.977Z"
+        "updatedAt": "2026-08-30T15:37:16.141Z"
       },
       {
         "id": "strategy.issue-clarify-the-visual-product-studio-as-a-code-first-production-workspace",
@@ -245,6 +245,204 @@
         "status": "active",
         "createdAt": "2026-08-27T19:26:11.156Z",
         "updatedAt": "2026-08-27T19:26:11.156Z"
+      },
+      {
+        "id": "strategy.issue-reconcile-autoforge-as-a-framework-only-engineering-control-plane",
+        "workId": "issue.reconcile-autoforge-as-a-framework-only-engineering-control-plane",
+        "factors": {
+          "alignment": "high",
+          "value": "high",
+          "risk": "medium",
+          "cost": "medium",
+          "evidenceStrength": "high",
+          "dependencyPressure": "high",
+          "complexity": "medium",
+          "releaseConstraint": "low"
+        },
+        "decision": "now",
+        "rationale": "The newly approved framework-versus-generalist-AI boundary contradicts the current ultimate-AI north-star and several later-horizon work items. Reconciliation must precede additional implementation so agents do not execute against conflicting product identities; package and executable renaming remains a separate decision after collision research.",
+        "evidenceIds": [],
+        "resultingDecision": "decision.issue-reconcile-autoforge-as-a-framework-only-engineering-control-plane-strategi",
+        "supersedes": null,
+        "status": "active",
+        "createdAt": "2026-08-30T15:31:49.292Z",
+        "updatedAt": "2026-08-30T15:31:49.292Z"
+      },
+      {
+        "id": "strategy.issue-define-the-autoforge-visual-product-canvas-and-design-to-code-contracts-2",
+        "workId": "issue.define-the-autoforge-visual-product-canvas-and-design-to-code-contracts",
+        "factors": {
+          "alignment": "low",
+          "value": "medium",
+          "risk": "high",
+          "cost": "high",
+          "evidenceStrength": "low",
+          "dependencyPressure": "low",
+          "complexity": "high",
+          "releaseConstraint": "low"
+        },
+        "decision": "backlog",
+        "rationale": "The visual canvas is now owned by the separately named future CoJack Labs AI. AutoForge may later define portable design, artifact, drift, approval, and validation contracts, but this framework repository must not implement the end-user canvas or raw-code product experience.",
+        "evidenceIds": [],
+        "resultingDecision": "decision.issue-define-the-autoforge-visual-product-canvas-and-design-to-code-contracts-st-2",
+        "supersedes": "strategy.issue-define-the-autoforge-visual-product-canvas-and-design-to-code-contracts",
+        "status": "active",
+        "createdAt": "2026-08-30T15:37:16.141Z",
+        "updatedAt": "2026-08-30T15:37:16.141Z"
+      },
+      {
+        "id": "strategy.issue-enforce-agent-generated-content-safety-before-writes-and-streaming-2",
+        "workId": "issue.enforce-agent-generated-content-safety-before-writes-and-streaming",
+        "factors": {
+          "alignment": "medium",
+          "value": "medium",
+          "risk": "medium",
+          "cost": "medium",
+          "evidenceStrength": "medium",
+          "dependencyPressure": "low",
+          "complexity": "medium",
+          "releaseConstraint": "low"
+        },
+        "decision": "backlog",
+        "rationale": "Streaming model output and first-party Agent publication are no longer AutoForge product goals. Retain the issue only as source material for a future external-agent proposal validation boundary or transfer it to the future AI product.",
+        "evidenceIds": [],
+        "resultingDecision": "decision.issue-enforce-agent-generated-content-safety-before-writes-and-streaming-strateg-2",
+        "supersedes": "strategy.issue-enforce-agent-generated-content-safety-before-writes-and-streaming",
+        "status": "active",
+        "createdAt": "2026-08-30T15:37:16.688Z",
+        "updatedAt": "2026-08-30T15:37:16.688Z"
+      },
+      {
+        "id": "strategy.issue-define-optional-intent-compiler-and-portable-design-orchestration-2",
+        "workId": "issue.define-optional-intent-compiler-and-portable-design-orchestration",
+        "factors": {
+          "alignment": "medium",
+          "value": "medium",
+          "risk": "medium",
+          "cost": "medium",
+          "evidenceStrength": "low",
+          "dependencyPressure": "low",
+          "complexity": "medium",
+          "releaseConstraint": "low"
+        },
+        "decision": "later",
+        "rationale": "AutoForge may define deterministic intent schemas, design specifications, research provenance, escalation metadata, and adapter contracts. Model-based prompt compilation and design generation belong to external agents or the future CoJack Labs AI and must not enter Core.",
+        "evidenceIds": [],
+        "resultingDecision": "decision.issue-define-optional-intent-compiler-and-portable-design-orchestration-strategi-2",
+        "supersedes": "strategy.issue-define-optional-intent-compiler-and-portable-design-orchestration",
+        "status": "active",
+        "createdAt": "2026-08-30T15:37:17.262Z",
+        "updatedAt": "2026-08-30T15:37:17.262Z"
+      },
+      {
+        "id": "strategy.issue-define-and-benchmark-the-hybrid-sqlite-storage-boundary-2",
+        "workId": "issue.define-and-benchmark-the-hybrid-sqlite-storage-boundary",
+        "factors": {
+          "alignment": "high",
+          "value": "high",
+          "risk": "medium",
+          "cost": "medium",
+          "evidenceStrength": "medium",
+          "dependencyPressure": "medium",
+          "complexity": "medium",
+          "releaseConstraint": "low"
+        },
+        "decision": "next",
+        "rationale": "The benchmark remains framework work for rebuildable project indexes, graph queries, status projections, and safe assignment coordination. Remove personal-memory, model-run, and first-party Agent storage as adoption drivers.",
+        "evidenceIds": [],
+        "resultingDecision": "decision.issue-define-and-benchmark-the-hybrid-sqlite-storage-boundary-strategic-assessme-2",
+        "supersedes": "strategy.issue-define-and-benchmark-the-hybrid-sqlite-storage-boundary",
+        "status": "active",
+        "createdAt": "2026-08-30T15:37:17.894Z",
+        "updatedAt": "2026-08-30T15:37:17.894Z"
+      },
+      {
+        "id": "strategy.issue-reserve-autoforgerai-com-when-funding-and-review-permit-2",
+        "workId": "issue.reserve-autoforgerai-com-when-funding-and-review-permit",
+        "factors": {
+          "alignment": "low",
+          "value": "low",
+          "risk": "medium",
+          "cost": "low",
+          "evidenceStrength": "high",
+          "dependencyPressure": "low",
+          "complexity": "low",
+          "releaseConstraint": "low"
+        },
+        "decision": "backlog",
+        "rationale": "The AutoForgeAI domain is not automatically assigned to either the framework or the unnamed future AI and should not be purchased until the naming architecture and collision review select a product identity.",
+        "evidenceIds": [],
+        "resultingDecision": "decision.issue-reserve-autoforgerai-com-when-funding-and-review-permit-strategic-assessme-2",
+        "supersedes": "strategy.issue-reserve-autoforgerai-com-when-funding-and-review-permit",
+        "status": "active",
+        "createdAt": "2026-08-30T15:37:18.429Z",
+        "updatedAt": "2026-08-30T15:37:18.429Z"
+      },
+      {
+        "id": "strategy.issue-reserve-autoforge-sh-domain-when-funding-permits-2",
+        "workId": "issue.reserve-autoforge-sh-domain-when-funding-permits",
+        "factors": {
+          "alignment": "low",
+          "value": "low",
+          "risk": "medium",
+          "cost": "low",
+          "evidenceStrength": "high",
+          "dependencyPressure": "low",
+          "complexity": "low",
+          "releaseConstraint": "low"
+        },
+        "decision": "backlog",
+        "rationale": "AutoForge is now a compatibility name pending replacement-name research. Domain acquisition should wait for naming, collision, legal, migration, and ownership decisions rather than reinforce a possibly retired brand.",
+        "evidenceIds": [],
+        "resultingDecision": "decision.issue-reserve-autoforge-sh-domain-when-funding-permits-strategic-assessment-reco-2",
+        "supersedes": "strategy.issue-reserve-autoforge-sh-domain-when-funding-permits",
+        "status": "active",
+        "createdAt": "2026-08-30T15:37:19.042Z",
+        "updatedAt": "2026-08-30T15:37:19.042Z"
+      },
+      {
+        "id": "strategy.issue-audit-and-retire-first-party-autoforge-agent-compatibility-surfaces",
+        "workId": "issue.audit-and-retire-first-party-autoforge-agent-compatibility-surfaces",
+        "factors": {
+          "alignment": "high",
+          "value": "high",
+          "risk": "high",
+          "cost": "medium",
+          "evidenceStrength": "high",
+          "dependencyPressure": "medium",
+          "complexity": "high",
+          "releaseConstraint": "medium"
+        },
+        "decision": "next",
+        "rationale": "The released v0.25 compatibility surface still contains a first-party Agent launcher and private Agent/Provider packages that conflict with the new boundary. Audit before removal so public CLI, SDK, Protocol, package, credential, and Windows compatibility are not broken.",
+        "evidenceIds": [],
+        "resultingDecision": "decision.issue-audit-and-retire-first-party-autoforge-agent-compatibility-surfaces-strate",
+        "supersedes": null,
+        "status": "active",
+        "createdAt": "2026-08-30T15:37:33.605Z",
+        "updatedAt": "2026-08-30T15:37:33.605Z"
+      },
+      {
+        "id": "strategy.issue-select-a-distinctive-framework-name-and-compatibility-migration-plan",
+        "workId": "issue.select-a-distinctive-framework-name-and-compatibility-migration-plan",
+        "factors": {
+          "alignment": "high",
+          "value": "high",
+          "risk": "medium",
+          "cost": "medium",
+          "evidenceStrength": "high",
+          "dependencyPressure": "medium",
+          "complexity": "medium",
+          "releaseConstraint": "medium"
+        },
+        "decision": "next",
+        "rationale": "AutoForge collides with an established project, while Forger and Forge are already occupied in adjacent developer-tool categories. A distinctive identity and compatibility plan should precede the next material public expansion, but must not interrupt this architecture reconciliation.",
+        "evidenceIds": [],
+        "resultingDecision": "decision.issue-select-a-distinctive-framework-name-and-compatibility-migration-plan-strat",
+        "supersedes": null,
+        "status": "active",
+        "createdAt": "2026-08-30T15:37:34.453Z",
+        "updatedAt": "2026-08-30T15:37:34.453Z"
       }
     ]
   }

@@ -3,14 +3,19 @@
 > **Human intent. AI execution. One shared understanding.**
 
 AutoForge is a project-intelligence and orchestration framework for continuous
-AI-assisted software development. It turns brainstorming, research, planning,
-design, implementation, validation, and handoff into durable project state that
-humans and different coding agents can share.
+AI-assisted software, data, and AI development. It turns brainstorming,
+research, planning, design, implementation, validation, and handoff into durable
+project state that humans and different coding agents can share.
 
 AutoForge does not replace Codex, Claude Code, Cursor, Gemini, Grok, or another
 agent. The Core CLI gives every agent the same scoped work, decisions,
 governance, evidence, and next action instead of making each conversation start
 from scratch.
+
+AutoForge owns deterministic project intelligence and orchestration—not model
+reasoning or autonomous agency. A separately named future CoJack Labs AI may
+consume AutoForge, but general conversation, personal memory, model routing,
+and prompt-to-product experiences are outside this framework's scope.
 
 > AutoForge v0.25.2 is the first supported registry release for the v0.25
 > architecture. Always begin with `autoforge version` and use explicit Core
@@ -18,17 +23,17 @@ from scratch.
 
 ## What v0.25 Provides
 
-| Layer    | Package                          | Responsibility                                                                                 |
-| -------- | -------------------------------- | ---------------------------------------------------------------------------------------------- |
-| Protocol | `@cojacklabs/autoforge-protocol` | Versioned contracts, capabilities, launch negotiation, and handoffs                            |
-| Core     | `@cojacklabs/autoforge-core`     | Deterministic, model-independent project intelligence                                          |
-| SDK      | `@cojacklabs/autoforge-sdk`      | Supported programmatic facade with injected filesystem, Git, clock, and storage effects        |
-| Core CLI | `@cojacklabs/autoforge`          | Project lifecycle, memory, governance, orchestration, validation, and optional Agent launching |
-| Agent    | `@cojacklabs/autoforge-agent`    | Experimental interactive model runtime; separately approved and installed                      |
+| Layer    | Package                          | Responsibility                                                                               |
+| -------- | -------------------------------- | -------------------------------------------------------------------------------------------- |
+| Protocol | `@cojacklabs/autoforge-protocol` | Versioned contracts, capabilities, launch negotiation, and handoffs                          |
+| Core     | `@cojacklabs/autoforge-core`     | Deterministic, model-independent project intelligence                                        |
+| SDK      | `@cojacklabs/autoforge-sdk`      | Supported programmatic facade with injected filesystem, Git, clock, and storage effects      |
+| Core CLI | `@cojacklabs/autoforge`          | Project lifecycle, memory, governance, orchestration, validation, and compatibility behavior |
+| Agent    | `@cojacklabs/autoforge-agent`    | Historical experimental runtime; not the framework's future product direction                |
 
 Core remains usable without an account, model provider, hosted service, or
-Agent installation. Production Web, hosted Service, billing, cloud sync, and
-multi-provider autonomy are later platform milestones.
+Agent installation. A first-party AI, consumer billing, personal memory, and
+prompt-to-product platform are not AutoForge framework milestones.
 
 ## Install and Attach a Project
 
@@ -184,16 +189,16 @@ autoforge orchestrate release <assignment-id>
 If `orchestrate explain` reports stale or unavailable context, stop, release the
 claim, and reclaim it before editing.
 
-## Core CLI and Experimental Agent
+## Core CLI and Agent Compatibility
 
 Explicit subcommands are deterministic. Automation should use commands such as
 `autoforge status --json`, `autoforge recap`, and `autoforge gate check --json`.
 
-After the separately versioned Agent is approved and installed, bare
-`autoforge` can launch it in an eligible interactive terminal. CI, pipes,
-redirected output, `AUTOFORGE_NO_AGENT=1`, recursion, and missing or incompatible
-Agent installations retain deterministic status behavior. The old interactive
-Core TUI is deprecated; `autoforge tui` is temporarily a read-only status alias.
+The released CLI retains compatibility code for the historical experimental
+Agent. That behavior does not establish a first-party AutoForge Agent roadmap.
+Automation should always use explicit deterministic subcommands. A later
+compatibility issue will decide how bare invocation and Agent-launch shims are
+retired without breaking supported installations.
 
 Provider credentials remain in the operating-system credential store:
 
@@ -209,6 +214,8 @@ See [Local Provider Credentials](docs/LOCAL_PROVIDER_CREDENTIALS.md).
 
 Start with [docs/README.md](docs/README.md). It identifies current operational
 guides, v0.25 release material, specialist references, and historical documents.
+The authoritative product boundary is the
+[AutoForge Framework North-Star](docs/planning/0.26/AUTOFORGE_FRAMEWORK_NORTH_STAR.md).
 The installed command remains the final authority for syntax:
 
 ```bash

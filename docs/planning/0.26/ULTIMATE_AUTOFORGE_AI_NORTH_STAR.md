@@ -1,7 +1,15 @@
 # Ultimate AutoForge AI North-Star
 
-Status: Authoritative product destination; delivery horizons remain provisional  
+Status: Superseded on 2026-08-30; preserved as historical product exploration
 Established: 2026-08-26
+
+> This AI-operator destination no longer governs AutoForge implementation.
+> AutoForge is now restricted to the independently usable engineering
+> framework defined by the
+> [AutoForge Framework North-Star](./AUTOFORGE_FRAMEWORK_NORTH_STAR.md). General
+> AI, personal-assistant, and Visual Product Studio concepts are preserved in
+> the
+> [Separated Future AI Product Portfolio](./SEPARATED_FUTURE_AI_PRODUCT_PORTFOLIO.md).
 
 ## Product Promise
 
