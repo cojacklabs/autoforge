@@ -108,11 +108,19 @@ recorded evidence entry.
 - Environment: pure in-process — `process.platform`, parse the major
   version from `process.version`, `Boolean(process.env.CI)`.
 - Gate-definition fingerprint: a small hashing helper (`node:crypto`'s
-  `createHash("sha256")`) that, per check id, either hashes
-  `src/quality/service.ts`'s file contents (built-in checks) or the
-  specific `qualityGates[]` config entry's serialized `{command, args,
-timeoutMs}` (for `command.<id>` checks — strip the `command.` prefix to
-  find the matching config entry by its `id`).
+  `createHash("sha256")`) that, per check id, either hashes the contents of
+  the **currently-executing script itself** (resolved via
+  `fileURLToPath(import.meta.url)` from the entrypoint module, walking up
+  to the actual running file — in a real npm install that's `dist/cli.js`,
+  the single bundled file that actually ships; in local dev/tests it's
+  whatever module is running) for built-in checks, or the specific
+  `qualityGates[]` config entry's serialized `{command, args, timeoutMs}`
+  (for `command.<id>` checks — strip the `command.` prefix to find the
+  matching config entry by its `id`) for config-driven checks. Hashing the
+  running entrypoint — rather than `src/quality/service.ts` directly —
+  avoids a real bug: only `dist/cli.js` ships to npm (per `package.json`'s
+  `files` field), so a source-file path assumption would silently produce
+  no fingerprint (or throw) in every real installed copy of AutoForge.
 
 ## Readiness Logic Changes
 
