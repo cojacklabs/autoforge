@@ -269,11 +269,23 @@ describe("work resume lifecycle", () => {
     await lifecycle.start({ kind: "task", id: task.entity.id });
     await lifecycle.pause("Waiting on account access.");
 
+    // Real usage generates a fresh session ID per start/resume call (see
+    // src/commands/resume.ts's randomUUID()-based default). The fixture's
+    // `lifecycle` was constructed with a session ID fixed at "session.test",
+    // which is now archived in `previous` from the pause above — reusing it
+    // for resume would collide with sessionStateSchema's cross-session
+    // uniqueness invariant. Build a second service instance sharing the same
+    // stores but with its own session ID, exactly as the CLI command does.
+    const resumeLifecycle = new WorkLifecycleService(workStore, sessionStore, {
+      now: () => new Date(TIMESTAMP),
+      sessionId: () => "session.resumed",
+    });
+
     await expect(
-      lifecycle.resume({ kind: "task", id: task.entity.id }),
+      resumeLifecycle.resume({ kind: "task", id: task.entity.id }),
     ).resolves.toMatchObject({
       activeWork: { kind: "task", id: task.entity.id, startedAt: TIMESTAMP },
-      sessionId: "session.test",
+      sessionId: "session.resumed",
       workRevision: 8,
       sessionRevision: 3,
     });
@@ -291,7 +303,7 @@ describe("work resume lifecycle", () => {
       state: {
         data: {
           current: {
-            id: "session.test",
+            id: "session.resumed",
             status: "active",
             activeWork: { kind: "task", id: task.entity.id },
           },
@@ -312,17 +324,24 @@ describe("work resume lifecycle", () => {
   });
 
   it("rejects resuming while other work is active", async () => {
-    const { issue, lifecycle, task } = await createFixture();
+    const { issue, lifecycle, sessionStore, task, workStore } =
+      await createFixture();
     await lifecycle.start({ kind: "task", id: task.entity.id });
     await lifecycle.pause("Paused for later.");
-    await lifecycle.start({ kind: "issue", id: issue.entity.id });
+    const secondLifecycle = new WorkLifecycleService(workStore, sessionStore, {
+      now: () => new Date(TIMESTAMP),
+      sessionId: () => "session.second",
+    });
+    await secondLifecycle.start({ kind: "issue", id: issue.entity.id });
 
     await expect(
-      lifecycle.resume({ kind: "task", id: task.entity.id }),
+      secondLifecycle.resume({ kind: "task", id: task.entity.id }),
     ).rejects.toMatchObject({ code: "STATE_CONFLICT" });
   });
 });
 ```
+
+**Note on this fixture pattern:** `WorkLifecycleService` fixes its session-ID generator at construction time (matching production usage, where each CLI invocation of `start`/`resume`/`pause`/`done` constructs a fresh service instance per process run — see `src/commands/start.ts`'s `sessionId: () => sessionId` closure, built fresh per command invocation). Tests that chain multiple session-opening calls (`start` → `pause` → `resume`, or `start` → `pause` → `start` again) must construct a new `WorkLifecycleService` instance (sharing the same `workStore`/`sessionStore`) for each call that opens a new session, with a distinct `sessionId`. Reusing one `lifecycle` instance's fixed session ID across more than one session-opening call will collide with `sessionStateSchema`'s cross-session uniqueness invariant (`src/work/schemas.ts`, the `previous`/`current` ID-uniqueness `superRefine` check) once the first session is archived into `previous`.
 
 The test file already imports `writeFile` from `node:fs/promises` (used by the existing "restores work when the session write fails" test) — reuse it, do not re-import.
 
