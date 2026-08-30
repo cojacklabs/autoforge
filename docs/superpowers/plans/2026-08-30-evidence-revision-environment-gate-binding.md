@@ -1104,7 +1104,17 @@
 - Consumes: `computeCurrentRevision`, `computeCurrentEnvironment` from `src/quality/scope.js` (Task 3); `evaluateReadiness`'s new `currentScope` option and `outOfScopeCount`/`outOfScopeReasons` fields (Task 2); `inspectInstallation` (for `qualityGates`, needed if the summary command wants a fingerprint — see note below).
 - Produces: `evidence summary`'s text output gains an `"; N excluded (...)"` clause when `outOfScopeCount > 0`; `--json` output includes `outOfScopeCount`/`outOfScopeReasons`.
 
-**Design note on gate-definition fingerprint in this command:** unlike `gate check` (which computes a fingerprint per check id as it iterates `report.checks`), `evidence summary` operates over already-recorded evidence with heterogeneous gate ids and doesn't run any gates itself. Computing a single "current" `gateDefinitionFingerprint` to pass as part of `currentScope` doesn't make sense here (different evidence rows have different gate ids, each needing its own fingerprint to compare against). **Only pass `revision` and `environment` as `currentScope` in this command — omit `gateDefinitionFingerprint` from the scope passed to `evaluateReadiness`.** `scopeMatches`/`scopeMismatchReason` (Task 2) already treat a missing `currentScope.gateDefinitionFingerprint` as "not comparable for that field," so gate-definition drift is simply not checked from this command — only from `gate check`'s own evidence-recording path, which is the right place for it since that's where per-gate fingerprints are naturally computed.
+**Reconciled design note on gate applicability:** `evidence summary` computes a
+current fingerprint for every built-in and configured command gate, then passes
+the resulting gate-id-to-fingerprint map into readiness evaluation. This avoids
+the invalid single-fingerprint comparison while ensuring a changed gate cannot
+retain authority. The evaluator also receives the complete expected gate-id set,
+so excluding all evidence—or omitting one required gate—produces an explicit
+blocker instead of a vacuous ready state. When a current scope is available,
+legacy records lacking its revision, environment, or gate-definition fields stay
+readable as history but are not authoritative. Dirty revisions include a content
+fingerprint so two different working trees at the same HEAD cannot share
+authority.
 
 - [ ] **Step 1: Write the failing test**
 
@@ -1240,7 +1250,10 @@
 - [ ] **Step 5: Run the full suite to check for regressions**
 
   Run: `npx vitest run`
-  Expected: All existing tests pass. The two pre-existing `evidence-command.test.ts` tests run inside real temp git repos (`mkdir(path.join(root, ".git"))` then `initializeProject`) but never commit anything, so `computeCurrentRevision` will return `undefined` for them (no commits exist yet) — confirm `scopeMatches`/`scopeMismatchReason`'s legacy-fallback logic (Task 2) correctly treats a `currentScope.revision === undefined` the same as "not comparable," so those two pre-existing tests' evidence (which also has no `revision` field) is still included and their assertions (`effectiveTotal: 1`, etc.) still hold. If either fails, the fix is to ensure `computeCurrentRevision`'s `undefined` return and evidence's missing `revision` field both correctly skip the revision comparison in `scopeMismatchReason` — re-check Task 2's implementation rather than changing this test.
+  Expected: All existing tests pass. Command tests must seed applicable evidence
+  for every required built-in gate. When a repository has no resolvable HEAD,
+  revision comparison is unavailable, but environment and per-gate definition
+  applicability still apply.
 
 - [ ] **Step 6: Typecheck and format**
 

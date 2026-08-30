@@ -18,6 +18,10 @@ export const validationEvidenceSchema = z
       .object({
         sha: z.string().trim().min(1),
         dirty: z.boolean(),
+        worktreeFingerprint: z
+          .string()
+          .regex(/^[0-9a-f]{64}$/)
+          .optional(),
       })
       .strict()
       .optional(),

@@ -11,9 +11,13 @@ export interface AuthoritativeEvidence {
 }
 
 export interface EvidenceScope {
-  revision?: { sha: string; dirty: boolean };
+  revision?: {
+    sha: string;
+    dirty: boolean;
+    worktreeFingerprint?: string;
+  };
   environment?: { platform: string; nodeMajor: number; ci: boolean };
-  gateDefinitionFingerprint?: string;
+  gateDefinitionFingerprints?: Readonly<Record<string, string>>;
 }
 
 export interface ReadinessReport {
@@ -30,11 +34,13 @@ export interface ReadinessReport {
   authoritativeEvidence: AuthoritativeEvidence[];
   outOfScopeCount: number;
   outOfScopeReasons: string[];
+  missingGateIds: string[];
 }
 
 export interface EvaluateReadinessOptions {
   workId?: string;
   currentScope?: EvidenceScope;
+  expectedGateIds?: readonly string[];
 }
 
 function compareEvidence(
@@ -55,14 +61,28 @@ function scopeMismatchReason(
   evidence: ValidationEvidence,
   currentScope: EvidenceScope,
 ): string | undefined {
-  if (
-    evidence.revision &&
-    currentScope.revision &&
-    evidence.revision.sha !== currentScope.revision.sha
-  ) {
-    return "different revision";
+  if (currentScope.revision) {
+    if (!evidence.revision) return "legacy evidence lacks revision";
+    if (evidence.revision.sha !== currentScope.revision.sha) {
+      return "different revision";
+    }
+    if (evidence.revision.dirty !== currentScope.revision.dirty) {
+      return "different working tree";
+    }
+    if (currentScope.revision.dirty) {
+      if (!evidence.revision.worktreeFingerprint) {
+        return "evidence lacks dirty working-tree identity";
+      }
+      if (
+        evidence.revision.worktreeFingerprint !==
+        currentScope.revision.worktreeFingerprint
+      ) {
+        return "different working tree";
+      }
+    }
   }
-  if (evidence.environment && currentScope.environment) {
+  if (currentScope.environment) {
+    if (!evidence.environment) return "legacy evidence lacks environment";
     const { platform, nodeMajor, ci } = evidence.environment;
     const current = currentScope.environment;
     if (
@@ -73,13 +93,15 @@ function scopeMismatchReason(
       return "different environment";
     }
   }
-  if (
-    evidence.gateDefinitionFingerprint &&
-    currentScope.gateDefinitionFingerprint &&
-    evidence.gateDefinitionFingerprint !==
-      currentScope.gateDefinitionFingerprint
-  ) {
-    return "different gate definition";
+  const currentGateFingerprint =
+    currentScope.gateDefinitionFingerprints?.[evidence.gateId];
+  if (currentGateFingerprint) {
+    if (!evidence.gateDefinitionFingerprint) {
+      return "legacy evidence lacks gate definition";
+    }
+    if (evidence.gateDefinitionFingerprint !== currentGateFingerprint) {
+      return "different gate definition";
+    }
   }
   return undefined;
 }
@@ -226,12 +248,24 @@ export function evaluateReadiness(
   const failedAuthorities = authoritativeEvidence.filter(
     (item) => item.status === "failed",
   );
-  const blockers = failedAuthorities
+  const failureBlockers = failedAuthorities
     .map(
       (item) =>
         `${item.gateId}${item.workId ? ` [${item.workId}]` : ""}: ${item.reason}`,
     )
     .sort((left, right) => left.localeCompare(right));
+  const authoritativeGateIds = new Set(
+    authoritativeEvidence.map((item) => item.gateId),
+  );
+  const missingGateIds = [...new Set(options.expectedGateIds ?? [])]
+    .filter((gateId) => !authoritativeGateIds.has(gateId))
+    .sort();
+  const blockers = [
+    ...failureBlockers,
+    ...missingGateIds.map(
+      (gateId) => `${gateId}: no applicable required evidence`,
+    ),
+  ].sort((left, right) => left.localeCompare(right));
   const failed = evidence.filter((item) => item.status === "failed");
   return {
     ready: blockers.length === 0,
@@ -251,5 +285,6 @@ export function evaluateReadiness(
     authoritativeEvidence,
     outOfScopeCount: outOfScopeReasons.length,
     outOfScopeReasons,
+    missingGateIds,
   };
 }

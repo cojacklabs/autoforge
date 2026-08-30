@@ -306,17 +306,105 @@ describe("quality readiness", () => {
       ],
       {
         currentScope: { revision: { sha: "new-sha", dirty: false } },
+        expectedGateIds: ["tests"],
       },
     );
 
     expect(result).toMatchObject({
-      ready: true,
+      ready: false,
       effectiveTotal: 0,
       authoritativeEvidence: [],
       outOfScopeCount: 1,
+      missingGateIds: ["tests"],
+      blockers: ["tests: no applicable required evidence"],
     });
     expect(result.outOfScopeReasons[0]).toContain(
       "evidence.tests-old-revision",
+    );
+  });
+
+  it("does not reuse evidence from another dirty working-tree identity", () => {
+    const result = evaluateReadiness(
+      [
+        evidence("tests-dirty-a", "passed", {
+          revision: {
+            sha: "same-sha",
+            dirty: true,
+            worktreeFingerprint: "dirty-a",
+          },
+        }),
+      ],
+      {
+        currentScope: {
+          revision: {
+            sha: "same-sha",
+            dirty: true,
+            worktreeFingerprint: "dirty-b",
+          },
+        },
+        expectedGateIds: ["tests"],
+      },
+    );
+
+    expect(result).toMatchObject({
+      ready: false,
+      effectiveTotal: 0,
+      missingGateIds: ["tests"],
+      outOfScopeCount: 1,
+    });
+    expect(result.outOfScopeReasons[0]).toContain("different working tree");
+  });
+
+  it("compares gate-definition fingerprints by gate id", () => {
+    const result = evaluateReadiness(
+      [
+        evidence("tests-old-definition", "passed", {
+          gateId: "command.tests",
+          gateDefinitionFingerprint: "old-tests",
+        }),
+        evidence("format-current-definition", "passed", {
+          gateId: "command.format",
+          gateDefinitionFingerprint: "current-format",
+        }),
+      ],
+      {
+        currentScope: {
+          gateDefinitionFingerprints: {
+            "command.tests": "current-tests",
+            "command.format": "current-format",
+          },
+        },
+        expectedGateIds: ["command.tests", "command.format"],
+      },
+    );
+
+    expect(result).toMatchObject({
+      ready: false,
+      effectiveTotal: 1,
+      effectivePassed: 1,
+      missingGateIds: ["command.tests"],
+      outOfScopeCount: 1,
+    });
+    expect(result.outOfScopeReasons[0]).toContain("different gate definition");
+  });
+
+  it("does not silently authorize legacy unscoped evidence", () => {
+    const result = evaluateReadiness([evidence("tests-legacy", "passed")], {
+      currentScope: {
+        revision: { sha: "current", dirty: false },
+        environment: { platform: "darwin", nodeMajor: 24, ci: false },
+      },
+      expectedGateIds: ["tests"],
+    });
+
+    expect(result).toMatchObject({
+      ready: false,
+      effectiveTotal: 0,
+      missingGateIds: ["tests"],
+      outOfScopeCount: 1,
+    });
+    expect(result.outOfScopeReasons[0]).toContain(
+      "legacy evidence lacks revision",
     );
   });
 
@@ -351,7 +439,9 @@ describe("quality readiness", () => {
         }),
       ],
       {
-        currentScope: { gateDefinitionFingerprint: "new-fingerprint" },
+        currentScope: {
+          gateDefinitionFingerprints: { tests: "new-fingerprint" },
+        },
       },
     );
 
@@ -375,7 +465,15 @@ describe("quality readiness", () => {
           capturedAt: "2026-08-22T00:00:00.000Z",
         }),
       ],
-      { currentScope: scope },
+      {
+        currentScope: {
+          revision: scope.revision,
+          environment: scope.environment,
+          gateDefinitionFingerprints: {
+            tests: scope.gateDefinitionFingerprint,
+          },
+        },
+      },
     );
 
     expect(result).toMatchObject({
@@ -386,17 +484,12 @@ describe("quality readiness", () => {
     });
   });
 
-  it("does not exclude legacy evidence (missing scope fields) even when currentScope is supplied", () => {
-    const result = evaluateReadiness(
-      [
-        evidence("tests-legacy", "passed", {
-          capturedAt: "2026-08-22T00:00:00.000Z",
-        }),
-      ],
-      {
-        currentScope: { revision: { sha: "current-sha", dirty: false } },
-      },
-    );
+  it("retains legacy evidence behavior when no current scope is supplied", () => {
+    const result = evaluateReadiness([
+      evidence("tests-legacy", "passed", {
+        capturedAt: "2026-08-22T00:00:00.000Z",
+      }),
+    ]);
 
     expect(result).toMatchObject({
       ready: true,

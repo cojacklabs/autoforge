@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
-  "revision": 136,
-  "updatedAt": "2026-08-30T15:38:47.918Z",
+  "revision": 137,
+  "updatedAt": "2026-08-30T20:33:42.424Z",
   "data": {
     "decisions": [
       {
@@ -3377,6 +3377,31 @@
         "kind": "architecture",
         "createdAt": "2026-08-30T15:38:47.886Z",
         "updatedAt": "2026-08-30T15:38:47.886Z"
+      },
+      {
+        "id": "decision.validation-readiness-requires-applicable-evidence-for-every-required-gate-in-the",
+        "statement": "Validation readiness requires applicable evidence for every required gate in the current revision, dirty-worktree, environment, and per-gate definition scope",
+        "reasoning": "A passing historical record must not authorize a materially different checkout or gate, and excluding all records must not produce a vacuous ready state. Dirty HEAD identity therefore includes content, summaries compute fingerprints per gate, and legacy unscoped records remain audit history only when current scope is known.",
+        "consequences": [
+          "Evidence summaries report missing gates and explicit out-of-scope reasons; changed dirty trees, environments, revisions, and gate definitions require fresh evidence while immutable history is retained.",
+          "Newly scoped summaries treat legacy records lacking comparable scope as non-authoritative."
+        ],
+        "scope": [
+          "validation",
+          "evidence"
+        ],
+        "keywords": [
+          "applicability",
+          "readiness"
+        ],
+        "relatedWork": [
+          "issue.bind-validation-evidence-to-revision-environment-and-gate-definition"
+        ],
+        "supersedes": null,
+        "status": "active",
+        "kind": "bugfix",
+        "createdAt": "2026-08-30T20:33:42.397Z",
+        "updatedAt": "2026-08-30T20:33:42.397Z"
       }
     ]
   }

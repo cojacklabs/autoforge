@@ -15,15 +15,15 @@ All notable changes to this project will be documented in this file.
 ### Added
 
 - Validation evidence now optionally records the source revision (git HEAD
-  SHA + working-tree dirty flag), execution environment (platform, Node
+  SHA + content fingerprint for dirty working trees), execution environment (platform, Node
   major version, CI flag), and a gate-definition fingerprint at capture
   time (`autoforge gate check`). Readiness evaluation
   (`autoforge evidence summary`, `src/quality/readiness.ts`) excludes
-  evidence whose revision or environment no longer matches the current one
-  from authority selection, so a stale-revision or different-platform
-  result can no longer silently validate the current project state.
-  Legacy evidence records without these fields are unaffected and continue
-  to work exactly as before.
+  evidence whose revision, dirty working-tree contents, environment, or
+  per-gate definition no longer matches the current scope from authority
+  selection. A summary is not ready until every configured required gate has
+  applicable evidence; legacy unscoped records remain readable but cannot
+  authorize a currently scoped summary.
 
 ## [0.25.3] - 2026-08-30
 

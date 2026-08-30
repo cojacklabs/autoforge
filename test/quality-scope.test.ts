@@ -57,7 +57,17 @@ describe("computeCurrentRevision", () => {
     const root = await createGitProject();
     await writeFile(path.join(root, "README.md"), "changed\n");
     const result = await computeCurrentRevision(root);
-    expect(result?.dirty).toBe(true);
+    expect(result).toMatchObject({ dirty: true });
+    expect(result?.worktreeFingerprint).toMatch(/^[0-9a-f]{64}$/);
+  });
+
+  it("changes the working-tree fingerprint when dirty content changes", async () => {
+    const root = await createGitProject();
+    await writeFile(path.join(root, "README.md"), "changed once\n");
+    const first = await computeCurrentRevision(root);
+    await writeFile(path.join(root, "README.md"), "changed twice\n");
+    const second = await computeCurrentRevision(root);
+    expect(first?.worktreeFingerprint).not.toBe(second?.worktreeFingerprint);
   });
 
   it("returns undefined when the directory is not a git repository", async () => {

@@ -1,10 +1,14 @@
 import { EXIT_CODE, type ExitCode } from "../core/errors.js";
 import type { LogWriter } from "../core/logger.js";
+import { discoverProjectRoot } from "../core/project.js";
+import { inspectInstallation } from "./init.js";
 import { ValidationEvidenceStore } from "../quality/evidence.js";
 import { evaluateReadiness } from "../quality/readiness.js";
 import {
   computeCurrentEnvironment,
   computeCurrentRevision,
+  computeGateDefinitionFingerprints,
+  expectedRequiredGateIds,
 } from "../quality/scope.js";
 
 export interface EvidenceCommandOptions {
@@ -27,9 +31,10 @@ export async function runEvidenceCommand(
   if (!action || (flag !== undefined && flag !== "--json"))
     return usage(options.output);
   const json = flag === "--json";
-  const state = await new ValidationEvidenceStore(
-    options.startDirectory,
-  ).read();
+  const project = await discoverProjectRoot({
+    startDirectory: options.startDirectory,
+  });
+  const state = await new ValidationEvidenceStore(project.path).read();
   if (action === "list") {
     if (json) options.output.stdout(JSON.stringify(state, null, 2));
     else
@@ -46,13 +51,24 @@ export async function runEvidenceCommand(
     return EXIT_CODE.success;
   }
   if (action === "summary") {
-    const revision = await computeCurrentRevision(options.startDirectory);
+    const inspection = await inspectInstallation(project.path);
+    const qualityGates = inspection.config?.qualityGates ?? [];
+    const expectedGateIds = expectedRequiredGateIds(qualityGates);
+    const revision = await computeCurrentRevision(project.path);
     const environment = computeCurrentEnvironment();
+    const gateDefinitionFingerprints = await computeGateDefinitionFingerprints(
+      expectedGateIds,
+      {
+        qualityGates,
+      },
+    );
     const readiness = evaluateReadiness(state.evidence, {
       currentScope: {
         ...(revision !== undefined ? { revision } : {}),
         environment,
+        gateDefinitionFingerprints,
       },
+      expectedGateIds,
     });
     const summary = {
       ...readiness,
@@ -62,7 +78,7 @@ export async function runEvidenceCommand(
     else {
       const outOfScopeClause =
         summary.outOfScopeCount > 0
-          ? `; ${summary.outOfScopeCount} excluded (different revision/environment)`
+          ? `; ${summary.outOfScopeCount} excluded as out of scope`
           : "";
       options.output.stdout(
         `Validation evidence: ${summary.passed} passed, ${summary.failed} failed, ${summary.skipped} skipped historically; ${summary.effectiveTotal} authoritative required result(s), ${summary.requiredFailures} blocker(s)${outOfScopeClause}.`,
