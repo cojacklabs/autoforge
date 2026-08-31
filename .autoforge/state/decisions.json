@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
-  "revision": 137,
-  "updatedAt": "2026-08-30T20:33:42.424Z",
+  "revision": 138,
+  "updatedAt": "2026-08-31T01:21:01.323Z",
   "data": {
     "decisions": [
       {
@@ -3402,6 +3402,31 @@
         "kind": "bugfix",
         "createdAt": "2026-08-30T20:33:42.397Z",
         "updatedAt": "2026-08-30T20:33:42.397Z"
+      },
+      {
+        "id": "decision.enforce-an-objective-code-commenting-standard-limited-to-work-linked-todo-fixme",
+        "statement": "Enforce an objective code-commenting standard limited to work-linked TODO/FIXME markers, not comment-density quotas",
+        "reasoning": "Semantic comment quality (explaining non-obvious intent) cannot be objectively automated without rewarding noise; the only enforceable automated rule is that every TODO/FIXME references a durable AutoForge task or issue. Semantic review remains a human/agent completion-review responsibility, carried via the new commenting doctrine and generated agent-contract guidance.",
+        "consequences": [
+          "autoforge gate check gains a required comment-governance check that fails on untracked TODO/FIXME markers",
+          "Generated agent contracts and docs/CODE_COMMENTING_STANDARD.md carry explain-why comment guidance into agent execution and review"
+        ],
+        "scope": [
+          "code-quality",
+          "governance"
+        ],
+        "keywords": [
+          "commenting",
+          "doctrine"
+        ],
+        "relatedWork": [
+          "issue.define-and-enforce-an-agent-code-commenting-standard"
+        ],
+        "supersedes": null,
+        "status": "active",
+        "kind": "feature-note",
+        "createdAt": "2026-08-31T01:21:01.296Z",
+        "updatedAt": "2026-08-31T01:21:01.296Z"
       }
     ]
   }
