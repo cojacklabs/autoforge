@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
-  "revision": 138,
-  "updatedAt": "2026-08-31T01:21:01.323Z",
+  "revision": 139,
+  "updatedAt": "2026-08-31T01:30:59.924Z",
   "data": {
     "decisions": [
       {
@@ -3427,6 +3427,29 @@
         "kind": "feature-note",
         "createdAt": "2026-08-31T01:21:01.296Z",
         "updatedAt": "2026-08-31T01:21:01.296Z"
+      },
+      {
+        "id": "decision.every-router-dispatched-top-level-core-command-must-appear-in-the-primary-cli-he",
+        "statement": "Every router-dispatched top-level Core command must appear in the primary CLI help Commands list",
+        "reasoning": "Claude's interrupted cleanup exposed discoverability drift: several implemented commands appeared only as misplaced usage lines below the main command catalog. Deriving the regression expectation from router cases makes future omissions observable without maintaining a second hand-written command list in tests.",
+        "consequences": [
+          "constitution, domain, evidence, trace, and twin are discoverable in the main help catalog, duplicated misplaced headings are removed, and the CLI foundation suite fails when a future dispatched command is omitted."
+        ],
+        "scope": [
+          "cli"
+        ],
+        "keywords": [
+          "help",
+          "discoverability"
+        ],
+        "relatedWork": [
+          "issue.complete-cli-help-command-discoverability-reconciliation"
+        ],
+        "supersedes": null,
+        "status": "active",
+        "kind": "bugfix",
+        "createdAt": "2026-08-31T01:30:59.890Z",
+        "updatedAt": "2026-08-31T01:30:59.890Z"
       }
     ]
   }

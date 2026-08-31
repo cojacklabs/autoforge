@@ -8,13 +8,16 @@ Commands:
   add        Create a feature, phase, task, or issue
   changelog  Compile documented bugfix and feature-note decisions into CHANGELOG.md
   check      Evaluate work, session, context, and edit guardrails
+  constitution Manage project constitution rules and governance checks
   context    Generate the active work build packet
   credentials Manage local Agent provider credentials
   decide     Record or supersede an architectural decision
   design     Validate, import, list, or show design specifications
   doctrine   List doctrines or show doctrine guidance
   doctor     Check AutoForge installation health
+  domain     Manage domain concepts and domain checks
   done       Complete active work and close its session
+  evidence   Inspect persisted validation evidence and readiness
   gate       Run retained quality and security checks
   help       Show this command reference
   init       Initialize AutoForge in the current project
@@ -42,7 +45,9 @@ Commands:
   resume     Resume paused work and open a new session
   start      Start a task or issue and open a session
   status     Show concise project status and relevant next commands
+  trace      Record and inspect traceability links and impact
   tui        Deprecated compatibility alias for status
+  twin       Generate and query the project digital twin
   version    Show the installed AutoForge version
   why        Search decision rationale
 
@@ -181,10 +186,6 @@ Intent assessment:
   autoforge constitution init|list|show <id>|check <objective>
   autoforge domain init|list|show <id>|check
   autoforge changelog compile [--since <git-tag>]
-  autoforge update
-  trace      Record and inspect traceability links and impact
-  evidence   Inspect persisted validation evidence and readiness
-  twin       Generate and query the project digital twin
   autoforge update
   autoforge trace add <source> <relationship> <target>
   autoforge trace list

@@ -41,6 +41,30 @@ function createDependencies() {
 }
 
 describe("foundation CLI router", () => {
+  it("lists every router-dispatched command in the help text", () => {
+    // Every named `case "<command>":` in router.ts must appear in the
+    // AUTOFORGE_HELP `Commands:` list, or a user has no way to discover the
+    // command exists. Parses the router's own source rather than
+    // hand-maintaining a duplicate list here, so this test catches future
+    // additions automatically instead of needing to be updated by hand.
+    const routerSource = readFileSync(
+      new URL("../apps/core-cli/src/router.ts", import.meta.url),
+      "utf8",
+    );
+    const dispatchedCommands = [...routerSource.matchAll(/case "([a-z]+)":/g)]
+      .map((match) => match[1]!)
+      .filter(
+        (command) => !["help", "version", "credentials"].includes(command),
+      );
+    expect(dispatchedCommands.length).toBeGreaterThan(0);
+
+    const commandsSection =
+      AUTOFORGE_HELP.split("Commands:\n")[1]?.split("\n\n")[0] ?? "";
+    for (const command of new Set(dispatchedCommands)) {
+      expect(commandsSection).toMatch(new RegExp(`^  ${command}\\b`, "m"));
+    }
+  });
+
   it("keeps legacy CLI imports as aliases of the core application boundary", () => {
     expect(runCli).toBe(runAppCli);
     expect(AUTOFORGE_HELP).toBe(APP_AUTOFORGE_HELP);

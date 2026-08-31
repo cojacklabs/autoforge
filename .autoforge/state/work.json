@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
-  "revision": 421,
-  "updatedAt": "2026-08-31T01:21:05.439Z",
+  "revision": 424,
+  "updatedAt": "2026-08-31T01:31:00.510Z",
   "data": {
     "features": [
       {
@@ -2831,6 +2831,22 @@
           "include": [
             "docs/**",
             ".autoforge/**"
+          ],
+          "exclude": []
+        }
+      },
+      {
+        "name": "Complete CLI help command discoverability reconciliation",
+        "description": "Resume Claude's uncommitted help cleanup by ensuring every router-dispatched top-level command appears in the primary Commands section, removing duplicated misplaced entries, and adding an automatic regression test.",
+        "status": "completed",
+        "pauseReason": null,
+        "createdAt": "2026-08-31T01:25:31.816Z",
+        "updatedAt": "2026-08-31T01:31:00.399Z",
+        "id": "issue.complete-cli-help-command-discoverability-reconciliation",
+        "scope": {
+          "include": [
+            "apps/core-cli/src/help.ts",
+            "test/cli-foundation.test.ts"
           ],
           "exclude": []
         }
