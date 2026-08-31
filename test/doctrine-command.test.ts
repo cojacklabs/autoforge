@@ -41,7 +41,7 @@ describe("doctrine command formatting", () => {
   it("renders compact registry and detailed doctrine views", () => {
     const registry = createInitialDoctrineRegistry(TIMESTAMP);
 
-    expect(formatDoctrineList(registry)).toContain("AutoForge doctrines: 10");
+    expect(formatDoctrineList(registry)).toContain("AutoForge doctrines: 11");
     expect(formatDoctrineList(registry)).toContain(
       "testing [active, builtin] — Verify observable behavior",
     );
@@ -60,7 +60,7 @@ describe("doctrine command", () => {
       runDoctrineCommand({ args: [], output, startDirectory: projectRoot }),
     ).resolves.toBe(EXIT_CODE.success);
     expect(output.stdout.mock.calls[0]?.[0]).toContain(
-      "AutoForge doctrines: 10",
+      "AutoForge doctrines: 11",
     );
     expect(output.stdout.mock.calls[0]?.[0]).toContain(
       "router [active, builtin]",

@@ -88,6 +88,7 @@ describe("doctrine session service", () => {
     expect(selected.selections.map((item) => item.doctrineId)).toEqual([
       "doctrine.router",
       "doctrine.backend",
+      "doctrine.commenting",
       "doctrine.testing",
       "doctrine.scope",
       "doctrine.security",

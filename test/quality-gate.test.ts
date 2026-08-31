@@ -101,6 +101,44 @@ describe("quality gate service", () => {
     expect(JSON.stringify(result)).not.toContain("abcdefghijklmnop");
   });
 
+  it("rejects untracked TODO/FIXME markers without imposing comment quotas", async () => {
+    const projectRoot = await createProject();
+    await writeFile(
+      path.join(projectRoot, "untracked.ts"),
+      "export function ship(): void { /* TODO: finish this */ }\n",
+    );
+    await writeFile(
+      path.join(projectRoot, "tracked.ts"),
+      "export function repair(): void { /* FIXME(issue.repair-release): explain compatibility behavior */ }\n",
+    );
+    await writeFile(
+      path.join(projectRoot, "plain.ts"),
+      'export const selfExplanatory = "TODO is ordinary string content";\n',
+    );
+
+    const result = await runQualityGate({
+      projectRoot,
+      files: ["untracked.ts", "tracked.ts", "plain.ts"],
+    });
+
+    expect(result.success).toBe(false);
+    expect(result.checks).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({
+          id: "comment-governance",
+          status: "fail",
+          findings: [
+            {
+              ruleId: "untracked-follow-up",
+              path: "untracked.ts",
+              line: 1,
+            },
+          ],
+        }),
+      ]),
+    );
+  });
+
   it("fails unreadable selections and rejects paths outside the project", async () => {
     const projectRoot = await createProject();
 

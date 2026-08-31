@@ -38,6 +38,15 @@ describe("agent contract generator", () => {
       ".autoforge/agent-contract.json",
     );
     await expect(store.read()).resolves.toEqual(contract);
+    expect(contract.requiredActions).toContain(
+      "Document non-obvious intent, public contracts, invariants, security or compatibility constraints, and unusual tradeoffs with concise explain-why comments.",
+    );
+    expect(contract.prohibitedActions).toContain(
+      "Add comments that restate syntax, preserve prompt transcripts, become stale narratives, or leave TODO/FIXME markers without an AutoForge task or issue reference.",
+    );
+    expect(contract.completionRequirements).toContain(
+      "Review changed code for required high-value commentary and work-linked TODO/FIXME markers.",
+    );
   });
 
   it.each(["antigravity", "agy"])("normalizes %s to gemini", (agentId) => {

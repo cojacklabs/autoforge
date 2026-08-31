@@ -21,6 +21,7 @@ describe("doctrine router", () => {
     expect(selections.map((selection) => selection.doctrine.name)).toEqual([
       "router",
       "testing",
+      "commenting",
       "frontend",
       "design",
       "planning",

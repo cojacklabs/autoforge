@@ -24,16 +24,19 @@ export function generateAgentContract(
     requiredActions: [
       "Read AGENTS.md and the current AutoForge context.",
       "Respect the active work scope and workflow stage.",
+      "Document non-obvious intent, public contracts, invariants, security or compatibility constraints, and unusual tradeoffs with concise explain-why comments.",
       "Validate before reporting completion.",
     ],
     prohibitedActions: [
       "Modify files outside the declared scope.",
       "Delete durable project memory without approval.",
+      "Add comments that restate syntax, preserve prompt transcripts, become stale narratives, or leave TODO/FIXME markers without an AutoForge task or issue reference.",
       "Silently skip required validation.",
     ],
     contextCommand: 'autoforge --project "$PWD" context --explain',
     completionRequirements: [
       "Run the declared validation commands.",
+      "Review changed code for required high-value commentary and work-linked TODO/FIXME markers.",
       "Persist durable decisions and handoffs when required.",
     ],
   });

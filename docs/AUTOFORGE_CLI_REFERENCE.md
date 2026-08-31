@@ -42,7 +42,11 @@ protocol-versioned structured status envelope.
 With active work, `autoforge gate check` automatically inspects tracked and
 untracked Git changes that match the task or issue scope. Use `--path <file>`
 or `--files <file,file>` to validate explicit unchanged files or paths in a
-non-Git project.
+non-Git project. Selected source files also receive objective comment-governance
+validation: every `TODO` or `FIXME` marker must include a same-line AutoForge
+`task.*` or `issue.*` reference. See the
+[Code Commenting Standard](CODE_COMMENTING_STANDARD.md) for the human-review
+rules that intentionally cannot be reduced to a comment-density check.
 
 Core also proxies the explicitly allowlisted Agent-owned credential namespace:
 

@@ -14,6 +14,12 @@ All notable changes to this project will be documented in this file.
 
 ### Added
 
+- A built-in code-commenting doctrine and generated Agent-contract guidance now
+  require concise explanation at non-obvious intent and contract boundaries
+  while prohibiting syntax narration, prompt transcripts, stale commentary, and
+  comment-density quotas. `autoforge gate check` objectively rejects `TODO` and
+  `FIXME` markers that lack a same-line AutoForge `task.*` or `issue.*`
+  reference; semantic comment quality remains a review responsibility.
 - Validation evidence now optionally records the source revision (git HEAD
   SHA + content fingerprint for dirty working trees), execution environment (platform, Node
   major version, CI flag), and a gate-definition fingerprint at capture

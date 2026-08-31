@@ -40,7 +40,7 @@ describe("initial doctrine registry", () => {
     expect(registry.doctrines.map((doctrine) => doctrine.name)).toEqual(
       INITIAL_DOCTRINE_NAMES,
     );
-    expect(registry.doctrines).toHaveLength(10);
+    expect(registry.doctrines).toHaveLength(11);
     expect(registry.doctrines).toEqual(
       expect.arrayContaining([
         expect.objectContaining({
@@ -50,6 +50,13 @@ describe("initial doctrine registry", () => {
           createdAt: TIMESTAMP,
         }),
         expect.objectContaining({ id: "doctrine.security" }),
+        expect.objectContaining({
+          id: "doctrine.commenting",
+          content: expect.stringContaining("TODO/FIXME"),
+          routing: expect.objectContaining({
+            workKinds: ["task", "issue"],
+          }),
+        }),
       ]),
     );
   });

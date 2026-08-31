@@ -35,6 +35,16 @@ AutoForge should remain synchronized throughout the conversation:
 Do not create an AutoForge artifact for every sentence. Persist information
 that another person or agent would need after the conversation disappears.
 
+## Code Commentary
+
+Follow the [Code Commenting Standard](CODE_COMMENTING_STANDARD.md). Add concise
+explain-why commentary where public contracts, architectural boundaries,
+invariants, security or compatibility constraints, non-obvious algorithms, or
+intentional tradeoffs are not otherwise clear. Do not optimize for comment
+volume, restate syntax, or preserve prompt transcripts. Every `TODO` or `FIXME`
+must reference an AutoForge `task.*` or `issue.*` on the same line; `gate check`
+enforces this objective subset while semantic quality remains a review duty.
+
 ## Handling Unstructured Prompts
 
 Do not immediately translate a long prompt into code. First:

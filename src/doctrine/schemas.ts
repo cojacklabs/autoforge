@@ -11,6 +11,7 @@ export const INITIAL_DOCTRINE_NAMES = [
   "backend",
   "design",
   "security",
+  "commenting",
 ] as const;
 
 export const MAX_DOCTRINE_CONTENT_CHARACTERS = 6_000;

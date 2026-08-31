@@ -79,6 +79,9 @@ ambiguity; persist resolved choices with `decide`.
 - Run `check --path <file>` before or during scoped edits.
 - Record research, specifications, trace links, hypotheses, and evidence in the
   corresponding AutoForge domain instead of leaving them only in chat.
+- Apply the [Code Commenting Standard](CODE_COMMENTING_STANDARD.md): preserve
+  non-obvious intent, avoid narrative noise, and link `TODO`/`FIXME` markers to
+  durable AutoForge work.
 - Use `gate check` for retained validation.
 - Record a decision linked to the active work before `done`.
 - Use a structured handoff when another agent will continue.

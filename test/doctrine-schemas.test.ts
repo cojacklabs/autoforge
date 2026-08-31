@@ -44,6 +44,7 @@ describe("doctrine contracts", () => {
       "backend",
       "design",
       "security",
+      "commenting",
     ]);
   });
 

@@ -93,6 +93,7 @@ export const BUILT_IN_REQUIRED_GATE_IDS = [
   "file-access",
   "secret-scan",
   "structured-syntax",
+  "comment-governance",
 ] as const;
 
 export function expectedRequiredGateIds(

@@ -119,10 +119,10 @@ describe("evidence command", () => {
     const summary = JSON.parse(output.stdout.mock.calls[0]?.[0] ?? "");
     expect(summary).toMatchObject({
       ready: true,
-      total: 6,
+      total: 7,
       failed: 1,
-      effectiveTotal: 4,
-      effectivePassed: 4,
+      effectiveTotal: 5,
+      effectivePassed: 5,
       requiredFailures: 0,
     });
     expect(summary.authoritativeEvidence).toEqual(
@@ -130,7 +130,7 @@ describe("evidence command", () => {
         expect.objectContaining({
           evidenceId: "evidence.installation.passed",
           supersedes: [
-            "evidence.installation.baseline-1",
+            "evidence.installation.baseline-2",
             "evidence.installation.failed",
           ],
         }),
@@ -138,12 +138,13 @@ describe("evidence command", () => {
     );
     await expect(store.read()).resolves.toMatchObject({
       evidence: [
-        { id: "evidence.file-access.baseline-0" },
-        { id: "evidence.installation.baseline-1" },
+        { id: "evidence.comment-governance.baseline-0" },
+        { id: "evidence.file-access.baseline-1" },
+        { id: "evidence.installation.baseline-2" },
         { id: "evidence.installation.failed" },
         { id: "evidence.installation.passed" },
-        { id: "evidence.secret-scan.baseline-2" },
-        { id: "evidence.structured-syntax.baseline-3" },
+        { id: "evidence.secret-scan.baseline-3" },
+        { id: "evidence.structured-syntax.baseline-4" },
       ],
     });
   });
@@ -223,7 +224,7 @@ describe("evidence command", () => {
     expect(summary.ready).toBe(false);
     expect(summary.missingGateIds).toContain("installation");
     expect(summary.outOfScopeReasons).toContain(
-      "evidence.installation.baseline-1: different gate definition",
+      "evidence.installation.baseline-2: different gate definition",
     );
   });
 });

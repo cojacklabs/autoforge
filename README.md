@@ -170,6 +170,11 @@ autoforge twin query --type decision
 See [Cross-Agent Handoffs](docs/CROSS_AGENT_HANDOFFS.md) and
 [Governance and Memory](docs/GOVERNANCE_AND_MEMORY.md).
 
+Code changes also follow the
+[Code Commenting Standard](docs/CODE_COMMENTING_STANDARD.md): preserve
+non-obvious intent without comment-density quotas, and link `TODO`/`FIXME`
+markers to durable AutoForge tasks or issues.
+
 ## Parallel Agent Work
 
 Do not run multiple writing agents against the same checkout. Build a

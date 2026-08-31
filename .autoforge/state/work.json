@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
-  "revision": 419,
-  "updatedAt": "2026-08-30T20:33:45.954Z",
+  "revision": 420,
+  "updatedAt": "2026-08-30T20:35:08.731Z",
   "data": {
     "features": [
       {
@@ -2378,10 +2378,10 @@
       {
         "name": "Define and enforce an Agent code-commenting standard",
         "description": "Post-v0.25 governance enhancement: require AutoForge-guided agents to leave durable, high-value code commentary where intent is not evident from implementation. Document and enforce comments for public API contracts, architectural boundaries, security and compatibility constraints, non-obvious algorithms, invariants, and intentionally unusual tradeoffs. Explicitly prohibit noisy comments that restate syntax, stale narrative comments, raw prompt transcripts, and unactionable TODOs. Prefer explain-why comments, typed APIs, tests, and decision links; require TODO/FIXME comments to reference an AutoForge work item when practical. Integrate the standard into generated agent context/contracts and review gates, with objective checks limited to enforceable surfaces such as exported API documentation rather than arbitrary comment-density quotas. Plan this after the v0.25 release checkpoint so it does not expand the current release candidate.",
-        "status": "planned",
+        "status": "active",
         "pauseReason": null,
         "createdAt": "2026-08-25T19:08:51.225Z",
-        "updatedAt": "2026-08-25T19:08:51.225Z",
+        "updatedAt": "2026-08-30T20:35:08.593Z",
         "id": "issue.define-and-enforce-an-agent-code-commenting-standard",
         "scope": {
           "include": [
@@ -2836,6 +2836,10 @@
         }
       }
     ],
-    "activeWork": null
+    "activeWork": {
+      "kind": "issue",
+      "id": "issue.define-and-enforce-an-agent-code-commenting-standard",
+      "startedAt": "2026-08-30T20:35:08.593Z"
+    }
   }
 }

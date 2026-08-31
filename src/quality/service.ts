@@ -16,6 +16,20 @@ import {
 } from "./schemas.js";
 
 const MAX_SCANNED_FILE_BYTES = 1024 * 1024;
+const SOURCE_FILE_PATTERN =
+  /\.(?:[cm]?[jt]sx?|py|rb|go|rs|java|kt|kts|swift|cs|php|sh|bash|zsh)$/i;
+const FOLLOW_UP_MARKER_PATTERN = /\b(?:TODO|FIXME)\b/i;
+const WORK_ITEM_REFERENCE_PATTERN = /\b(?:task|issue)\.[a-z0-9][a-z0-9._-]*\b/i;
+
+function commentPortion(line: string): string | undefined {
+  const trimmed = line.trimStart();
+  if (trimmed.startsWith("*") || trimmed.startsWith("#")) return trimmed;
+  const starts = [line.indexOf("//"), line.indexOf("/*")].filter(
+    (index) => index >= 0,
+  );
+  const start = starts.length > 0 ? Math.min(...starts) : -1;
+  return start >= 0 ? line.slice(start) : undefined;
+}
 
 const SECRET_PATTERNS: ReadonlyArray<{
   id: string;
@@ -255,6 +269,55 @@ function syntaxCheck(files: readonly ScannedFile[]): QualityGateCheck {
       };
 }
 
+function commentGovernanceCheck(
+  files: readonly ScannedFile[],
+): QualityGateCheck {
+  const targets = files.filter(
+    (file) =>
+      file.content !== undefined && SOURCE_FILE_PATTERN.test(file.relativePath),
+  );
+  if (targets.length === 0) {
+    return {
+      id: "comment-governance",
+      status: "skipped",
+      message: "No selected source files require comment-governance review.",
+      findings: [],
+    };
+  }
+  const findings: QualityFinding[] = [];
+  for (const file of targets) {
+    for (const [lineIndex, line] of (file.content ?? "")
+      .split(/\r?\n/)
+      .entries()) {
+      const comment = commentPortion(line);
+      if (
+        comment !== undefined &&
+        FOLLOW_UP_MARKER_PATTERN.test(comment) &&
+        !WORK_ITEM_REFERENCE_PATTERN.test(comment)
+      ) {
+        findings.push({
+          ruleId: "untracked-follow-up",
+          path: file.relativePath,
+          line: lineIndex + 1,
+        });
+      }
+    }
+  }
+  return findings.length === 0
+    ? {
+        id: "comment-governance",
+        status: "pass",
+        message: `${targets.length} selected source file(s) contain no untracked TODO/FIXME markers.`,
+        findings: [],
+      }
+    : {
+        id: "comment-governance",
+        status: "fail",
+        message: `${findings.length} TODO/FIXME marker(s) require an AutoForge task or issue reference.`,
+        findings,
+      };
+}
+
 async function commandChecks(
   commands: readonly QualityGateCommand[],
   projectRoot: string,
@@ -326,6 +389,7 @@ export async function runQualityGate(
         findings: [],
       },
       syntaxCheck(files),
+      commentGovernanceCheck(files),
     );
   } else {
     const access = fileAccessCheck(files);
@@ -341,6 +405,7 @@ export async function runQualityGate(
         });
       }
       checks.push(secretCheck(files), syntaxCheck(files));
+      checks.push(commentGovernanceCheck(files));
     } else {
       checks.push(
         {
@@ -355,6 +420,13 @@ export async function runQualityGate(
           status: "skipped",
           message:
             "Syntax validation was skipped because selected files were unreadable.",
+          findings: [],
+        },
+        {
+          id: "comment-governance",
+          status: "skipped",
+          message:
+            "Comment-governance review was skipped because selected files were unreadable.",
           findings: [],
         },
       );
