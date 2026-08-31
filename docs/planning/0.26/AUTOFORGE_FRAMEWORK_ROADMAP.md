@@ -17,8 +17,9 @@ application builder, or hosted-only platform.
    and review without optimizing for comment volume.
 3. Make typed AutoForge artifacts the default location for agent-produced
    planning, research, design, architecture, and handoff outputs.
-4. Define and benchmark the file-canonical, database-accelerated storage
-   boundary for project indexing, graph queries, and safe coordination.
+4. Apply the documented
+   [hybrid SQLite storage boundary](HYBRID_SQLITE_STORAGE_BOUNDARY.md): keep
+   files canonical and defer database adoption until measured gates justify it.
 5. Stabilize provider-neutral contracts and adapters for third-party agents,
    including capability negotiation, scope, approvals, handoffs, and evidence.
 6. Expand software, data, and AI specifications within one connected project

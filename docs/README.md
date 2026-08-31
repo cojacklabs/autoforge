@@ -60,6 +60,7 @@ to its own approval gates.
 
 - [AutoForge Framework North-Star](planning/0.26/AUTOFORGE_FRAMEWORK_NORTH_STAR.md)
 - [AutoForge Framework Roadmap](planning/0.26/AUTOFORGE_FRAMEWORK_ROADMAP.md)
+- [Hybrid SQLite Storage Boundary](planning/0.26/HYBRID_SQLITE_STORAGE_BOUNDARY.md)
 - [Separated Future AI Product Portfolio](planning/0.26/SEPARATED_FUTURE_AI_PRODUCT_PORTFOLIO.md)
 - [AutoForgeAI Orchestration Capability Adoption](planning/0.26/AUTOFORGEAI_ORCHESTRATION_CAPABILITY_ADOPTION.md)
 - [Agentic SDLC Product Track](planning/0.26/AGENTIC_SDLC_PRODUCT_TRACK.md)

@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
-  "revision": 424,
-  "updatedAt": "2026-08-31T01:31:00.510Z",
+  "revision": 426,
+  "updatedAt": "2026-08-31T01:45:53.210Z",
   "data": {
     "features": [
       {
@@ -2491,10 +2491,10 @@
       {
         "name": "Define and benchmark the hybrid SQLite storage boundary",
         "description": "Design and benchmark a file-canonical, database-accelerated storage architecture: tracked Markdown and JSON remain authoritative project truth; optional SQLite stores must be rebuildable indexes or local operational Agent state with schema migrations, source fingerprints, deletion recovery, transactions, WAL where justified, retention policy, and SDK-only access. Do not add SQLite until measurable concurrency, query, scale, or latency evidence justifies it.",
-        "status": "planned",
+        "status": "completed",
         "pauseReason": null,
         "createdAt": "2026-08-26T04:48:16.644Z",
-        "updatedAt": "2026-08-26T04:48:16.644Z",
+        "updatedAt": "2026-08-31T01:45:53.094Z",
         "id": "issue.define-and-benchmark-the-hybrid-sqlite-storage-boundary",
         "scope": {
           "include": [

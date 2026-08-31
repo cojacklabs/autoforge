@@ -14,6 +14,10 @@ All notable changes to this project will be documented in this file.
 
 ### Added
 
+- The v0.26 hybrid-storage boundary now includes a reproducible JSON-versus-
+  SQLite benchmark, explicit adoption thresholds, an SDK-only projection port,
+  and migration, fingerprint, transaction, WAL, retention, and recovery rules.
+  Current measurements defer SQLite adoption and keep tracked files canonical.
 - A built-in code-commenting doctrine and generated Agent-contract guidance now
   require concise explanation at non-obvious intent and contract boundaries
   while prohibiting syntax narration, prompt transcripts, stale commentary, and

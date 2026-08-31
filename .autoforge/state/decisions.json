@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
-  "revision": 139,
-  "updatedAt": "2026-08-31T01:30:59.924Z",
+  "revision": 140,
+  "updatedAt": "2026-08-31T01:45:52.618Z",
   "data": {
     "decisions": [
       {
@@ -3450,6 +3450,32 @@
         "kind": "bugfix",
         "createdAt": "2026-08-31T01:30:59.890Z",
         "updatedAt": "2026-08-31T01:30:59.890Z"
+      },
+      {
+        "id": "decision.autoforge-defers-sqlite-adoption-and-keeps-tracked-markdown-and-json-canonical-u",
+        "statement": "AutoForge defers SQLite adoption and keeps tracked Markdown and JSON canonical until measured storage gates justify an SDK-owned disposable projection",
+        "reasoning": "Current canonical project state is under one megabyte, and the reproducible benchmark shows negligible absolute benefit at 1,000 nodes while SQLite adds disk, schema, migration, and recovery complexity. SQLite becomes justified only for demonstrated query latency, rebuild cost, write contention, graph/search capability, or operational-event volume; it must never become a competing source of project truth.",
+        "consequences": [
+          "The MVP remains file-canonical and adds no SQLite runtime dependency.",
+          "A future projection must be ignored, fingerprinted, transactionally built, deletion-recoverable, SDK-only, and retain a correct file-backed fallback.",
+          "Adoption requires production-like p50/p95/p99, scale, contention, size, and rebuild evidence against the documented thresholds."
+        ],
+        "scope": [
+          "storage",
+          "architecture"
+        ],
+        "keywords": [
+          "sqlite",
+          "benchmark"
+        ],
+        "relatedWork": [
+          "issue.define-and-benchmark-the-hybrid-sqlite-storage-boundary"
+        ],
+        "supersedes": null,
+        "status": "active",
+        "kind": "architecture",
+        "createdAt": "2026-08-31T01:45:52.590Z",
+        "updatedAt": "2026-08-31T01:45:52.590Z"
       }
     ]
   }
