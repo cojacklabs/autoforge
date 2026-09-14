@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
-  "revision": 159,
-  "updatedAt": "2026-09-14T02:16:07.991Z",
+  "revision": 160,
+  "updatedAt": "2026-09-14T02:18:49.905Z",
   "data": {
     "decisions": [
       {
@@ -3946,6 +3946,30 @@
         "kind": "architecture",
         "createdAt": "2026-09-14T02:16:07.961Z",
         "updatedAt": "2026-09-14T02:16:07.961Z"
+      },
+      {
+        "id": "decision.first-party-agent-surfaces-agent-cli-providers-launcher-delegation-credentials-c",
+        "statement": "First-party agent surfaces (agent-cli, providers, launcher delegation, credentials command) are audited and scheduled for staged retirement in docs/planning/0.26/FIRST_PARTY_AGENT_AUDIT_AND_RETIREMENT_PLAN.md.",
+        "reasoning": "AutoForge/Priozar is a deterministic engineering control plane. Interactive conversational agent runtime and model custody belong to CoJack Labs AI, while vendor-neutral contracts and structured handoffs remain in the framework.",
+        "consequences": [
+          "Retain third-party agent contracts, handoffs, and orchestration; deprecate bare command delegation and credentials commands; prepare removal of apps/agent-cli and packages/providers."
+        ],
+        "scope": [
+          "architecture"
+        ],
+        "keywords": [
+          "agent",
+          "retirement",
+          "audit"
+        ],
+        "relatedWork": [
+          "issue.audit-and-retire-first-party-autoforge-agent-compatibility-surfaces"
+        ],
+        "supersedes": null,
+        "status": "active",
+        "kind": "architecture",
+        "createdAt": "2026-09-14T02:18:49.868Z",
+        "updatedAt": "2026-09-14T02:18:49.868Z"
       }
     ]
   }

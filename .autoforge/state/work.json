@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
-  "revision": 440,
-  "updatedAt": "2026-09-14T02:16:09.831Z",
+  "revision": 442,
+  "updatedAt": "2026-09-14T02:18:51.525Z",
   "data": {
     "features": [
       {
@@ -2800,10 +2800,10 @@
       {
         "name": "Audit and retire first-party AutoForge Agent compatibility surfaces",
         "description": "Inventory the historical @cojacklabs/autoforge-agent, Providers, bare-command delegation, credentials, launcher protocol, package boundaries, tests, and documentation; distinguish reusable third-party agent contracts from abandoned first-party AI product behavior; then propose a compatibility-first retirement or extraction plan before code removal.",
-        "status": "planned",
+        "status": "completed",
         "pauseReason": null,
         "createdAt": "2026-08-30T15:37:33.197Z",
-        "updatedAt": "2026-08-30T15:37:33.197Z",
+        "updatedAt": "2026-09-14T02:18:51.392Z",
         "id": "issue.audit-and-retire-first-party-autoforge-agent-compatibility-surfaces",
         "scope": {
           "include": [
