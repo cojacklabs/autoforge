@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
-  "revision": 161,
-  "updatedAt": "2026-09-14T02:25:56.293Z",
+  "revision": 162,
+  "updatedAt": "2026-09-14T02:27:11.677Z",
   "data": {
     "decisions": [
       {
@@ -3994,6 +3994,30 @@
         "kind": "architecture",
         "createdAt": "2026-09-14T02:25:56.252Z",
         "updatedAt": "2026-09-14T02:25:56.252Z"
+      },
+      {
+        "id": "decision.implemented-recoverable-autoforge-to-priozar-brand-migration-in-src-migrations-b",
+        "statement": "Implemented recoverable AutoForge-to-Priozar brand migration in src/migrations/brand.ts and wired into autoforge migrate brand, supporting dry-run inspection, dual-directory conflict detection, mutation locking, recoverable backup, atomic staging and publication, and contract updates.",
+        "reasoning": "Framework migration from .autoforge to .priozar must be deterministic, non-destructive, reversible via backups, and guarded against dual-state conflict without touching user source files.",
+        "consequences": [
+          "autoforge migrate brand [--dry-run] [--json] is exposed in CLI help and reference docs, tested with automated conflict, dry-run, and atomic apply suites."
+        ],
+        "scope": [
+          "architecture"
+        ],
+        "keywords": [
+          "migration",
+          "brand",
+          "priozar"
+        ],
+        "relatedWork": [
+          "issue.implement-recoverable-autoforge-to-forger-project-migration"
+        ],
+        "supersedes": null,
+        "status": "active",
+        "kind": "architecture",
+        "createdAt": "2026-09-14T02:27:11.638Z",
+        "updatedAt": "2026-09-14T02:27:11.638Z"
       }
     ]
   }

@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
-  "revision": 444,
-  "updatedAt": "2026-09-14T02:25:58.750Z",
+  "revision": 446,
+  "updatedAt": "2026-09-14T02:27:13.749Z",
   "data": {
     "features": [
       {
@@ -2891,10 +2891,10 @@
       {
         "name": "Implement recoverable AutoForge-to-Forger project migration",
         "description": "Implement forger migrate brand dry-run and apply flows with canonical-root resolution, dual-directory conflict detection, locking, deterministic plans, backup, staging, schema validation, atomic publication, global-registry repair, rollback, and cross-platform migration fixtures.",
-        "status": "planned",
+        "status": "completed",
         "pauseReason": null,
         "createdAt": "2026-09-14T00:14:53.712Z",
-        "updatedAt": "2026-09-14T00:14:53.712Z",
+        "updatedAt": "2026-09-14T02:27:13.618Z",
         "id": "issue.implement-recoverable-autoforge-to-forger-project-migration",
         "scope": {
           "include": [

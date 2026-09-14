@@ -114,9 +114,11 @@ Deprecated TUI compatibility:
   autoforge tui [--snapshot] [--view <view>] [--no-color]
   tui now renders status; interactive experiences move to AutoForge Agent
 
-Legacy migration:
+Migration and brand transition:
   autoforge migrate --dry-run [--json]
   autoforge migrate [--json]
+  autoforge migrate brand --dry-run [--json]
+  autoforge migrate brand [--json]
 
 Guardrails:
   autoforge check [--path <file>] [--agent <id>]

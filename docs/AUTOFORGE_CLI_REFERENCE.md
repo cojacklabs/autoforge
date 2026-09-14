@@ -273,6 +273,8 @@ autoforge bootstrap status
 autoforge bootstrap scaffold
 autoforge bootstrap approve <artifact-id> [--evidence <path|workflow-id>]
 autoforge migrate --dry-run
+autoforge migrate brand --dry-run
+autoforge migrate brand
 autoforge update
 autoforge trace add <source> <relationship> <target>
 autoforge trace list

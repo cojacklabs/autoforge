@@ -2,6 +2,7 @@ import { EXIT_CODE, type ExitCode } from "../core/errors.js";
 import type { LogWriter } from "../core/logger.js";
 import { discoverProjectRoot } from "../core/project.js";
 import { migrateLegacyProject } from "../migrations/legacy.js";
+import { migrateBrand, type BrandMigrationPlan } from "../migrations/brand.js";
 import type { LegacyMigrationResult } from "../migrations/schemas.js";
 
 export interface MigrateCommandOptions {
@@ -40,22 +41,54 @@ function formatResult(result: LegacyMigrationResult): string {
   return lines.join("\n");
 }
 
+function formatBrandResult(plan: BrandMigrationPlan): string {
+  if (plan.status === "planned") {
+    return [
+      `Brand migration plan: ${plan.sourceDirectory} -> ${plan.targetDirectory}`,
+      `Project root: ${plan.projectRoot}`,
+      `Planned actions: ${plan.artifacts.length}`,
+      "Run 'autoforge migrate brand' to apply migration with recoverable backup.",
+    ].join("\n");
+  }
+  return [
+    `Migrated brand state from ${plan.sourceDirectory} to ${plan.targetDirectory}.`,
+    `Backup created at: ${plan.backupDirectory}`,
+    `Validation: ${plan.validation}`,
+  ].join("\n");
+}
+
 export async function runMigrateCommand(
   options: MigrateCommandOptions,
 ): Promise<ExitCode> {
+  const isBrand = options.args[0] === "brand";
+  const remainingArgs = isBrand ? options.args.slice(1) : options.args;
   let dryRun = false;
   let json = false;
-  for (const argument of options.args) {
+  for (const argument of remainingArgs) {
     if (argument === "--dry-run") dryRun = true;
     else if (argument === "--json") json = true;
     else {
-      options.output.stderr("Usage: autoforge migrate [--dry-run] [--json]");
+      options.output.stderr(
+        "Usage: autoforge migrate [brand] [--dry-run] [--json]",
+      );
       return EXIT_CODE.usage;
     }
   }
   const project = await discoverProjectRoot({
     startDirectory: options.startDirectory,
   });
+
+  if (isBrand) {
+    const plan = await migrateBrand({
+      projectRoot: project.path,
+      dryRun,
+    });
+    options.output.stdout(
+      json ? JSON.stringify(plan, null, 2) : formatBrandResult(plan),
+    );
+    return EXIT_CODE.success;
+  }
+
   const result = await migrateLegacyProject({
     projectRoot: project.path,
     dryRun,
