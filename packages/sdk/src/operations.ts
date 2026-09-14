@@ -1,4 +1,7 @@
-import type { CreateAgentHandoffInput } from "@cojacklabs/autoforge-protocol";
+import type {
+  CreateAgentHandoffInput,
+  ProjectArtifact,
+} from "@cojacklabs/autoforge-protocol";
 
 export type ProtocolPrimitive = string | number | boolean | null;
 
@@ -100,6 +103,13 @@ export interface HandoffInput {
   assignmentId?: string;
   handoff: CreateAgentHandoffInput;
 }
+export interface ArtifactInput {
+  action: "register" | "list" | "show" | "approve" | "supersede";
+  artifact?: ProjectArtifact;
+  id?: string;
+  actor?: string;
+  supersedes?: string;
+}
 
 export type StartableWorkKind = "task" | "issue";
 
@@ -125,6 +135,7 @@ export interface SupportedAutoForgeOperations<
   Handoff = ProtocolData,
   Start = ProtocolData,
   Complete = ProtocolData,
+  Artifact = ProtocolData,
 > {
   projects: SdkOperation<ProjectsInput, Projects>;
   status: SdkQuery<Status>;
@@ -137,12 +148,14 @@ export interface SupportedAutoForgeOperations<
   handoffs: SdkOperation<HandoffInput, Handoff>;
   startWork: SdkOperation<StartWorkInput, Start>;
   completeWork: SdkOperation<CompleteWorkInput, Complete>;
+  artifacts?: SdkOperation<ArtifactInput, Artifact>;
 }
 
 export const SDK_OPERATION_CAPABILITIES = [
   "projects",
   "status",
   "intent",
+  "artifacts",
   "work",
   "context",
   "checks",

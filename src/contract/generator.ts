@@ -24,12 +24,14 @@ export function generateAgentContract(
     requiredActions: [
       "Read AGENTS.md and the current AutoForge context.",
       "Respect the active work scope and workflow stage.",
+      "Store agent-produced brainstorming, research, requirements, plans, architecture, design, validation, reviews, and handoffs through the AutoForge artifact registry by default; README.md and docs/ are explicit product-documentation exceptions that may be registered by reference.",
       "Document non-obvious intent, public contracts, invariants, security or compatibility constraints, and unusual tradeoffs with concise explain-why comments.",
       "Validate before reporting completion.",
     ],
     prohibitedActions: [
       "Modify files outside the declared scope.",
       "Delete durable project memory without approval.",
+      "Silently overwrite an approved artifact; create a superseding artifact instead.",
       "Add comments that restate syntax, preserve prompt transcripts, become stale narratives, or leave TODO/FIXME markers without an AutoForge task or issue reference.",
       "Silently skip required validation.",
     ],
@@ -38,6 +40,7 @@ export function generateAgentContract(
       "Run the declared validation commands.",
       "Review changed code for required high-value commentary and work-linked TODO/FIXME markers.",
       "Persist durable decisions and handoffs when required.",
+      "Register durable planning outputs and preserve approval provenance through supersession.",
     ],
   });
 }

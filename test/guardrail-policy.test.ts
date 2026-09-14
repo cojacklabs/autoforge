@@ -184,4 +184,41 @@ describe("guardrail policy", () => {
       report.checks.find(({ id }) => id === "scope-boundary"),
     ).toMatchObject({ status: "warn" });
   });
+
+  it("warns for scattered planning files but exempts docs and registered references", () => {
+    const scattered = evaluateGuardrails({
+      ...fixture(),
+      contextFreshness: "current",
+      enforcement: "advisory",
+      targetPath: "notes/architecture-plan.md",
+    });
+    expect(
+      scattered.checks.find(({ id }) => id === "artifact-destination"),
+    ).toMatchObject({
+      status: "warn",
+      message: expect.stringContaining("autoforge artifact import"),
+    });
+    const documented = evaluateGuardrails({
+      ...fixture(),
+      contextFreshness: "current",
+      enforcement: "advisory",
+      targetPath: "docs/architecture-plan.md",
+    });
+    expect(
+      documented.checks.find(({ id }) => id === "artifact-destination"),
+    ).toMatchObject({ status: "pass" });
+    const registered = evaluateGuardrails({
+      ...fixture(),
+      contextFreshness: "current",
+      enforcement: "advisory",
+      targetPath: "notes/architecture-plan.md",
+      registeredArtifactPaths: ["notes/architecture-plan.md"],
+    });
+    expect(
+      registered.checks.find(({ id }) => id === "artifact-destination"),
+    ).toMatchObject({
+      status: "pass",
+      message: expect.stringContaining("registered"),
+    });
+  });
 });

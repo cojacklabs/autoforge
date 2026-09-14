@@ -10,6 +10,7 @@ export interface CliDependencies {
   launchAgent?(args: readonly string[]): Promise<ExitCode | undefined>;
   commands: {
     add(args: readonly string[]): Promise<ExitCode>;
+    artifact?(args: readonly string[]): Promise<ExitCode>;
     check(args: readonly string[]): Promise<ExitCode>;
     context(args: readonly string[]): Promise<ExitCode>;
     decide(args: readonly string[]): Promise<ExitCode>;
@@ -128,6 +129,11 @@ export async function runCli(
     case "intent":
       return dependencies.commands.intent
         ? dependencies.commands.intent(commandArgs)
+        : EXIT_CODE.usage;
+
+    case "artifact":
+      return dependencies.commands.artifact
+        ? dependencies.commands.artifact(commandArgs)
         : EXIT_CODE.usage;
 
     case "research":

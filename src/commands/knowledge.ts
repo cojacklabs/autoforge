@@ -13,6 +13,10 @@ import {
   createContextPacket,
   serializeContextPacket,
 } from "../knowledge/protocol.js";
+import {
+  activeArtifactWorkId,
+  registerArtifactReference,
+} from "../artifacts/bridge.js";
 
 export interface KnowledgeCommandOptions {
   args: readonly string[];
@@ -38,6 +42,18 @@ export async function registerKnowledgeSpecification(
     ...(design === undefined ? {} : { design }),
     ...(knowledge === undefined ? {} : { knowledge }),
   });
+  const workId = await activeArtifactWorkId(projectPath);
+  if (workId) {
+    await registerArtifactReference(projectPath, {
+      id: `artifact.${parsed.id}`,
+      kind: expectedType === "research" ? "research" : "requirements",
+      title: parsed.name,
+      agentId: "autoforge",
+      workId,
+      path: result.path,
+      createdAt: parsed.updatedAt,
+    });
+  }
   return { id: result.specification.id, path: result.path };
 }
 

@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
-  "revision": 20,
-  "updatedAt": "2026-08-30T15:37:34.554Z",
+  "revision": 30,
+  "updatedAt": "2026-09-14T00:21:39.288Z",
   "data": {
     "assessments": [
       {
@@ -443,6 +443,226 @@
         "status": "active",
         "createdAt": "2026-08-30T15:37:34.453Z",
         "updatedAt": "2026-08-30T15:37:34.453Z"
+      },
+      {
+        "id": "strategy.issue-verify-forger-public-identities-and-final-state-directory-name",
+        "workId": "issue.verify-forger-public-identities-and-final-state-directory-name",
+        "factors": {
+          "alignment": "high",
+          "value": "high",
+          "risk": "high",
+          "cost": "low",
+          "evidenceStrength": "medium",
+          "dependencyPressure": "high",
+          "complexity": "medium",
+          "releaseConstraint": "high"
+        },
+        "decision": "now",
+        "rationale": "Every code, package, executable, state-path, and publication change depends on controlled public identifiers and a final .forger decision; resolving these risks is the first migration gate.",
+        "evidenceIds": [],
+        "resultingDecision": "decision.issue-verify-forger-public-identities-and-final-state-directory-name-strategic-a",
+        "supersedes": null,
+        "status": "active",
+        "createdAt": "2026-09-14T00:15:09.064Z",
+        "updatedAt": "2026-09-14T00:15:09.064Z"
+      },
+      {
+        "id": "strategy.issue-centralize-autoforge-and-forger-compatibility-vocabulary",
+        "workId": "issue.centralize-autoforge-and-forger-compatibility-vocabulary",
+        "factors": {
+          "alignment": "high",
+          "value": "high",
+          "risk": "medium",
+          "cost": "medium",
+          "evidenceStrength": "high",
+          "dependencyPressure": "high",
+          "complexity": "medium",
+          "releaseConstraint": "high"
+        },
+        "decision": "next",
+        "rationale": "Central compatibility constants and a complete identifier inventory must follow identity approval and precede state migration or packaging changes.",
+        "evidenceIds": [],
+        "resultingDecision": "decision.issue-centralize-autoforge-and-forger-compatibility-vocabulary-strategic-assessm",
+        "supersedes": null,
+        "status": "superseded",
+        "createdAt": "2026-09-14T00:15:09.546Z",
+        "updatedAt": "2026-09-14T00:21:37.491Z"
+      },
+      {
+        "id": "strategy.issue-implement-recoverable-autoforge-to-forger-project-migration",
+        "workId": "issue.implement-recoverable-autoforge-to-forger-project-migration",
+        "factors": {
+          "alignment": "high",
+          "value": "high",
+          "risk": "high",
+          "cost": "high",
+          "evidenceStrength": "high",
+          "dependencyPressure": "high",
+          "complexity": "high",
+          "releaseConstraint": "high"
+        },
+        "decision": "next",
+        "rationale": "Project-state continuity is essential to the rename, but implementation must wait for final identifiers and centralized compatibility vocabulary.",
+        "evidenceIds": [],
+        "resultingDecision": "decision.issue-implement-recoverable-autoforge-to-forger-project-migration-strategic-asse",
+        "supersedes": null,
+        "status": "superseded",
+        "createdAt": "2026-09-14T00:15:10.009Z",
+        "updatedAt": "2026-09-14T00:21:38.074Z"
+      },
+      {
+        "id": "strategy.issue-publish-forger-successor-and-autoforge-compatibility-bridge",
+        "workId": "issue.publish-forger-successor-and-autoforge-compatibility-bridge",
+        "factors": {
+          "alignment": "high",
+          "value": "high",
+          "risk": "high",
+          "cost": "high",
+          "evidenceStrength": "medium",
+          "dependencyPressure": "medium",
+          "complexity": "high",
+          "releaseConstraint": "high"
+        },
+        "decision": "later",
+        "rationale": "Publication depends on verified identities, stable compatibility vocabulary, and a proven migration and rollback engine.",
+        "evidenceIds": [],
+        "resultingDecision": "decision.issue-publish-forger-successor-and-autoforge-compatibility-bridge-strategic-asse",
+        "supersedes": null,
+        "status": "superseded",
+        "createdAt": "2026-09-14T00:15:10.461Z",
+        "updatedAt": "2026-09-14T00:21:38.629Z"
+      },
+      {
+        "id": "strategy.issue-complete-forger-migration-documentation-and-release-gates",
+        "workId": "issue.complete-forger-migration-documentation-and-release-gates",
+        "factors": {
+          "alignment": "high",
+          "value": "high",
+          "risk": "medium",
+          "cost": "medium",
+          "evidenceStrength": "medium",
+          "dependencyPressure": "medium",
+          "complexity": "medium",
+          "releaseConstraint": "high"
+        },
+        "decision": "later",
+        "rationale": "Final onboarding and support instructions must describe tested package and migration behavior rather than anticipated behavior, so they follow implementation and packaging validation.",
+        "evidenceIds": [],
+        "resultingDecision": "decision.issue-complete-forger-migration-documentation-and-release-gates-strategic-assess",
+        "supersedes": null,
+        "status": "superseded",
+        "createdAt": "2026-09-14T00:15:10.927Z",
+        "updatedAt": "2026-09-14T00:21:39.179Z"
+      },
+      {
+        "id": "strategy.issue-select-a-distinctive-successor-identity-after-the-forger-no-go",
+        "workId": "issue.select-a-distinctive-successor-identity-after-the-forger-no-go",
+        "factors": {
+          "alignment": "high",
+          "value": "high",
+          "risk": "high",
+          "cost": "medium",
+          "evidenceStrength": "high",
+          "dependencyPressure": "high",
+          "complexity": "medium",
+          "releaseConstraint": "high"
+        },
+        "decision": "now",
+        "rationale": "The Forger identity gate failed, so selecting a genuinely distinctive identity is the only safe prerequisite to compatibility implementation.",
+        "evidenceIds": [],
+        "resultingDecision": "decision.issue-select-a-distinctive-successor-identity-after-the-forger-no-go-strategic-a",
+        "supersedes": null,
+        "status": "active",
+        "createdAt": "2026-09-14T00:21:36.869Z",
+        "updatedAt": "2026-09-14T00:21:36.869Z"
+      },
+      {
+        "id": "strategy.issue-centralize-autoforge-and-forger-compatibility-vocabulary-2",
+        "workId": "issue.centralize-autoforge-and-forger-compatibility-vocabulary",
+        "factors": {
+          "alignment": "low",
+          "value": "low",
+          "risk": "high",
+          "cost": "medium",
+          "evidenceStrength": "high",
+          "dependencyPressure": "low",
+          "complexity": "medium",
+          "releaseConstraint": "low"
+        },
+        "decision": "backlog",
+        "rationale": "Forger failed identity verification; Forger-specific compatibility code must not begin and this issue should be replaced or reframed only after another name is approved.",
+        "evidenceIds": [],
+        "resultingDecision": "decision.issue-centralize-autoforge-and-forger-compatibility-vocabulary-strategic-assessm-2",
+        "supersedes": "strategy.issue-centralize-autoforge-and-forger-compatibility-vocabulary",
+        "status": "active",
+        "createdAt": "2026-09-14T00:21:37.491Z",
+        "updatedAt": "2026-09-14T00:21:37.491Z"
+      },
+      {
+        "id": "strategy.issue-implement-recoverable-autoforge-to-forger-project-migration-2",
+        "workId": "issue.implement-recoverable-autoforge-to-forger-project-migration",
+        "factors": {
+          "alignment": "low",
+          "value": "low",
+          "risk": "high",
+          "cost": "high",
+          "evidenceStrength": "high",
+          "dependencyPressure": "low",
+          "complexity": "high",
+          "releaseConstraint": "low"
+        },
+        "decision": "backlog",
+        "rationale": "The migration safety pattern remains valid, but a Forger-specific migration would encode rejected executable and state-directory identities.",
+        "evidenceIds": [],
+        "resultingDecision": "decision.issue-implement-recoverable-autoforge-to-forger-project-migration-strategic-asse-2",
+        "supersedes": "strategy.issue-implement-recoverable-autoforge-to-forger-project-migration",
+        "status": "active",
+        "createdAt": "2026-09-14T00:21:38.074Z",
+        "updatedAt": "2026-09-14T00:21:38.074Z"
+      },
+      {
+        "id": "strategy.issue-publish-forger-successor-and-autoforge-compatibility-bridge-2",
+        "workId": "issue.publish-forger-successor-and-autoforge-compatibility-bridge",
+        "factors": {
+          "alignment": "low",
+          "value": "low",
+          "risk": "high",
+          "cost": "high",
+          "evidenceStrength": "high",
+          "dependencyPressure": "low",
+          "complexity": "high",
+          "releaseConstraint": "low"
+        },
+        "decision": "backlog",
+        "rationale": "Publishing Forger would create direct adjacent-product, executable, search, and potential legal conflicts; publication is not authorized.",
+        "evidenceIds": [],
+        "resultingDecision": "decision.issue-publish-forger-successor-and-autoforge-compatibility-bridge-strategic-asse-2",
+        "supersedes": "strategy.issue-publish-forger-successor-and-autoforge-compatibility-bridge",
+        "status": "active",
+        "createdAt": "2026-09-14T00:21:38.629Z",
+        "updatedAt": "2026-09-14T00:21:38.629Z"
+      },
+      {
+        "id": "strategy.issue-complete-forger-migration-documentation-and-release-gates-2",
+        "workId": "issue.complete-forger-migration-documentation-and-release-gates",
+        "factors": {
+          "alignment": "low",
+          "value": "low",
+          "risk": "medium",
+          "cost": "medium",
+          "evidenceStrength": "high",
+          "dependencyPressure": "low",
+          "complexity": "medium",
+          "releaseConstraint": "low"
+        },
+        "decision": "backlog",
+        "rationale": "Forger-specific release documentation is obsolete after the failed identity gate; generic migration requirements remain preserved for a future approved name.",
+        "evidenceIds": [],
+        "resultingDecision": "decision.issue-complete-forger-migration-documentation-and-release-gates-strategic-assess-2",
+        "supersedes": "strategy.issue-complete-forger-migration-documentation-and-release-gates",
+        "status": "active",
+        "createdAt": "2026-09-14T00:21:39.179Z",
+        "updatedAt": "2026-09-14T00:21:39.179Z"
       }
     ]
   }

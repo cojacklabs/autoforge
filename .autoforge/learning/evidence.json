@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
-  "revision": 9,
-  "updatedAt": "2026-08-26T00:00:46.177Z",
+  "revision": 13,
+  "updatedAt": "2026-09-14T01:14:13.061Z",
   "data": {
     "evidence": [
       {
@@ -47,6 +47,50 @@
         "relatedWork": "issue.prepare-reviewable-v0-25-release-checkpoint-and-remote-verification",
         "resultingDecision": "decision.v0-25-uses-readme-md-as-the-product-entry-point-docs-readme-md-as-the-canonical",
         "capturedAt": "2026-08-26T00:00:34.669Z"
+      },
+      {
+        "id": "evidence.the-unscoped-priozar-package-and-proposed-cojacklabs-priozar-cli-core-protocol-a",
+        "kind": "analytics",
+        "summary": "The unscoped priozar package and proposed @cojacklabs Priozar CLI, Core, Protocol, and SDK packages each returned npm E404 on 2026-09-13.",
+        "source": "https://registry.npmjs.org/",
+        "experimentId": null,
+        "hypothesisId": null,
+        "relatedWork": "issue.select-a-distinctive-successor-identity-after-the-forger-no-go",
+        "resultingDecision": null,
+        "capturedAt": "2026-09-14T01:14:10.612Z"
+      },
+      {
+        "id": "evidence.github-returned-404-for-cojacklabs-priozar-and-the-exact-priozar-account-while-e",
+        "kind": "analytics",
+        "summary": "GitHub returned 404 for cojacklabs/priozar and the exact priozar account, while exact-name repository and user searches each returned zero results on 2026-09-13.",
+        "source": "https://api.github.com/",
+        "experimentId": null,
+        "hypothesisId": null,
+        "relatedWork": "issue.select-a-distinctive-successor-identity-after-the-forger-no-go",
+        "resultingDecision": null,
+        "capturedAt": "2026-09-14T01:14:11.417Z"
+      },
+      {
+        "id": "evidence.the-official-uspto-trademark-search-system-returned-no-results-found-for-the-exa",
+        "kind": "analytics",
+        "summary": "The official USPTO Trademark Search system returned No results found for the exact PRIOZAR wordmark with live and dead statuses included on 2026-09-13.",
+        "source": "https://tmsearch.uspto.gov/search/search-information",
+        "experimentId": null,
+        "hypothesisId": null,
+        "relatedWork": "issue.select-a-distinctive-successor-identity-after-the-forger-no-go",
+        "resultingDecision": null,
+        "capturedAt": "2026-09-14T01:14:12.205Z"
+      },
+      {
+        "id": "evidence.euipo-coordinated-tmview-returned-no-rows-found-for-priozar-across-participating",
+        "kind": "analytics",
+        "summary": "EUIPO-coordinated TMview returned No rows found for Priozar across participating offices on 2026-09-13; TMview states that it is not an official register and has no legal effect.",
+        "source": "https://www.tmdn.org/tmview/",
+        "experimentId": null,
+        "hypothesisId": null,
+        "relatedWork": "issue.select-a-distinctive-successor-identity-after-the-forger-no-go",
+        "resultingDecision": null,
+        "capturedAt": "2026-09-14T01:14:13.032Z"
       }
     ]
   }

@@ -6,6 +6,7 @@ Usage:
 
 Commands:
   add        Create a feature, phase, task, or issue
+  artifact   Register, inspect, approve, or supersede shared project artifacts
   changelog  Compile documented bugfix and feature-note decisions into CHANGELOG.md
   check      Evaluate work, session, context, and edit guardrails
   constitution Manage project constitution rules and governance checks
@@ -56,6 +57,14 @@ Add work:
   autoforge add phase --feature <feature-id> --name <name> --description <text>
   autoforge add task --phase <phase-id> --name <name> --description <text> --include <pattern> [--include <pattern>] [--exclude <pattern>]
   autoforge add issue --name <name> --description <text> --include <pattern> [--include <pattern>] [--exclude <pattern>]
+
+Shared artifacts:
+  autoforge artifact register <json-file>
+  autoforge artifact import <file> --id <artifact-id> --kind <kind> --title <title> --agent <agent-id> --work <work-id>
+  autoforge artifact list
+  autoforge artifact show <artifact-id>
+  autoforge artifact approve <artifact-id> --by <actor>
+  autoforge artifact supersede <artifact-id> <json-file>
 
 Decision memory:
   autoforge decide --statement <text> --reasoning <text> --consequence <text> --scope <tag> --keyword <tag> [--consequence <text>] [--scope <tag>] [--keyword <tag>] [--work <work-id>] [--supersedes <decision-id>] [--kind <architecture|bugfix|feature-note>] [--evidence <evidence-id>]

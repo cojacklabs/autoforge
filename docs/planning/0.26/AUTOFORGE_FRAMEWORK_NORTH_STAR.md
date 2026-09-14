@@ -2,14 +2,21 @@
 
 Status: Authoritative product destination
 Established: 2026-08-30
-Naming status: AutoForge remains the compatibility name until a separately
-approved replacement passes package, executable, repository, domain, legal,
-and search-collision review.
+Naming status: The proposed Forger identity failed verification because of
+direct product, framework, executable, state-directory, search, and legal-risk
+collisions. AutoForge remains the compatibility identity until a distinctive
+replacement passes the complete identity gate.
 
 ## Product Definition
 
 AutoForge is the open-source engineering control plane for AI-assisted
 software, data, and AI development.
+
+The framework still requires a distinctive successor name, but **Forger is not
+cleared for implementation**. See the
+[Forger Identity Verification](FORGER_IDENTITY_VERIFICATION.md). The bounded
+[compatibility migration pattern](FORGER_BRAND_AND_COMPATIBILITY_MIGRATION.md)
+remains reusable after another identity passes verification.
 
 It preserves project intelligence, resolves the minimum complete context for a
 task, governs technical work, coordinates replaceable agents, validates

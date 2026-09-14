@@ -15,6 +15,10 @@ import { specificationSchema } from "../specifications/schemas.js";
 import { registerKnowledgeSpecification } from "./knowledge.js";
 import { inputSchemaJson } from "../input-schemas/catalog.js";
 import { reportCommandError } from "../cli/command-error.js";
+import {
+  activeArtifactWorkId,
+  registerArtifactReference,
+} from "../artifacts/bridge.js";
 
 export interface IntentCommandOptions {
   args: readonly string[];
@@ -99,6 +103,30 @@ export async function runIntentCommand(
         ),
       )
     : [];
+  const activeWorkId = persist
+    ? await activeArtifactWorkId(project.path)
+    : null;
+  if (activeWorkId) {
+    for (const [index, artifact] of result.artifacts.entries()) {
+      await registerArtifactReference(project.path, {
+        id: `artifact.planning.${artifact.kind}.${artifact.sourceFingerprint.slice(0, 12)}`,
+        kind:
+          artifact.kind === "design-brief"
+            ? "design"
+            : artifact.kind === "technical-plan"
+              ? "architecture"
+              : artifact.kind === "acceptance-criteria" ||
+                  artifact.kind === "user-stories"
+                ? "requirements"
+                : "plan",
+        title: artifact.kind,
+        agentId: "autoforge",
+        workId: activeWorkId,
+        path: persisted[index]!,
+        createdAt: artifact.generatedAt,
+      });
+    }
+  }
   options.output.stdout(JSON.stringify({ ...result, persisted }, null, 2));
   return EXIT_CODE.success;
 }

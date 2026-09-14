@@ -6,16 +6,19 @@ import {
   type AgentHandoff,
 } from "@cojacklabs/autoforge-protocol";
 import type { AgentHandoffRepository } from "@cojacklabs/autoforge-core";
+import { registerArtifactReference } from "../artifacts/bridge.js";
 
 export const DEFAULT_AGENT_HANDOFF_DIRECTORY = ".autoforge/handoffs";
 
 export class FileAgentHandoffRepository implements AgentHandoffRepository {
   private readonly directory: string;
+  private readonly projectRoot: string;
 
   constructor(
     projectRoot: string,
     relativeDirectory = DEFAULT_AGENT_HANDOFF_DIRECTORY,
   ) {
+    this.projectRoot = path.resolve(projectRoot);
     this.directory = path.resolve(projectRoot, relativeDirectory);
   }
 
@@ -30,6 +33,15 @@ export class FileAgentHandoffRepository implements AgentHandoffRepository {
       "utf8",
     );
     await rename(temporaryPath, filePath);
+    await registerArtifactReference(this.projectRoot, {
+      id: `artifact.${validated.id}`,
+      kind: "handoff",
+      title: `${validated.session.fromAgent} to ${validated.session.toAgent} handoff`,
+      agentId: validated.session.fromAgent,
+      workId: validated.activeWork.id,
+      path: path.relative(this.projectRoot, filePath).replaceAll(path.sep, "/"),
+      createdAt: validated.createdAt,
+    });
     return filePath;
   }
 

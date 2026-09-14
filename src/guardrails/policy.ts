@@ -20,6 +20,43 @@ export interface EvaluateGuardrailsInput {
   enforcement: GuardrailEnforcement;
   agentId?: string;
   targetPath?: string;
+  registeredArtifactPaths?: readonly string[];
+}
+
+const PLANNING_NAME =
+  /(?:brainstorm|research|requirement|plan|architecture|design|validation|review|handoff)/i;
+function artifactDestinationCheck(
+  targetPath: string | undefined,
+  registered: readonly string[] = [],
+): GuardrailCheck {
+  if (!targetPath)
+    return {
+      id: "artifact-destination",
+      status: "warn",
+      message:
+        "No target path was supplied; artifact destination was not evaluated.",
+    };
+  const exempt =
+    targetPath === "README.md" ||
+    targetPath.startsWith("docs/") ||
+    targetPath.startsWith(".autoforge/artifacts/");
+  const likelyPlanning =
+    /\.(?:md|json)$/i.test(targetPath) && PLANNING_NAME.test(targetPath);
+  if (exempt || registered.includes(targetPath) || !likelyPlanning)
+    return {
+      id: "artifact-destination",
+      status: "pass",
+      message: exempt
+        ? `${targetPath} is an allowed product-documentation or canonical-artifact destination.`
+        : registered.includes(targetPath)
+          ? `${targetPath} is registered as a shared artifact reference.`
+          : `${targetPath} is not classified as an agent-produced planning artifact.`,
+    };
+  return {
+    id: "artifact-destination",
+    status: "warn",
+    message: `${targetPath} looks like an unregistered planning artifact. Store it under .autoforge/artifacts/ or run "autoforge artifact import ${targetPath} --id <artifact-id> --kind <kind> --title <title> --agent <agent-id> --work <work-id>".`,
+  };
 }
 
 function activeWorkCheck(work: WorkState): GuardrailCheck {
@@ -183,6 +220,7 @@ export function evaluateGuardrails(
     ),
     contextCheck(input.contextFreshness),
     scopeCheck(input.work, input.targetPath),
+    artifactDestinationCheck(input.targetPath, input.registeredArtifactPaths),
   ];
   return guardrailReportSchema.parse({
     allowed: !checks.some((check) => check.status === "fail"),

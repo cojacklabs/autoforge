@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
-  "revision": 140,
-  "updatedAt": "2026-08-31T01:45:52.618Z",
+  "revision": 159,
+  "updatedAt": "2026-09-14T02:16:07.991Z",
   "data": {
     "decisions": [
       {
@@ -3373,10 +3373,10 @@
           "issue.reconcile-autoforge-as-a-framework-only-engineering-control-plane"
         ],
         "supersedes": null,
-        "status": "active",
+        "status": "superseded",
         "kind": "architecture",
         "createdAt": "2026-08-30T15:38:47.886Z",
-        "updatedAt": "2026-08-30T15:38:47.886Z"
+        "updatedAt": "2026-09-14T00:14:26.206Z"
       },
       {
         "id": "decision.validation-readiness-requires-applicable-evidence-for-every-required-gate-in-the",
@@ -3476,6 +3476,476 @@
         "kind": "architecture",
         "createdAt": "2026-08-31T01:45:52.590Z",
         "updatedAt": "2026-08-31T01:45:52.590Z"
+      },
+      {
+        "id": "decision.forger-is-the-approved-successor-framework-identity-with-autoforge-0-26-x-as-the",
+        "statement": "Forger is the approved successor framework identity, with AutoForge 0.26.x as the final deprecated compatibility line",
+        "reasoning": "The AutoForge name collides with an established adjacent project and implies unattended automation, while the approved Forger identity better matches a human-governed engineering control plane. A controlled compatibility release prevents package, executable, project-state, registry, credential, and automation breakage; known Forger and Forge collisions still require final scoped-identifier and legal verification before publication.",
+        "consequences": [
+          "Publish AutoForge 0.26.x only as a migration and compatibility bridge, and place new framework capabilities on the supported Forger 0.26.x line.",
+          "Use an explicit dry-run, backup, validated atomic migration, and rollback path; do not silently force package installation, delete .autoforge state, dual-write project truth, or run a blind text replacement.",
+          "Prefer .forger as the successor state directory and require final acceptance of the scoped package, executable, repository, domain, and state identifiers before implementation changes."
+        ],
+        "scope": [
+          "naming",
+          "compatibility",
+          "migration"
+        ],
+        "keywords": [
+          "forger",
+          "v0.26",
+          "deprecation"
+        ],
+        "relatedWork": [
+          "issue.select-a-distinctive-framework-name-and-compatibility-migration-plan"
+        ],
+        "supersedes": "decision.forger-is-a-naming-candidate-but-is-not-approved-as-the-framework-name",
+        "status": "superseded",
+        "kind": "architecture",
+        "createdAt": "2026-09-14T00:14:26.206Z",
+        "updatedAt": "2026-09-14T00:21:19.187Z"
+      },
+      {
+        "id": "decision.issue-verify-forger-public-identities-and-final-state-directory-name-strategic-a",
+        "statement": "issue.verify-forger-public-identities-and-final-state-directory-name: strategic assessment recommends now",
+        "reasoning": "Every code, package, executable, state-path, and publication change depends on controlled public identifiers and a final .forger decision; resolving these risks is the first migration gate.",
+        "consequences": [
+          "alignment=high, value=high, risk=high, cost=low, evidenceStrength=medium, dependencyPressure=high, complexity=medium, releaseConstraint=high"
+        ],
+        "scope": [
+          "strategy"
+        ],
+        "keywords": [
+          "strategy",
+          "now"
+        ],
+        "relatedWork": [
+          "issue.verify-forger-public-identities-and-final-state-directory-name"
+        ],
+        "supersedes": null,
+        "status": "active",
+        "kind": "feature-note",
+        "createdAt": "2026-09-14T00:15:09.075Z",
+        "updatedAt": "2026-09-14T00:15:09.075Z"
+      },
+      {
+        "id": "decision.issue-centralize-autoforge-and-forger-compatibility-vocabulary-strategic-assessm",
+        "statement": "issue.centralize-autoforge-and-forger-compatibility-vocabulary: strategic assessment recommends next",
+        "reasoning": "Central compatibility constants and a complete identifier inventory must follow identity approval and precede state migration or packaging changes.",
+        "consequences": [
+          "alignment=high, value=high, risk=medium, cost=medium, evidenceStrength=high, dependencyPressure=high, complexity=medium, releaseConstraint=high"
+        ],
+        "scope": [
+          "strategy"
+        ],
+        "keywords": [
+          "strategy",
+          "next"
+        ],
+        "relatedWork": [
+          "issue.centralize-autoforge-and-forger-compatibility-vocabulary"
+        ],
+        "supersedes": null,
+        "status": "active",
+        "kind": "feature-note",
+        "createdAt": "2026-09-14T00:15:09.556Z",
+        "updatedAt": "2026-09-14T00:15:09.556Z"
+      },
+      {
+        "id": "decision.issue-implement-recoverable-autoforge-to-forger-project-migration-strategic-asse",
+        "statement": "issue.implement-recoverable-autoforge-to-forger-project-migration: strategic assessment recommends next",
+        "reasoning": "Project-state continuity is essential to the rename, but implementation must wait for final identifiers and centralized compatibility vocabulary.",
+        "consequences": [
+          "alignment=high, value=high, risk=high, cost=high, evidenceStrength=high, dependencyPressure=high, complexity=high, releaseConstraint=high"
+        ],
+        "scope": [
+          "strategy"
+        ],
+        "keywords": [
+          "strategy",
+          "next"
+        ],
+        "relatedWork": [
+          "issue.implement-recoverable-autoforge-to-forger-project-migration"
+        ],
+        "supersedes": null,
+        "status": "active",
+        "kind": "feature-note",
+        "createdAt": "2026-09-14T00:15:10.021Z",
+        "updatedAt": "2026-09-14T00:15:10.021Z"
+      },
+      {
+        "id": "decision.issue-publish-forger-successor-and-autoforge-compatibility-bridge-strategic-asse",
+        "statement": "issue.publish-forger-successor-and-autoforge-compatibility-bridge: strategic assessment recommends later",
+        "reasoning": "Publication depends on verified identities, stable compatibility vocabulary, and a proven migration and rollback engine.",
+        "consequences": [
+          "alignment=high, value=high, risk=high, cost=high, evidenceStrength=medium, dependencyPressure=medium, complexity=high, releaseConstraint=high"
+        ],
+        "scope": [
+          "strategy"
+        ],
+        "keywords": [
+          "strategy",
+          "later"
+        ],
+        "relatedWork": [
+          "issue.publish-forger-successor-and-autoforge-compatibility-bridge"
+        ],
+        "supersedes": null,
+        "status": "active",
+        "kind": "feature-note",
+        "createdAt": "2026-09-14T00:15:10.473Z",
+        "updatedAt": "2026-09-14T00:15:10.473Z"
+      },
+      {
+        "id": "decision.issue-complete-forger-migration-documentation-and-release-gates-strategic-assess",
+        "statement": "issue.complete-forger-migration-documentation-and-release-gates: strategic assessment recommends later",
+        "reasoning": "Final onboarding and support instructions must describe tested package and migration behavior rather than anticipated behavior, so they follow implementation and packaging validation.",
+        "consequences": [
+          "alignment=high, value=high, risk=medium, cost=medium, evidenceStrength=medium, dependencyPressure=medium, complexity=medium, releaseConstraint=high"
+        ],
+        "scope": [
+          "strategy"
+        ],
+        "keywords": [
+          "strategy",
+          "later"
+        ],
+        "relatedWork": [
+          "issue.complete-forger-migration-documentation-and-release-gates"
+        ],
+        "supersedes": null,
+        "status": "active",
+        "kind": "feature-note",
+        "createdAt": "2026-09-14T00:15:10.936Z",
+        "updatedAt": "2026-09-14T00:15:10.936Z"
+      },
+      {
+        "id": "decision.forger-fails-the-framework-identity-gate-and-is-not-approved-for-implementation",
+        "statement": "Forger fails the framework identity gate and is not approved for implementation",
+        "reasoning": "Current verification found an active Forger application-building platform, an adjacent FORGER AI-development framework using the exact forger executable and .forger project directory, an occupied unscoped npm package, broad Forge and Forger search congestion, and a registered FORGER software mark in an adjacent category. The apparently absent scoped npm package and CoJack Labs repository do not resolve product confusion, command collisions, state ambiguity, or legal-review risk.",
+        "consequences": [
+          "Do not rename packages, executables, repositories, environment variables, credentials, or .autoforge state to Forger or .forger.",
+          "Retain AutoForge as the compatibility identity until a distinctive replacement passes the complete package, executable, repository, state-directory, domain, search, international, and legal-risk gate.",
+          "Reuse the bounded dry-run, backup, atomic migration, rollback, and deprecation architecture only after substituting an approved identity."
+        ],
+        "scope": [
+          "naming",
+          "compatibility",
+          "migration"
+        ],
+        "keywords": [
+          "forger",
+          "collision",
+          "verification"
+        ],
+        "relatedWork": [
+          "issue.verify-forger-public-identities-and-final-state-directory-name"
+        ],
+        "supersedes": "decision.forger-is-the-approved-successor-framework-identity-with-autoforge-0-26-x-as-the",
+        "status": "active",
+        "kind": "architecture",
+        "createdAt": "2026-09-14T00:21:19.187Z",
+        "updatedAt": "2026-09-14T00:21:19.187Z"
+      },
+      {
+        "id": "decision.issue-select-a-distinctive-successor-identity-after-the-forger-no-go-strategic-a",
+        "statement": "issue.select-a-distinctive-successor-identity-after-the-forger-no-go: strategic assessment recommends now",
+        "reasoning": "The Forger identity gate failed, so selecting a genuinely distinctive identity is the only safe prerequisite to compatibility implementation.",
+        "consequences": [
+          "alignment=high, value=high, risk=high, cost=medium, evidenceStrength=high, dependencyPressure=high, complexity=medium, releaseConstraint=high"
+        ],
+        "scope": [
+          "strategy"
+        ],
+        "keywords": [
+          "strategy",
+          "now"
+        ],
+        "relatedWork": [
+          "issue.select-a-distinctive-successor-identity-after-the-forger-no-go"
+        ],
+        "supersedes": null,
+        "status": "active",
+        "kind": "feature-note",
+        "createdAt": "2026-09-14T00:21:36.892Z",
+        "updatedAt": "2026-09-14T00:21:36.892Z"
+      },
+      {
+        "id": "decision.issue-centralize-autoforge-and-forger-compatibility-vocabulary-strategic-assessm-2",
+        "statement": "issue.centralize-autoforge-and-forger-compatibility-vocabulary: strategic assessment recommends backlog",
+        "reasoning": "Forger failed identity verification; Forger-specific compatibility code must not begin and this issue should be replaced or reframed only after another name is approved.",
+        "consequences": [
+          "alignment=low, value=low, risk=high, cost=medium, evidenceStrength=high, dependencyPressure=low, complexity=medium, releaseConstraint=low"
+        ],
+        "scope": [
+          "strategy"
+        ],
+        "keywords": [
+          "strategy",
+          "backlog"
+        ],
+        "relatedWork": [
+          "issue.centralize-autoforge-and-forger-compatibility-vocabulary"
+        ],
+        "supersedes": null,
+        "status": "active",
+        "kind": "feature-note",
+        "createdAt": "2026-09-14T00:21:37.506Z",
+        "updatedAt": "2026-09-14T00:21:37.506Z"
+      },
+      {
+        "id": "decision.issue-implement-recoverable-autoforge-to-forger-project-migration-strategic-asse-2",
+        "statement": "issue.implement-recoverable-autoforge-to-forger-project-migration: strategic assessment recommends backlog",
+        "reasoning": "The migration safety pattern remains valid, but a Forger-specific migration would encode rejected executable and state-directory identities.",
+        "consequences": [
+          "alignment=low, value=low, risk=high, cost=high, evidenceStrength=high, dependencyPressure=low, complexity=high, releaseConstraint=low"
+        ],
+        "scope": [
+          "strategy"
+        ],
+        "keywords": [
+          "strategy",
+          "backlog"
+        ],
+        "relatedWork": [
+          "issue.implement-recoverable-autoforge-to-forger-project-migration"
+        ],
+        "supersedes": null,
+        "status": "active",
+        "kind": "feature-note",
+        "createdAt": "2026-09-14T00:21:38.085Z",
+        "updatedAt": "2026-09-14T00:21:38.085Z"
+      },
+      {
+        "id": "decision.issue-publish-forger-successor-and-autoforge-compatibility-bridge-strategic-asse-2",
+        "statement": "issue.publish-forger-successor-and-autoforge-compatibility-bridge: strategic assessment recommends backlog",
+        "reasoning": "Publishing Forger would create direct adjacent-product, executable, search, and potential legal conflicts; publication is not authorized.",
+        "consequences": [
+          "alignment=low, value=low, risk=high, cost=high, evidenceStrength=high, dependencyPressure=low, complexity=high, releaseConstraint=low"
+        ],
+        "scope": [
+          "strategy"
+        ],
+        "keywords": [
+          "strategy",
+          "backlog"
+        ],
+        "relatedWork": [
+          "issue.publish-forger-successor-and-autoforge-compatibility-bridge"
+        ],
+        "supersedes": null,
+        "status": "active",
+        "kind": "feature-note",
+        "createdAt": "2026-09-14T00:21:38.646Z",
+        "updatedAt": "2026-09-14T00:21:38.646Z"
+      },
+      {
+        "id": "decision.issue-complete-forger-migration-documentation-and-release-gates-strategic-assess-2",
+        "statement": "issue.complete-forger-migration-documentation-and-release-gates: strategic assessment recommends backlog",
+        "reasoning": "Forger-specific release documentation is obsolete after the failed identity gate; generic migration requirements remain preserved for a future approved name.",
+        "consequences": [
+          "alignment=low, value=low, risk=medium, cost=medium, evidenceStrength=high, dependencyPressure=low, complexity=medium, releaseConstraint=low"
+        ],
+        "scope": [
+          "strategy"
+        ],
+        "keywords": [
+          "strategy",
+          "backlog"
+        ],
+        "relatedWork": [
+          "issue.complete-forger-migration-documentation-and-release-gates"
+        ],
+        "supersedes": null,
+        "status": "active",
+        "kind": "feature-note",
+        "createdAt": "2026-09-14T00:21:39.193Z",
+        "updatedAt": "2026-09-14T00:21:39.193Z"
+      },
+      {
+        "id": "decision.unisonry-is-the-recommended-successor-identity-candidate-pending-explicit-mainta",
+        "statement": "Unisonry is the recommended successor identity candidate pending explicit maintainer approval and professional clearance",
+        "reasoning": "Two rounds of collision screening rejected ten candidates. Unisonry best represents humans and replaceable agents working from one shared understanding, avoids autonomous-agent and Forge terminology, produced no relevant exact-name product result, and returned not-found for the tested npm packages, CoJack Labs GitHub repository, and .com and .sh registry records. Search absence is not proof of ownership or legal clearance, so implementation cannot begin from this recommendation alone.",
+        "consequences": [
+          "Present the complete Unisonry identity bundle to the maintainer for an explicit approve or reject decision.",
+          "Do not reserve identities, publish packages, rename code, or migrate .autoforge state until approval, authenticated ownership verification, and appropriate trademark review.",
+          "If approved, adapt the existing bounded compatibility architecture to unisonry, .unisonry, and UNISONRY identifiers; if rejected, retain AutoForge and screen a new small candidate set."
+        ],
+        "scope": [
+          "naming",
+          "compatibility"
+        ],
+        "keywords": [
+          "unisonry",
+          "candidate",
+          "verification"
+        ],
+        "relatedWork": [
+          "issue.select-a-distinctive-successor-identity-after-the-forger-no-go"
+        ],
+        "supersedes": null,
+        "status": "superseded",
+        "kind": "architecture",
+        "createdAt": "2026-09-14T00:28:46.801Z",
+        "updatedAt": "2026-09-14T00:50:56.875Z"
+      },
+      {
+        "id": "decision.orcher-is-rejected-as-a-successor-identity-because-it-directly-collides-with-act",
+        "statement": "Orcher is rejected as a successor identity because it directly collides with active AI orchestration products",
+        "reasoning": "Orcher.ai already markets agents that run business operations, while Dipp AI uses Orcher for a provider-neutral agentic control plane placed between human authority and executing models. The latter substantially overlaps this framework's control-plane category, positioning, governance, evidence, and provider-neutral message, making confusion likely regardless of scoped package availability.",
+        "consequences": [
+          "Do not use Orcher for the product, packages, executable, repository, project-state directory, domains, or compatibility migration.",
+          "Keep Unisonry as the current recommended candidate pending maintainer approval, or evaluate another distinctive invented name."
+        ],
+        "scope": [
+          "naming"
+        ],
+        "keywords": [
+          "orcher",
+          "collision",
+          "successor"
+        ],
+        "relatedWork": [
+          "issue.select-a-distinctive-successor-identity-after-the-forger-no-go"
+        ],
+        "supersedes": null,
+        "status": "active",
+        "kind": "architecture",
+        "createdAt": "2026-09-14T00:38:48.827Z",
+        "updatedAt": "2026-09-14T00:38:48.827Z"
+      },
+      {
+        "id": "decision.unisara-is-rejected-while-unisonara-advances-alongside-unisonry-for-human-brand",
+        "statement": "Unisara is rejected while Unisonara advances alongside Unisonry for human brand review",
+        "reasoning": "Unisara is concise but unisara.com is the active Unisara Foundation identity, other corporate records use the exact name, and a software professional uses unisara publicly. This is not a direct orchestration collision, but it fails the objective of a clean, globally distinctive identity. Structa and Concorda also fail because exact active software and AI products occupy those names. Unisonara retains the coordination meaning while preliminary package, repository, domain, and product searches remain clear, subject to Spanish-language and professional trademark review.",
+        "consequences": [
+          "Do not use Structa, Concorda, or Unisara for the successor migration.",
+          "Continue human review with Unisonara and Unisonry as the two current finalists; neither is approved for implementation or reservation yet."
+        ],
+        "scope": [
+          "naming"
+        ],
+        "keywords": [
+          "unisara",
+          "unisonara",
+          "unisonry"
+        ],
+        "relatedWork": [
+          "issue.select-a-distinctive-successor-identity-after-the-forger-no-go"
+        ],
+        "supersedes": null,
+        "status": "active",
+        "kind": "architecture",
+        "createdAt": "2026-09-14T00:46:18.310Z",
+        "updatedAt": "2026-09-14T00:46:18.310Z"
+      },
+      {
+        "id": "decision.successor-naming-research-must-emphasize-the-deterministic-framework-role-rather",
+        "statement": "Successor naming research must emphasize the deterministic framework role rather than presenting the product as an AI or AI-collaboration brand",
+        "reasoning": "The framework structures instructions, scopes and prioritizes work, preserves context, governs execution, and validates outcomes while external agents perform reasoning. Unison-derived candidates overemphasize human-AI unity and risk sounding like the AI product itself. Direct dictionary and lightly coined names around orchestration, order, method, and priority are highly congested, so research must continue with distinctive compound or invented framework names designed for a clear shell command and .sh identity.",
+        "consequences": [
+          "Demote Unisonara and Unisonry from recommended candidates to research holds and approve no successor yet.",
+          "Evaluate future names against orchestrate, organize, prioritize, and govern semantics as well as complete package, executable, repository, state-directory, domain, search, linguistic, and legal-risk gates."
+        ],
+        "scope": [
+          "naming",
+          "product"
+        ],
+        "keywords": [
+          "framework",
+          "naming",
+          "orchestration"
+        ],
+        "relatedWork": [
+          "issue.select-a-distinctive-successor-identity-after-the-forger-no-go"
+        ],
+        "supersedes": "decision.unisonry-is-the-recommended-successor-identity-candidate-pending-explicit-mainta",
+        "status": "superseded",
+        "kind": "architecture",
+        "createdAt": "2026-09-14T00:50:56.875Z",
+        "updatedAt": "2026-09-14T01:08:27.136Z"
+      },
+      {
+        "id": "decision.priozar-is-the-maintainer-selected-successor-framework-identity-pending-reservat",
+        "statement": "Priozar is the maintainer-selected successor framework identity, pending reservation and formal clearance gates",
+        "reasoning": "Priozar directly evokes prioritization and governance, works consistently as a product name, priozar executable, .priozar project-state directory, PRIOZAR_ environment prefix, scoped package family, repository, and .sh domain, and preliminary public searches found no adjacent software framework, AI platform, GitHub project, or npm package using the exact name. Selection does not replace authenticated availability checks or legal review.",
+        "consequences": [
+          "Use Priozar as the sole selected identity in v0.26 planning and retire Unisonry, Priorail, Taskrail, Forger, and other screened names from active consideration.",
+          "Do not rename code, packages, executables, repository state, credentials, or public documentation until the identity-reservation and compatibility-migration gates pass.",
+          "Target product copy as a deterministic framework that prioritizes, structures, preserves context, governs, and validates work performed by external agents; pronounce the name PRY-oh-zar."
+        ],
+        "scope": [
+          "identity",
+          "architecture",
+          "migration"
+        ],
+        "keywords": [
+          "priozar",
+          "successor",
+          "naming"
+        ],
+        "relatedWork": [
+          "issue.select-a-distinctive-successor-identity-after-the-forger-no-go"
+        ],
+        "supersedes": "decision.successor-naming-research-must-emphasize-the-deterministic-framework-role-rather",
+        "status": "active",
+        "kind": "architecture",
+        "createdAt": "2026-09-14T01:08:27.136Z",
+        "updatedAt": "2026-09-14T01:08:27.136Z"
+      },
+      {
+        "id": "decision.the-canonical-agent-produced-artifact-registry-is-a-schema-versioned-tracked-man",
+        "statement": "The canonical agent-produced artifact registry is a schema-versioned tracked manifest with project-contained payloads or explicit repository-relative references, while existing typed stores migrate through adapters rather than becoming competing truth.",
+        "reasoning": "AutoForge already has separate knowledge, planning, design, bootstrap, research, and handoff stores. A registry must unify discovery, attribution, approval, revision applicability, and supersession without destructively moving product documentation or duplicating domain truth. Protocol owns the portable entry schema, Core owns lifecycle rules, and filesystem adapters own atomic persistence under .autoforge/artifacts.",
+        "consequences": [
+          "Define typed kinds for brainstorming, research, requirements, plan, architecture, design, validation, review, and handoff; require agent and work attribution, timestamps, revision metadata, lifecycle status, and exactly one project-contained payload or repository-relative reference.",
+          "Approved artifacts are immutable and may change only through an explicit superseding artifact; README and docs remain permitted reference targets, and legacy stores remain readable through compatibility adapters during migration.",
+          "Implement Protocol and Core contracts before CLI defaulting or guardrail enforcement, then add SDK operations, atomic storage, registration of existing documents, context and contract guidance, migration, and focused failure-path tests."
+        ],
+        "scope": [
+          "artifacts",
+          "protocol",
+          "core",
+          "compatibility"
+        ],
+        "keywords": [
+          "artifact-registry",
+          "approval",
+          "supersession"
+        ],
+        "relatedWork": [
+          "issue.make-the-autoforge-artifact-registry-the-default-for-agent-produced-planning"
+        ],
+        "supersedes": null,
+        "status": "active",
+        "kind": "architecture",
+        "createdAt": "2026-09-14T01:32:46.847Z",
+        "updatedAt": "2026-09-14T01:32:46.847Z"
+      },
+      {
+        "id": "decision.the-canonical-agent-produced-artifact-registry-is-implemented-under-autoforge-ar",
+        "statement": "The canonical agent-produced artifact registry is implemented under .autoforge/artifacts with schema-versioned manifests, project-contained payloads, and repository-relative references.",
+        "reasoning": "Cross-agent continuity requires a unified, tracked artifact discovery mechanism with lifecycle and approval semantics without fragmenting planning files or altering existing documentation references.",
+        "consequences": [
+          "Artifact commands and storage contracts are exposed via Protocol, Core, and SDK, and agent contracts and context packets now default to canonical artifact operations.",
+          "All unit, integration, and quality gates pass."
+        ],
+        "scope": [
+          "architecture"
+        ],
+        "keywords": [
+          "artifacts",
+          "registry"
+        ],
+        "relatedWork": [
+          "issue.make-the-autoforge-artifact-registry-the-default-for-agent-produced-planning"
+        ],
+        "supersedes": null,
+        "status": "active",
+        "kind": "architecture",
+        "createdAt": "2026-09-14T02:16:07.961Z",
+        "updatedAt": "2026-09-14T02:16:07.961Z"
       }
     ]
   }

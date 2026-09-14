@@ -8,6 +8,7 @@ import type { DoctrineRegistry } from "../doctrine/schemas.js";
 import type { SessionState, WorkState } from "../work/schemas.js";
 import { evaluateGuardrails, type ContextFreshness } from "./policy.js";
 import type { GuardrailEnforcement, GuardrailReport } from "./schemas.js";
+import { FileProjectArtifactRepository } from "../artifacts/store.js";
 
 export interface GuardrailServiceInput {
   work: WorkState;
@@ -40,6 +41,11 @@ export class GuardrailService {
           .relativePath
       : undefined;
     const contextFreshness = await this.contextFreshness(input.expectedPacket);
+    const registeredArtifactPaths = (
+      await new FileProjectArtifactRepository(this.projectRoot).list()
+    ).flatMap((artifact) =>
+      artifact.content.type === "reference" ? [artifact.content.path] : [],
+    );
     return evaluateGuardrails({
       work: input.work,
       sessions: input.sessions,
@@ -49,6 +55,7 @@ export class GuardrailService {
       enforcement: input.enforcement,
       ...(input.agentId ? { agentId: input.agentId } : {}),
       ...(targetPath ? { targetPath } : {}),
+      registeredArtifactPaths,
     });
   }
 

@@ -6,6 +6,11 @@ import {
   type AgentHandoffRepository,
 } from "../src/handoff.js";
 import type { AgentHandoff } from "@cojacklabs/autoforge-protocol";
+import type { ProjectArtifact } from "@cojacklabs/autoforge-protocol";
+import {
+  ProjectArtifactService,
+  type ProjectArtifactRepository,
+} from "../src/artifact.js";
 import {
   planFromWorkState,
   scopesOverlap,
@@ -132,5 +137,49 @@ describe("model-independent AutoForge Core", () => {
     await expect(service.read(result.handoff.id)).resolves.toEqual(
       result.handoff,
     );
+  });
+});
+
+describe("project artifact lifecycle", () => {
+  it("preserves approval provenance when superseding", async () => {
+    let artifacts: ProjectArtifact[] = [];
+    const repository: ProjectArtifactRepository = {
+      read: async (id) => artifacts.find((item) => item.id === id) ?? null,
+      list: async () => artifacts,
+      writeAll: async (next) => {
+        artifacts = next;
+        return ".autoforge/artifacts/registry.json";
+      },
+    };
+    const service = new ProjectArtifactService(repository, {
+      now: () => new Date("2026-09-13T00:00:00.000Z"),
+    });
+    const base = {
+      kind: "plan" as const,
+      title: "Plan",
+      agentId: "codex",
+      workId: "issue.artifacts",
+      sourceRevision: { gitHead: "abc123", dirtyFingerprint: null },
+      content: {
+        type: "inline" as const,
+        mediaType: "text/markdown" as const,
+        value: "# Plan",
+      },
+    };
+    await service.create({ ...base, id: "artifact.plan-v1" });
+    await service.approve("artifact.plan-v1", "maintainer");
+    await service.supersede("artifact.plan-v1", {
+      ...base,
+      id: "artifact.plan-v2",
+    });
+    expect(
+      artifacts.find((item) => item.id === "artifact.plan-v1"),
+    ).toMatchObject({
+      status: "superseded",
+      approval: { approvedBy: "maintainer" },
+    });
+    expect(
+      artifacts.find((item) => item.id === "artifact.plan-v2"),
+    ).toMatchObject({ status: "draft", supersedes: "artifact.plan-v1" });
   });
 });

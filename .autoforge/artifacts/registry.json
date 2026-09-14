@@ -1,0 +1,25 @@
+{
+  "schemaVersion": "1",
+  "artifacts": [
+    {
+      "schemaVersion": "1",
+      "id": "artifact.autoforge-framework-north-star",
+      "kind": "architecture",
+      "title": "AutoForge Framework North Star",
+      "status": "draft",
+      "agentId": "codex",
+      "workId": "issue.make-the-autoforge-artifact-registry-the-default-for-agent-produced-planning",
+      "createdAt": "2026-09-14T01:56:41.482Z",
+      "sourceRevision": {
+        "gitHead": "e9a315c34f6cc84cfae6d203039223fc719b56b4",
+        "dirtyFingerprint": "661ccb3620858677b5b1a362e13b446c790f1869d34f59a8e7e5d5726773c781"
+      },
+      "content": {
+        "type": "reference",
+        "path": "docs/planning/0.26/AUTOFORGE_FRAMEWORK_NORTH_STAR.md"
+      },
+      "approval": null,
+      "supersedes": null
+    }
+  ]
+}

@@ -12,6 +12,7 @@ function supportedOperations() {
   return {
     projects: async () => ({ projects: [] }),
     status: async () => ({ status: "idle" as const }),
+    artifacts: async (input: { action: string }) => ({ action: input.action }),
     work: async () => ({ work: [] }),
     context: async () => ({ packet: "context" }),
     check: async () => ({ allowed: true }),
@@ -61,6 +62,7 @@ describe("internal AutoForge SDK foundation", () => {
           "projects",
           "status",
           "intent",
+          "artifacts",
           "work",
           "context",
           "checks",
@@ -235,6 +237,7 @@ describe("internal AutoForge SDK foundation", () => {
     const operations = {
       projects: vi.fn(async (input) => ({ action: input.action })),
       status: vi.fn(async () => ({ state: "idle" as const })),
+      artifacts: vi.fn(async (input) => ({ action: input.action })),
       work: vi.fn(async (input) => ({ action: input.action })),
       context: vi.fn(async (input) => ({ explained: input.explain ?? false })),
       check: vi.fn(async (input) => ({ path: input.path ?? null })),
@@ -249,6 +252,9 @@ describe("internal AutoForge SDK foundation", () => {
 
     await expect(sdk.projects({ action: "list" })).resolves.toMatchObject({
       protocolVersion: "1",
+      data: { action: "list" },
+    });
+    await expect(sdk.artifacts({ action: "list" })).resolves.toMatchObject({
       data: { action: "list" },
     });
     await expect(

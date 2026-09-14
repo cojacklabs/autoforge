@@ -197,6 +197,7 @@ describe("context packet compiler", () => {
     expect(packet.content).toContain("## Active Workflow");
     expect(packet.content).toContain("feature.checkout-research-to-planning");
     expect(packet.content).toContain("## Agent Contract");
+    expect(packet.content).toContain("## Active Work Artifacts");
     expect(packet.content).toContain("Modify files outside scope.");
     expect(packet.content).toContain("derived-from → `intent.context-packet`");
     expect(packet.content).toContain("Render build packets as Markdown.");

@@ -10,12 +10,14 @@ import {
 } from "@cojacklabs/autoforge-protocol";
 import type {
   AssignmentInput,
+  ArtifactInput,
   CheckInput,
   CompleteWorkInput,
   ContextInput,
   DecisionInput,
   HandoffInput,
   ProjectsInput,
+  ProtocolData,
   StartWorkInput,
   SupportedAutoForgeOperations,
   ValidationInput,
@@ -218,6 +220,13 @@ export class AutoForgeSdk<
     input: CompleteWorkInput = {},
   ): Promise<SdkResponse<Complete>> {
     return response(await this.operations.completeWork(input));
+  }
+
+  async artifacts(input: ArtifactInput): Promise<SdkResponse<ProtocolData>> {
+    if (!this.operations.artifacts) {
+      throw new Error("Artifact operations are unavailable in this adapter");
+    }
+    return response(await this.operations.artifacts(input));
   }
 }
 

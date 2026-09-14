@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
-  "revision": 426,
-  "updatedAt": "2026-08-31T01:45:53.210Z",
+  "revision": 440,
+  "updatedAt": "2026-09-14T02:16:09.831Z",
   "data": {
     "features": [
       {
@@ -2686,10 +2686,10 @@
       {
         "name": "Make the AutoForge artifact registry the default for agent-produced planning",
         "description": "Define and implement a tracked, typed artifact registry under .autoforge/ as the default destination for agent-produced brainstorming, research, requirements, plans, architecture, design, validation, review, and handoff artifacts. Artifacts must be human-reviewable, schema-versioned, attributable to an agent and work item, revision-aware, approval-capable, and portable across Claude, Codex, Cursor, TRAE, Grok, Gemini, and other agents. Generated agent contracts, context packets, doctrines, and applicable guardrails should direct agents through canonical artifact operations rather than scattering unregistered planning documents, while preserving explicit exceptions for product documentation such as README and docs/. Existing documents must be registerable by reference or migrated without destructive moves, and approved artifacts must be superseded rather than silently overwritten.",
-        "status": "planned",
+        "status": "completed",
         "pauseReason": null,
         "createdAt": "2026-08-27T15:26:45.530Z",
-        "updatedAt": "2026-08-27T15:26:45.530Z",
+        "updatedAt": "2026-09-14T02:16:09.714Z",
         "id": "issue.make-the-autoforge-artifact-registry-the-default-for-agent-produced-planning",
         "scope": {
           "include": [
@@ -2822,10 +2822,10 @@
       {
         "name": "Select a distinctive framework name and compatibility migration plan",
         "description": "Evaluate replacement framework names, including but not limited to Forger, across GitHub, npm and other registries, executable names, domains, searchability, relevant trademark risk, international meaning, product semantics, and CoJack Labs portfolio fit; recommend a name only with an alias, package, state-directory, environment-variable, credential, documentation, deprecation, and rollback migration plan. No rename or purchase is authorized by this issue.",
-        "status": "planned",
+        "status": "completed",
         "pauseReason": null,
         "createdAt": "2026-08-30T15:37:34.069Z",
-        "updatedAt": "2026-08-30T15:37:34.069Z",
+        "updatedAt": "2026-09-14T00:17:43.847Z",
         "id": "issue.select-a-distinctive-framework-name-and-compatibility-migration-plan",
         "scope": {
           "include": [
@@ -2847,6 +2847,122 @@
           "include": [
             "apps/core-cli/src/help.ts",
             "test/cli-foundation.test.ts"
+          ],
+          "exclude": []
+        }
+      },
+      {
+        "name": "Verify Forger public identities and final state-directory name",
+        "description": "Verify and record ownership, availability, collision, searchability, and relevant legal risk for the scoped npm packages, forger executable, repository, domains, credential namespace, and recommended .forger state directory before any implementation rename begins.",
+        "status": "completed",
+        "pauseReason": null,
+        "createdAt": "2026-09-14T00:14:52.564Z",
+        "updatedAt": "2026-09-14T00:24:08.237Z",
+        "id": "issue.verify-forger-public-identities-and-final-state-directory-name",
+        "scope": {
+          "include": [
+            "docs/**",
+            ".autoforge/**"
+          ],
+          "exclude": []
+        }
+      },
+      {
+        "name": "Centralize AutoForge and Forger compatibility vocabulary",
+        "description": "Inventory and centralize product names, executable names, package identifiers, state-directory paths, environment prefixes, credential services, generated-contract labels, and global-registry fields; add tested successor discovery and temporary aliases without changing canonical writes prematurely.",
+        "status": "planned",
+        "pauseReason": null,
+        "createdAt": "2026-09-14T00:14:53.157Z",
+        "updatedAt": "2026-09-14T00:14:53.157Z",
+        "id": "issue.centralize-autoforge-and-forger-compatibility-vocabulary",
+        "scope": {
+          "include": [
+            "src/**",
+            "apps/**",
+            "packages/**",
+            "test/**",
+            "package.json",
+            "pnpm-lock.yaml",
+            ".autoforge/**"
+          ],
+          "exclude": []
+        }
+      },
+      {
+        "name": "Implement recoverable AutoForge-to-Forger project migration",
+        "description": "Implement forger migrate brand dry-run and apply flows with canonical-root resolution, dual-directory conflict detection, locking, deterministic plans, backup, staging, schema validation, atomic publication, global-registry repair, rollback, and cross-platform migration fixtures.",
+        "status": "planned",
+        "pauseReason": null,
+        "createdAt": "2026-09-14T00:14:53.712Z",
+        "updatedAt": "2026-09-14T00:14:53.712Z",
+        "id": "issue.implement-recoverable-autoforge-to-forger-project-migration",
+        "scope": {
+          "include": [
+            "src/**",
+            "apps/**",
+            "packages/**",
+            "test/**",
+            ".autoforge/**"
+          ],
+          "exclude": []
+        }
+      },
+      {
+        "name": "Publish Forger successor and AutoForge compatibility bridge",
+        "description": "Prepare scoped Forger 0.26.x packages and the forger executable while converting @cojacklabs/autoforge 0.26.x into the final deprecated compatibility bridge; preserve deterministic automation and validate npm, pnpm, and yarn global installation flows across supported operating systems.",
+        "status": "planned",
+        "pauseReason": null,
+        "createdAt": "2026-09-14T00:14:54.284Z",
+        "updatedAt": "2026-09-14T00:14:54.284Z",
+        "id": "issue.publish-forger-successor-and-autoforge-compatibility-bridge",
+        "scope": {
+          "include": [
+            "package.json",
+            "pnpm-lock.yaml",
+            "apps/**",
+            "packages/**",
+            "src/**",
+            "test/**",
+            ".changeset/**",
+            ".github/**",
+            ".autoforge/**"
+          ],
+          "exclude": []
+        }
+      },
+      {
+        "name": "Complete Forger migration documentation and release gates",
+        "description": "Update human and agent onboarding, install, upgrade, migration, rollback, uninstall, compatibility-window, and support guidance after successor packages are usable; validate tarballs, provenance, links, notices, fixtures, and the framework-only north-star before publication.",
+        "status": "planned",
+        "pauseReason": null,
+        "createdAt": "2026-09-14T00:14:54.857Z",
+        "updatedAt": "2026-09-14T00:14:54.857Z",
+        "id": "issue.complete-forger-migration-documentation-and-release-gates",
+        "scope": {
+          "include": [
+            "README.md",
+            "docs/**",
+            "CONTRIBUTING.md",
+            ".github/**",
+            "scripts/**",
+            "package.json",
+            ".autoforge/**"
+          ],
+          "exclude": []
+        }
+      },
+      {
+        "name": "Select a distinctive successor identity after the Forger no-go",
+        "description": "Generate and evaluate distinctive framework-name candidates as complete identity bundles across product semantics, CoJack Labs portfolio fit, scoped and unscoped packages, executable, GitHub repository, project-state directory, environment prefix, credential namespace, domains, searchability, international meaning, and relevant legal risk; approve no code rename until one candidate passes every required gate.",
+        "status": "completed",
+        "pauseReason": null,
+        "createdAt": "2026-09-14T00:21:19.740Z",
+        "updatedAt": "2026-09-14T01:32:05.090Z",
+        "id": "issue.select-a-distinctive-successor-identity-after-the-forger-no-go",
+        "scope": {
+          "include": [
+            "docs/**",
+            ".autoforge/**"
           ],
           "exclude": []
         }

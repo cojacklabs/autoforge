@@ -129,6 +129,27 @@ function renderContract(selection: ContextSelection): string[] {
   ];
 }
 
+function renderArtifacts(selection: ContextSelection): string[] {
+  const lines = ["## Active Work Artifacts", ""];
+  const artifacts = selection.artifacts ?? [];
+  if (artifacts.length === 0)
+    return [
+      ...lines,
+      "No registered artifacts are linked to this work item.",
+      "",
+    ];
+  for (const artifact of artifacts) {
+    const location =
+      artifact.content.type === "reference"
+        ? code(artifact.content.path)
+        : `${artifact.content.mediaType} (inline)`;
+    lines.push(
+      `- ${code(artifact.id)} [${artifact.kind}; ${artifact.status}] — ${inlineText(artifact.title)} — ${location}`,
+    );
+  }
+  return [...lines, ""];
+}
+
 function renderDoctrines(selection: ContextSelection): string[] {
   const lines = ["## Applicable Doctrines", ""];
   if (selection.doctrines.length === 0) {
@@ -386,6 +407,7 @@ function renderPacket(selection: ContextSelection): string {
     "",
     ...renderWorkflow(selection),
     ...renderContract(selection),
+    ...renderArtifacts(selection),
     ...renderDoctrines(selection),
     ...renderGovernance(selection),
     ...renderDomain(selection),

@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { projectArtifactSchema } from "@cojacklabs/autoforge-protocol";
 
 import { decisionSchema } from "../decisions/schemas.js";
 import { doctrineSchema } from "../doctrine/schemas.js";
@@ -93,6 +94,7 @@ export const contextSelectionSchema = z
     governance: z.array(governanceEvaluationSchema).default([]),
     domain: z.array(domainConceptSchema).optional(),
     strategy: strategyAssessmentRefSchema.optional(),
+    artifacts: z.array(projectArtifactSchema).optional(),
     exclusions: z.array(contextExclusionSchema),
     budget: contextBudgetSummarySchema,
     workflow: z

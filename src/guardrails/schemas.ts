@@ -10,6 +10,7 @@ export const guardrailCheckSchema = z
       "doctrine-requirements",
       "context-current",
       "scope-boundary",
+      "artifact-destination",
     ]),
     status: z.enum(["pass", "warn", "fail"]),
     message: z.string().trim().min(1).max(2_000),
@@ -23,7 +24,7 @@ export const guardrailReportSchema = z
     agentId: z.string().trim().min(1).max(80).nullable(),
     workId: z.string().trim().min(1).max(200).nullable(),
     targetPath: z.string().trim().min(1).max(1_000).nullable(),
-    checks: z.array(guardrailCheckSchema).min(5).max(5),
+    checks: z.array(guardrailCheckSchema).min(6).max(6),
   })
   .strict()
   .superRefine((report, context) => {

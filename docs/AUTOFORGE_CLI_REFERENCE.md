@@ -74,7 +74,21 @@ autoforge research register <json-file>
 autoforge knowledge list
 autoforge planning list --source <intent.json>
 autoforge planning handoff <kind> --phase <phase-id> --include "docs/**"
+autoforge artifact register <json-file>
+autoforge artifact import <file> --id <artifact-id> --kind <kind> --title <title> --agent <agent-id> --work <work-id>
+autoforge artifact list
+autoforge artifact show <artifact-id>
+autoforge artifact approve <artifact-id> --by <actor>
+autoforge artifact supersede <artifact-id> <json-file>
 ```
+
+Use `artifact import` to register an existing repository document by reference.
+The command records its project-relative path and current Git revision without
+moving, rewriting, or copying the document. Agent-produced planning belongs in
+the canonical artifact registry by default; product documentation such as
+`README.md` and `docs/` may remain in place and be registered by reference.
+Approved artifacts are immutable and must be replaced through `artifact
+supersede` so approval provenance remains auditable.
 
 ## Strategy and Prioritization
 

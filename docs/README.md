@@ -60,6 +60,9 @@ to its own approval gates.
 
 - [AutoForge Framework North-Star](planning/0.26/AUTOFORGE_FRAMEWORK_NORTH_STAR.md)
 - [AutoForge Framework Roadmap](planning/0.26/AUTOFORGE_FRAMEWORK_ROADMAP.md)
+- [Forger Brand and Compatibility Migration](planning/0.26/FORGER_BRAND_AND_COMPATIBILITY_MIGRATION.md)
+- [Forger Identity Verification](planning/0.26/FORGER_IDENTITY_VERIFICATION.md)
+- [Successor Identity Shortlist](planning/0.26/SUCCESSOR_IDENTITY_SHORTLIST.md)
 - [Hybrid SQLite Storage Boundary](planning/0.26/HYBRID_SQLITE_STORAGE_BOUNDARY.md)
 - [Separated Future AI Product Portfolio](planning/0.26/SEPARATED_FUTURE_AI_PRODUCT_PORTFOLIO.md)
 - [AutoForgeAI Orchestration Capability Adoption](planning/0.26/AUTOFORGEAI_ORCHESTRATION_CAPABILITY_ADOPTION.md)

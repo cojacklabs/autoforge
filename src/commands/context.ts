@@ -15,6 +15,7 @@ import { StrategyStore } from "../strategy/strategy-store.js";
 import { TraceabilityStore } from "../traceability/store.js";
 import { traceImpact } from "../traceability/impact.js";
 import { inspectInstallation } from "./init.js";
+import { FileProjectArtifactRepository } from "../artifacts/store.js";
 
 export interface ContextCommandOptions {
   args: readonly string[];
@@ -83,10 +84,19 @@ export async function compileProjectContext(
       assessment.status === "active" &&
       assessment.workId === selection.work.item.id,
   );
+  const artifacts = (
+    await new FileProjectArtifactRepository(projectRoot).list()
+  ).filter(
+    (artifact) =>
+      artifact.workId === selection.work.item.id &&
+      artifact.status !== "superseded",
+  );
 
-  const enrichedSelection = activeAssessment
-    ? { ...selection, strategy: activeAssessment }
-    : selection;
+  const enrichedSelection = {
+    ...selection,
+    artifacts,
+    ...(activeAssessment ? { strategy: activeAssessment } : {}),
+  };
 
   const packet = new ContextPacketCompiler().compile(enrichedSelection);
   return { packet, selection: enrichedSelection };

@@ -99,16 +99,27 @@ repository-owned truth.
 
 ## Naming Workstream
 
-AutoForge remains the repository, package, executable, and state name during
-this reconciliation. `Forger` is only a rejected-for-now candidate because the
-unscoped npm package is occupied and a directly adjacent AI framework already
-uses the name and CLI.
+Forger failed the final identity verification because existing adjacent
+products occupy the same name, AI-development category, executable, and
+state-directory convention, with additional search and legal-review risk.
+AutoForge remains the compatibility identity while the selected successor,
+**Priozar**, passes reservation, legal-review, and migration-readiness gates.
 
-A future naming issue must evaluate repositories, registries, executables,
-domains, search results, trademark risk, international meaning, compatibility
-aliases, state directories, environment variables, credential-service names,
-documentation, and deprecation policy. No rename may begin until a replacement
-and migration policy are explicitly approved.
+The current [successor identity shortlist](SUCCESSOR_IDENTITY_SHORTLIST.md)
+records the maintainer's selection of **Priozar**. Selection does not authorize
+implementation, publication, or migration until public identifiers are checked
+and controlled and the remaining legal and compatibility gates are recorded.
+
+See the [Forger Identity Verification](FORGER_IDENTITY_VERIFICATION.md). The
+bounded [compatibility migration pattern](FORGER_BRAND_AND_COMPATIBILITY_MIGRATION.md)
+remains useful after replacing all provisional identifiers with a name that
+passes the complete identity gate.
+Implementation must provide an explicit dry-run, backup, atomic state migration,
+rollback, global-registry repair, compatibility aliases, and cross-platform
+installation evidence. No blind repository-wide replacement or silent forced
+upgrade is permitted. `.priozar/` is the selected successor state directory,
+subject to the same reservation and implementation gates as the other public
+identifiers.
 
 ## Exit Test
 

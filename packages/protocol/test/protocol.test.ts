@@ -11,6 +11,7 @@ import {
   featureIdSchema,
   validateAgentContract,
   workflowHandoffSchema,
+  projectArtifactSchema,
 } from "../src/index.js";
 
 describe("AutoForge protocol v1", () => {
@@ -162,5 +163,32 @@ describe("AutoForge protocol v1", () => {
         completionRequirements: [],
       }).version,
     ).toBe("0.11.0");
+  });
+
+  it("rejects unsafe artifact references and invalid approval state", () => {
+    const artifact = {
+      schemaVersion: "1",
+      id: "artifact.plan",
+      kind: "plan",
+      title: "Plan",
+      status: "draft",
+      agentId: "codex",
+      workId: "issue.artifacts",
+      createdAt: "2026-09-13T00:00:00.000Z",
+      sourceRevision: { gitHead: "abc123", dirtyFingerprint: null },
+      content: { type: "reference", path: "docs/plan.md" },
+      approval: null,
+      supersedes: null,
+    };
+    expect(projectArtifactSchema.parse(artifact).id).toBe("artifact.plan");
+    expect(() =>
+      projectArtifactSchema.parse({
+        ...artifact,
+        content: { type: "reference", path: "../plan.md" },
+      }),
+    ).toThrow();
+    expect(() =>
+      projectArtifactSchema.parse({ ...artifact, status: "approved" }),
+    ).toThrow();
   });
 });

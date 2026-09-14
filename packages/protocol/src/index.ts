@@ -1,4 +1,5 @@
 export * from "./agent-contract.js";
+export * from "./artifact.js";
 export * from "./agent-launcher.js";
 export * from "./capabilities.js";
 export * from "./errors.js";

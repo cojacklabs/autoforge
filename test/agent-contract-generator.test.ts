@@ -41,6 +41,12 @@ describe("agent contract generator", () => {
     expect(contract.requiredActions).toContain(
       "Document non-obvious intent, public contracts, invariants, security or compatibility constraints, and unusual tradeoffs with concise explain-why comments.",
     );
+    expect(contract.requiredActions).toContainEqual(
+      expect.stringContaining("AutoForge artifact registry by default"),
+    );
+    expect(contract.prohibitedActions).toContainEqual(
+      expect.stringContaining("overwrite an approved artifact"),
+    );
     expect(contract.prohibitedActions).toContain(
       "Add comments that restate syntax, preserve prompt transcripts, become stale narratives, or leave TODO/FIXME markers without an AutoForge task or issue reference.",
     );

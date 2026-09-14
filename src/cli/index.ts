@@ -5,6 +5,7 @@ import { fileURLToPath } from "node:url";
 
 import { AutoForgeError, EXIT_CODE, toAutoForgeError } from "../core/errors.js";
 import { runAddCommand } from "../commands/add.js";
+import { runArtifactCommand } from "../commands/artifact.js";
 import { runCheckCommand } from "../commands/check.js";
 import { runContextCommand } from "../commands/context.js";
 import { runDecideCommand } from "../commands/decide.js";
@@ -144,6 +145,8 @@ export async function main(
       launchAgent: (agentArgs) =>
         launchAutoForgeAgent(agentArgs, { output, cwd: startDirectory }),
       commands: {
+        artifact: (commandArgs) =>
+          runArtifactCommand({ args: commandArgs, output, startDirectory }),
         add: (commandArgs) =>
           runAddCommand({
             args: commandArgs,
