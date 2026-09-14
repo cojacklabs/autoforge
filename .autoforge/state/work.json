@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
-  "revision": 446,
-  "updatedAt": "2026-09-14T02:27:13.749Z",
+  "revision": 448,
+  "updatedAt": "2026-09-14T02:28:36.732Z",
   "data": {
     "features": [
       {
@@ -2910,10 +2910,10 @@
       {
         "name": "Publish Forger successor and AutoForge compatibility bridge",
         "description": "Prepare scoped Forger 0.26.x packages and the forger executable while converting @cojacklabs/autoforge 0.26.x into the final deprecated compatibility bridge; preserve deterministic automation and validate npm, pnpm, and yarn global installation flows across supported operating systems.",
-        "status": "planned",
+        "status": "completed",
         "pauseReason": null,
         "createdAt": "2026-09-14T00:14:54.284Z",
-        "updatedAt": "2026-09-14T00:14:54.284Z",
+        "updatedAt": "2026-09-14T02:28:36.601Z",
         "id": "issue.publish-forger-successor-and-autoforge-compatibility-bridge",
         "scope": {
           "include": [

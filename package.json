@@ -36,7 +36,8 @@
     "prepack": "npm run build"
   },
   "bin": {
-    "autoforge": "bin/autoforge.js"
+    "autoforge": "bin/autoforge.js",
+    "priozar": "bin/priozar.js"
   },
   "files": [
     "dist",

@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
-  "revision": 162,
-  "updatedAt": "2026-09-14T02:27:11.677Z",
+  "revision": 163,
+  "updatedAt": "2026-09-14T02:28:34.617Z",
   "data": {
     "decisions": [
       {
@@ -4018,6 +4018,30 @@
         "kind": "architecture",
         "createdAt": "2026-09-14T02:27:11.638Z",
         "updatedAt": "2026-09-14T02:27:11.638Z"
+      },
+      {
+        "id": "decision.added-bin-priozar-js-and-registered-the-priozar-binary-in-package-json-under-the",
+        "statement": "Added bin/priozar.js and registered the priozar binary in package.json under the @cojacklabs/autoforge package, establishing a dual-executable bridge for the Priozar successor line.",
+        "reasoning": "Users and agents can invoke the CLI as either autoforge or priozar during the compatibility window, allowing seamless script transition before standalone @cojacklabs/priozar publication.",
+        "consequences": [
+          "bin/priozar.js and bin/autoforge.js both route through dist/cli.js, verified with npm pack --dry-run and manual binary execution."
+        ],
+        "scope": [
+          "architecture"
+        ],
+        "keywords": [
+          "bridge",
+          "priozar",
+          "executable"
+        ],
+        "relatedWork": [
+          "issue.publish-forger-successor-and-autoforge-compatibility-bridge"
+        ],
+        "supersedes": null,
+        "status": "active",
+        "kind": "architecture",
+        "createdAt": "2026-09-14T02:28:34.578Z",
+        "updatedAt": "2026-09-14T02:28:34.578Z"
       }
     ]
   }
