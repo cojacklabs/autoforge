@@ -22,6 +22,7 @@ autoforge schemas list
 | Bootstrap a product idea through gated artifacts             | [Bootstrap Pipeline](BOOTSTRAP_PIPELINE.md)                 |
 | Transfer work between agents                                 | [Cross-Agent Handoffs](CROSS_AGENT_HANDOFFS.md)             |
 | Understand durable versus operational state                  | [Governance and Memory](GOVERNANCE_AND_MEMORY.md)           |
+| Migrate an existing repository to Priozar                   | [Priozar Brand Migration Guide](PRIOZAR_BRAND_MIGRATION_GUIDE.md) |
 | Configure local model credentials                            | [Local Provider Credentials](LOCAL_PROVIDER_CREDENTIALS.md) |
 | Apply durable code-commenting governance                     | [Code Commenting Standard](CODE_COMMENTING_STANDARD.md)     |
 

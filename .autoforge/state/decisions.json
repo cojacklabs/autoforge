@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
-  "revision": 163,
-  "updatedAt": "2026-09-14T02:28:34.617Z",
+  "revision": 164,
+  "updatedAt": "2026-09-14T02:29:24.689Z",
   "data": {
     "decisions": [
       {
@@ -4042,6 +4042,30 @@
         "kind": "architecture",
         "createdAt": "2026-09-14T02:28:34.578Z",
         "updatedAt": "2026-09-14T02:28:34.578Z"
+      },
+      {
+        "id": "decision.completed-priozar-brand-migration-documentation-and-release-guidance-authoring-d",
+        "statement": "Completed Priozar brand migration documentation and release guidance, authoring docs/PRIOZAR_BRAND_MIGRATION_GUIDE.md and updating README.md and docs/README.md with dry-run, apply, rollback, and dual-executable usage.",
+        "reasoning": "Clear documentation for the Priozar transition ensures users and external agents understand the transition window, dual executable availability, non-destructive migration commands, and recovery procedures.",
+        "consequences": [
+          "docs/PRIOZAR_BRAND_MIGRATION_GUIDE.md is published, linked from docs/README.md and README.md, covering safety invariants, conflict handling, and post-migration verification."
+        ],
+        "scope": [
+          "documentation"
+        ],
+        "keywords": [
+          "migration",
+          "docs",
+          "priozar"
+        ],
+        "relatedWork": [
+          "issue.complete-forger-migration-documentation-and-release-gates"
+        ],
+        "supersedes": null,
+        "status": "active",
+        "kind": "architecture",
+        "createdAt": "2026-09-14T02:29:24.653Z",
+        "updatedAt": "2026-09-14T02:29:24.653Z"
       }
     ]
   }

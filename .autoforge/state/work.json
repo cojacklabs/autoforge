@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
-  "revision": 448,
-  "updatedAt": "2026-09-14T02:28:36.732Z",
+  "revision": 450,
+  "updatedAt": "2026-09-14T02:29:33.078Z",
   "data": {
     "features": [
       {
@@ -2933,10 +2933,10 @@
       {
         "name": "Complete Forger migration documentation and release gates",
         "description": "Update human and agent onboarding, install, upgrade, migration, rollback, uninstall, compatibility-window, and support guidance after successor packages are usable; validate tarballs, provenance, links, notices, fixtures, and the framework-only north-star before publication.",
-        "status": "planned",
+        "status": "completed",
         "pauseReason": null,
         "createdAt": "2026-09-14T00:14:54.857Z",
-        "updatedAt": "2026-09-14T00:14:54.857Z",
+        "updatedAt": "2026-09-14T02:29:32.948Z",
         "id": "issue.complete-forger-migration-documentation-and-release-gates",
         "scope": {
           "include": [

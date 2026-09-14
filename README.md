@@ -17,6 +17,10 @@ reasoning or autonomous agency. A separately named future CoJack Labs AI may
 consume AutoForge, but general conversation, personal memory, model routing,
 and prompt-to-product experiences are outside this framework's scope.
 
+> AutoForge is transitioning to its successor identity, **Priozar** (`priozar`, `.priozar/`).
+> During the v0.26 transition window, `@cojacklabs/autoforge` provides both `autoforge` and `priozar` executables.
+> See the [Priozar Brand Migration Guide](docs/PRIOZAR_BRAND_MIGRATION_GUIDE.md) to inspect or migrate existing projects.
+>
 > AutoForge v0.25.2 is the first supported registry release for the v0.25
 > architecture. Always begin with `autoforge version` and use explicit Core
 > subcommands in automation.
