@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
-  "revision": 442,
-  "updatedAt": "2026-09-14T02:18:51.525Z",
+  "revision": 444,
+  "updatedAt": "2026-09-14T02:25:58.750Z",
   "data": {
     "features": [
       {
@@ -2870,10 +2870,10 @@
       {
         "name": "Centralize AutoForge and Forger compatibility vocabulary",
         "description": "Inventory and centralize product names, executable names, package identifiers, state-directory paths, environment prefixes, credential services, generated-contract labels, and global-registry fields; add tested successor discovery and temporary aliases without changing canonical writes prematurely.",
-        "status": "planned",
+        "status": "completed",
         "pauseReason": null,
         "createdAt": "2026-09-14T00:14:53.157Z",
-        "updatedAt": "2026-09-14T00:14:53.157Z",
+        "updatedAt": "2026-09-14T02:25:58.634Z",
         "id": "issue.centralize-autoforge-and-forger-compatibility-vocabulary",
         "scope": {
           "include": [

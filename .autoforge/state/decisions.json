@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
-  "revision": 160,
-  "updatedAt": "2026-09-14T02:18:49.905Z",
+  "revision": 161,
+  "updatedAt": "2026-09-14T02:25:56.293Z",
   "data": {
     "decisions": [
       {
@@ -3970,6 +3970,30 @@
         "kind": "architecture",
         "createdAt": "2026-09-14T02:18:49.868Z",
         "updatedAt": "2026-09-14T02:18:49.868Z"
+      },
+      {
+        "id": "decision.framework-identity-and-compatibility-constants-are-centralized-in-cojacklabs-aut",
+        "statement": "Framework identity and compatibility constants are centralized in @cojacklabs/autoforge-protocol under packages/protocol/src/compatibility.ts, establishing Priozar as the successor bundle and AutoForge as the compatibility bundle while superseding the rejected Forger proposal.",
+        "reasoning": "A single source of truth for product, executable, package, state-directory, and environment identifiers prevents fragmented migration logic across Core, Protocol, SDK, CLI, and state managers.",
+        "consequences": [
+          "FRAMEWORK_IDENTITY, frameworkExecutableSchema, and stateDirectorySchema are exported from Protocol and re-exported from Core vocabularies, with automated schema tests enforcing supported boundaries."
+        ],
+        "scope": [
+          "architecture"
+        ],
+        "keywords": [
+          "compatibility",
+          "priozar",
+          "identity"
+        ],
+        "relatedWork": [
+          "issue.centralize-autoforge-and-forger-compatibility-vocabulary"
+        ],
+        "supersedes": null,
+        "status": "active",
+        "kind": "architecture",
+        "createdAt": "2026-09-14T02:25:56.252Z",
+        "updatedAt": "2026-09-14T02:25:56.252Z"
       }
     ]
   }

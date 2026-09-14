@@ -12,6 +12,9 @@ import {
   validateAgentContract,
   workflowHandoffSchema,
   projectArtifactSchema,
+  FRAMEWORK_IDENTITY,
+  frameworkExecutableSchema,
+  stateDirectorySchema,
 } from "../src/index.js";
 
 describe("AutoForge protocol v1", () => {
@@ -190,5 +193,18 @@ describe("AutoForge protocol v1", () => {
     expect(() =>
       projectArtifactSchema.parse({ ...artifact, status: "approved" }),
     ).toThrow();
+  });
+
+  it("exports centralized framework identity and compatibility vocabulary", () => {
+    expect(FRAMEWORK_IDENTITY.current.product).toBe("AutoForge");
+    expect(FRAMEWORK_IDENTITY.successor.product).toBe("Priozar");
+    expect(FRAMEWORK_IDENTITY.successor.executable).toBe("priozar");
+    expect(FRAMEWORK_IDENTITY.successor.stateDirectory).toBe(".priozar");
+    expect(frameworkExecutableSchema.parse("priozar")).toBe("priozar");
+    expect(frameworkExecutableSchema.parse("autoforge")).toBe("autoforge");
+    expect(stateDirectorySchema.parse(".priozar")).toBe(".priozar");
+    expect(stateDirectorySchema.parse(".autoforge")).toBe(".autoforge");
+    expect(() => frameworkExecutableSchema.parse("forger")).toThrow();
+    expect(() => stateDirectorySchema.parse(".forger")).toThrow();
   });
 });
