@@ -42,11 +42,16 @@ function formatResult(result: LegacyMigrationResult): string {
 }
 
 function formatBrandResult(plan: BrandMigrationPlan): string {
+  const actions = plan.artifacts.map(
+    ({ action, path }) => `  - ${action}: ${path}`,
+  );
   if (plan.status === "planned") {
     return [
       `Brand migration plan: ${plan.sourceDirectory} -> ${plan.targetDirectory}`,
       `Project root: ${plan.projectRoot}`,
       `Planned actions: ${plan.artifacts.length}`,
+      ...actions,
+      `${plan.sourceDirectory} is removed only after the copy is verified and validated.`,
       "Run 'autoforge migrate brand' to apply migration with recoverable backup.",
     ].join("\n");
   }
@@ -54,6 +59,7 @@ function formatBrandResult(plan: BrandMigrationPlan): string {
     `Migrated brand state from ${plan.sourceDirectory} to ${plan.targetDirectory}.`,
     `Backup created at: ${plan.backupDirectory}`,
     `Validation: ${plan.validation}`,
+    ...actions,
   ].join("\n");
 }
 

@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
-  "revision": 169,
-  "updatedAt": "2026-11-20T22:09:42.023Z",
+  "revision": 170,
+  "updatedAt": "2026-11-20T22:18:21.757Z",
   "data": {
     "decisions": [
       {
@@ -4190,6 +4190,31 @@
         "kind": "feature-note",
         "createdAt": "2026-11-20T22:09:41.989Z",
         "updatedAt": "2026-11-20T22:09:41.989Z"
+      },
+      {
+        "id": "decision.brand-migration-copies-verifies-and-validates-before-removing-autoforge-and-mirr",
+        "statement": "Brand migration copies, verifies and validates before removing .autoforge, and mirrors gitignore rules",
+        "reasoning": "The first version moved the directory, reported validation without running it, listed a hardcoded dry-run plan, and wrote a framework field the contract schema does not allow. Copying first and removing the source last means any failure leaves the original intact, and mirroring the ignore rules keeps runtime state out of git under the new name.",
+        "consequences": [
+          "migrate brand refuses a source installation that is not current, verifies the copy file by file, validates with the real installation check, and rolls back the new directory and gitignore on any failure.",
+          "The dry-run lists the real top-level entries and whether .gitignore will change, and the source is removed only after validation with a backup retained.",
+          "The agent contract is copied unchanged; its autoforge command text is updated when contracts are regenerated in the repository migration phase."
+        ],
+        "scope": [
+          "migration"
+        ],
+        "keywords": [
+          "priozar",
+          "brand"
+        ],
+        "relatedWork": [
+          "task.make-migrate-brand-copy-instead-of-move-and-readable-by-priozar"
+        ],
+        "supersedes": null,
+        "status": "active",
+        "kind": "feature-note",
+        "createdAt": "2026-11-20T22:18:21.719Z",
+        "updatedAt": "2026-11-20T22:18:21.719Z"
       }
     ]
   }

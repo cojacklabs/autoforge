@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
-  "revision": 481,
-  "updatedAt": "2026-11-20T22:09:42.561Z",
+  "revision": 483,
+  "updatedAt": "2026-11-20T22:18:22.481Z",
   "data": {
     "features": [
       {
@@ -1942,10 +1942,10 @@
       {
         "name": "Make migrate brand copy instead of move and readable by priozar",
         "description": "Fix the brand migration so it preserves .autoforge until verified, includes untracked runtime state, and leaves a project the priozar CLI can run doctor, recap and context on.",
-        "status": "planned",
+        "status": "completed",
         "pauseReason": null,
         "createdAt": "2026-11-20T01:50:57.941Z",
-        "updatedAt": "2026-11-20T01:50:57.941Z",
+        "updatedAt": "2026-11-20T22:18:22.347Z",
         "id": "task.make-migrate-brand-copy-instead-of-move-and-readable-by-priozar",
         "phaseId": "phase.dual-read-state-and-config",
         "scope": {
