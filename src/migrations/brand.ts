@@ -145,7 +145,11 @@ export async function migrateBrand(
         const contract = JSON.parse(await readFile(contractPath, "utf8"));
         if (contract && typeof contract === "object") {
           contract.framework = FRAMEWORK_IDENTITY.successor.product;
-          await writeFile(contractPath, JSON.stringify(contract, null, 2), "utf8");
+          await writeFile(
+            contractPath,
+            JSON.stringify(contract, null, 2),
+            "utf8",
+          );
         }
       } catch {
         // Ignore malformed contract; contract generator will repair it

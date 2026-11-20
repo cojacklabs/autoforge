@@ -16,9 +16,15 @@ describe("framework compatibility vocabulary", () => {
     expect(FRAMEWORK_IDENTITY.successor.executable).toBe("priozar");
     expect(FRAMEWORK_IDENTITY.successor.stateDirectory).toBe(".priozar");
     expect(FRAMEWORK_IDENTITY.successor.cliPackage).toBe("@cojacklabs/priozar");
-    expect(FRAMEWORK_IDENTITY.successor.corePackage).toBe("@cojacklabs/priozar-core");
-    expect(FRAMEWORK_IDENTITY.successor.protocolPackage).toBe("@cojacklabs/priozar-protocol");
-    expect(FRAMEWORK_IDENTITY.successor.sdkPackage).toBe("@cojacklabs/priozar-sdk");
+    expect(FRAMEWORK_IDENTITY.successor.corePackage).toBe(
+      "@cojacklabs/priozar-core",
+    );
+    expect(FRAMEWORK_IDENTITY.successor.protocolPackage).toBe(
+      "@cojacklabs/priozar-protocol",
+    );
+    expect(FRAMEWORK_IDENTITY.successor.sdkPackage).toBe(
+      "@cojacklabs/priozar-sdk",
+    );
     expect(FRAMEWORK_IDENTITY.successor.domain).toBe("priozar.sh");
   });
 

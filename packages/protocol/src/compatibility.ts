@@ -48,7 +48,9 @@ export const SUPPORTED_STATE_DIRECTORIES = [
   FRAMEWORK_IDENTITY.successor.stateDirectory,
 ] as const;
 
-export const frameworkExecutableSchema = z.enum(SUPPORTED_FRAMEWORK_EXECUTABLES);
+export const frameworkExecutableSchema = z.enum(
+  SUPPORTED_FRAMEWORK_EXECUTABLES,
+);
 export type FrameworkExecutable = z.infer<typeof frameworkExecutableSchema>;
 
 export const stateDirectorySchema = z.enum(SUPPORTED_STATE_DIRECTORIES);

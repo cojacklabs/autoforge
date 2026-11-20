@@ -10,6 +10,7 @@ Compatibility Bridge: `@cojacklabs/autoforge` (`autoforge`, `.autoforge/`)
 AutoForge is transitioning to **Priozar**, the open-source engineering control plane for AI-assisted software, data, and AI development.
 
 During the v0.26 compatibility window:
+
 - Both `autoforge` and `priozar` CLI binaries are provided by `@cojacklabs/autoforge`.
 - Existing `.autoforge/` directories remain readable and functional.
 - Repositories can migrate to the canonical `.priozar/` state directory using the built-in, non-destructive migration command.
@@ -33,6 +34,7 @@ autoforge migrate brand --dry-run --json
 ```
 
 The output details:
+
 - Source directory (`.autoforge`)
 - Target directory (`.priozar`)
 - Project root path
@@ -52,6 +54,7 @@ priozar migrate brand
 ```
 
 ### Safety & Invariants
+
 1. **Mutation Lock**: Acquires `.priozar.migrate.lock` to ensure no concurrent processes alter state during migration.
 2. **Conflict Prevention**: Halts immediately if both `.autoforge` and `.priozar` already exist.
 3. **Automatic Backup**: Creates an immutable, recoverable backup directory (e.g. `.autoforge.backup-<id>/`) outside the target before staging changes.
@@ -94,6 +97,7 @@ priozar projects list
 ## 6. Rollback Instructions
 
 If you ever need to manually revert a brand migration:
+
 1. Ensure no processes are running in the repository.
 2. Locate the created backup directory: `ls -d .autoforge.backup-*`.
 3. Remove the staged `.priozar` directory:

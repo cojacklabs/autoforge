@@ -9,6 +9,7 @@
 During v0.25, an experimental local interactive agent runtime (`apps/agent-cli` / `@cojacklabs/autoforge-agent`) and provider wrapper (`packages/providers`) were introduced alongside a bare CLI delegation launcher (`apps/core-cli/src/agent-launcher.ts`).
 
 Following maintainer review and strategic reconciliation:
+
 1. **AutoForge / Priozar is an engineering control plane and framework**, not an AI agent product or conversational runtime.
 2. The interactive AI experience belongs to the future separate **CoJack Labs AI**.
 3. The framework's core responsibilities are vendor-neutral agent contracts, context packets, governance, doctrines, work lifecycle, and deterministic validation.
@@ -21,6 +22,7 @@ This document inventories all first-party agent compatibility surfaces, distingu
 ## 2. Comprehensive Inventory of First-Party Agent Surfaces
 
 ### A. Packages & Applications
+
 1. **`apps/agent-cli/` (`@cojacklabs/autoforge-agent`)**
    - Private experimental package (`package.json`, `bin/autoforge-agent.js`).
    - Implements an interactive terminal prompt loop (`src/cli.ts`, `src/runtime.ts`).
@@ -34,6 +36,7 @@ This document inventories all first-party agent compatibility surfaces, distingu
    - Used only by `apps/agent-cli`.
 
 ### B. Core CLI & Protocol Surfaces
+
 1. **`apps/core-cli/src/agent-launcher.ts` & `src/router.ts`**
    - Implements `launchAutoForgeAgent()`, launching `autoforge-agent` (or `autoforge-agent.cmd` on Windows) when `autoforge` is invoked with no arguments in an interactive TTY.
    - Forwards credentials commands (`autoforge credentials ...`) by attempting to delegate to `autoforge-agent`.
@@ -46,6 +49,7 @@ This document inventories all first-party agent compatibility surfaces, distingu
    - `apps/agent-cli/test/*` and `packages/providers/test/*`.
 
 ### C. Documentation & Guides
+
 1. `docs/LOCAL_PROVIDER_CREDENTIALS.md`: Documents `autoforge-agent credentials` and native keychain storage.
 2. `docs/AUTOFORGE_CLI_REFERENCE.md`: Mentions bare command delegation to `autoforge-agent`.
 3. `README.md` and `CHANGELOG.md`: Reference `@cojacklabs/autoforge-agent` as a private experimental runtime.
@@ -54,21 +58,22 @@ This document inventories all first-party agent compatibility surfaces, distingu
 
 ## 3. Surface Categorization: Retain vs. Retire
 
-| Surface / Capability | Classification | Rationale |
-| :--- | :--- | :--- |
-| **Vendor-neutral Agent Contracts (`src/contract/`, `src/agents/`)** | **RETAIN** | Core framework capability. Generates contracts for Claude Code, Codex, Cursor, Gemini/Antigravity, Grok, and generic agents. |
-| **Structured Agent Handoffs (`src/workflows/agent-handoff-store.ts`, Protocol handoffs)** | **RETAIN** | Essential for multi-agent interoperability and cross-agent context resumption. |
-| **Agent Orchestration & Assignment (`src/orchestration/`)** | **RETAIN** | Framework capability for claims, leases, roles, and verifier gates. |
-| **Bare CLI Delegation (`apps/core-cli/src/agent-launcher.ts`)** | **RETIRE** | Bare `autoforge` (and successor `priozar`) should deterministically output project status, help, or diagnostic state rather than attempting to launch a nonexistent external agent binary. |
-| **Credentials Command Routing (`autoforge credentials ...`)** | **RETIRE** | The framework does not manage API keys or model accounts. External agents (Claude, Codex, Cursor) manage their own authentication. |
-| **`apps/agent-cli` (`@cojacklabs/autoforge-agent`)** | **RETIRE / ARCHIVE** | Abandoned prototype; the generalist AI product is relocated to CoJack Labs AI. |
-| **`packages/providers` (`@cojacklabs/autoforge-providers`)** | **RETIRE / ARCHIVE** | Unneeded model wrapper in a deterministic control-plane repository. |
+| Surface / Capability                                                                      | Classification       | Rationale                                                                                                                                                                                  |
+| :---------------------------------------------------------------------------------------- | :------------------- | :----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Vendor-neutral Agent Contracts (`src/contract/`, `src/agents/`)**                       | **RETAIN**           | Core framework capability. Generates contracts for Claude Code, Codex, Cursor, Gemini/Antigravity, Grok, and generic agents.                                                               |
+| **Structured Agent Handoffs (`src/workflows/agent-handoff-store.ts`, Protocol handoffs)** | **RETAIN**           | Essential for multi-agent interoperability and cross-agent context resumption.                                                                                                             |
+| **Agent Orchestration & Assignment (`src/orchestration/`)**                               | **RETAIN**           | Framework capability for claims, leases, roles, and verifier gates.                                                                                                                        |
+| **Bare CLI Delegation (`apps/core-cli/src/agent-launcher.ts`)**                           | **RETIRE**           | Bare `autoforge` (and successor `priozar`) should deterministically output project status, help, or diagnostic state rather than attempting to launch a nonexistent external agent binary. |
+| **Credentials Command Routing (`autoforge credentials ...`)**                             | **RETIRE**           | The framework does not manage API keys or model accounts. External agents (Claude, Codex, Cursor) manage their own authentication.                                                         |
+| **`apps/agent-cli` (`@cojacklabs/autoforge-agent`)**                                      | **RETIRE / ARCHIVE** | Abandoned prototype; the generalist AI product is relocated to CoJack Labs AI.                                                                                                             |
+| **`packages/providers` (`@cojacklabs/autoforge-providers`)**                              | **RETIRE / ARCHIVE** | Unneeded model wrapper in a deterministic control-plane repository.                                                                                                                        |
 
 ---
 
 ## 4. Staged Retirement & Transition Plan
 
 ### Stage 1: Deprecation & Safe Neutralization (v0.26 Compatibility Window)
+
 1. **Bare Command Behavior**:
    - Revert bare `autoforge` invocation to always render deterministic project status (`autoforge status`) across all environments, eliminating the conditional spawn of `autoforge-agent`.
 2. **Credentials Command**:
@@ -77,11 +82,13 @@ This document inventories all first-party agent compatibility surfaces, distingu
    - Deprecate `agentLauncherInfoSchema` and `AUTOFORGE_AGENT_LAUNCH_PROTOCOL_VERSION` in `@cojacklabs/autoforge-protocol` or make it an optional compatibility export.
 
 ### Stage 2: Workspace Boundary Removal
+
 1. Remove `apps/agent-cli` and `packages/providers` from the active pnpm/Turborepo workspace.
 2. Archive the prototype implementation into a historical branch or dedicated reference repository if needed for CoJack Labs AI.
 3. Remove dependencies on `@ai-sdk/openai`, `keytar`, and related AI packages from the root workspace.
 
 ### Stage 3: Documentation & Successor Alignment (`priozar`)
+
 1. Update `docs/AUTOFORGE_CLI_REFERENCE.md` and `docs/README.md` to present the framework strictly as an engineering control plane.
 2. Remove `docs/LOCAL_PROVIDER_CREDENTIALS.md` or replace it with a brief external agent auth guide.
 3. Ensure the successor binary (`priozar`) ships with zero reference to first-party agent execution.

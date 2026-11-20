@@ -10,7 +10,10 @@ describe("recoverable brand migration", () => {
   it("generates a deterministic dry-run plan without writing changes", async () => {
     const root = await mkdtemp(path.join(tmpdir(), "brand-migrate-dryrun-"));
     try {
-      const sourceDir = path.join(root, FRAMEWORK_IDENTITY.current.stateDirectory);
+      const sourceDir = path.join(
+        root,
+        FRAMEWORK_IDENTITY.current.stateDirectory,
+      );
       await mkdir(sourceDir);
       await writeFile(path.join(sourceDir, "config.json"), "{}");
 
@@ -20,8 +23,12 @@ describe("recoverable brand migration", () => {
       });
 
       expect(plan.status).toBe("planned");
-      expect(plan.sourceDirectory).toBe(FRAMEWORK_IDENTITY.current.stateDirectory);
-      expect(plan.targetDirectory).toBe(FRAMEWORK_IDENTITY.successor.stateDirectory);
+      expect(plan.sourceDirectory).toBe(
+        FRAMEWORK_IDENTITY.current.stateDirectory,
+      );
+      expect(plan.targetDirectory).toBe(
+        FRAMEWORK_IDENTITY.successor.stateDirectory,
+      );
       expect(plan.backupDirectory).toBeNull();
     } finally {
       await rm(root, { recursive: true, force: true });
@@ -48,8 +55,14 @@ describe("recoverable brand migration", () => {
   it("atomically migrates state, creates a backup, and preserves contract integrity", async () => {
     const root = await mkdtemp(path.join(tmpdir(), "brand-migrate-apply-"));
     try {
-      const sourceDir = path.join(root, FRAMEWORK_IDENTITY.current.stateDirectory);
-      const targetDir = path.join(root, FRAMEWORK_IDENTITY.successor.stateDirectory);
+      const sourceDir = path.join(
+        root,
+        FRAMEWORK_IDENTITY.current.stateDirectory,
+      );
+      const targetDir = path.join(
+        root,
+        FRAMEWORK_IDENTITY.successor.stateDirectory,
+      );
       await mkdir(path.join(sourceDir, "state"), { recursive: true });
       await writeFile(
         path.join(sourceDir, "agent-contract.json"),
@@ -67,14 +80,17 @@ describe("recoverable brand migration", () => {
 
       // Verify target directory exists and source directory is cleanly replaced
       const targetContract = JSON.parse(
-        await (await import("node:fs/promises")).readFile(
-          path.join(targetDir, "agent-contract.json"),
-          "utf8",
-        ),
+        await (
+          await import("node:fs/promises")
+        ).readFile(path.join(targetDir, "agent-contract.json"), "utf8"),
       );
-      expect(targetContract.framework).toBe(FRAMEWORK_IDENTITY.successor.product);
+      expect(targetContract.framework).toBe(
+        FRAMEWORK_IDENTITY.successor.product,
+      );
 
-      const targetWorkExists = await (await import("node:fs/promises"))
+      const targetWorkExists = await (
+        await import("node:fs/promises")
+      )
         .stat(path.join(targetDir, "state", "work.json"))
         .then(() => true)
         .catch(() => false);

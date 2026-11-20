@@ -13,18 +13,18 @@ autoforge schemas list
 
 ## Start Here
 
-| Need                                                         | Read                                                        |
-| ------------------------------------------------------------ | ----------------------------------------------------------- |
-| Install AutoForge and complete a first work item             | [Quickstart](QUICKSTART.md)                                 |
-| Assign Claude, Codex, Cursor, Gemini, Grok, or another agent | [Agent Setup Guide](AUTOFORGE_AGENT_SETUP_GUIDE.md)         |
-| Decide which capability to use for a prompt                  | [Agentic AI Guide](AUTOFORGE_AGENTIC_AI_GUIDE.md)           |
-| Look up exact CLI syntax                                     | [CLI Reference](AUTOFORGE_CLI_REFERENCE.md)                 |
-| Bootstrap a product idea through gated artifacts             | [Bootstrap Pipeline](BOOTSTRAP_PIPELINE.md)                 |
-| Transfer work between agents                                 | [Cross-Agent Handoffs](CROSS_AGENT_HANDOFFS.md)             |
-| Understand durable versus operational state                  | [Governance and Memory](GOVERNANCE_AND_MEMORY.md)           |
-| Migrate an existing repository to Priozar                   | [Priozar Brand Migration Guide](PRIOZAR_BRAND_MIGRATION_GUIDE.md) |
-| Configure local model credentials                            | [Local Provider Credentials](LOCAL_PROVIDER_CREDENTIALS.md) |
-| Apply durable code-commenting governance                     | [Code Commenting Standard](CODE_COMMENTING_STANDARD.md)     |
+| Need                                                         | Read                                                              |
+| ------------------------------------------------------------ | ----------------------------------------------------------------- |
+| Install AutoForge and complete a first work item             | [Quickstart](QUICKSTART.md)                                       |
+| Assign Claude, Codex, Cursor, Gemini, Grok, or another agent | [Agent Setup Guide](AUTOFORGE_AGENT_SETUP_GUIDE.md)               |
+| Decide which capability to use for a prompt                  | [Agentic AI Guide](AUTOFORGE_AGENTIC_AI_GUIDE.md)                 |
+| Look up exact CLI syntax                                     | [CLI Reference](AUTOFORGE_CLI_REFERENCE.md)                       |
+| Bootstrap a product idea through gated artifacts             | [Bootstrap Pipeline](BOOTSTRAP_PIPELINE.md)                       |
+| Transfer work between agents                                 | [Cross-Agent Handoffs](CROSS_AGENT_HANDOFFS.md)                   |
+| Understand durable versus operational state                  | [Governance and Memory](GOVERNANCE_AND_MEMORY.md)                 |
+| Migrate an existing repository to Priozar                    | [Priozar Brand Migration Guide](PRIOZAR_BRAND_MIGRATION_GUIDE.md) |
+| Configure local model credentials                            | [Local Provider Credentials](LOCAL_PROVIDER_CREDENTIALS.md)       |
+| Apply durable code-commenting governance                     | [Code Commenting Standard](CODE_COMMENTING_STANDARD.md)           |
 
 ## Continuous Workflow
 
