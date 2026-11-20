@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
-  "revision": 478,
-  "updatedAt": "2026-11-20T13:50:32.638Z",
+  "revision": 481,
+  "updatedAt": "2026-11-20T22:09:42.561Z",
   "data": {
     "features": [
       {
@@ -1924,10 +1924,10 @@
       {
         "name": "Read priozar.config.json with autoforge.config.json fallback",
         "description": "Support priozar.config.json as the canonical project config while still reading autoforge.config.json, and make doctor report which is in use.",
-        "status": "planned",
+        "status": "completed",
         "pauseReason": null,
         "createdAt": "2026-11-20T01:50:57.581Z",
-        "updatedAt": "2026-11-20T01:50:57.581Z",
+        "updatedAt": "2026-11-20T22:09:42.446Z",
         "id": "task.read-priozar-config-json-with-autoforge-config-json-fallback",
         "phaseId": "phase.dual-read-state-and-config",
         "scope": {
@@ -2171,6 +2171,25 @@
             "src/specifications/**",
             "src/traceability/**",
             "src/twin/**",
+            "test/**"
+          ],
+          "exclude": []
+        }
+      },
+      {
+        "name": "Rename the root autoforge.config.json and its legacy script readers",
+        "description": "autoforge.config.json at the repo root is read only by the legacy scripts (apply_config.js, run_quality_gates.js, build_dist.js) and the v0.24 migration, never by the v0.25 CLI. Rename it to priozar.config.json with scripts reading priozar.config.json first and falling back to autoforge.config.json, and update the config references in script output text.",
+        "status": "planned",
+        "pauseReason": null,
+        "createdAt": "2026-11-20T22:09:41.537Z",
+        "updatedAt": "2026-11-20T22:09:41.537Z",
+        "id": "task.rename-the-root-autoforge-config-json-and-its-legacy-script-readers",
+        "phaseId": "phase.live-docs-ci-and-urls",
+        "scope": {
+          "include": [
+            "scripts/**",
+            "autoforge.config.json",
+            "priozar.config.json",
             "test/**"
           ],
           "exclude": []

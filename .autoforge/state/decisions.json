@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
-  "revision": 168,
-  "updatedAt": "2026-11-20T13:50:32.210Z",
+  "revision": 169,
+  "updatedAt": "2026-11-20T22:09:42.023Z",
   "data": {
     "decisions": [
       {
@@ -4166,6 +4166,30 @@
         "kind": "feature-note",
         "createdAt": "2026-11-20T13:50:32.176Z",
         "updatedAt": "2026-11-20T13:50:32.176Z"
+      },
+      {
+        "id": "decision.treat-autoforge-config-json-as-the-project-config-and-defer-the-root-autoforge-c",
+        "statement": "Treat .autoforge/config.json as the project config and defer the root autoforge.config.json rename to the scripts task",
+        "reasoning": "The v0.25 CLI reads its configuration from the state directory, which dual-read already resolves. The root autoforge.config.json is consumed only by legacy scripts and the v0.24 migration, so it has no CLI code path to make dual-read.",
+        "consequences": [
+          "doctor now reports which state directory is active, and tests prove agent and specification initialization recognise .priozar/config.json as well as .autoforge/config.json.",
+          "Renaming the root file with a fallback in the legacy scripts is tracked by a new task in the live docs, CI and URLs phase."
+        ],
+        "scope": [
+          "state"
+        ],
+        "keywords": [
+          "priozar",
+          "config"
+        ],
+        "relatedWork": [
+          "task.read-priozar-config-json-with-autoforge-config-json-fallback"
+        ],
+        "supersedes": null,
+        "status": "active",
+        "kind": "feature-note",
+        "createdAt": "2026-11-20T22:09:41.989Z",
+        "updatedAt": "2026-11-20T22:09:41.989Z"
       }
     ]
   }

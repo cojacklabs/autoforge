@@ -1,5 +1,6 @@
 import { constants } from "node:fs";
 import { access } from "node:fs/promises";
+import path from "node:path";
 
 import { EXIT_CODE, type ExitCode } from "../core/errors.js";
 import type { LogWriter } from "../core/logger.js";
@@ -177,6 +178,14 @@ export async function runDoctor(options: DoctorOptions): Promise<DoctorReport> {
           id: "installation",
           status: "pass",
           message: "AutoForge installation is current.",
+        });
+        checks.push({
+          id: "state-directory",
+          status: "pass",
+          message:
+            path.basename(installation.directory) === ".priozar"
+              ? "State directory is .priozar."
+              : "State directory is .autoforge (legacy name, supported during the Priozar compatibility window).",
         });
         checks.push({
           id: "config-schema",

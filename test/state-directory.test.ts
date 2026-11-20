@@ -8,6 +8,7 @@ import {
   resolveContainedProjectPath,
   resolveProjectPath,
 } from "../src/core/paths.js";
+import { assertInitializedAgentProject } from "../src/agents/context.js";
 import { bootstrapManifestPath } from "../src/bootstrap/manifest.js";
 import { inspectInstallation } from "../src/commands/init.js";
 import { OrchestrationStore } from "../src/orchestration/store.js";
@@ -165,5 +166,30 @@ describe("directory-joining stores", () => {
     const inspection = await inspectInstallation(root);
     expect(inspection.directory).toBe(path.join(root, ".priozar"));
     expect(inspection.status).not.toBe("absent");
+  });
+});
+
+describe("project configuration location", () => {
+  it("recognizes an initialized agent project by .priozar/config.json", async () => {
+    const root = await createProject(".priozar");
+    await writeFile(path.join(root, ".priozar", "config.json"), "{}");
+    await expect(
+      assertInitializedAgentProject({ projectRoot: root } as never),
+    ).resolves.toBeUndefined();
+  });
+
+  it("still recognizes legacy .autoforge/config.json", async () => {
+    const root = await createProject(".autoforge");
+    await writeFile(path.join(root, ".autoforge", "config.json"), "{}");
+    await expect(
+      assertInitializedAgentProject({ projectRoot: root } as never),
+    ).resolves.toBeUndefined();
+  });
+
+  it("rejects a project with neither configuration file", async () => {
+    const root = await createProject(".priozar");
+    await expect(
+      assertInitializedAgentProject({ projectRoot: root } as never),
+    ).rejects.toThrow(/initialized/);
   });
 });

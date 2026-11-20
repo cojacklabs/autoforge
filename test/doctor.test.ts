@@ -52,6 +52,11 @@ describe("foundation doctor", () => {
         expect.objectContaining({ id: "project-root", status: "pass" }),
         expect.objectContaining({ id: "filesystem-access", status: "pass" }),
         expect.objectContaining({ id: "installation", status: "pass" }),
+        expect.objectContaining({
+          id: "state-directory",
+          status: "pass",
+          message: expect.stringContaining(".autoforge"),
+        }),
         expect.objectContaining({ id: "config-schema", status: "pass" }),
         expect.objectContaining({ id: "metadata-schema", status: "pass" }),
         expect.objectContaining({ id: "work-schema", status: "pass" }),
