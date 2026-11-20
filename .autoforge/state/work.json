@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
-  "revision": 471,
-  "updatedAt": "2026-11-20T01:57:54.528Z",
+  "revision": 476,
+  "updatedAt": "2026-11-20T13:47:07.388Z",
   "data": {
     "features": [
       {
@@ -2123,10 +2123,10 @@
       {
         "name": "Adopt the state directory resolver in remaining stores",
         "description": "Replace the remaining hardcoded .autoforge paths with resolveStateDirectoryName/Path from src/core/state-directory.ts: decisions, doctrine, learning, strategy, governance, knowledge, domain, orchestration, workflows, contract generator, bootstrap, init, migrations/legacy, and the agent-cli local gateway. Also decide whether init creates .priozar for new projects.",
-        "status": "planned",
-        "pauseReason": null,
+        "status": "paused",
+        "pauseReason": "Scope widening: central relative-path rewrite must land first",
         "createdAt": "2026-11-20T01:55:30.049Z",
-        "updatedAt": "2026-11-20T01:55:30.049Z",
+        "updatedAt": "2026-11-20T02:06:30.367Z",
         "id": "task.adopt-the-state-directory-resolver-in-remaining-stores",
         "phaseId": "phase.dual-read-state-and-config",
         "scope": {
@@ -2145,6 +2145,32 @@
             "src/commands/init.ts",
             "src/migrations/**",
             "apps/agent-cli/src/**",
+            "test/**"
+          ],
+          "exclude": []
+        }
+      },
+      {
+        "name": "Map .autoforge-relative paths to the active state directory",
+        "description": "Teach resolveProjectPath/resolveContainedProjectPath to map a leading .autoforge/ segment to the active state directory (.priozar when present), and make guardrail artifact checks and quality evidence pathspecs accept both names. Covers the relative-path constants in agents, artifacts, context, planning, quality, specifications, traceability and twin without editing each.",
+        "status": "completed",
+        "pauseReason": null,
+        "createdAt": "2026-11-20T02:06:26.182Z",
+        "updatedAt": "2026-11-20T13:47:07.271Z",
+        "id": "task.map-autoforge-relative-paths-to-the-active-state-directory",
+        "phaseId": "phase.dual-read-state-and-config",
+        "scope": {
+          "include": [
+            "src/core/**",
+            "src/guardrails/**",
+            "src/quality/**",
+            "src/agents/**",
+            "src/artifacts/**",
+            "src/context/**",
+            "src/planning/**",
+            "src/specifications/**",
+            "src/traceability/**",
+            "src/twin/**",
             "test/**"
           ],
           "exclude": []

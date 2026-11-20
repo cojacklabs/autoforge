@@ -221,4 +221,21 @@ describe("guardrail policy", () => {
       message: expect.stringContaining("registered"),
     });
   });
+
+  it("treats both state directories as canonical artifact destinations", () => {
+    for (const targetPath of [
+      ".autoforge/artifacts/architecture-plan.md",
+      ".priozar/artifacts/architecture-plan.md",
+    ]) {
+      const report = evaluateGuardrails({
+        ...fixture(),
+        contextFreshness: "current",
+        enforcement: "advisory",
+        targetPath,
+      });
+      expect(
+        report.checks.find(({ id }) => id === "artifact-destination"),
+      ).toMatchObject({ status: "pass" });
+    }
+  });
 });

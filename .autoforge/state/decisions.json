@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
-  "revision": 166,
-  "updatedAt": "2026-11-20T01:57:53.947Z",
+  "revision": 167,
+  "updatedAt": "2026-11-20T13:47:06.887Z",
   "data": {
     "decisions": [
       {
@@ -4116,6 +4116,31 @@
         "kind": "feature-note",
         "createdAt": "2026-11-20T01:57:53.918Z",
         "updatedAt": "2026-11-20T01:57:53.918Z"
+      },
+      {
+        "id": "decision.map-a-leading-autoforge-path-segment-to-the-active-state-directory-inside-resolv",
+        "statement": "Map a leading .autoforge path segment to the active state directory inside resolveProjectPath",
+        "reasoning": "Around 17 modules express state locations as .autoforge/... relative constants that all flow through resolveProjectPath. Rewriting at that single chokepoint makes them follow a migrated project without editing each constant or changing exported constant values.",
+        "consequences": [
+          "resolveProjectPath and resolveContainedProjectPath rewrite only a whole leading .autoforge segment to .priozar when .priozar is active; .autoforge-notes and nested src/.autoforge paths are untouched.",
+          "Guardrail artifact-destination checks accept both state directories and quality scope excludes both evidence.json paths.",
+          "Sites that join the state directory name directly rather than going through resolveProjectPath still need per-site conversion, tracked by task.adopt-the-state-directory-resolver-in-remaining-stores."
+        ],
+        "scope": [
+          "state"
+        ],
+        "keywords": [
+          "priozar",
+          "dual-read"
+        ],
+        "relatedWork": [
+          "task.map-autoforge-relative-paths-to-the-active-state-directory"
+        ],
+        "supersedes": null,
+        "status": "active",
+        "kind": "feature-note",
+        "createdAt": "2026-11-20T13:47:06.856Z",
+        "updatedAt": "2026-11-20T13:47:06.856Z"
       }
     ]
   }

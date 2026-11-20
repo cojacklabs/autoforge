@@ -27,3 +27,29 @@ export function resolveStateDirectoryName(
 export function resolveStateDirectoryPath(baseDirectory: string): string {
   return path.join(baseDirectory, resolveStateDirectoryName(baseDirectory));
 }
+
+/**
+ * Maps a normalized project-relative path that begins with the legacy
+ * `.autoforge` segment onto the active state directory.
+ *
+ * Many modules express state locations as `.autoforge/...` constants. Mapping
+ * here lets them follow a migrated project without each constant changing. Only
+ * a whole leading segment is rewritten, so `.autoforge-notes/` and nested
+ * `src/.autoforge/` paths are left alone.
+ */
+export function mapLegacyStatePath(
+  projectRoot: string,
+  normalizedRelativePath: string,
+): string {
+  const legacy = FRAMEWORK_IDENTITY.current.stateDirectory;
+  const isLegacy =
+    normalizedRelativePath === legacy ||
+    normalizedRelativePath.startsWith(`${legacy}/`);
+  if (!isLegacy) {
+    return normalizedRelativePath;
+  }
+  const active = resolveStateDirectoryName(projectRoot);
+  return active === legacy
+    ? normalizedRelativePath
+    : `${active}${normalizedRelativePath.slice(legacy.length)}`;
+}

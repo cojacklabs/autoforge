@@ -4,7 +4,12 @@ import path from "node:path";
 
 import { afterEach, describe, expect, it } from "vitest";
 
+import {
+  resolveContainedProjectPath,
+  resolveProjectPath,
+} from "../src/core/paths.js";
 import { discoverProjectRoot } from "../src/core/project.js";
+import { evaluateGuardrails } from "../src/guardrails/policy.js";
 import {
   resolveStateDirectoryName,
   resolveStateDirectoryPath,
@@ -93,5 +98,43 @@ describe("state directory consumers", () => {
     const root = await createProject(".priozar");
     const inventory = await inspectProjectInventory(root);
     expect(inventory.categories.autoforge).toBe(1);
+  });
+});
+
+describe("state-relative path mapping", () => {
+  it("maps a leading .autoforge/ segment to .priozar when it is active", async () => {
+    const root = await createProject(".priozar");
+    expect(resolveProjectPath(root, ".autoforge/context/current.md")).toBe(
+      path.join(root, ".priozar", "context", "current.md"),
+    );
+    const resolved = await resolveContainedProjectPath(
+      root,
+      ".autoforge/quality/evidence.json",
+    );
+    expect(resolved.relativePath).toBe(".priozar/quality/evidence.json");
+  });
+
+  it("leaves .autoforge/ paths alone for legacy projects", async () => {
+    const root = await createProject(".autoforge");
+    expect(resolveProjectPath(root, ".autoforge/twin/projection.json")).toBe(
+      path.join(root, ".autoforge", "twin", "projection.json"),
+    );
+  });
+
+  it("does not rewrite names that merely start with .autoforge", async () => {
+    const root = await createProject(".priozar");
+    expect(resolveProjectPath(root, ".autoforge-notes/a.md")).toBe(
+      path.join(root, ".autoforge-notes", "a.md"),
+    );
+    expect(resolveProjectPath(root, "src/.autoforge/a.md")).toBe(
+      path.join(root, "src", ".autoforge", "a.md"),
+    );
+  });
+
+  it("passes explicit .priozar/ paths through unchanged", async () => {
+    const root = await createProject(".priozar");
+    expect(resolveProjectPath(root, ".priozar/state/work.json")).toBe(
+      path.join(root, ".priozar", "state", "work.json"),
+    );
   });
 });

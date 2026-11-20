@@ -2,6 +2,7 @@ import { lstat, realpath } from "node:fs/promises";
 import path from "node:path";
 
 import { AutoForgeError, EXIT_CODE } from "./errors.js";
+import { mapLegacyStatePath } from "./state-directory.js";
 
 export interface ResolvedProjectPath {
   absolutePath: string;
@@ -79,8 +80,11 @@ export function resolveProjectPath(
   projectRoot: string,
   projectRelativePath: string,
 ): string {
-  const normalizedPath = normalizeProjectRelativePath(projectRelativePath);
   const absoluteRoot = path.resolve(projectRoot);
+  const normalizedPath = mapLegacyStatePath(
+    absoluteRoot,
+    normalizeProjectRelativePath(projectRelativePath),
+  );
   const absolutePath = path.resolve(absoluteRoot, normalizedPath);
 
   if (!isPathContained(absoluteRoot, absolutePath)) {

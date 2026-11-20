@@ -39,7 +39,8 @@ function artifactDestinationCheck(
   const exempt =
     targetPath === "README.md" ||
     targetPath.startsWith("docs/") ||
-    targetPath.startsWith(".autoforge/artifacts/");
+    targetPath.startsWith(".autoforge/artifacts/") ||
+    targetPath.startsWith(".priozar/artifacts/");
   const likelyPlanning =
     /\.(?:md|json)$/i.test(targetPath) && PLANNING_NAME.test(targetPath);
   if (exempt || registered.includes(targetPath) || !likelyPlanning)

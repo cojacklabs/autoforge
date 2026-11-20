@@ -28,6 +28,7 @@ export async function computeCurrentRevision(
             "--",
             ".",
             ":(exclude).autoforge/quality/evidence.json",
+            ":(exclude).priozar/quality/evidence.json",
           ],
           { maxBuffer: 64 * 1024 * 1024 },
         ),
@@ -41,6 +42,7 @@ export async function computeCurrentRevision(
           "--",
           ".",
           ":(exclude).autoforge/quality/evidence.json",
+          ":(exclude).priozar/quality/evidence.json",
         ]),
       ]);
     const untracked = untrackedOutput.split("\0").filter(Boolean).sort();
