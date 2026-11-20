@@ -12,6 +12,8 @@ import os from "node:os";
 import path from "node:path";
 import { z } from "zod";
 
+import { resolveStateDirectoryPath } from "../core/state-directory.js";
+
 export const storageManifestSchema = z
   .object({
     schemaVersion: z.literal(1),
@@ -57,8 +59,7 @@ export function projectStorageDirectory(
   homeDirectory = os.homedir(),
 ): string {
   return path.join(
-    homeDirectory,
-    ".autoforge",
+    resolveStateDirectoryPath(homeDirectory),
     "projects",
     projectStorageId(canonicalPath),
   );

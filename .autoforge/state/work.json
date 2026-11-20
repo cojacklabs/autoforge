@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
-  "revision": 468,
-  "updatedAt": "2026-11-20T01:51:00.864Z",
+  "revision": 471,
+  "updatedAt": "2026-11-20T01:57:54.528Z",
   "data": {
     "features": [
       {
@@ -1904,10 +1904,10 @@
       {
         "name": "Resolve .priozar before .autoforge for project state",
         "description": "Make state-directory resolution prefer .priozar/ and fall back to .autoforge/, in the CLI and core packages, with tests for both layouts.",
-        "status": "planned",
+        "status": "completed",
         "pauseReason": null,
         "createdAt": "2026-11-20T01:50:57.227Z",
-        "updatedAt": "2026-11-20T01:50:57.227Z",
+        "updatedAt": "2026-11-20T01:57:54.411Z",
         "id": "task.resolve-priozar-before-autoforge-for-project-state",
         "phaseId": "phase.dual-read-state-and-config",
         "scope": {
@@ -2116,6 +2116,36 @@
             ".github/**",
             ".changeset/**",
             "package.json"
+          ],
+          "exclude": []
+        }
+      },
+      {
+        "name": "Adopt the state directory resolver in remaining stores",
+        "description": "Replace the remaining hardcoded .autoforge paths with resolveStateDirectoryName/Path from src/core/state-directory.ts: decisions, doctrine, learning, strategy, governance, knowledge, domain, orchestration, workflows, contract generator, bootstrap, init, migrations/legacy, and the agent-cli local gateway. Also decide whether init creates .priozar for new projects.",
+        "status": "planned",
+        "pauseReason": null,
+        "createdAt": "2026-11-20T01:55:30.049Z",
+        "updatedAt": "2026-11-20T01:55:30.049Z",
+        "id": "task.adopt-the-state-directory-resolver-in-remaining-stores",
+        "phaseId": "phase.dual-read-state-and-config",
+        "scope": {
+          "include": [
+            "src/decisions/**",
+            "src/doctrine/**",
+            "src/learning/**",
+            "src/strategy/**",
+            "src/governance/**",
+            "src/knowledge/**",
+            "src/domain/**",
+            "src/orchestration/**",
+            "src/workflows/**",
+            "src/contract/**",
+            "src/bootstrap/**",
+            "src/commands/init.ts",
+            "src/migrations/**",
+            "apps/agent-cli/src/**",
+            "test/**"
           ],
           "exclude": []
         }

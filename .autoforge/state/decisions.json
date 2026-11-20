@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
-  "revision": 165,
-  "updatedAt": "2026-11-20T01:51:01.241Z",
+  "revision": 166,
+  "updatedAt": "2026-11-20T01:57:53.947Z",
   "data": {
     "decisions": [
       {
@@ -4091,6 +4091,31 @@
         "kind": "architecture",
         "createdAt": "2026-11-20T01:51:01.214Z",
         "updatedAt": "2026-11-20T01:51:01.214Z"
+      },
+      {
+        "id": "decision.resolve-the-framework-state-directory-through-one-shared-resolver-that-prefers-p",
+        "statement": "Resolve the framework state directory through one shared resolver that prefers .priozar and falls back to .autoforge",
+        "reasoning": "The state directory name was hardcoded in about 30 places. A single synchronous resolver in src/core/state-directory.ts lets the dual-read compatibility window be implemented and tested once, and means a project that has only .autoforge keeps working unchanged.",
+        "consequences": [
+          "resolveStateDirectoryName/Path return .priozar when it exists and .autoforge otherwise, including when neither exists, so new state still lands where the installed CLI reads it.",
+          "Project discovery treats either directory as a project marker and keeps the marker value autoforge for compatibility.",
+          "Remaining hardcoded .autoforge call sites are tracked by task.adopt-the-state-directory-resolver-in-remaining-stores and must be converted before migrate brand can be applied."
+        ],
+        "scope": [
+          "state"
+        ],
+        "keywords": [
+          "priozar",
+          "dual-read"
+        ],
+        "relatedWork": [
+          "task.resolve-priozar-before-autoforge-for-project-state"
+        ],
+        "supersedes": null,
+        "status": "active",
+        "kind": "feature-note",
+        "createdAt": "2026-11-20T01:57:53.918Z",
+        "updatedAt": "2026-11-20T01:57:53.918Z"
       }
     ]
   }

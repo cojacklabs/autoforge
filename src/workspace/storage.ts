@@ -1,6 +1,8 @@
 import { readdir, stat } from "node:fs/promises";
 import path from "node:path";
 
+import { resolveStateDirectoryPath } from "../core/state-directory.js";
+
 export interface ProjectStorageReport {
   projectPath: string;
   autoforgePath: string;
@@ -12,7 +14,7 @@ export interface ProjectStorageReport {
 export async function inspectProjectStorage(
   projectRoot: string,
 ): Promise<ProjectStorageReport> {
-  const autoforgePath = path.join(path.resolve(projectRoot), ".autoforge");
+  const autoforgePath = resolveStateDirectoryPath(path.resolve(projectRoot));
   const summary = await walk(autoforgePath);
   return {
     projectPath: path.resolve(projectRoot),

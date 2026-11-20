@@ -12,6 +12,8 @@ import path from "node:path";
 
 import { z } from "zod";
 
+import { resolveStateDirectoryPath } from "../core/state-directory.js";
+
 export const projectLifecycleSchema = z.enum([
   "active",
   "paused",
@@ -100,7 +102,7 @@ export class GlobalWorkspaceStore {
   private readonly filePath: string;
 
   constructor(homeDirectory = os.homedir()) {
-    this.directory = path.join(homeDirectory, ".autoforge");
+    this.directory = resolveStateDirectoryPath(homeDirectory);
     this.filePath = path.join(this.directory, "config.json");
   }
 
@@ -396,7 +398,7 @@ async function readProjectId(projectRoot: string): Promise<string | undefined> {
   try {
     const config = JSON.parse(
       await readFile(
-        path.join(projectRoot, ".autoforge", "config.json"),
+        path.join(resolveStateDirectoryPath(projectRoot), "config.json"),
         "utf8",
       ),
     ) as { projectId?: unknown };

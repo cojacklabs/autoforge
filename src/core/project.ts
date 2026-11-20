@@ -66,7 +66,12 @@ export async function discoverProjectRoot(
   let packageFallback: ProjectRoot | undefined;
 
   while (true) {
-    if (await pathExists(path.join(currentDirectory, ".autoforge"))) {
+    // Either state directory marks a framework project; the marker name stays
+    // "autoforge" so existing consumers of ProjectMarker keep working.
+    if (
+      (await pathExists(path.join(currentDirectory, ".priozar"))) ||
+      (await pathExists(path.join(currentDirectory, ".autoforge")))
+    ) {
       return { path: currentDirectory, marker: "autoforge" };
     }
 

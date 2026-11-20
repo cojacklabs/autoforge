@@ -1,6 +1,7 @@
 import { access } from "node:fs/promises";
 import path from "node:path";
 
+import { resolveStateDirectoryPath } from "../core/state-directory.js";
 import { GlobalWorkspaceStore } from "./global-store.js";
 
 export type GlobalAssetKind = "templates" | "doctrines";
@@ -15,8 +16,7 @@ export async function resolveWorkspaceAsset(
     return undefined;
   }
   const projectAsset = path.join(
-    path.resolve(projectRoot),
-    ".autoforge",
+    resolveStateDirectoryPath(path.resolve(projectRoot)),
     kind,
     name,
   );

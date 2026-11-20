@@ -1,4 +1,5 @@
 import { resolveProjectPath } from "../core/paths.js";
+import { resolveStateDirectoryName } from "../core/state-directory.js";
 import { AutoForgeError, EXIT_CODE } from "../core/errors.js";
 import {
   sessionStateSchema,
@@ -63,7 +64,7 @@ export interface KernelStoreOptions {
 function kernelStatePath(
   projectRoot: string,
   fileName: string,
-  stateDirectory = ".autoforge/state",
+  stateDirectory = `${resolveStateDirectoryName(projectRoot)}/state`,
 ): string {
   return resolveProjectPath(projectRoot, `${stateDirectory}/${fileName}`);
 }

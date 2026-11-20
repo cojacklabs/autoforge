@@ -78,7 +78,7 @@ async function countFiles(directory: string): Promise<number> {
 }
 
 const categoryRoots: Record<string, string[]> = {
-  autoforge: [".autoforge"],
+  autoforge: [".autoforge", ".priozar"],
   documentation: ["README.md", "docs"],
   planning: ["dev"],
   source: ["src", "lib", "app"],
