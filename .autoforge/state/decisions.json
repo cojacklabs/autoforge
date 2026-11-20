@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
-  "revision": 164,
-  "updatedAt": "2026-09-14T02:29:24.689Z",
+  "revision": 165,
+  "updatedAt": "2026-11-20T01:51:01.241Z",
   "data": {
     "decisions": [
       {
@@ -4066,6 +4066,31 @@
         "kind": "architecture",
         "createdAt": "2026-09-14T02:29:24.653Z",
         "updatedAt": "2026-09-14T02:29:24.653Z"
+      },
+      {
+        "id": "decision.rename-autoforge-to-priozar-with-a-compatibility-window-and-untouched-history",
+        "statement": "Rename AutoForge to Priozar with a compatibility window and untouched history",
+        "reasoning": "The existing migration guide already defines Priozar as the successor identity with a bridge. A hard cut would break installed CLIs and 18 registered projects, and rewriting historical documents would falsify what things were called at the time.",
+        "consequences": [
+          "priozar becomes the primary name for code, packages, binaries, state and live docs, while autoforge aliases and the .autoforge fallback remain for one to two releases.",
+          "dev/, older docs/planning versions, CHANGELOG entries and past decisions keep the AutoForge name.",
+          "npm publication, GitHub repository rename and domain changes are prepared here but performed by a human."
+        ],
+        "scope": [
+          "rename"
+        ],
+        "keywords": [
+          "priozar",
+          "brand"
+        ],
+        "relatedWork": [
+          "feature.rename-autoforge-to-priozar"
+        ],
+        "supersedes": null,
+        "status": "active",
+        "kind": "architecture",
+        "createdAt": "2026-11-20T01:51:01.214Z",
+        "updatedAt": "2026-11-20T01:51:01.214Z"
       }
     ]
   }

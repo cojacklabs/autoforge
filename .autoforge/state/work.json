@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
-  "revision": 450,
-  "updatedAt": "2026-09-14T02:29:33.078Z",
+  "revision": 468,
+  "updatedAt": "2026-11-20T01:51:00.864Z",
   "data": {
     "features": [
       {
@@ -75,6 +75,15 @@
         "createdAt": "2026-08-24T14:21:30.575Z",
         "updatedAt": "2026-08-26T21:05:00.000Z",
         "id": "feature.v0-25-platform-architecture-migration"
+      },
+      {
+        "name": "Rename AutoForge to Priozar",
+        "description": "Complete the brand transition from AutoForge to Priozar across the CLI, packages, state directory (.autoforge -> .priozar), config file, code identifiers, documentation, CI, and repository, with a staged compatibility window so existing installations keep working. Prerequisite: the priozar CLI must read .priozar/ state before the state migration can be applied.",
+        "status": "planned",
+        "pauseReason": null,
+        "createdAt": "2026-11-20T01:48:39.178Z",
+        "updatedAt": "2026-11-20T01:48:39.178Z",
+        "id": "feature.rename-autoforge-to-priozar"
       }
     ],
     "phases": [
@@ -220,6 +229,72 @@
         "id": "phase.compatibility-hardening-and-release",
         "featureId": "feature.v0-25-platform-architecture-migration",
         "sequence": 7
+      },
+      {
+        "name": "Dual-read state and config",
+        "description": "Make the priozar CLI read .priozar/ and priozar.config.json first, falling back to .autoforge/ and autoforge.config.json. Prerequisite for applying the brand migration.",
+        "status": "planned",
+        "pauseReason": null,
+        "createdAt": "2026-11-20T01:50:41.976Z",
+        "updatedAt": "2026-11-20T01:50:41.976Z",
+        "id": "phase.dual-read-state-and-config",
+        "featureId": "feature.rename-autoforge-to-priozar",
+        "sequence": 1
+      },
+      {
+        "name": "Code identifiers and env vars",
+        "description": "Rename internal identifiers (AutoForgeError, resolveAutoforgeDir, AUTOFORGE_* env vars, generated context and contract text) to Priozar, keeping deprecated aliases during the compatibility window.",
+        "status": "planned",
+        "pauseReason": null,
+        "createdAt": "2026-11-20T01:50:42.383Z",
+        "updatedAt": "2026-11-20T01:50:42.383Z",
+        "id": "phase.code-identifiers-and-env-vars",
+        "featureId": "feature.rename-autoforge-to-priozar",
+        "sequence": 2
+      },
+      {
+        "name": "Packages and binaries",
+        "description": "Rename @cojacklabs/autoforge* packages and workspace imports to @cojacklabs/priozar*, make priozar the primary binary and keep autoforge as a deprecated alias.",
+        "status": "planned",
+        "pauseReason": null,
+        "createdAt": "2026-11-20T01:50:42.806Z",
+        "updatedAt": "2026-11-20T01:50:42.806Z",
+        "id": "phase.packages-and-binaries",
+        "featureId": "feature.rename-autoforge-to-priozar",
+        "sequence": 3
+      },
+      {
+        "name": "Live docs, CI and URLs",
+        "description": "Rename the product in current docs, README, scripts, CI workflows and domain links (priozar.sh). Historical documents (dev/, older docs/planning versions, CHANGELOG entries, past decisions) are intentionally left unchanged.",
+        "status": "planned",
+        "pauseReason": null,
+        "createdAt": "2026-11-20T01:50:43.152Z",
+        "updatedAt": "2026-11-20T01:50:43.152Z",
+        "id": "phase.live-docs-ci-and-urls",
+        "featureId": "feature.rename-autoforge-to-priozar",
+        "sequence": 4
+      },
+      {
+        "name": "Repository state migration",
+        "description": "Apply migrate brand to this repository and registered projects, regenerate agent contracts, and verify doctor, recap and context under .priozar/.",
+        "status": "planned",
+        "pauseReason": null,
+        "createdAt": "2026-11-20T01:50:43.544Z",
+        "updatedAt": "2026-11-20T01:50:43.544Z",
+        "id": "phase.repository-state-migration",
+        "featureId": "feature.rename-autoforge-to-priozar",
+        "sequence": 5
+      },
+      {
+        "name": "External release preparation",
+        "description": "Prepare, but do not execute, npm package publication, the GitHub repository rename and domain updates. A human performs the outward-facing steps.",
+        "status": "planned",
+        "pauseReason": null,
+        "createdAt": "2026-11-20T01:50:43.927Z",
+        "updatedAt": "2026-11-20T01:50:43.927Z",
+        "id": "phase.external-release-preparation",
+        "featureId": "feature.rename-autoforge-to-priozar",
+        "sequence": 6
       }
     ],
     "tasks": [
@@ -1822,6 +1897,225 @@
             "src/cli/index.ts",
             "test/**",
             "docs/**"
+          ],
+          "exclude": []
+        }
+      },
+      {
+        "name": "Resolve .priozar before .autoforge for project state",
+        "description": "Make state-directory resolution prefer .priozar/ and fall back to .autoforge/, in the CLI and core packages, with tests for both layouts.",
+        "status": "planned",
+        "pauseReason": null,
+        "createdAt": "2026-11-20T01:50:57.227Z",
+        "updatedAt": "2026-11-20T01:50:57.227Z",
+        "id": "task.resolve-priozar-before-autoforge-for-project-state",
+        "phaseId": "phase.dual-read-state-and-config",
+        "scope": {
+          "include": [
+            "src/state/**",
+            "src/workspace/**",
+            "src/core/**",
+            "packages/core/**",
+            "test/**"
+          ],
+          "exclude": []
+        }
+      },
+      {
+        "name": "Read priozar.config.json with autoforge.config.json fallback",
+        "description": "Support priozar.config.json as the canonical project config while still reading autoforge.config.json, and make doctor report which is in use.",
+        "status": "planned",
+        "pauseReason": null,
+        "createdAt": "2026-11-20T01:50:57.581Z",
+        "updatedAt": "2026-11-20T01:50:57.581Z",
+        "id": "task.read-priozar-config-json-with-autoforge-config-json-fallback",
+        "phaseId": "phase.dual-read-state-and-config",
+        "scope": {
+          "include": [
+            "src/**",
+            "packages/config/**",
+            "test/**"
+          ],
+          "exclude": []
+        }
+      },
+      {
+        "name": "Make migrate brand copy instead of move and readable by priozar",
+        "description": "Fix the brand migration so it preserves .autoforge until verified, includes untracked runtime state, and leaves a project the priozar CLI can run doctor, recap and context on.",
+        "status": "planned",
+        "pauseReason": null,
+        "createdAt": "2026-11-20T01:50:57.941Z",
+        "updatedAt": "2026-11-20T01:50:57.941Z",
+        "id": "task.make-migrate-brand-copy-instead-of-move-and-readable-by-priozar",
+        "phaseId": "phase.dual-read-state-and-config",
+        "scope": {
+          "include": [
+            "src/migrations/**",
+            "src/commands/**",
+            "test/**"
+          ],
+          "exclude": []
+        }
+      },
+      {
+        "name": "Rename code identifiers with deprecated aliases",
+        "description": "Rename AutoForgeError, resolveAutoforgeDir and similar identifiers to Priozar names and keep deprecated aliases exported.",
+        "status": "planned",
+        "pauseReason": null,
+        "createdAt": "2026-11-20T01:50:58.294Z",
+        "updatedAt": "2026-11-20T01:50:58.294Z",
+        "id": "task.rename-code-identifiers-with-deprecated-aliases",
+        "phaseId": "phase.code-identifiers-and-env-vars",
+        "scope": {
+          "include": [
+            "src/**",
+            "packages/**",
+            "apps/**",
+            "test/**"
+          ],
+          "exclude": []
+        }
+      },
+      {
+        "name": "Support PRIOZAR_* env vars with AUTOFORGE_* fallback",
+        "description": "Introduce PRIOZAR_* environment variables, honor AUTOFORGE_* as deprecated fallbacks, and update generated contract and context text.",
+        "status": "planned",
+        "pauseReason": null,
+        "createdAt": "2026-11-20T01:50:58.637Z",
+        "updatedAt": "2026-11-20T01:50:58.637Z",
+        "id": "task.support-priozar-env-vars-with-autoforge-fallback",
+        "phaseId": "phase.code-identifiers-and-env-vars",
+        "scope": {
+          "include": [
+            "src/**",
+            "packages/**",
+            "test/**"
+          ],
+          "exclude": []
+        }
+      },
+      {
+        "name": "Rename npm packages and workspace imports",
+        "description": "Rename @cojacklabs/autoforge, -protocol, -core, -sdk, -agent, -providers to @cojacklabs/priozar*, updating package.json files, imports, tsup and turbo config and the lockfile.",
+        "status": "planned",
+        "pauseReason": null,
+        "createdAt": "2026-11-20T01:50:58.988Z",
+        "updatedAt": "2026-11-20T01:50:58.988Z",
+        "id": "task.rename-npm-packages-and-workspace-imports",
+        "phaseId": "phase.packages-and-binaries",
+        "scope": {
+          "include": [
+            "package.json",
+            "pnpm-lock.yaml",
+            "pnpm-workspace.yaml",
+            "tsup.config.ts",
+            "turbo.json",
+            "packages/**",
+            "apps/**",
+            "src/**",
+            "test/**"
+          ],
+          "exclude": []
+        }
+      },
+      {
+        "name": "Make priozar the primary binary and keep autoforge as alias",
+        "description": "Rename bin entries, make bin/priozar.js primary, keep bin/autoforge.js as a deprecated alias that warns once, and update help text.",
+        "status": "planned",
+        "pauseReason": null,
+        "createdAt": "2026-11-20T01:50:59.336Z",
+        "updatedAt": "2026-11-20T01:50:59.336Z",
+        "id": "task.make-priozar-the-primary-binary-and-keep-autoforge-as-alias",
+        "phaseId": "phase.packages-and-binaries",
+        "scope": {
+          "include": [
+            "bin/**",
+            "apps/**",
+            "package.json",
+            "src/cli/**",
+            "test/**"
+          ],
+          "exclude": []
+        }
+      },
+      {
+        "name": "Rename the product in README and current docs",
+        "description": "Update README.md, docs/README.md, current guides and AUTOFORGE.md (to PRIOZAR.md), excluding dev/, older docs/planning versions and CHANGELOG history.",
+        "status": "planned",
+        "pauseReason": null,
+        "createdAt": "2026-11-20T01:50:59.682Z",
+        "updatedAt": "2026-11-20T01:50:59.682Z",
+        "id": "task.rename-the-product-in-readme-and-current-docs",
+        "phaseId": "phase.live-docs-ci-and-urls",
+        "scope": {
+          "include": [
+            "README.md",
+            "AUTOFORGE.md",
+            "PRIOZAR.md",
+            "docs/*.md",
+            "docs/planning/0.26/**"
+          ],
+          "exclude": [
+            "dev/**",
+            "CHANGELOG.md"
+          ]
+        }
+      },
+      {
+        "name": "Update CI workflows, scripts and domain links",
+        "description": "Rename references in .github workflows, scripts, devops and diagrams, and point docs links to priozar.sh.",
+        "status": "planned",
+        "pauseReason": null,
+        "createdAt": "2026-11-20T01:51:00.018Z",
+        "updatedAt": "2026-11-20T01:51:00.018Z",
+        "id": "task.update-ci-workflows-scripts-and-domain-links",
+        "phaseId": "phase.live-docs-ci-and-urls",
+        "scope": {
+          "include": [
+            ".github/**",
+            "scripts/**",
+            "devops/**",
+            "diagrams/**",
+            "qa/**",
+            "tests/**"
+          ],
+          "exclude": []
+        }
+      },
+      {
+        "name": "Migrate this repo and registered projects to .priozar",
+        "description": "Once the priozar CLI reads .priozar, apply migrate brand here and to registered projects, regenerate agent contracts, and verify doctor, recap and context.",
+        "status": "planned",
+        "pauseReason": null,
+        "createdAt": "2026-11-20T01:51:00.435Z",
+        "updatedAt": "2026-11-20T01:51:00.435Z",
+        "id": "task.migrate-this-repo-and-registered-projects-to-priozar",
+        "phaseId": "phase.repository-state-migration",
+        "scope": {
+          "include": [
+            ".autoforge/**",
+            ".priozar/**",
+            "autoforge.config.json",
+            "priozar.config.json"
+          ],
+          "exclude": []
+        }
+      },
+      {
+        "name": "Prepare npm, GitHub and domain rename steps for human execution",
+        "description": "Write a checklist and dry-run artifacts for publishing @cojacklabs/priozar*, renaming the GitHub repository, and updating the domain. Do not publish or rename anything.",
+        "status": "planned",
+        "pauseReason": null,
+        "createdAt": "2026-11-20T01:51:00.838Z",
+        "updatedAt": "2026-11-20T01:51:00.838Z",
+        "id": "task.prepare-npm-github-and-domain-rename-steps-for-human-execution",
+        "phaseId": "phase.external-release-preparation",
+        "scope": {
+          "include": [
+            "docs/**",
+            ".github/**",
+            ".changeset/**",
+            "package.json"
           ],
           "exclude": []
         }
