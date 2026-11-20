@@ -8,6 +8,9 @@ import {
   resolveContainedProjectPath,
   resolveProjectPath,
 } from "../src/core/paths.js";
+import { bootstrapManifestPath } from "../src/bootstrap/manifest.js";
+import { inspectInstallation } from "../src/commands/init.js";
+import { OrchestrationStore } from "../src/orchestration/store.js";
 import { discoverProjectRoot } from "../src/core/project.js";
 import { evaluateGuardrails } from "../src/guardrails/policy.js";
 import {
@@ -136,5 +139,31 @@ describe("state-relative path mapping", () => {
     expect(resolveProjectPath(root, ".priozar/state/work.json")).toBe(
       path.join(root, ".priozar", "state", "work.json"),
     );
+  });
+});
+
+describe("directory-joining stores", () => {
+  it("places bootstrap and orchestration state under the active directory", async () => {
+    const root = await createProject(".priozar");
+    expect(bootstrapManifestPath(root)).toBe(
+      path.join(root, ".priozar", "bootstrap", "manifest.json"),
+    );
+    expect(new OrchestrationStore(root).state.filePath).toBe(
+      path.join(root, ".priozar", "orchestration", "state.json"),
+    );
+  });
+
+  it("keeps legacy locations for projects that only have .autoforge", async () => {
+    const root = await createProject(".autoforge");
+    expect(bootstrapManifestPath(root)).toBe(
+      path.join(root, ".autoforge", "bootstrap", "manifest.json"),
+    );
+  });
+
+  it("inspects the active installation directory", async () => {
+    const root = await createProject(".priozar");
+    const inspection = await inspectInstallation(root);
+    expect(inspection.directory).toBe(path.join(root, ".priozar"));
+    expect(inspection.status).not.toBe("absent");
   });
 });

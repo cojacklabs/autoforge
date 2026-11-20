@@ -1,6 +1,7 @@
 import { mkdir, readFile, writeFile } from "node:fs/promises";
 import path from "node:path";
 import { z } from "zod";
+import { resolveStateDirectoryPath } from "../core/state-directory.js";
 
 export const discoverySchema = z
   .object({
@@ -22,8 +23,7 @@ export async function recordBootstrapDiscovery(
     JSON.parse(await readFile(path.resolve(sourcePath), "utf8")),
   );
   const outputPath = path.join(
-    path.resolve(projectRoot),
-    ".autoforge",
+    resolveStateDirectoryPath(path.resolve(projectRoot)),
     "bootstrap",
     "discovery.json",
   );

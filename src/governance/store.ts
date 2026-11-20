@@ -4,14 +4,14 @@ import {
   constitutionArtifactSchema,
   type ConstitutionArtifact,
 } from "./schemas.js";
+import { resolveStateDirectoryPath } from "../core/state-directory.js";
 
 export class ConstitutionStore {
   constructor(private readonly projectRoot: string) {}
 
   private get filePath(): string {
     return path.join(
-      path.resolve(this.projectRoot),
-      ".autoforge",
+      resolveStateDirectoryPath(path.resolve(this.projectRoot)),
       "governance",
       "constitution.json",
     );

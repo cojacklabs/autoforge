@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
-  "revision": 476,
-  "updatedAt": "2026-11-20T13:47:07.388Z",
+  "revision": 478,
+  "updatedAt": "2026-11-20T13:50:32.638Z",
   "data": {
     "features": [
       {
@@ -2123,10 +2123,10 @@
       {
         "name": "Adopt the state directory resolver in remaining stores",
         "description": "Replace the remaining hardcoded .autoforge paths with resolveStateDirectoryName/Path from src/core/state-directory.ts: decisions, doctrine, learning, strategy, governance, knowledge, domain, orchestration, workflows, contract generator, bootstrap, init, migrations/legacy, and the agent-cli local gateway. Also decide whether init creates .priozar for new projects.",
-        "status": "paused",
-        "pauseReason": "Scope widening: central relative-path rewrite must land first",
+        "status": "completed",
+        "pauseReason": null,
         "createdAt": "2026-11-20T01:55:30.049Z",
-        "updatedAt": "2026-11-20T02:06:30.367Z",
+        "updatedAt": "2026-11-20T13:50:32.533Z",
         "id": "task.adopt-the-state-directory-resolver-in-remaining-stores",
         "phaseId": "phase.dual-read-state-and-config",
         "scope": {

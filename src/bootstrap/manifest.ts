@@ -6,6 +6,7 @@ import { z } from "zod";
 import { AutoForgeError, EXIT_CODE } from "../core/errors.js";
 import { resolveContainedProjectPath } from "../core/paths.js";
 import { workflowRunSchema } from "../workflows/state.js";
+import { resolveStateDirectoryPath } from "../core/state-directory.js";
 
 export const BOOTSTRAP_ARTIFACT_IDS = [
   "vision",
@@ -57,8 +58,7 @@ export type BootstrapManifest = z.infer<typeof bootstrapManifestSchema>;
 
 export function bootstrapManifestPath(projectRoot: string): string {
   return path.join(
-    path.resolve(projectRoot),
-    ".autoforge",
+    resolveStateDirectoryPath(path.resolve(projectRoot)),
     "bootstrap",
     "manifest.json",
   );
@@ -86,8 +86,7 @@ async function validateEvidence(
   evidence: string,
 ): Promise<string> {
   const workflowPath = path.join(
-    projectRoot,
-    ".autoforge",
+    resolveStateDirectoryPath(projectRoot),
     "workflows",
     `${evidence}.json`,
   );
@@ -117,7 +116,10 @@ async function validateEvidence(
 
   const resolved = await resolveContainedProjectPath(projectRoot, evidence);
   await access(resolved.absolutePath);
-  if (resolved.relativePath.startsWith(".autoforge/workflows/")) {
+  if (
+    resolved.relativePath.startsWith(".autoforge/workflows/") ||
+    resolved.relativePath.startsWith(".priozar/workflows/")
+  ) {
     const run = workflowRunSchema.parse(
       JSON.parse(await readFile(resolved.absolutePath, "utf8")) as unknown,
     );

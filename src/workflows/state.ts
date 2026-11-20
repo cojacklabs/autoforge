@@ -9,6 +9,7 @@ import {
   type WorkflowKind,
 } from "./definitions.js";
 import { workflowHandoffSchema, type WorkflowHandoff } from "./handoff.js";
+import { resolveStateDirectoryPath } from "../core/state-directory.js";
 
 export const workflowRunSchema = z
   .object({
@@ -28,7 +29,10 @@ export class WorkflowStateStore {
   private readonly handoffDirectory: string;
 
   constructor(projectRoot: string) {
-    this.directory = path.join(projectRoot, ".autoforge", "workflows");
+    this.directory = path.join(
+      resolveStateDirectoryPath(projectRoot),
+      "workflows",
+    );
     this.handoffDirectory = path.join(this.directory, "handoffs");
   }
 

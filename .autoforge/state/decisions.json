@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
-  "revision": 167,
-  "updatedAt": "2026-11-20T13:47:06.887Z",
+  "revision": 168,
+  "updatedAt": "2026-11-20T13:50:32.210Z",
   "data": {
     "decisions": [
       {
@@ -4141,6 +4141,31 @@
         "kind": "feature-note",
         "createdAt": "2026-11-20T13:47:06.856Z",
         "updatedAt": "2026-11-20T13:47:06.856Z"
+      },
+      {
+        "id": "decision.convert-direct-state-directory-joins-to-the-shared-resolver-and-leave-legacy-ini",
+        "statement": "Convert direct state-directory joins to the shared resolver and leave legacy init creation unchanged for now",
+        "reasoning": "Stores that go through resolveProjectPath were already covered by the central mapping, so only the sites that join the directory name themselves needed conversion. Verified end to end: the built CLI runs doctor, recap and status on a project containing only .priozar.",
+        "consequences": [
+          "bootstrap, domain, governance, knowledge, orchestration, workflows, the agent contract store, inspectInstallation, worktree home and the agent-cli handoff directory now follow the active state directory.",
+          "autoforge init and the legacy migration still create .autoforge; choosing the directory for new projects is deferred to the packages and binaries phase.",
+          "agent-cli carries a small local copy of the resolver because it cannot import from the CLI src tree."
+        ],
+        "scope": [
+          "state"
+        ],
+        "keywords": [
+          "priozar",
+          "dual-read"
+        ],
+        "relatedWork": [
+          "task.adopt-the-state-directory-resolver-in-remaining-stores"
+        ],
+        "supersedes": null,
+        "status": "active",
+        "kind": "feature-note",
+        "createdAt": "2026-11-20T13:50:32.176Z",
+        "updatedAt": "2026-11-20T13:50:32.176Z"
       }
     ]
   }

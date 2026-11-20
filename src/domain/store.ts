@@ -1,14 +1,14 @@
 import { mkdir, readFile, writeFile } from "node:fs/promises";
 import path from "node:path";
 import { domainArtifactSchema, type DomainArtifact } from "./schemas.js";
+import { resolveStateDirectoryPath } from "../core/state-directory.js";
 
 export class DomainStore {
   constructor(private readonly projectRoot: string) {}
 
   private get filePath(): string {
     return path.join(
-      path.resolve(this.projectRoot),
-      ".autoforge",
+      resolveStateDirectoryPath(path.resolve(this.projectRoot)),
       "domain",
       "domain.json",
     );

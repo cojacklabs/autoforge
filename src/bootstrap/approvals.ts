@@ -1,6 +1,7 @@
 import { access, mkdir, readFile, writeFile } from "node:fs/promises";
 import path from "node:path";
 import { approveBootstrapArtifact, bootstrapManifestPath } from "./manifest.js";
+import { resolveStateDirectoryPath } from "../core/state-directory.js";
 
 export interface VisionApproval {
   idea: string;
@@ -14,8 +15,7 @@ export async function recordVisionApproval(
   now = new Date(),
 ): Promise<string> {
   const directory = path.join(
-    path.resolve(projectRoot),
-    ".autoforge",
+    resolveStateDirectoryPath(path.resolve(projectRoot)),
     "bootstrap",
   );
   const approvalPath = path.join(directory, "vision-approvals.json");

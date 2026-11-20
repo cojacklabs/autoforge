@@ -5,6 +5,7 @@ import {
   type KnowledgeArtifact,
 } from "./artifacts.js";
 import { KnowledgeRegistry, type KnowledgeEdge } from "./registry.js";
+import { resolveStateDirectoryPath } from "../core/state-directory.js";
 
 interface KnowledgeSnapshot {
   version: "1";
@@ -17,8 +18,7 @@ export class KnowledgeStore {
 
   private get filePath(): string {
     return path.join(
-      path.resolve(this.projectRoot),
-      ".autoforge",
+      resolveStateDirectoryPath(path.resolve(this.projectRoot)),
       "knowledge",
       "registry.json",
     );

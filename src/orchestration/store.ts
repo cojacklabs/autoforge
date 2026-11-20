@@ -14,6 +14,7 @@ import {
   type OrchestrationHandoffInput,
   type OrchestrationState,
 } from "./schemas.js";
+import { resolveStateDirectoryPath } from "../core/state-directory.js";
 
 export const orchestrationStateEnvelopeSchema = createStateEnvelopeSchema(
   orchestrationStateSchema,
@@ -37,7 +38,10 @@ export class OrchestrationStore {
   private readonly directory: string;
 
   constructor(projectRoot: string) {
-    this.directory = path.join(projectRoot, ".autoforge", "orchestration");
+    this.directory = path.join(
+      resolveStateDirectoryPath(projectRoot),
+      "orchestration",
+    );
     this.state = new AtomicStateStore({
       filePath: path.join(this.directory, "state.json"),
       schema: orchestrationStateEnvelopeSchema,

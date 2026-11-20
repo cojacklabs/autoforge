@@ -3,6 +3,7 @@ import { createHash } from "node:crypto";
 import { homedir } from "node:os";
 import path from "node:path";
 import { promisify } from "node:util";
+import { resolveStateDirectoryPath } from "../core/state-directory.js";
 
 const execFileAsync = promisify(execFile);
 
@@ -35,7 +36,7 @@ export class GitWorktreeManager implements WorktreeManager {
       ? path.resolve(root)
       : process.env.AUTOFORGE_HOME
         ? path.resolve(process.env.AUTOFORGE_HOME)
-        : path.join(homedir(), ".autoforge");
+        : resolveStateDirectoryPath(homedir());
   }
 
   async provision(

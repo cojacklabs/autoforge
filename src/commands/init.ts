@@ -55,6 +55,7 @@ import {
 import type { StateEnvelope } from "../state/schemas.js";
 import { AtomicStateStore } from "../state/store.js";
 import type { SessionState, WorkState } from "../work/schemas.js";
+import { resolveStateDirectoryPath } from "../core/state-directory.js";
 
 export type InstallationStatus = "absent" | "current" | "legacy" | "partial";
 
@@ -110,7 +111,7 @@ async function readJson(filePath: string): Promise<unknown> {
 export async function inspectInstallation(
   projectRoot: string,
 ): Promise<InstallationInspection> {
-  const directory = path.join(path.resolve(projectRoot), ".autoforge");
+  const directory = resolveStateDirectoryPath(path.resolve(projectRoot));
   if (!(await pathExists(directory))) {
     return { status: "absent", directory };
   }

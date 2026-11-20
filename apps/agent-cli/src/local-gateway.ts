@@ -1,5 +1,6 @@
 import { spawn } from "node:child_process";
 import { createHash } from "node:crypto";
+import { existsSync } from "node:fs";
 import { mkdir, rename, writeFile } from "node:fs/promises";
 import path from "node:path";
 
@@ -10,6 +11,14 @@ import {
 import { createAutoForgeSdk } from "@cojacklabs/autoforge-sdk";
 
 import type { AgentProjectGateway, AgentStatus } from "./session.js";
+
+/** Prefers the canonical .priozar state directory, else the legacy name. */
+function stateDirectoryFor(projectRoot: string): string {
+  const canonical = path.join(projectRoot, ".priozar");
+  return existsSync(canonical)
+    ? canonical
+    : path.join(projectRoot, ".autoforge");
+}
 
 interface CommandResult {
   exitCode: number;
@@ -189,7 +198,10 @@ export class LocalSdkGateway implements AgentProjectGateway {
 
   private async persistHandoff(input: CreateAgentHandoffInput) {
     const handoff = createAgentHandoff(input);
-    const directory = path.join(this.projectRoot, ".autoforge", "handoffs");
+    const directory = path.join(
+      stateDirectoryFor(this.projectRoot),
+      "handoffs",
+    );
     const target = path.join(directory, `${handoff.id}.json`);
     const temporary = `${target}.${process.pid}.tmp`;
     await mkdir(directory, { recursive: true });

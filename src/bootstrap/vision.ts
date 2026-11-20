@@ -1,13 +1,13 @@
 import { readFile, writeFile } from "node:fs/promises";
 import path from "node:path";
 import type { BootstrapDiscovery } from "./discovery.js";
+import { resolveStateDirectoryPath } from "../core/state-directory.js";
 
 export async function generateVisionDocument(
   projectRoot: string,
 ): Promise<string> {
   const discoveryPath = path.join(
-    path.resolve(projectRoot),
-    ".autoforge",
+    resolveStateDirectoryPath(path.resolve(projectRoot)),
     "bootstrap",
     "discovery.json",
   );

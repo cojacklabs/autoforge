@@ -4,6 +4,7 @@ import path from "node:path";
 import { discoverProjectRoot, type ProjectMarker } from "../core/project.js";
 import { inspectInstallation } from "../commands/init.js";
 import { BOOTSTRAP_ARTIFACT_IDS, bootstrapManifestSchema } from "./manifest.js";
+import { resolveStateDirectoryPath } from "../core/state-directory.js";
 
 export interface BootstrapReport {
   projectRoot: string;
@@ -128,8 +129,7 @@ export async function scaffoldBootstrapManifest(
   projectRoot: string,
 ): Promise<string> {
   const manifestPath = path.join(
-    path.resolve(projectRoot),
-    ".autoforge",
+    resolveStateDirectoryPath(path.resolve(projectRoot)),
     "bootstrap",
     "manifest.json",
   );

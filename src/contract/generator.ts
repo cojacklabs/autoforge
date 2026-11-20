@@ -3,6 +3,7 @@ import path from "node:path";
 
 import { agentContractSchema, type AgentContract } from "./schema.js";
 import { normalizeAgentId } from "./capabilities.js";
+import { resolveStateDirectoryPath } from "../core/state-directory.js";
 
 export interface AgentContractInput {
   agentId: string;
@@ -49,7 +50,10 @@ export class AgentContractStore {
   private readonly filePath: string;
 
   constructor(projectRoot: string) {
-    this.filePath = path.join(projectRoot, ".autoforge", "agent-contract.json");
+    this.filePath = path.join(
+      resolveStateDirectoryPath(projectRoot),
+      "agent-contract.json",
+    );
   }
 
   async write(contract: AgentContract): Promise<string> {
