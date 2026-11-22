@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
-  "revision": 516,
-  "updatedAt": "2026-11-22T21:25:50.141Z",
+  "revision": 518,
+  "updatedAt": "2026-11-22T21:29:31.244Z",
   "data": {
     "features": [
       {
@@ -2347,10 +2347,10 @@
       {
         "name": "Dual-read priozar.config.json in the ai runtime coordinator",
         "description": "ai/runtime/coordinator.js reads autoforge.config.json for the configured test command and silently treats a missing file as passing. Teach it to read priozar.config.json first with the legacy name as a fallback, before the root file is renamed, so a project's configured tests are never skipped.",
-        "status": "planned",
+        "status": "completed",
         "pauseReason": null,
         "createdAt": "2026-11-22T21:25:48.412Z",
-        "updatedAt": "2026-11-22T21:25:48.412Z",
+        "updatedAt": "2026-11-22T21:29:31.125Z",
         "id": "task.dual-read-priozar-config-json-in-the-ai-runtime-coordinator",
         "phaseId": "phase.live-docs-ci-and-urls",
         "scope": {

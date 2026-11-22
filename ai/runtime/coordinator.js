@@ -29,6 +29,9 @@ function schemaPath(repoRoot, name) {
 }
 
 function resolveAutoforgeDir(repoRoot) {
+  // .priozar is canonical; .autoforge and the legacy autoforge/ remain supported.
+  const priozar = path.join(repoRoot, ".priozar");
+  if (fs.existsSync(priozar)) return priozar;
   const hidden = path.join(repoRoot, ".autoforge");
   const legacy = path.join(repoRoot, "autoforge");
   if (fs.existsSync(hidden)) return hidden;
@@ -285,8 +288,7 @@ export class Coordinator {
       "qa",
       `Compliance baseline: ${JSON.stringify({ ...compliance, changed_files: compliance.changed_files.length })}`,
     );
-    // Engineer dry-run apply plan (no writes)
-    const allowedRoots = this.codeTargets.map((t) => t.abs);
+    // Engineer dry-run apply plan (no writes); reuses allowedRoots from above
     const engPlan = planDiffs(codePlan, {
       repoRoot: this.repoRoot,
       allowedRoots,
@@ -701,8 +703,11 @@ export class Coordinator {
         return ok;
       }
       // Fallback to configured command
-      const cfgPath = path.join(this.repoRoot, "autoforge.config.json");
-      if (!fs.existsSync(cfgPath)) return true;
+      // priozar.config.json is canonical; the legacy name is still honoured.
+      const cfgPath = ["priozar.config.json", "autoforge.config.json"]
+        .map((name) => path.join(this.repoRoot, name))
+        .find((candidate) => fs.existsSync(candidate));
+      if (!cfgPath) return true;
       const cfg = JSON.parse(fs.readFileSync(cfgPath, "utf8"));
       const cmd = cfg?.qualityPolicies?.tests?.cmd;
       if (!cmd) return true;

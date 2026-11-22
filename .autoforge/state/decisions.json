@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
-  "revision": 181,
-  "updatedAt": "2026-11-22T21:25:49.499Z",
+  "revision": 182,
+  "updatedAt": "2026-11-22T21:29:30.656Z",
   "data": {
     "decisions": [
       {
@@ -4485,6 +4485,31 @@
         "kind": "feature-note",
         "createdAt": "2026-11-22T21:25:49.463Z",
         "updatedAt": "2026-11-22T21:25:49.463Z"
+      },
+      {
+        "id": "decision.fix-the-coordinator-s-duplicate-declaration-so-it-can-load-then-dual-read-prioza",
+        "statement": "Fix the coordinator's duplicate declaration so it can load, then dual-read priozar.config.json and .priozar",
+        "reasoning": "ai/runtime/coordinator.js has had a duplicate const allowedRoots in one method since v0.4.1, so the module could not be loaded and its configured-test fallback could never run or be tested. Both declarations computed the same value, so removing the second is behavior-neutral and lets the dual-read change be proven by tests.",
+        "consequences": [
+          "The coordinator now loads, resolves .priozar before .autoforge and the legacy directory, and reads priozar.config.json before autoforge.config.json for the configured test command.",
+          "A project with no config file still counts as passing, as before.",
+          "Nothing else imports the coordinator, so the previously unloadable file had no active callers."
+        ],
+        "scope": [
+          "configuration"
+        ],
+        "keywords": [
+          "priozar",
+          "coordinator"
+        ],
+        "relatedWork": [
+          "task.dual-read-priozar-config-json-in-the-ai-runtime-coordinator"
+        ],
+        "supersedes": null,
+        "status": "active",
+        "kind": "feature-note",
+        "createdAt": "2026-11-22T21:29:30.621Z",
+        "updatedAt": "2026-11-22T21:29:30.621Z"
       }
     ]
   }
