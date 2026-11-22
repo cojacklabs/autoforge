@@ -1,4 +1,4 @@
-export const AUTOFORGE_CREDENTIAL_SERVICE = "com.cojacklabs.autoforge-agent";
+export const PRIOZAR_CREDENTIAL_SERVICE = "com.cojacklabs.autoforge-agent";
 
 export type ProviderCredentialId = "openai";
 
@@ -74,7 +74,7 @@ export class NativeCredentialVault implements CredentialVault {
   }
 
   private entry(provider: ProviderCredentialId): KeyringEntry {
-    return this.createEntry(AUTOFORGE_CREDENTIAL_SERVICE, ACCOUNTS[provider]);
+    return this.createEntry(PRIOZAR_CREDENTIAL_SERVICE, ACCOUNTS[provider]);
   }
 }
 

@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 
-import { AutoForgeError } from "../src/core/errors.js";
+import { PriozarError } from "../src/core/errors.js";
 import { createInitialDoctrineRegistry } from "../src/doctrine/builtins.js";
 import { routeDoctrines } from "../src/doctrine/router.js";
 
@@ -80,9 +80,9 @@ describe("doctrine router", () => {
 
     expect(() =>
       routeDoctrines(registry, { paths: ["../outside.ts"] }),
-    ).toThrowError(AutoForgeError);
+    ).toThrowError(PriozarError);
     expect(() => routeDoctrines(registry, { limit: 0 })).toThrowError(
-      AutoForgeError,
+      PriozarError,
     );
   });
 });

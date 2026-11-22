@@ -2,7 +2,7 @@ import { randomUUID } from "node:crypto";
 import { lstat, mkdir, open, rename, rm } from "node:fs/promises";
 import path from "node:path";
 
-import { AutoForgeError, EXIT_CODE } from "../core/errors.js";
+import { PriozarError, EXIT_CODE } from "../core/errors.js";
 import { resolveContainedProjectPath } from "../core/paths.js";
 import {
   agentContextPayloadSchema,
@@ -26,7 +26,7 @@ export async function assertInitializedAgentProject(
     );
     await lstat(configPath.absolutePath);
   } catch (error) {
-    throw new AutoForgeError(
+    throw new PriozarError(
       "INVALID_STATE",
       "Context delivery requires an initialized AutoForge project",
       { cause: error, exitCode: EXIT_CODE.invalidState },

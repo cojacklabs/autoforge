@@ -1,4 +1,4 @@
-import { AutoForgeError, EXIT_CODE } from "../core/errors.js";
+import { PriozarError, EXIT_CODE } from "../core/errors.js";
 import type { EvidenceService } from "../learning/evidence-service.js";
 import type { AtomicStateStore } from "../state/store.js";
 import type { WorkState } from "../work/schemas.js";
@@ -33,8 +33,8 @@ function decisionError(
   message: string,
   details: Readonly<Record<string, unknown>>,
   conflict = false,
-): AutoForgeError {
-  return new AutoForgeError(
+): PriozarError {
+  return new PriozarError(
     conflict ? "STATE_CONFLICT" : "INVALID_ARGUMENT",
     message,
     {

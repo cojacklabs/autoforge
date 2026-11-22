@@ -1,7 +1,7 @@
 import { lstat, realpath } from "node:fs/promises";
 import path from "node:path";
 
-import { AutoForgeError, EXIT_CODE } from "./errors.js";
+import { PriozarError, EXIT_CODE } from "./errors.js";
 import { mapLegacyStatePath } from "./state-directory.js";
 
 export interface ResolvedProjectPath {
@@ -13,8 +13,8 @@ export interface ResolvedProjectPath {
 function invalidPath(
   message: string,
   details: Readonly<Record<string, unknown>>,
-): AutoForgeError {
-  return new AutoForgeError("INVALID_ARGUMENT", message, {
+): PriozarError {
+  return new PriozarError("INVALID_ARGUMENT", message, {
     details,
     exitCode: EXIT_CODE.usage,
   });
@@ -110,7 +110,7 @@ async function pathEntryExists(candidatePath: string): Promise<boolean> {
       return false;
     }
 
-    throw new AutoForgeError(
+    throw new PriozarError(
       "FILESYSTEM_ERROR",
       `Unable to inspect ${candidatePath}`,
       {
@@ -131,7 +131,7 @@ async function canonicalizePotentialPath(
   while (!(await pathEntryExists(existingAncestor))) {
     const parentPath = path.dirname(existingAncestor);
     if (parentPath === existingAncestor) {
-      throw new AutoForgeError(
+      throw new PriozarError(
         "FILESYSTEM_ERROR",
         `Unable to find an existing ancestor for ${candidatePath}`,
         {
@@ -149,7 +149,7 @@ async function canonicalizePotentialPath(
     const canonicalAncestor = await realpath(existingAncestor);
     return path.resolve(canonicalAncestor, ...missingSegments);
   } catch (error) {
-    throw new AutoForgeError(
+    throw new PriozarError(
       "FILESYSTEM_ERROR",
       `Unable to resolve ${existingAncestor}`,
       {

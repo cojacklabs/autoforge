@@ -1,4 +1,4 @@
-import { AutoForgeError, EXIT_CODE } from "../core/errors.js";
+import { PriozarError, EXIT_CODE } from "../core/errors.js";
 import { experimentSchema, type Experiment } from "./experiment-schemas.js";
 import type { ExperimentStore } from "./experiment-store.js";
 import type { HypothesisStore } from "./hypothesis-store.js";
@@ -20,8 +20,8 @@ export interface ExperimentServiceOptions {
 function experimentError(
   message: string,
   details: Readonly<Record<string, unknown>>,
-): AutoForgeError {
-  return new AutoForgeError("INVALID_ARGUMENT", message, {
+): PriozarError {
+  return new PriozarError("INVALID_ARGUMENT", message, {
     details,
     exitCode: EXIT_CODE.notFound,
   });

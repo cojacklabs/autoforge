@@ -2,7 +2,7 @@ import process from "node:process";
 import { createInterface } from "node:readline/promises";
 
 import { createOpenAIAgentModel } from "@cojacklabs/autoforge-providers";
-import { AUTOFORGE_AGENT_LAUNCH_PROTOCOL_VERSION } from "@cojacklabs/autoforge-protocol";
+import { PRIOZAR_AGENT_LAUNCH_PROTOCOL_VERSION } from "@cojacklabs/autoforge-protocol";
 import agentPackage from "../package.json" with { type: "json" };
 
 import { NativeCredentialVault, runCredentialCommand } from "./credentials.js";
@@ -24,7 +24,7 @@ export async function main(
       `${JSON.stringify({
         name: "@cojacklabs/autoforge-agent",
         version: agentPackage.version,
-        launchProtocolVersion: AUTOFORGE_AGENT_LAUNCH_PROTOCOL_VERSION,
+        launchProtocolVersion: PRIOZAR_AGENT_LAUNCH_PROTOCOL_VERSION,
       })}\n`,
     );
     return 0;

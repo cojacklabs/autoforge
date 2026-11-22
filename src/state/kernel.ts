@@ -1,6 +1,6 @@
 import { resolveProjectPath } from "../core/paths.js";
 import { resolveStateDirectoryName } from "../core/state-directory.js";
-import { AutoForgeError, EXIT_CODE } from "../core/errors.js";
+import { PriozarError, EXIT_CODE } from "../core/errors.js";
 import {
   sessionStateSchema,
   workStateSchema,
@@ -28,8 +28,8 @@ export const sessionStateEnvelopeSchema = createStateEnvelopeSchema(
 function invalidKernelState(
   name: "work" | "session",
   issues: unknown,
-): AutoForgeError {
-  return new AutoForgeError("INVALID_STATE", `Invalid ${name} state`, {
+): PriozarError {
+  return new PriozarError("INVALID_STATE", `Invalid ${name} state`, {
     details: { issues },
     exitCode: EXIT_CODE.invalidState,
   });

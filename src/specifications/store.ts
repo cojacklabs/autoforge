@@ -11,7 +11,7 @@ import {
 import type { FileHandle } from "node:fs/promises";
 import path from "node:path";
 
-import { AutoForgeError, EXIT_CODE } from "../core/errors.js";
+import { PriozarError, EXIT_CODE } from "../core/errors.js";
 import { resolveContainedProjectPath } from "../core/paths.js";
 import {
   parseSpecificationMarkdown,
@@ -40,8 +40,8 @@ function specificationError(
   message: string,
   details: Readonly<Record<string, unknown>>,
   cause?: unknown,
-): AutoForgeError {
-  return new AutoForgeError(code, message, {
+): PriozarError {
+  return new PriozarError(code, message, {
     cause,
     details,
     exitCode:

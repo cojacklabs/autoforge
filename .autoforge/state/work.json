@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
-  "revision": 483,
-  "updatedAt": "2026-11-20T22:18:22.481Z",
+  "revision": 486,
+  "updatedAt": "2026-11-22T17:26:50.488Z",
   "data": {
     "features": [
       {
@@ -1960,10 +1960,10 @@
       {
         "name": "Rename code identifiers with deprecated aliases",
         "description": "Rename AutoForgeError, resolveAutoforgeDir and similar identifiers to Priozar names and keep deprecated aliases exported.",
-        "status": "planned",
+        "status": "completed",
         "pauseReason": null,
         "createdAt": "2026-11-20T01:50:58.294Z",
-        "updatedAt": "2026-11-20T01:50:58.294Z",
+        "updatedAt": "2026-11-22T17:26:50.380Z",
         "id": "task.rename-code-identifiers-with-deprecated-aliases",
         "phaseId": "phase.code-identifiers-and-env-vars",
         "scope": {
@@ -3332,6 +3332,22 @@
           "include": [
             "docs/**",
             ".autoforge/**"
+          ],
+          "exclude": []
+        }
+      },
+      {
+        "name": "Secret scan flags the intentional dummy key fixture in quality-gate.test.ts",
+        "description": "test/quality-gate.test.ts writes a fake api_key fixture to prove the scanner redacts secrets. The gate's credential-assignment rule flags it whenever that file is among the changed files, so any edit to it fails the gate. Add a reviewed-fixture allowance or move the fixture into a generated string so the scanner stays strict elsewhere.",
+        "status": "planned",
+        "pauseReason": null,
+        "createdAt": "2026-11-22T17:26:49.480Z",
+        "updatedAt": "2026-11-22T17:26:49.480Z",
+        "id": "issue.secret-scan-flags-the-intentional-dummy-key-fixture-in-quality-gate-test-ts",
+        "scope": {
+          "include": [
+            "src/quality/**",
+            "test/quality-gate.test.ts"
           ],
           "exclude": []
         }

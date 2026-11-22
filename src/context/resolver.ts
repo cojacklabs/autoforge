@@ -1,5 +1,5 @@
-import type { AutoForgeConfig } from "../core/config.js";
-import { AutoForgeError, EXIT_CODE } from "../core/errors.js";
+import type { PriozarConfig } from "../core/config.js";
+import { PriozarError, EXIT_CODE } from "../core/errors.js";
 import { searchDecisions } from "../decisions/search.js";
 import type { DecisionMemory } from "../decisions/schemas.js";
 import type { DoctrineSessionState } from "../doctrine/session.js";
@@ -64,7 +64,7 @@ export interface ResolveContextInput {
   doctrines: DoctrineRegistry;
   doctrineSessions: DoctrineSessionState;
   specifications: ContextSpecificationRegistry;
-  config: Pick<AutoForgeConfig, "contextBudget">;
+  config: Pick<PriozarConfig, "contextBudget">;
   taskDescription?: string;
   preferredSpecificationTypes?: readonly string[];
   governance?: readonly GovernanceEvaluation[];
@@ -299,7 +299,7 @@ function resolveWork(
   estimator: ContextTokenEstimator,
 ): ContextWork {
   if (state.activeWork === null) {
-    throw new AutoForgeError(
+    throw new PriozarError(
       "STATE_CONFLICT",
       "Context resolution requires active work",
       { exitCode: EXIT_CODE.conflict },
@@ -307,7 +307,7 @@ function resolveWork(
   }
   const supplement = taskDescription?.trim();
   if (supplement !== undefined && supplement.length > 10_000) {
-    throw new AutoForgeError(
+    throw new PriozarError(
       "INVALID_ARGUMENT",
       "Task description must not exceed 10,000 characters",
       { exitCode: EXIT_CODE.usage },
@@ -316,7 +316,7 @@ function resolveWork(
   if (state.activeWork.kind === "issue") {
     const item = state.issues.find(({ id }) => id === state.activeWork?.id);
     if (!item || item.status !== "active") {
-      throw new AutoForgeError(
+      throw new PriozarError(
         "INVALID_STATE",
         `Active work cannot be resolved: ${state.activeWork.id}`,
         { exitCode: EXIT_CODE.invalidState },
@@ -339,7 +339,7 @@ function resolveWork(
 
   const item = state.tasks.find(({ id }) => id === state.activeWork?.id);
   if (!item || item.status !== "active") {
-    throw new AutoForgeError(
+    throw new PriozarError(
       "INVALID_STATE",
       `Active work cannot be resolved: ${state.activeWork.id}`,
       { exitCode: EXIT_CODE.invalidState },
@@ -353,7 +353,7 @@ function resolveWork(
     ? state.features.find(({ id }) => id === phase.featureId)
     : undefined;
   if (!phase || !feature) {
-    throw new AutoForgeError(
+    throw new PriozarError(
       "INVALID_STATE",
       `Active task hierarchy cannot be resolved: ${item.id}`,
       { exitCode: EXIT_CODE.invalidState },
@@ -393,7 +393,7 @@ function doctrineCandidates(
     current.workKind !== work.kind ||
     current.workId !== work.item.id
   ) {
-    throw new AutoForgeError(
+    throw new PriozarError(
       "INVALID_STATE",
       "Active work does not have a matching doctrine session",
       { exitCode: EXIT_CODE.invalidState },
@@ -410,7 +410,7 @@ function doctrineCandidates(
   for (const selection of current.selections) {
     const doctrine = byId.get(selection.doctrineId);
     if (!doctrine) {
-      throw new AutoForgeError(
+      throw new PriozarError(
         "INVALID_STATE",
         `Selected doctrine is missing: ${selection.doctrineId}`,
         { exitCode: EXIT_CODE.invalidState },
@@ -604,7 +604,7 @@ export class ContextResolver {
   async resolve(input: ResolveContextInput): Promise<ContextSelection> {
     const maxTokens = input.config.contextBudget.maxTokens;
     if (!Number.isInteger(maxTokens) || maxTokens <= 0) {
-      throw new AutoForgeError(
+      throw new PriozarError(
         "INVALID_ARGUMENT",
         "Context budget must be a positive integer",
         { details: { maxTokens }, exitCode: EXIT_CODE.usage },

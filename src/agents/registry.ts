@@ -1,4 +1,4 @@
-import { AutoForgeError, EXIT_CODE } from "../core/errors.js";
+import { PriozarError, EXIT_CODE } from "../core/errors.js";
 import {
   agentDetectionSchema,
   validateAgentAdapterDefinition,
@@ -56,7 +56,7 @@ function supportsCapabilities(
 }
 
 function unavailableAgent(message: string, details: Record<string, unknown>) {
-  return new AutoForgeError("INVALID_ARGUMENT", message, {
+  return new PriozarError("INVALID_ARGUMENT", message, {
     details,
     exitCode: EXIT_CODE.notFound,
   });
@@ -74,7 +74,7 @@ export class AgentRegistry {
       .map((adapter) => adapter.id)
       .filter((id, index, ids) => ids.indexOf(id) !== index);
     if (duplicateIds.length > 0) {
-      throw new AutoForgeError(
+      throw new PriozarError(
         "INVALID_ARGUMENT",
         `Duplicate agent adapter IDs: ${[...new Set(duplicateIds)].join(", ")}`,
         { exitCode: EXIT_CODE.usage },

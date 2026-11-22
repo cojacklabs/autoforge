@@ -1,6 +1,6 @@
 import { EXIT_CODE, type ExitCode } from "../../../src/core/errors.js";
 import type { LogWriter } from "../../../src/core/logger.js";
-import { AUTOFORGE_HELP } from "./help.js";
+import { PRIOZAR_HELP } from "./help.js";
 
 export type CliOutput = LogWriter;
 
@@ -86,7 +86,7 @@ export async function runCli(
         return rejected;
       }
 
-      dependencies.output.stdout(AUTOFORGE_HELP);
+      dependencies.output.stdout(PRIOZAR_HELP);
       return EXIT_CODE.success;
     }
 

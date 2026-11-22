@@ -1,6 +1,6 @@
 import { z } from "zod";
 
-import { AutoForgeError, EXIT_CODE, type ExitCode } from "../core/errors.js";
+import { PriozarError, EXIT_CODE, type ExitCode } from "../core/errors.js";
 import type { LogWriter } from "../core/logger.js";
 
 export function reportCommandError(
@@ -11,7 +11,7 @@ export function reportCommandError(
     output.stderr(`Error: ${z.prettifyError(error)}`);
     return EXIT_CODE.usage;
   }
-  if (error instanceof AutoForgeError) {
+  if (error instanceof PriozarError) {
     output.stderr(`Error: ${error.message}`);
     return error.exitCode;
   }

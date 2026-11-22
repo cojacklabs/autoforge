@@ -123,7 +123,7 @@ export interface CompleteWorkInput {
   noDecisionReason?: string;
 }
 
-export interface SupportedAutoForgeOperations<
+export interface SupportedPriozarOperations<
   Projects = ProtocolData,
   Status = ProtocolData,
   Work = ProtocolData,
@@ -168,3 +168,6 @@ export const SDK_OPERATION_CAPABILITIES = [
 
 export type SdkOperationCapability =
   (typeof SDK_OPERATION_CAPABILITIES)[number];
+
+/** @deprecated Use SupportedPriozarOperations. */
+export type { SupportedPriozarOperations as SupportedAutoForgeOperations };

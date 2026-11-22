@@ -11,7 +11,7 @@ import {
   doctrineRegistryEnvelopeSchema,
   parseDoctrineRegistryEnvelope,
 } from "../src/doctrine/store.js";
-import { AutoForgeError } from "../src/core/errors.js";
+import { PriozarError } from "../src/core/errors.js";
 import { STATE_SCHEMA_VERSION } from "../src/state/schemas.js";
 
 const TIMESTAMP = "2026-08-20T08:00:00.000Z";
@@ -73,7 +73,7 @@ describe("doctrine registry persistence", () => {
 
     expect(doctrineRegistryEnvelopeSchema.safeParse(value).success).toBe(false);
     expect(() => parseDoctrineRegistryEnvelope(value)).toThrowError(
-      AutoForgeError,
+      PriozarError,
     );
   });
 

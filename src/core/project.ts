@@ -1,7 +1,7 @@
 import { stat } from "node:fs/promises";
 import path from "node:path";
 
-import { AutoForgeError, EXIT_CODE, ProjectNotFoundError } from "./errors.js";
+import { PriozarError, EXIT_CODE, ProjectNotFoundError } from "./errors.js";
 
 export type ProjectMarker = "autoforge" | "git" | "package";
 
@@ -27,7 +27,7 @@ async function pathExists(candidatePath: string): Promise<boolean> {
       return false;
     }
 
-    throw new AutoForgeError(
+    throw new PriozarError(
       "FILESYSTEM_ERROR",
       `Unable to inspect ${candidatePath}`,
       {
@@ -46,7 +46,7 @@ async function resolveStartDirectory(startPath: string): Promise<string> {
     const startStat = await stat(absolutePath);
     return startStat.isDirectory() ? absolutePath : path.dirname(absolutePath);
   } catch (error) {
-    throw new AutoForgeError(
+    throw new PriozarError(
       "FILESYSTEM_ERROR",
       `Unable to access project search path ${absolutePath}`,
       {

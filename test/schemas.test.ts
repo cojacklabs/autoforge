@@ -7,7 +7,7 @@ import {
   createDefaultConfig,
   parseConfig,
 } from "../src/core/config.js";
-import { AutoForgeError, EXIT_CODE } from "../src/core/errors.js";
+import { PriozarError, EXIT_CODE } from "../src/core/errors.js";
 import {
   STATE_SCHEMA_VERSION,
   createProjectMetadataEnvelope,
@@ -75,17 +75,17 @@ describe("foundation config schema", () => {
           { id: "test", command: "pnpm" },
         ],
       }),
-    ).toThrowError(AutoForgeError);
+    ).toThrowError(PriozarError);
   });
 
   it("rejects unsupported versions and unknown fields", () => {
     const config = createDefaultConfig(PROJECT_ID);
 
     expect(() => parseConfig({ ...config, schemaVersion: 2 })).toThrowError(
-      AutoForgeError,
+      PriozarError,
     );
     expect(() => parseConfig({ ...config, legacyMode: true })).toThrowError(
-      AutoForgeError,
+      PriozarError,
     );
   });
 
@@ -97,7 +97,7 @@ describe("foundation config schema", () => {
         code: "INVALID_CONFIG",
         exitCode: EXIT_CODE.invalidState,
       });
-      expect((error as AutoForgeError).details.issues).toBeInstanceOf(Array);
+      expect((error as PriozarError).details.issues).toBeInstanceOf(Array);
     }
   });
 });
@@ -133,7 +133,7 @@ describe("state envelope schema", () => {
         updatedAt: "yesterday",
         data: {},
       }),
-    ).toThrowError(AutoForgeError);
+    ).toThrowError(PriozarError);
   });
 });
 
@@ -155,6 +155,6 @@ describe("project metadata state", () => {
 
     expect(() =>
       parseProjectMetadataEnvelope({ ...envelope, schemaVersion: 2 }),
-    ).toThrowError(AutoForgeError);
+    ).toThrowError(PriozarError);
   });
 });

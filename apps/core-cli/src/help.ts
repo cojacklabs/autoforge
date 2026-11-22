@@ -1,5 +1,5 @@
 // Human-oriented output belongs to the deterministic Core CLI application.
-export const AUTOFORGE_HELP = `AutoForge — AI development context and control plane
+export const PRIOZAR_HELP = `AutoForge — AI development context and control plane
 
 Usage:
   autoforge [command]

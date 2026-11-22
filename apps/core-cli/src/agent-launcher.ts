@@ -4,8 +4,8 @@ import path from "node:path";
 
 import {
   agentLauncherInfoSchema,
-  AUTOFORGE_AGENT_LAUNCH_PROTOCOL_VERSION,
-  AUTOFORGE_AGENT_RECURSION_ENV,
+  PRIOZAR_AGENT_LAUNCH_PROTOCOL_VERSION,
+  PRIOZAR_AGENT_RECURSION_ENV,
 } from "@cojacklabs/autoforge-protocol";
 
 import { EXIT_CODE, type ExitCode } from "../../../src/core/errors.js";
@@ -85,12 +85,12 @@ function currentEnvironment(): AgentLaunchEnvironment {
     stdinIsTTY: process.stdin.isTTY === true,
     stdoutIsTTY: process.stdout.isTTY === true,
     ci: Boolean(process.env.CI),
-    recursion: process.env[AUTOFORGE_AGENT_RECURSION_ENV] === "1",
+    recursion: process.env[PRIOZAR_AGENT_RECURSION_ENV] === "1",
     disabled: process.env.AUTOFORGE_NO_AGENT === "1",
   };
 }
 
-export async function launchAutoForgeAgent(
+export async function launchPriozarAgent(
   args: readonly string[],
   options: AgentLauncherOptions,
 ): Promise<ExitCode | undefined> {
@@ -118,7 +118,7 @@ export async function launchAutoForgeAgent(
     options.output.stderr(
       compatibility === "missing"
         ? "AutoForge Agent is not installed. Install @cojacklabs/autoforge-agent to use this command."
-        : `AutoForge Agent is incompatible with launcher protocol ${AUTOFORGE_AGENT_LAUNCH_PROTOCOL_VERSION}. Update @cojacklabs/autoforge-agent.`,
+        : `AutoForge Agent is incompatible with launcher protocol ${PRIOZAR_AGENT_LAUNCH_PROTOCOL_VERSION}. Update @cojacklabs/autoforge-agent.`,
     );
     return EXIT_CODE.invalidState;
   }
@@ -197,7 +197,7 @@ export class NativeAgentProcessHost implements AgentProcessHost {
       windowsHide: false,
       env: {
         ...process.env,
-        [AUTOFORGE_AGENT_RECURSION_ENV]: "1",
+        [PRIOZAR_AGENT_RECURSION_ENV]: "1",
       },
       cwd: this.cwd,
     });

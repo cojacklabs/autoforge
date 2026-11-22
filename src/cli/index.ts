@@ -3,7 +3,7 @@ import path from "node:path";
 import { pathToFileURL } from "node:url";
 import { fileURLToPath } from "node:url";
 
-import { AutoForgeError, EXIT_CODE, toAutoForgeError } from "../core/errors.js";
+import { PriozarError, EXIT_CODE, toPriozarError } from "../core/errors.js";
 import { runAddCommand } from "../commands/add.js";
 import { runArtifactCommand } from "../commands/artifact.js";
 import { runCheckCommand } from "../commands/check.js";
@@ -46,7 +46,7 @@ import { runTuiCommand } from "../commands/tui.js";
 import { runWhyCommand } from "../commands/why.js";
 import { runStrategyCommand } from "../commands/strategy.js";
 import { runStatusCommand } from "../../apps/core-cli/src/status.js";
-import { launchAutoForgeAgent } from "../../apps/core-cli/src/agent-launcher.js";
+import { launchPriozarAgent } from "../../apps/core-cli/src/agent-launcher.js";
 import { GlobalWorkspaceStore } from "../workspace/global-store.js";
 import { projectMutationBlocked } from "../workspace/lifecycle.js";
 import { runCli, type CliOutput } from "./router.js";
@@ -80,7 +80,7 @@ export function findPackageVersion(startUrl: string = import.meta.url): string {
     currentDirectory = parentDirectory;
   }
 
-  throw new AutoForgeError(
+  throw new PriozarError(
     "FILESYSTEM_ERROR",
     "Unable to locate AutoForge package metadata",
     { exitCode: EXIT_CODE.filesystem },
@@ -143,7 +143,7 @@ export async function main(
       output,
       version: findPackageVersion(),
       launchAgent: (agentArgs) =>
-        launchAutoForgeAgent(agentArgs, { output, cwd: startDirectory }),
+        launchPriozarAgent(agentArgs, { output, cwd: startDirectory }),
       commands: {
         artifact: (commandArgs) =>
           runArtifactCommand({ args: commandArgs, output, startDirectory }),
@@ -342,7 +342,7 @@ export async function main(
       },
     });
   } catch (error) {
-    const autoforgeError = toAutoForgeError(error);
+    const autoforgeError = toPriozarError(error);
     output.stderr(`Error: ${autoforgeError.message}`);
     return autoforgeError.exitCode;
   }

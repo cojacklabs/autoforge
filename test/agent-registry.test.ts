@@ -6,7 +6,7 @@ import type {
   AgentDetection,
 } from "../src/agents/adapter.js";
 import { AgentRegistry } from "../src/agents/registry.js";
-import { AutoForgeError } from "../src/core/errors.js";
+import { PriozarError } from "../src/core/errors.js";
 
 const context = { projectRoot: "/workspace/project" };
 
@@ -73,7 +73,7 @@ describe("agent registry", () => {
       "low-prompt",
     ]);
     expect(() => new AgentRegistry([highFile, highFile])).toThrowError(
-      AutoForgeError,
+      PriozarError,
     );
   });
 
@@ -134,7 +134,7 @@ describe("agent registry", () => {
   it("rejects unknown and unsatisfied adapter resolution", async () => {
     const registry = new AgentRegistry([lowPrompt]);
 
-    expect(() => registry.get("missing")).toThrowError(AutoForgeError);
+    expect(() => registry.get("missing")).toThrowError(PriozarError);
     await expect(
       registry.resolve(context, {
         capabilities: { contextDelivery: "repository-instructions" },

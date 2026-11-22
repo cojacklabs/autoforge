@@ -1,4 +1,4 @@
-import { AutoForgeError, EXIT_CODE } from "../core/errors.js";
+import { PriozarError, EXIT_CODE } from "../core/errors.js";
 import type { AgentAdapterContext } from "./adapter.js";
 import { readOptionalText, resolveAgentPath } from "./instructions.js";
 
@@ -38,14 +38,14 @@ function parseSettings(content: string | undefined): Record<string, unknown> {
   try {
     parsed = JSON.parse(content);
   } catch (error) {
-    throw new AutoForgeError(
+    throw new PriozarError(
       "INVALID_STATE",
       `${CLAUDE_SETTINGS_PATH} contains invalid JSON`,
       { cause: error, exitCode: EXIT_CODE.invalidState },
     );
   }
   if (!isRecord(parsed)) {
-    throw new AutoForgeError(
+    throw new PriozarError(
       "INVALID_STATE",
       `${CLAUDE_SETTINGS_PATH} must contain a JSON object`,
       { exitCode: EXIT_CODE.invalidState },
@@ -89,7 +89,7 @@ function mergeSettings(
         ? settings.hooks
         : undefined;
   if (!hooks) {
-    throw new AutoForgeError(
+    throw new PriozarError(
       "INVALID_STATE",
       `${CLAUDE_SETTINGS_PATH} hooks must be a JSON object`,
       { exitCode: EXIT_CODE.invalidState },
@@ -97,7 +97,7 @@ function mergeSettings(
   }
   const existingPreToolUse = hooks.PreToolUse ?? [];
   if (!Array.isArray(existingPreToolUse)) {
-    throw new AutoForgeError(
+    throw new PriozarError(
       "INVALID_STATE",
       `${CLAUDE_SETTINGS_PATH} hooks.PreToolUse must be an array`,
       { exitCode: EXIT_CODE.invalidState },

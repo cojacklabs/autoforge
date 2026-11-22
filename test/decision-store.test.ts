@@ -10,7 +10,7 @@ import {
   decisionMemoryEnvelopeSchema,
   parseDecisionMemoryEnvelope,
 } from "../src/decisions/store.js";
-import { AutoForgeError } from "../src/core/errors.js";
+import { PriozarError } from "../src/core/errors.js";
 import { STATE_SCHEMA_VERSION } from "../src/state/schemas.js";
 
 const TIMESTAMP = "2026-08-20T03:00:00.000Z";
@@ -46,9 +46,7 @@ describe("decision state persistence", () => {
     };
 
     expect(decisionMemoryEnvelopeSchema.safeParse(value).success).toBe(false);
-    expect(() => parseDecisionMemoryEnvelope(value)).toThrowError(
-      AutoForgeError,
-    );
+    expect(() => parseDecisionMemoryEnvelope(value)).toThrowError(PriozarError);
   });
 
   it("persists decisions across independent store instances", async () => {

@@ -15,7 +15,7 @@ import path from "node:path";
 import { z } from "zod";
 
 import { inspectInstallation } from "../commands/init.js";
-import { AutoForgeError, EXIT_CODE } from "../core/errors.js";
+import { PriozarError, EXIT_CODE } from "../core/errors.js";
 import { FRAMEWORK_IDENTITY } from "../core/vocabularies.js";
 
 export const brandMigrationPlanSchema = z
@@ -144,7 +144,7 @@ async function planArtifacts(
 async function assertSourceIsCurrent(projectRoot: string): Promise<void> {
   const inspection = await inspectInstallation(projectRoot);
   if (inspection.status !== "current") {
-    throw new AutoForgeError(
+    throw new PriozarError(
       "INVALID_STATE",
       `Cannot migrate: the ${SOURCE_NAME} installation is ${inspection.status}, not current. Run "autoforge doctor" and repair it first.`,
       {
@@ -180,7 +180,7 @@ export async function migrateBrand(
   const temporaryId = options.temporaryId ?? randomUUID;
 
   if (!(await pathExists(sourcePath))) {
-    throw new AutoForgeError(
+    throw new PriozarError(
       "INVALID_STATE",
       `Cannot migrate: source directory ${SOURCE_NAME} does not exist in ${projectRoot}`,
       {
@@ -192,7 +192,7 @@ export async function migrateBrand(
 
   // Conflict detection: if both .autoforge and .priozar exist
   if (await pathExists(targetPath)) {
-    throw new AutoForgeError(
+    throw new PriozarError(
       "STATE_CONFLICT",
       `Dual-directory conflict: both ${SOURCE_NAME} and ${TARGET_NAME} exist. Resolve manually before migrating.`,
       {
@@ -237,7 +237,7 @@ export async function migrateBrand(
       await rm(lockPath, { force: true });
     }
     if (error instanceof Error && "code" in error && error.code === "EEXIST") {
-      throw new AutoForgeError(
+      throw new PriozarError(
         "STATE_CONFLICT",
         "Another brand migration or project mutation is currently in progress.",
         { details: { lockPath }, exitCode: EXIT_CODE.conflict },
@@ -285,7 +285,7 @@ export async function migrateBrand(
       ([file, size]) => targetTree.get(file) !== size,
     );
     if (mismatched.length > 0 || sourceTree.size !== targetTree.size) {
-      throw new AutoForgeError(
+      throw new PriozarError(
         "STATE_CONFLICT",
         `Copied ${TARGET_NAME} does not match ${SOURCE_NAME}; the source was left in place.`,
         {
@@ -311,7 +311,7 @@ export async function migrateBrand(
     //    new directory because it takes precedence over the legacy one
     const inspection = await inspectInstallation(projectRoot);
     if (inspection.status !== "current") {
-      throw new AutoForgeError(
+      throw new PriozarError(
         "INVALID_STATE",
         `Migrated ${TARGET_NAME} failed validation (${inspection.status}); the source was left in place.`,
         {
@@ -344,7 +344,7 @@ export async function migrateBrand(
   try {
     await rm(sourcePath, { recursive: true, force: true });
   } catch (error) {
-    throw new AutoForgeError(
+    throw new PriozarError(
       "FILESYSTEM_ERROR",
       `Migrated to ${TARGET_NAME} but could not remove ${SOURCE_NAME}. Remove it manually; a backup is at ${backupDirName}.`,
       { cause: error, exitCode: EXIT_CODE.filesystem },

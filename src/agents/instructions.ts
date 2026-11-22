@@ -2,7 +2,7 @@ import { randomUUID } from "node:crypto";
 import { lstat, mkdir, open, readFile, rename, rm } from "node:fs/promises";
 import path from "node:path";
 
-import { AutoForgeError, EXIT_CODE } from "../core/errors.js";
+import { PriozarError, EXIT_CODE } from "../core/errors.js";
 import { resolveContainedProjectPath } from "../core/paths.js";
 import type { AgentAdapterContext } from "./adapter.js";
 
@@ -76,7 +76,7 @@ export function mergeManagedInstructionBlock(
 ): string {
   const status = inspectManagedInstructionBlock(existing, block);
   if (status === "malformed") {
-    throw new AutoForgeError(
+    throw new PriozarError(
       "INVALID_STATE",
       `${block.fileName} contains an incomplete AutoForge managed block`,
       { exitCode: EXIT_CODE.invalidState },

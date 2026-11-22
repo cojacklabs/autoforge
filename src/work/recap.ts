@@ -1,4 +1,4 @@
-import { AutoForgeError, EXIT_CODE } from "../core/errors.js";
+import { PriozarError, EXIT_CODE } from "../core/errors.js";
 import type { AtomicStateStore } from "../state/store.js";
 import {
   workStatusSchema,
@@ -79,8 +79,8 @@ export interface WorkRecapServiceOptions {
 function invalidRecapState(
   message: string,
   details: Readonly<Record<string, unknown>>,
-): AutoForgeError {
-  return new AutoForgeError("INVALID_STATE", message, {
+): PriozarError {
+  return new PriozarError("INVALID_STATE", message, {
     details,
     exitCode: EXIT_CODE.invalidState,
   });

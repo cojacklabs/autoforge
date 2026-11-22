@@ -4,7 +4,7 @@ import path from "node:path";
 
 import { afterEach, describe, expect, it } from "vitest";
 
-import { AutoForgeError } from "../src/core/errors.js";
+import { PriozarError } from "../src/core/errors.js";
 import {
   isPathContained,
   normalizeProjectRelativePath,
@@ -46,7 +46,7 @@ describe("project-relative path normalization", () => {
     "src/paths.ts\0outside",
   ])("rejects unsafe path %s", (candidatePath) => {
     expect(() => normalizeProjectRelativePath(candidatePath)).toThrow(
-      AutoForgeError,
+      PriozarError,
     );
   });
 });

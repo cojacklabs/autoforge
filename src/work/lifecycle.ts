@@ -1,6 +1,6 @@
 import { randomUUID } from "node:crypto";
 
-import { AutoForgeError, EXIT_CODE } from "../core/errors.js";
+import { PriozarError, EXIT_CODE } from "../core/errors.js";
 import type { AtomicStateStore } from "../state/store.js";
 import type {
   ActiveWork,
@@ -48,8 +48,8 @@ function lifecycleError(
   code: "INVALID_ARGUMENT" | "STATE_CONFLICT" | "INVALID_STATE",
   message: string,
   details: Readonly<Record<string, unknown>>,
-): AutoForgeError {
-  return new AutoForgeError(code, message, {
+): PriozarError {
+  return new PriozarError(code, message, {
     details,
     exitCode:
       code === "INVALID_ARGUMENT"
@@ -164,7 +164,7 @@ export class WorkLifecycleService {
           expectedRevision: committedWork.revision,
         });
       } catch (compensationError) {
-        throw new AutoForgeError(
+        throw new PriozarError(
           "INVALID_STATE",
           "Starting work failed and the work state could not be restored",
           {
@@ -251,7 +251,7 @@ export class WorkLifecycleService {
           expectedRevision: committedWork.revision,
         });
       } catch (compensationError) {
-        throw new AutoForgeError(
+        throw new PriozarError(
           "INVALID_STATE",
           "Completing work failed and the work state could not be restored",
           {
@@ -339,7 +339,7 @@ export class WorkLifecycleService {
           expectedRevision: committedWork.revision,
         });
       } catch (compensationError) {
-        throw new AutoForgeError(
+        throw new PriozarError(
           "INVALID_STATE",
           "Pausing work failed and the work state could not be restored",
           {
@@ -419,7 +419,7 @@ export class WorkLifecycleService {
           expectedRevision: committedWork.revision,
         });
       } catch (compensationError) {
-        throw new AutoForgeError(
+        throw new PriozarError(
           "INVALID_STATE",
           "Resuming work failed and the work state could not be restored",
           {

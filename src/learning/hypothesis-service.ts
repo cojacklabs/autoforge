@@ -1,4 +1,4 @@
-import { AutoForgeError, EXIT_CODE } from "../core/errors.js";
+import { PriozarError, EXIT_CODE } from "../core/errors.js";
 import type { AtomicStateStore } from "../state/store.js";
 import type { WorkState } from "../work/schemas.js";
 import {
@@ -29,8 +29,8 @@ export interface HypothesisServiceOptions {
 function hypothesisError(
   message: string,
   details: Readonly<Record<string, unknown>>,
-): AutoForgeError {
-  return new AutoForgeError("INVALID_ARGUMENT", message, {
+): PriozarError {
+  return new PriozarError("INVALID_ARGUMENT", message, {
     details,
     exitCode: EXIT_CODE.notFound,
   });

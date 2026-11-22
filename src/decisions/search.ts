@@ -1,4 +1,4 @@
-import { AutoForgeError, EXIT_CODE } from "../core/errors.js";
+import { PriozarError, EXIT_CODE } from "../core/errors.js";
 import type { Decision, DecisionMemory } from "./schemas.js";
 
 const FIELD_WEIGHTS = {
@@ -144,7 +144,7 @@ export function searchDecisions(
 
   const limit = options.limit ?? 10;
   if (!Number.isInteger(limit) || limit <= 0) {
-    throw new AutoForgeError(
+    throw new PriozarError(
       "INVALID_ARGUMENT",
       "Decision search limit must be a positive integer",
       {

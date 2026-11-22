@@ -1,4 +1,4 @@
-import { AutoForgeError, EXIT_CODE } from "../core/errors.js";
+import { PriozarError, EXIT_CODE } from "../core/errors.js";
 
 export interface StateMigration {
   fromVersion: number;
@@ -9,8 +9,8 @@ export interface StateMigration {
 function invalidMigration(
   message: string,
   details: Readonly<Record<string, unknown>>,
-): AutoForgeError {
-  return new AutoForgeError("INVALID_STATE", message, {
+): PriozarError {
+  return new PriozarError("INVALID_STATE", message, {
     details,
     exitCode: EXIT_CODE.invalidState,
   });

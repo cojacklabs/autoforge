@@ -5,7 +5,7 @@ import {
   scopesOverlap,
   type OrchestrationRepository,
 } from "@cojacklabs/autoforge-core/orchestration";
-import { AutoForgeError, EXIT_CODE } from "../core/errors.js";
+import { PriozarError, EXIT_CODE } from "../core/errors.js";
 import {
   assertAgentContractCompatibility,
   normalizeAgentId,
@@ -63,8 +63,8 @@ function orchestrationError(
   code: "INVALID_ARGUMENT" | "STATE_CONFLICT" | "INVALID_STATE",
   message: string,
   details: Readonly<Record<string, unknown>> = {},
-): AutoForgeError {
-  return new AutoForgeError(code, message, {
+): PriozarError {
+  return new PriozarError(code, message, {
     details,
     exitCode:
       code === "INVALID_ARGUMENT"
@@ -772,7 +772,7 @@ export class OrchestrationService {
         )!;
       } catch (error) {
         if (
-          !(error instanceof AutoForgeError) ||
+          !(error instanceof PriozarError) ||
           error.code !== "STATE_CONFLICT" ||
           attempt === 2
         ) {

@@ -2,9 +2,9 @@ import { readFileSync } from "node:fs";
 
 import { describe, expect, it, vi } from "vitest";
 
-import { AUTOFORGE_HELP as APP_AUTOFORGE_HELP } from "../apps/core-cli/src/help.js";
+import { PRIOZAR_HELP as APP_AUTOFORGE_HELP } from "../apps/core-cli/src/help.js";
 import { runCli as runAppCli } from "../apps/core-cli/src/router.js";
-import { AUTOFORGE_HELP } from "../src/cli/help.js";
+import { PRIOZAR_HELP } from "../src/cli/help.js";
 import { findPackageVersion, main } from "../src/cli/index.js";
 import { runCli } from "../src/cli/router.js";
 import { EXIT_CODE } from "../src/core/errors.js";
@@ -43,7 +43,7 @@ function createDependencies() {
 describe("foundation CLI router", () => {
   it("lists every router-dispatched command in the help text", () => {
     // Every named `case "<command>":` in router.ts must appear in the
-    // AUTOFORGE_HELP `Commands:` list, or a user has no way to discover the
+    // PRIOZAR_HELP `Commands:` list, or a user has no way to discover the
     // command exists. Parses the router's own source rather than
     // hand-maintaining a duplicate list here, so this test catches future
     // additions automatically instead of needing to be updated by hand.
@@ -59,7 +59,7 @@ describe("foundation CLI router", () => {
     expect(dispatchedCommands.length).toBeGreaterThan(0);
 
     const commandsSection =
-      AUTOFORGE_HELP.split("Commands:\n")[1]?.split("\n\n")[0] ?? "";
+      PRIOZAR_HELP.split("Commands:\n")[1]?.split("\n\n")[0] ?? "";
     for (const command of new Set(dispatchedCommands)) {
       expect(commandsSection).toMatch(new RegExp(`^  ${command}\\b`, "m"));
     }
@@ -67,7 +67,7 @@ describe("foundation CLI router", () => {
 
   it("keeps legacy CLI imports as aliases of the core application boundary", () => {
     expect(runCli).toBe(runAppCli);
-    expect(AUTOFORGE_HELP).toBe(APP_AUTOFORGE_HELP);
+    expect(PRIOZAR_HELP).toBe(APP_AUTOFORGE_HELP);
   });
 
   it("accepts a project selector before the command", async () => {
@@ -89,7 +89,7 @@ describe("foundation CLI router", () => {
 
       await expect(runCli(args, dependencies)).resolves.toBe(EXIT_CODE.success);
       expect(dependencies.output.stdout).toHaveBeenCalledOnce();
-      expect(dependencies.output.stdout).toHaveBeenCalledWith(AUTOFORGE_HELP);
+      expect(dependencies.output.stdout).toHaveBeenCalledWith(PRIOZAR_HELP);
       expect(dependencies.output.stderr).not.toHaveBeenCalled();
     },
   );

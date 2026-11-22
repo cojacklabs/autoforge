@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
-  "revision": 170,
-  "updatedAt": "2026-11-20T22:18:21.757Z",
+  "revision": 171,
+  "updatedAt": "2026-11-22T17:26:49.971Z",
   "data": {
     "decisions": [
       {
@@ -4215,6 +4215,31 @@
         "kind": "feature-note",
         "createdAt": "2026-11-20T22:18:21.719Z",
         "updatedAt": "2026-11-20T22:18:21.719Z"
+      },
+      {
+        "id": "decision.rename-public-protocol-and-sdk-identifiers-to-priozar-with-deprecated-aliases-re",
+        "statement": "Rename public protocol and SDK identifiers to Priozar with deprecated aliases; rename CLI-internal identifiers outright",
+        "reasoning": "protocol and sdk are published library APIs, so consumers need the old names to keep working through the compatibility window. The CLI package ships only a bundle, so its internal names can change directly. String values that are wire or storage formats must not change.",
+        "consequences": [
+          "PriozarError, PriozarErrorCode, PriozarErrorOptions, toPriozarError, priozarErrorCodeSchema, PRIOZAR_PROTOCOL_VERSION, PRIOZAR_AGENT_LAUNCH_PROTOCOL_VERSION, PRIOZAR_AGENT_RECURSION_ENV, PriozarSdk, PriozarSdkOptions, createPriozarSdk and SupportedPriozarOperations are canonical; the AutoForge-named equivalents remain as deprecated aliases.",
+          "Error name is now PriozarError. The credential service string com.cojacklabs.autoforge-agent and the AUTOFORGE_AGENT_LAUNCHED value are unchanged here because changing them would orphan stored credentials or break launched agents.",
+          "test/quality-gate.test.ts was left on the deprecated alias because editing it trips the secret scanner on its intentional dummy fixture; tracked as an issue."
+        ],
+        "scope": [
+          "identifiers"
+        ],
+        "keywords": [
+          "priozar",
+          "aliases"
+        ],
+        "relatedWork": [
+          "task.rename-code-identifiers-with-deprecated-aliases"
+        ],
+        "supersedes": null,
+        "status": "active",
+        "kind": "feature-note",
+        "createdAt": "2026-11-22T17:26:49.939Z",
+        "updatedAt": "2026-11-22T17:26:49.939Z"
       }
     ]
   }

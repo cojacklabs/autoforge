@@ -12,7 +12,7 @@ export const EXIT_CODE = {
 
 export type ExitCode = (typeof EXIT_CODE)[keyof typeof EXIT_CODE];
 
-export const autoForgeErrorCodeSchema = z.enum([
+export const priozarErrorCodeSchema = z.enum([
   "INVALID_ARGUMENT",
   "PROJECT_NOT_FOUND",
   "INVALID_CONFIG",
@@ -22,36 +22,36 @@ export const autoForgeErrorCodeSchema = z.enum([
   "UNEXPECTED_ERROR",
   "UNSUPPORTED_PROTOCOL_VERSION",
 ]);
-export type AutoForgeErrorCode = z.infer<typeof autoForgeErrorCodeSchema>;
+export type PriozarErrorCode = z.infer<typeof priozarErrorCodeSchema>;
 
 export const errorEnvelopeSchema = z
   .object({
     protocolVersion: z.literal("1"),
-    code: autoForgeErrorCodeSchema,
+    code: priozarErrorCodeSchema,
     message: z.string().min(1),
     details: z.record(z.string(), z.unknown()).default({}),
   })
   .strict();
 export type ErrorEnvelope = z.infer<typeof errorEnvelopeSchema>;
 
-export interface AutoForgeErrorOptions {
+export interface PriozarErrorOptions {
   cause?: unknown;
   details?: Readonly<Record<string, unknown>>;
   exitCode?: ExitCode;
 }
 
-export class AutoForgeError extends Error {
-  readonly code: AutoForgeErrorCode;
+export class PriozarError extends Error {
+  readonly code: PriozarErrorCode;
   readonly details: Readonly<Record<string, unknown>>;
   readonly exitCode: ExitCode;
 
   constructor(
-    code: AutoForgeErrorCode,
+    code: PriozarErrorCode,
     message: string,
-    options: AutoForgeErrorOptions = {},
+    options: PriozarErrorOptions = {},
   ) {
     super(message, { cause: options.cause });
-    this.name = "AutoForgeError";
+    this.name = "PriozarError";
     this.code = code;
     this.details = options.details ?? {};
     this.exitCode = options.exitCode ?? EXIT_CODE.unexpected;
@@ -67,7 +67,7 @@ export class AutoForgeError extends Error {
   }
 }
 
-export class ProjectNotFoundError extends AutoForgeError {
+export class ProjectNotFoundError extends PriozarError {
   constructor(startDirectory: string) {
     super(
       "PROJECT_NOT_FOUND",
@@ -78,18 +78,29 @@ export class ProjectNotFoundError extends AutoForgeError {
   }
 }
 
-export function toAutoForgeError(error: unknown): AutoForgeError {
-  if (error instanceof AutoForgeError) return error;
+export function toPriozarError(error: unknown): PriozarError {
+  if (error instanceof PriozarError) return error;
   if (error instanceof Error) {
-    return new AutoForgeError("UNEXPECTED_ERROR", error.message, {
+    return new PriozarError("UNEXPECTED_ERROR", error.message, {
       cause: error,
     });
   }
-  return new AutoForgeError(
-    "UNEXPECTED_ERROR",
-    "An unexpected error occurred",
-    {
-      details: { value: error },
-    },
-  );
+  return new PriozarError("UNEXPECTED_ERROR", "An unexpected error occurred", {
+    details: { value: error },
+  });
 }
+
+// Deprecated AutoForge names, kept through the Priozar compatibility window.
+
+/** @deprecated Use PriozarError. */
+export const AutoForgeError = PriozarError;
+/** @deprecated Use PriozarError. */
+export type AutoForgeError = PriozarError;
+/** @deprecated Use PriozarErrorCode. */
+export type AutoForgeErrorCode = PriozarErrorCode;
+/** @deprecated Use PriozarErrorOptions. */
+export type AutoForgeErrorOptions = PriozarErrorOptions;
+/** @deprecated Use toPriozarError. */
+export const toAutoForgeError = toPriozarError;
+/** @deprecated Use priozarErrorCodeSchema. */
+export const autoForgeErrorCodeSchema = priozarErrorCodeSchema;

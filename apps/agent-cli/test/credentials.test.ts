@@ -1,7 +1,7 @@
 import { describe, expect, it, vi } from "vitest";
 
 import {
-  AUTOFORGE_CREDENTIAL_SERVICE,
+  PRIOZAR_CREDENTIAL_SERVICE,
   NativeCredentialVault,
   runCredentialCommand,
   type CredentialCommandIo,
@@ -25,7 +25,7 @@ describe("NativeCredentialVault", () => {
     await vault.set("openai", "test-secret-value");
     expect(await vault.get("openai")).toBe("test-secret-value");
     expect(createEntry).toHaveBeenCalledWith(
-      AUTOFORGE_CREDENTIAL_SERVICE,
+      PRIOZAR_CREDENTIAL_SERVICE,
       "provider.openai.api-key",
     );
     expect(await vault.delete("openai")).toBe(true);

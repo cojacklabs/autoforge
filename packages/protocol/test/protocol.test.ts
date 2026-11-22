@@ -1,8 +1,8 @@
 import { describe, expect, it } from "vitest";
 
 import {
-  AUTOFORGE_PROTOCOL_VERSION,
-  AutoForgeError,
+  PRIOZAR_PROTOCOL_VERSION,
+  PriozarError,
   UnsupportedProtocolVersionError,
   assertSupportedProtocolVersion,
   agentHandoffSchema,
@@ -19,7 +19,7 @@ import {
 
 describe("AutoForge protocol v1", () => {
   it("publishes a wire version independent from the package version", () => {
-    expect(AUTOFORGE_PROTOCOL_VERSION).toBe("1");
+    expect(PRIOZAR_PROTOCOL_VERSION).toBe("1");
     expect(() => assertSupportedProtocolVersion("1")).not.toThrow();
   });
 
@@ -44,7 +44,7 @@ describe("AutoForge protocol v1", () => {
   });
 
   it("serializes errors without exposing their cause", () => {
-    const error = new AutoForgeError("INVALID_STATE", "State is stale", {
+    const error = new PriozarError("INVALID_STATE", "State is stale", {
       cause: new Error("private detail"),
       details: { action: "refresh" },
     });

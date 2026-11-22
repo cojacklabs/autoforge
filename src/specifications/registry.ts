@@ -1,4 +1,4 @@
-import { AutoForgeError, EXIT_CODE } from "../core/errors.js";
+import { PriozarError, EXIT_CODE } from "../core/errors.js";
 import { SpecificationFileStore } from "./store.js";
 import {
   specificationRelationshipEdgeSchema,
@@ -65,8 +65,8 @@ export interface SpecificationRegistryOptions {
 function invalidInput(
   message: string,
   details: Readonly<Record<string, unknown>>,
-): AutoForgeError {
-  return new AutoForgeError("INVALID_ARGUMENT", message, {
+): PriozarError {
+  return new PriozarError("INVALID_ARGUMENT", message, {
     details,
     exitCode: EXIT_CODE.usage,
   });

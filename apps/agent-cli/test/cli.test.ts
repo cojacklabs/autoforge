@@ -4,7 +4,7 @@ import { tmpdir } from "node:os";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 
-import { AUTOFORGE_AGENT_LAUNCH_PROTOCOL_VERSION } from "@cojacklabs/autoforge-protocol";
+import { PRIOZAR_AGENT_LAUNCH_PROTOCOL_VERSION } from "@cojacklabs/autoforge-protocol";
 import { describe, expect, it, vi } from "vitest";
 
 import { main } from "../src/cli.js";
@@ -24,7 +24,7 @@ describe("Agent CLI launcher protocol", () => {
     expect(payload).toEqual({
       name: "@cojacklabs/autoforge-agent",
       version: "0.1.0",
-      launchProtocolVersion: AUTOFORGE_AGENT_LAUNCH_PROTOCOL_VERSION,
+      launchProtocolVersion: PRIOZAR_AGENT_LAUNCH_PROTOCOL_VERSION,
     });
     write.mockRestore();
   });
@@ -48,7 +48,7 @@ describe("Agent CLI launcher protocol", () => {
     expect(result.status).toBe(0);
     expect(JSON.parse(result.stdout)).toMatchObject({
       name: "@cojacklabs/autoforge-agent",
-      launchProtocolVersion: AUTOFORGE_AGENT_LAUNCH_PROTOCOL_VERSION,
+      launchProtocolVersion: PRIOZAR_AGENT_LAUNCH_PROTOCOL_VERSION,
     });
   });
 });

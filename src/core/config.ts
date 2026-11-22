@@ -1,6 +1,6 @@
 import { z } from "zod";
 
-import { AutoForgeError, EXIT_CODE } from "./errors.js";
+import { PriozarError, EXIT_CODE } from "./errors.js";
 
 export const CONFIG_SCHEMA_VERSION = 1;
 export const DEFAULT_CONTEXT_BUDGET_TOKENS = 12_000;
@@ -65,9 +65,9 @@ export const configSchema = z
 
 export type ArtifactGitPolicy = z.infer<typeof artifactGitPolicySchema>;
 export type QualityGateCommand = z.infer<typeof qualityGateCommandSchema>;
-export type AutoForgeConfig = z.infer<typeof configSchema>;
+export type PriozarConfig = z.infer<typeof configSchema>;
 
-export function createDefaultConfig(projectId: string): AutoForgeConfig {
+export function createDefaultConfig(projectId: string): PriozarConfig {
   return parseConfig({
     schemaVersion: CONFIG_SCHEMA_VERSION,
     projectId,
@@ -86,13 +86,13 @@ export function createDefaultConfig(projectId: string): AutoForgeConfig {
   });
 }
 
-export function parseConfig(value: unknown): AutoForgeConfig {
+export function parseConfig(value: unknown): PriozarConfig {
   const result = configSchema.safeParse(value);
   if (result.success) {
     return result.data;
   }
 
-  throw new AutoForgeError("INVALID_CONFIG", "Invalid AutoForge config", {
+  throw new PriozarError("INVALID_CONFIG", "Invalid AutoForge config", {
     details: {
       issues: result.error.issues,
     },

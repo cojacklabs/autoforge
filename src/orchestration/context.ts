@@ -3,7 +3,7 @@ import { createHash } from "node:crypto";
 import { createAgentGovernanceDirectives } from "../agents/governance.js";
 import { inspectInstallation } from "../commands/init.js";
 import { generateAgentContract } from "../contract/generator.js";
-import { AutoForgeError, EXIT_CODE } from "../core/errors.js";
+import { PriozarError, EXIT_CODE } from "../core/errors.js";
 import { ContextPacketCompiler } from "../context/packet.js";
 import { ContextResolver } from "../context/resolver.js";
 import { doctrineSessionStateSchema } from "../doctrine/session.js";
@@ -97,7 +97,7 @@ export class ProjectOrchestrationContextProvider implements OrchestrationContext
       !installation.decisions ||
       !installation.doctrines
     ) {
-      throw new AutoForgeError(
+      throw new PriozarError(
         "INVALID_STATE",
         "Orchestration context requires a current AutoForge installation",
         { exitCode: EXIT_CODE.invalidState },
@@ -109,7 +109,7 @@ export class ProjectOrchestrationContextProvider implements OrchestrationContext
         ? installation.work.data.issues
         : installation.work.data.tasks;
     if (!collection.some((item) => item.id === input.node.workId)) {
-      throw new AutoForgeError(
+      throw new PriozarError(
         "INVALID_STATE",
         `Orchestration work ${input.node.workId} is missing from canonical work state`,
         { exitCode: EXIT_CODE.invalidState },

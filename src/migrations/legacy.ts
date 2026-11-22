@@ -20,7 +20,7 @@ import {
   qualityGateCommandSchema,
   type QualityGateCommand,
 } from "../core/config.js";
-import { AutoForgeError, EXIT_CODE } from "../core/errors.js";
+import { PriozarError, EXIT_CODE } from "../core/errors.js";
 import {
   legacyMigrationPlanSchema,
   legacyMigrationResultSchema,
@@ -93,7 +93,7 @@ async function readJson(candidatePath: string): Promise<unknown> {
   try {
     return JSON.parse(await readFile(candidatePath, "utf8"));
   } catch (error) {
-    throw new AutoForgeError(
+    throw new PriozarError(
       "INVALID_STATE",
       `Unable to parse legacy JSON at ${candidatePath}`,
       {
@@ -232,7 +232,7 @@ export async function planLegacyMigration(
   const root = path.resolve(projectRoot);
   const inspection = await inspectInstallation(root);
   if (inspection.status !== "legacy") {
-    throw new AutoForgeError(
+    throw new PriozarError(
       "INVALID_STATE",
       `Legacy migration requires a legacy installation; found ${inspection.status}.`,
       {
@@ -246,7 +246,7 @@ export async function planLegacyMigration(
   }
   const packagePath = path.join(inspection.directory, "package.json");
   if (!(await pathExists(packagePath))) {
-    throw new AutoForgeError(
+    throw new PriozarError(
       "INVALID_STATE",
       "Legacy AutoForge version could not be detected; no files were changed.",
       {
@@ -259,7 +259,7 @@ export async function planLegacyMigration(
     await readJson(packagePath),
   );
   if (!legacyPackage.success) {
-    throw new AutoForgeError(
+    throw new PriozarError(
       "INVALID_STATE",
       "Unsupported legacy AutoForge package metadata; no files were changed.",
       {
@@ -295,7 +295,7 @@ export async function planLegacyMigration(
 
 function safeId(value: string): string {
   if (!/^[A-Za-z0-9-]+$/.test(value)) {
-    throw new AutoForgeError(
+    throw new PriozarError(
       "INVALID_ARGUMENT",
       "Migration temporary IDs must contain only letters, numbers, and hyphens.",
       { exitCode: EXIT_CODE.usage },
@@ -357,7 +357,7 @@ export async function migrateLegacyProject(
         "code" in error &&
         error.code === "EEXIST"
       ) {
-        throw new AutoForgeError(
+        throw new PriozarError(
           "STATE_CONFLICT",
           "Another AutoForge initialization or migration is in progress.",
           { exitCode: EXIT_CODE.conflict },
@@ -368,14 +368,14 @@ export async function migrateLegacyProject(
 
     const lockedPlan = await planLegacyMigration(projectRoot);
     if (JSON.stringify(lockedPlan) !== JSON.stringify(plan)) {
-      throw new AutoForgeError(
+      throw new PriozarError(
         "STATE_CONFLICT",
         "Legacy installation changed while migration was being prepared; no files were changed.",
         { exitCode: EXIT_CODE.conflict },
       );
     }
     if (await pathExists(backupDirectory)) {
-      throw new AutoForgeError(
+      throw new PriozarError(
         "STATE_CONFLICT",
         `Migration backup already exists at ${backupDirectory}.`,
         { exitCode: EXIT_CODE.conflict },
@@ -402,7 +402,7 @@ export async function migrateLegacyProject(
       "utf8",
     );
     if ((await inspectInstallation(stagingRoot)).status !== "current") {
-      throw new AutoForgeError(
+      throw new PriozarError(
         "INVALID_STATE",
         "Staged 0.7 installation failed validation; no files were changed.",
         { exitCode: EXIT_CODE.invalidState },
@@ -433,7 +433,7 @@ export async function migrateLegacyProject(
     await rename(path.join(stagingRoot, ".autoforge"), targetDirectory);
     currentPublished = true;
     if ((await inspectInstallation(projectRoot)).status !== "current") {
-      throw new AutoForgeError(
+      throw new PriozarError(
         "INVALID_STATE",
         "Published 0.7 installation failed validation; the legacy installation will be restored.",
         { exitCode: EXIT_CODE.invalidState },

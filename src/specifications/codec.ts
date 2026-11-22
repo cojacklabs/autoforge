@@ -1,6 +1,6 @@
 import { parse, stringify } from "yaml";
 
-import { AutoForgeError, EXIT_CODE } from "../core/errors.js";
+import { PriozarError, EXIT_CODE } from "../core/errors.js";
 import {
   designSpecificationSchema,
   specificationFrontmatterSchema,
@@ -15,8 +15,8 @@ function invalidSpecification(
   message: string,
   details: Readonly<Record<string, unknown>>,
   cause?: unknown,
-): AutoForgeError {
-  return new AutoForgeError("INVALID_STATE", message, {
+): PriozarError {
+  return new PriozarError("INVALID_STATE", message, {
     cause,
     details,
     exitCode: EXIT_CODE.invalidState,
@@ -68,7 +68,7 @@ export function serializeSpecificationMarkdown(
 ): string {
   const result = specificationSchema.safeParse(specification);
   if (!result.success) {
-    throw new AutoForgeError(
+    throw new PriozarError(
       "INVALID_ARGUMENT",
       "Refusing to serialize an invalid specification",
       {

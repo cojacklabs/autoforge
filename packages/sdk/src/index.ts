@@ -5,7 +5,7 @@ import {
   type IntentAssessmentInput,
 } from "@cojacklabs/autoforge-core";
 import {
-  AUTOFORGE_PROTOCOL_VERSION,
+  PRIOZAR_PROTOCOL_VERSION,
   type ProtocolVersion,
 } from "@cojacklabs/autoforge-protocol";
 import type {
@@ -19,7 +19,7 @@ import type {
   ProjectsInput,
   ProtocolData,
   StartWorkInput,
-  SupportedAutoForgeOperations,
+  SupportedPriozarOperations,
   ValidationInput,
   WorkInput,
 } from "./operations.js";
@@ -39,7 +39,7 @@ export interface SdkCapabilities {
 
 export function getSdkCapabilities(): SdkResponse<SdkCapabilities> {
   return response({
-    protocolVersion: AUTOFORGE_PROTOCOL_VERSION,
+    protocolVersion: PRIOZAR_PROTOCOL_VERSION,
     operations: SDK_OPERATION_CAPABILITIES,
   });
 }
@@ -94,7 +94,7 @@ export async function inspectProjectAttachment(
   return response(await inspector());
 }
 
-export interface AutoForgeSdkOptions<
+export interface PriozarSdkOptions<
   Projects,
   Status,
   Work,
@@ -107,7 +107,7 @@ export interface AutoForgeSdkOptions<
   Start,
   Complete,
 > {
-  operations: SupportedAutoForgeOperations<
+  operations: SupportedPriozarOperations<
     Projects,
     Status,
     Work,
@@ -123,7 +123,7 @@ export interface AutoForgeSdkOptions<
   clock?: Clock;
 }
 
-export class AutoForgeSdk<
+export class PriozarSdk<
   Projects,
   Status,
   Work,
@@ -137,7 +137,7 @@ export class AutoForgeSdk<
   Complete,
 > {
   private readonly intelligence: ProjectIntelligenceService;
-  private readonly operations: SupportedAutoForgeOperations<
+  private readonly operations: SupportedPriozarOperations<
     Projects,
     Status,
     Work,
@@ -152,7 +152,7 @@ export class AutoForgeSdk<
   >;
 
   constructor(
-    options: AutoForgeSdkOptions<
+    options: PriozarSdkOptions<
       Projects,
       Status,
       Work,
@@ -237,7 +237,7 @@ export function assessIntent(
   return response(new ProjectIntelligenceService(clock).assess(input));
 }
 
-export function createAutoForgeSdk<
+export function createPriozarSdk<
   Projects,
   Status,
   Work,
@@ -250,7 +250,7 @@ export function createAutoForgeSdk<
   Start,
   Complete,
 >(options: {
-  operations: SupportedAutoForgeOperations<
+  operations: SupportedPriozarOperations<
     Projects,
     Status,
     Work,
@@ -264,7 +264,7 @@ export function createAutoForgeSdk<
     Complete
   >;
   clock?: Clock;
-}): AutoForgeSdk<
+}): PriozarSdk<
   Projects,
   Status,
   Work,
@@ -277,7 +277,7 @@ export function createAutoForgeSdk<
   Start,
   Complete
 > {
-  return new AutoForgeSdk<
+  return new PriozarSdk<
     Projects,
     Status,
     Work,
@@ -293,7 +293,12 @@ export function createAutoForgeSdk<
 }
 
 function response<T>(data: T): SdkResponse<T> {
-  return { protocolVersion: AUTOFORGE_PROTOCOL_VERSION, data };
+  return { protocolVersion: PRIOZAR_PROTOCOL_VERSION, data };
 }
 
 export type { IntentAssessment, IntentAssessmentInput };
+
+// Deprecated AutoForge names, kept through the Priozar compatibility window.
+// Use PriozarSdk, PriozarSdkOptions and createPriozarSdk.
+export type { PriozarSdkOptions as AutoForgeSdkOptions };
+export { PriozarSdk as AutoForgeSdk, createPriozarSdk as createAutoForgeSdk };

@@ -5,10 +5,10 @@ import path from "node:path";
 import { afterEach, describe, expect, it, vi } from "vitest";
 
 import {
-  AutoForgeError,
+  PriozarError,
   EXIT_CODE,
   ProjectNotFoundError,
-  toAutoForgeError,
+  toPriozarError,
 } from "../src/core/errors.js";
 import { createLogger } from "../src/core/logger.js";
 import { discoverProjectRoot } from "../src/core/project.js";
@@ -31,7 +31,7 @@ afterEach(async () => {
 
 describe("core errors", () => {
   it("preserves stable error metadata", () => {
-    const error = new AutoForgeError("INVALID_ARGUMENT", "Invalid value", {
+    const error = new PriozarError("INVALID_ARGUMENT", "Invalid value", {
       details: { argument: "value" },
       exitCode: EXIT_CODE.usage,
     });
@@ -43,7 +43,7 @@ describe("core errors", () => {
 
   it("normalizes unknown errors", () => {
     const cause = new Error("failure");
-    const error = toAutoForgeError(cause);
+    const error = toPriozarError(cause);
 
     expect(error.code).toBe("UNEXPECTED_ERROR");
     expect(error.message).toBe("failure");

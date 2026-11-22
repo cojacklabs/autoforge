@@ -1,6 +1,6 @@
 import { z } from "zod";
 
-import { AutoForgeError, EXIT_CODE } from "../core/errors.js";
+import { PriozarError, EXIT_CODE } from "../core/errors.js";
 
 export const STATE_SCHEMA_VERSION = 1;
 
@@ -60,7 +60,7 @@ export function parseStateEnvelope<DataSchema extends z.ZodType>(
     return result.data;
   }
 
-  throw new AutoForgeError("INVALID_STATE", "Invalid AutoForge state", {
+  throw new PriozarError("INVALID_STATE", "Invalid AutoForge state", {
     details: {
       issues: result.error.issues,
     },
@@ -91,7 +91,7 @@ export function parseProjectMetadataEnvelope(
     return result.data;
   }
 
-  throw new AutoForgeError("INVALID_STATE", "Invalid project metadata state", {
+  throw new PriozarError("INVALID_STATE", "Invalid project metadata state", {
     details: {
       issues: result.error.issues,
     },

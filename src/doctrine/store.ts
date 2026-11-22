@@ -1,4 +1,4 @@
-import { AutoForgeError, EXIT_CODE } from "../core/errors.js";
+import { PriozarError, EXIT_CODE } from "../core/errors.js";
 import { resolveProjectPath } from "../core/paths.js";
 import {
   createStateEnvelopeSchema,
@@ -26,7 +26,7 @@ export function parseDoctrineRegistryEnvelope(
 ): StateEnvelope<DoctrineRegistry> {
   const result = doctrineRegistryEnvelopeSchema.safeParse(value);
   if (!result.success) {
-    throw new AutoForgeError("INVALID_STATE", "Invalid doctrine state", {
+    throw new PriozarError("INVALID_STATE", "Invalid doctrine state", {
       details: { issues: result.error.issues },
       exitCode: EXIT_CODE.invalidState,
     });

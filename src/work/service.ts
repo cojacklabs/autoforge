@@ -1,4 +1,4 @@
-import { AutoForgeError, EXIT_CODE } from "../core/errors.js";
+import { PriozarError, EXIT_CODE } from "../core/errors.js";
 import type { AtomicStateStore } from "../state/store.js";
 import {
   featureSchema,
@@ -46,8 +46,8 @@ export interface WorkServiceOptions {
   now?: () => Date;
 }
 
-function missingParent(kind: "feature" | "phase", id: string): AutoForgeError {
-  return new AutoForgeError(
+function missingParent(kind: "feature" | "phase", id: string): PriozarError {
+  return new PriozarError(
     "INVALID_ARGUMENT",
     `Cannot create work for unknown ${kind} ${id}`,
     {

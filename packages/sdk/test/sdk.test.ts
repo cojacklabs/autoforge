@@ -2,7 +2,7 @@ import { describe, expect, it, vi } from "vitest";
 
 import {
   assessIntent,
-  createAutoForgeSdk,
+  createPriozarSdk,
   getSdkCapabilities,
   inspectProjectAttachment,
   readProjectStatus,
@@ -160,7 +160,7 @@ describe("internal AutoForge SDK foundation", () => {
   });
 
   it("returns deterministic Core assessments in a protocol envelope", () => {
-    const sdk = createAutoForgeSdk({
+    const sdk = createPriozarSdk({
       clock: { now: () => new Date("2026-08-25T00:00:00.000Z") },
       operations: supportedOperations(),
     });
@@ -198,7 +198,7 @@ describe("internal AutoForge SDK foundation", () => {
       completedWork: { kind: "task" as const, id: "task.sdk" },
       revision: 3,
     }));
-    const sdk = createAutoForgeSdk({
+    const sdk = createPriozarSdk({
       operations: {
         ...supportedOperations(),
         status,
@@ -248,7 +248,7 @@ describe("internal AutoForge SDK foundation", () => {
       startWork: vi.fn(async (input) => ({ active: input })),
       completeWork: vi.fn(async (input) => ({ completion: input })),
     };
-    const sdk = createAutoForgeSdk({ operations });
+    const sdk = createPriozarSdk({ operations });
 
     await expect(sdk.projects({ action: "list" })).resolves.toMatchObject({
       protocolVersion: "1",
@@ -300,7 +300,7 @@ describe("internal AutoForge SDK foundation", () => {
 
   it("does not translate errors from injected operations", async () => {
     const conflict = new Error("active work conflict");
-    const sdk = createAutoForgeSdk({
+    const sdk = createPriozarSdk({
       operations: {
         ...supportedOperations(),
         status: async () => ({ status: "idle" }),

@@ -1,9 +1,9 @@
 import { z } from "zod";
 
-export const AUTOFORGE_PROTOCOL_VERSION = "1" as const;
-export const SUPPORTED_PROTOCOL_VERSIONS = [
-  AUTOFORGE_PROTOCOL_VERSION,
-] as const;
+export const PRIOZAR_PROTOCOL_VERSION = "1" as const;
+/** @deprecated Use PRIOZAR_PROTOCOL_VERSION. */
+export const AUTOFORGE_PROTOCOL_VERSION = PRIOZAR_PROTOCOL_VERSION;
+export const SUPPORTED_PROTOCOL_VERSIONS = [PRIOZAR_PROTOCOL_VERSION] as const;
 
 export const protocolVersionSchema = z.enum(SUPPORTED_PROTOCOL_VERSIONS);
 export type ProtocolVersion = z.infer<typeof protocolVersionSchema>;

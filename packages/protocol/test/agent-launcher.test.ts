@@ -2,7 +2,7 @@ import { describe, expect, it } from "vitest";
 
 import {
   agentLauncherInfoSchema,
-  AUTOFORGE_AGENT_LAUNCH_PROTOCOL_VERSION,
+  PRIOZAR_AGENT_LAUNCH_PROTOCOL_VERSION,
 } from "../src/index.js";
 
 describe("Agent launcher protocol", () => {
@@ -10,7 +10,7 @@ describe("Agent launcher protocol", () => {
     const compatible = {
       name: "@cojacklabs/autoforge-agent",
       version: "0.1.0",
-      launchProtocolVersion: AUTOFORGE_AGENT_LAUNCH_PROTOCOL_VERSION,
+      launchProtocolVersion: PRIOZAR_AGENT_LAUNCH_PROTOCOL_VERSION,
     };
     expect(agentLauncherInfoSchema.safeParse(compatible).success).toBe(true);
     expect(

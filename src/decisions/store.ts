@@ -1,4 +1,4 @@
-import { AutoForgeError, EXIT_CODE } from "../core/errors.js";
+import { PriozarError, EXIT_CODE } from "../core/errors.js";
 import { resolveProjectPath } from "../core/paths.js";
 import {
   createStateEnvelopeSchema,
@@ -30,7 +30,7 @@ export function parseDecisionMemoryEnvelope(
 ): StateEnvelope<DecisionMemory> {
   const result = decisionMemoryEnvelopeSchema.safeParse(value);
   if (!result.success) {
-    throw new AutoForgeError("INVALID_STATE", "Invalid decision state", {
+    throw new PriozarError("INVALID_STATE", "Invalid decision state", {
       details: { issues: result.error.issues },
       exitCode: EXIT_CODE.invalidState,
     });

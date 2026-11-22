@@ -1,4 +1,4 @@
-import { EXIT_CODE, AutoForgeError, type ExitCode } from "../core/errors.js";
+import { EXIT_CODE, PriozarError, type ExitCode } from "../core/errors.js";
 import type { LogWriter } from "../core/logger.js";
 import { discoverProjectRoot } from "../core/project.js";
 import {
@@ -55,7 +55,7 @@ export async function compileProjectContext(
     !installation.doctrines ||
     !installation.doctrineSession
   ) {
-    throw new AutoForgeError(
+    throw new PriozarError(
       "INVALID_STATE",
       'Context generation requires a current AutoForge installation. Run "autoforge doctor" for details.',
       {

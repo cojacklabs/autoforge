@@ -1,6 +1,6 @@
 import { z } from "zod";
 
-import { AutoForgeError, EXIT_CODE } from "../core/errors.js";
+import { PriozarError, EXIT_CODE } from "../core/errors.js";
 import { resolveProjectPath } from "../core/paths.js";
 import {
   createStateEnvelopeSchema,
@@ -113,14 +113,10 @@ export function parseDoctrineSessionStateEnvelope(
 ): StateEnvelope<DoctrineSessionState> {
   const result = doctrineSessionStateEnvelopeSchema.safeParse(value);
   if (!result.success) {
-    throw new AutoForgeError(
-      "INVALID_STATE",
-      "Invalid doctrine session state",
-      {
-        details: { issues: result.error.issues },
-        exitCode: EXIT_CODE.invalidState,
-      },
-    );
+    throw new PriozarError("INVALID_STATE", "Invalid doctrine session state", {
+      details: { issues: result.error.issues },
+      exitCode: EXIT_CODE.invalidState,
+    });
   }
   return result.data;
 }
@@ -164,7 +160,7 @@ export class DoctrineSessionService {
   async select(input: SelectDoctrineSessionInput): Promise<DoctrineSession> {
     const { state } = await this.store.read();
     if (state.data.current !== null) {
-      throw new AutoForgeError(
+      throw new PriozarError(
         "STATE_CONFLICT",
         `Doctrine session is already active: ${state.data.current.sessionId}`,
         { exitCode: EXIT_CODE.conflict },
@@ -174,7 +170,7 @@ export class DoctrineSessionService {
       input.workKind === "task" ? this.work.tasks : this.work.issues;
     const work = collection.find((candidate) => candidate.id === input.workId);
     if (!work) {
-      throw new AutoForgeError(
+      throw new PriozarError(
         "INVALID_ARGUMENT",
         `Unknown ${input.workKind} ${input.workId}`,
         { exitCode: EXIT_CODE.notFound },
@@ -210,7 +206,7 @@ export class DoctrineSessionService {
   async end(sessionId: string): Promise<DoctrineSession> {
     const { state } = await this.store.read();
     if (state.data.current?.sessionId !== sessionId) {
-      throw new AutoForgeError(
+      throw new PriozarError(
         "STATE_CONFLICT",
         `Doctrine session is not active: ${sessionId}`,
         { exitCode: EXIT_CODE.conflict },
@@ -230,7 +226,7 @@ export class DoctrineSessionService {
   async cancel(sessionId: string): Promise<void> {
     const { state } = await this.store.read();
     if (state.data.current?.sessionId !== sessionId) {
-      throw new AutoForgeError(
+      throw new PriozarError(
         "STATE_CONFLICT",
         `Doctrine session is not active: ${sessionId}`,
         { exitCode: EXIT_CODE.conflict },
@@ -245,7 +241,7 @@ export class DoctrineSessionService {
   async resume(sessionId: string): Promise<void> {
     const { state } = await this.store.read();
     if (state.data.current !== null) {
-      throw new AutoForgeError(
+      throw new PriozarError(
         "STATE_CONFLICT",
         `Doctrine session is already active: ${state.data.current.sessionId}`,
         { exitCode: EXIT_CODE.conflict },
@@ -263,7 +259,7 @@ export class DoctrineSessionService {
       }
     }
     if (index < 0) {
-      throw new AutoForgeError(
+      throw new PriozarError(
         "STATE_CONFLICT",
         `Doctrine session cannot be resumed: ${sessionId}`,
         { exitCode: EXIT_CODE.conflict },

@@ -4,7 +4,7 @@ import path from "node:path";
 
 import type { z } from "zod";
 
-import { AutoForgeError, EXIT_CODE } from "../core/errors.js";
+import { PriozarError, EXIT_CODE } from "../core/errors.js";
 import type { StateEnvelope } from "./schemas.js";
 
 export interface StateStoreOptions<Data> {
@@ -28,8 +28,8 @@ function stateError(
   message: string,
   filePath: string,
   cause?: unknown,
-): AutoForgeError {
-  return new AutoForgeError("INVALID_STATE", message, {
+): PriozarError {
+  return new PriozarError("INVALID_STATE", message, {
     cause,
     details: { path: filePath },
     exitCode: EXIT_CODE.invalidState,
@@ -39,8 +39,8 @@ function stateError(
 function conflictError(
   message: string,
   details: Readonly<Record<string, unknown>>,
-): AutoForgeError {
-  return new AutoForgeError("STATE_CONFLICT", message, {
+): PriozarError {
+  return new PriozarError("STATE_CONFLICT", message, {
     details,
     exitCode: EXIT_CODE.conflict,
   });
@@ -64,7 +64,7 @@ async function readValidatedState<Data>(
 
   const result = schema.safeParse(value);
   if (!result.success) {
-    throw new AutoForgeError("INVALID_STATE", `Invalid state in ${filePath}`, {
+    throw new PriozarError("INVALID_STATE", `Invalid state in ${filePath}`, {
       details: { path: filePath, issues: result.error.issues },
       exitCode: EXIT_CODE.invalidState,
     });
@@ -109,7 +109,7 @@ export class AtomicStateStore<Data> {
           source: "backup",
         };
       } catch (backupError) {
-        throw new AutoForgeError(
+        throw new PriozarError(
           "INVALID_STATE",
           `Neither primary nor backup state is valid for ${this.filePath}`,
           {
@@ -192,14 +192,10 @@ export class AtomicStateStore<Data> {
       return result.data;
     }
 
-    throw new AutoForgeError(
-      "INVALID_STATE",
-      "Refusing to write invalid state",
-      {
-        details: { path: this.filePath, issues: result.error.issues },
-        exitCode: EXIT_CODE.invalidState,
-      },
-    );
+    throw new PriozarError("INVALID_STATE", "Refusing to write invalid state", {
+      details: { path: this.filePath, issues: result.error.issues },
+      exitCode: EXIT_CODE.invalidState,
+    });
   }
 
   private async primaryExists(): Promise<boolean> {
@@ -243,7 +239,7 @@ export class AtomicStateStore<Data> {
           lockPath: this.lockPath,
         });
       }
-      throw new AutoForgeError(
+      throw new PriozarError(
         "FILESYSTEM_ERROR",
         `Unable to acquire state lock for ${this.filePath}`,
         {

@@ -14,7 +14,7 @@ import path from "node:path";
 import {
   createDefaultConfig,
   parseConfig,
-  type AutoForgeConfig,
+  type PriozarConfig,
 } from "../core/config.js";
 import {
   createDecisionStore,
@@ -34,7 +34,7 @@ import {
   createDoctrineStore,
   parseDoctrineRegistryEnvelope,
 } from "../doctrine/store.js";
-import { AutoForgeError, EXIT_CODE, type ExitCode } from "../core/errors.js";
+import { PriozarError, EXIT_CODE, type ExitCode } from "../core/errors.js";
 import type { LogWriter } from "../core/logger.js";
 import { discoverProjectRoot } from "../core/project.js";
 import {
@@ -62,7 +62,7 @@ export type InstallationStatus = "absent" | "current" | "legacy" | "partial";
 export interface InstallationInspection {
   status: InstallationStatus;
   directory: string;
-  config?: AutoForgeConfig;
+  config?: PriozarConfig;
   metadata?: ProjectMetadataEnvelope;
   work?: StateEnvelope<WorkState>;
   session?: StateEnvelope<SessionState>;
@@ -100,7 +100,7 @@ async function readJson(filePath: string): Promise<unknown> {
   try {
     return JSON.parse(await readFile(filePath, "utf8"));
   } catch (error) {
-    throw new AutoForgeError("INVALID_STATE", `Invalid JSON in ${filePath}`, {
+    throw new PriozarError("INVALID_STATE", `Invalid JSON in ${filePath}`, {
       cause: error,
       details: { path: filePath },
       exitCode: EXIT_CODE.invalidState,
@@ -227,9 +227,9 @@ export async function inspectInstallation(
 
 function installationConflict(
   inspection: InstallationInspection,
-): AutoForgeError {
+): PriozarError {
   if (inspection.status === "legacy") {
-    return new AutoForgeError(
+    return new PriozarError(
       "STATE_CONFLICT",
       'A legacy AutoForge installation was detected. Run "autoforge migrate --dry-run" to inspect the migration; no files were changed.',
       {
@@ -240,7 +240,7 @@ function installationConflict(
   }
 
   if (inspection.status === "partial") {
-    return new AutoForgeError(
+    return new PriozarError(
       "INVALID_STATE",
       "A partial AutoForge installation was detected. Repair or migrate it before initialization; no files were changed.",
       {
@@ -250,7 +250,7 @@ function installationConflict(
     );
   }
 
-  return new AutoForgeError(
+  return new PriozarError(
     "STATE_CONFLICT",
     "AutoForge is already initialized; no files were changed.",
     {
@@ -289,7 +289,7 @@ export async function initializeProject(
       await rm(lockPath, { force: true });
     }
     if (error instanceof Error && "code" in error && error.code === "EEXIST") {
-      throw new AutoForgeError(
+      throw new PriozarError(
         "STATE_CONFLICT",
         "Another AutoForge initialization is in progress.",
         {

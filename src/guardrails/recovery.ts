@@ -1,6 +1,6 @@
 import { randomUUID } from "node:crypto";
 
-import { AutoForgeError, EXIT_CODE } from "../core/errors.js";
+import { PriozarError, EXIT_CODE } from "../core/errors.js";
 import {
   createDoctrineSessionStore,
   DoctrineSessionService,
@@ -23,7 +23,7 @@ export interface SessionRecoveryResult {
 }
 
 function unrecoverable(message: string, details: Record<string, unknown>) {
-  return new AutoForgeError("INVALID_STATE", message, {
+  return new PriozarError("INVALID_STATE", message, {
     details,
     exitCode: EXIT_CODE.invalidState,
   });
@@ -142,7 +142,7 @@ export class SessionRecoveryService {
           try {
             await doctrineService.cancel(sessionId);
           } catch (compensationError) {
-            throw new AutoForgeError(
+            throw new PriozarError(
               "INVALID_STATE",
               "Session recovery failed and the doctrine repair could not be restored",
               {

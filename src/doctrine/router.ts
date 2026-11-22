@@ -1,4 +1,4 @@
-import { AutoForgeError, EXIT_CODE } from "../core/errors.js";
+import { PriozarError, EXIT_CODE } from "../core/errors.js";
 import type { Doctrine, DoctrineRegistry, DoctrineRouting } from "./schemas.js";
 
 const ROUTING_WEIGHTS = {
@@ -64,7 +64,7 @@ function normalizePath(value: string): string {
     /^[a-z]:\//i.test(normalized) ||
     normalized.split("/").includes("..")
   ) {
-    throw new AutoForgeError(
+    throw new PriozarError(
       "INVALID_ARGUMENT",
       "Doctrine routing paths must be repository-relative",
       { details: { path: value }, exitCode: EXIT_CODE.usage },
@@ -163,7 +163,7 @@ export function routeDoctrines(
 ): DoctrineSelection[] {
   const limit = input.limit ?? registry.doctrines.length;
   if (!Number.isInteger(limit) || limit <= 0) {
-    throw new AutoForgeError(
+    throw new PriozarError(
       "INVALID_ARGUMENT",
       "Doctrine routing limit must be a positive integer",
       { details: { limit }, exitCode: EXIT_CODE.usage },

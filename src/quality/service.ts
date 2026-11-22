@@ -6,7 +6,7 @@ import { parse as parseYaml } from "yaml";
 
 import { inspectInstallation } from "../commands/init.js";
 import type { QualityGateCommand } from "../core/config.js";
-import { AutoForgeError, EXIT_CODE } from "../core/errors.js";
+import { PriozarError, EXIT_CODE } from "../core/errors.js";
 import { resolveContainedProjectPath } from "../core/paths.js";
 import {
   qualityGateReportSchema,

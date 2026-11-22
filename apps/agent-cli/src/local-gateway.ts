@@ -8,7 +8,7 @@ import {
   createAgentHandoff,
   type CreateAgentHandoffInput,
 } from "@cojacklabs/autoforge-protocol";
-import { createAutoForgeSdk } from "@cojacklabs/autoforge-sdk";
+import { createPriozarSdk } from "@cojacklabs/autoforge-sdk";
 
 import type { AgentProjectGateway, AgentStatus } from "./session.js";
 
@@ -75,7 +75,7 @@ export class LocalSdkGateway implements AgentProjectGateway {
     const core = (arguments_: string[]) =>
       this.run(["--project", this.projectRoot, ...arguments_]);
 
-    this.sdk = createAutoForgeSdk({
+    this.sdk = createPriozarSdk({
       operations: {
         projects: async () => ({ projectRoot: this.projectRoot }),
         status: async () => {

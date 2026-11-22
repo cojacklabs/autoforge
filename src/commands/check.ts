@@ -5,7 +5,7 @@ import { z } from "zod";
 import { createDefaultAgentRegistry } from "../agents/registry.js";
 import { compileProjectContext } from "./context.js";
 import { ContextPacketStore } from "../context/store.js";
-import { AutoForgeError, EXIT_CODE, type ExitCode } from "../core/errors.js";
+import { PriozarError, EXIT_CODE, type ExitCode } from "../core/errors.js";
 import type { LogWriter } from "../core/logger.js";
 import { discoverProjectRoot } from "../core/project.js";
 import { SessionRecoveryService } from "../guardrails/recovery.js";
@@ -123,7 +123,7 @@ function parseClaudeHookInput(value: string): {
   try {
     decoded = JSON.parse(value);
   } catch (error) {
-    throw new AutoForgeError("INVALID_ARGUMENT", "Invalid Claude hook JSON", {
+    throw new PriozarError("INVALID_ARGUMENT", "Invalid Claude hook JSON", {
       cause: error,
       exitCode: EXIT_CODE.usage,
     });
@@ -132,7 +132,7 @@ function parseClaudeHookInput(value: string): {
   const candidate =
     input.tool_input.file_path ?? input.tool_input.notebook_path;
   if (typeof candidate !== "string" || candidate.trim().length === 0) {
-    throw new AutoForgeError(
+    throw new PriozarError(
       "INVALID_ARGUMENT",
       `Claude ${input.tool_name} hook input does not contain a file path`,
       { exitCode: EXIT_CODE.usage },
@@ -166,7 +166,7 @@ function requiredInstallationState(
     !installation.doctrines ||
     !installation.doctrineSession
   ) {
-    throw new AutoForgeError(
+    throw new PriozarError(
       "INVALID_STATE",
       "Guardrail checks require readable AutoForge state",
       {
@@ -243,7 +243,7 @@ export async function runCheckCommand(
     }
     if (parsed.refresh) {
       if (!expectedPacket) {
-        throw new AutoForgeError(
+        throw new PriozarError(
           "STATE_CONFLICT",
           "Context refresh requires healthy active work and session state",
           { exitCode: EXIT_CODE.conflict },

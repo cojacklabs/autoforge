@@ -5,7 +5,7 @@ import path from "node:path";
 import { afterEach, describe, expect, it } from "vitest";
 import { z } from "zod";
 
-import { AutoForgeError } from "../src/core/errors.js";
+import { PriozarError } from "../src/core/errors.js";
 import { MigrationRegistry } from "../src/state/migrations.js";
 import { createStateEnvelopeSchema } from "../src/state/schemas.js";
 import { AtomicStateStore } from "../src/state/store.js";
@@ -125,7 +125,7 @@ describe("atomic state store", () => {
 
     await expect(
       store.write({ value: 42 } as never, { expectedRevision: 0 }),
-    ).rejects.toBeInstanceOf(AutoForgeError);
+    ).rejects.toBeInstanceOf(PriozarError);
     await expect(store.read()).resolves.toMatchObject({
       state: { revision: 0, data: { value: "initial" } },
     });
@@ -173,7 +173,7 @@ describe("migration registry", () => {
     });
 
     expect(() => registry.migrate({ schemaVersion: 1 }, 3)).toThrowError(
-      AutoForgeError,
+      PriozarError,
     );
     expect(() =>
       registry.register({
@@ -181,21 +181,21 @@ describe("migration registry", () => {
         toVersion: 2,
         migrate: (value) => value,
       }),
-    ).toThrowError(AutoForgeError);
+    ).toThrowError(PriozarError);
     expect(() =>
       registry.register({
         fromVersion: 3,
         toVersion: 5,
         migrate: (value) => value,
       }),
-    ).toThrowError(AutoForgeError);
+    ).toThrowError(PriozarError);
     expect(() =>
       registry.register({
         fromVersion: 0,
         toVersion: 1,
         migrate: (value) => value,
       }),
-    ).toThrowError(AutoForgeError);
+    ).toThrowError(PriozarError);
   });
 
   it("rejects migration output with the wrong version", () => {
@@ -207,7 +207,7 @@ describe("migration registry", () => {
     });
 
     expect(() => registry.migrate({ schemaVersion: 1 }, 2)).toThrowError(
-      AutoForgeError,
+      PriozarError,
     );
   });
 
@@ -215,10 +215,10 @@ describe("migration registry", () => {
     const registry = new MigrationRegistry();
 
     expect(() => registry.migrate({ schemaVersion: 1 }, 0)).toThrowError(
-      AutoForgeError,
+      PriozarError,
     );
     expect(() => registry.migrate({ schemaVersion: 1 }, 1.5)).toThrowError(
-      AutoForgeError,
+      PriozarError,
     );
   });
 });

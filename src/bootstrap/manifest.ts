@@ -3,7 +3,7 @@ import path from "node:path";
 
 import { z } from "zod";
 
-import { AutoForgeError, EXIT_CODE } from "../core/errors.js";
+import { PriozarError, EXIT_CODE } from "../core/errors.js";
 import { resolveContainedProjectPath } from "../core/paths.js";
 import { workflowRunSchema } from "../workflows/state.js";
 import { resolveStateDirectoryPath } from "../core/state-directory.js";
@@ -105,7 +105,7 @@ async function validateEvidence(
       JSON.parse(await readFile(workflowPath, "utf8")) as unknown,
     );
     if (run.status !== "completed") {
-      throw new AutoForgeError(
+      throw new PriozarError(
         "STATE_CONFLICT",
         `Workflow ${evidence} is not completed`,
         { exitCode: EXIT_CODE.conflict },
@@ -124,7 +124,7 @@ async function validateEvidence(
       JSON.parse(await readFile(resolved.absolutePath, "utf8")) as unknown,
     );
     if (run.status !== "completed") {
-      throw new AutoForgeError(
+      throw new PriozarError(
         "STATE_CONFLICT",
         `Workflow evidence ${evidence} is not completed`,
         { exitCode: EXIT_CODE.conflict },
@@ -142,14 +142,14 @@ export async function approveBootstrapArtifact(
   const id = bootstrapArtifactIdSchema.parse(artifactId);
   const manifest = await readBootstrapManifest(projectRoot);
   if (!manifest) {
-    throw new AutoForgeError(
+    throw new PriozarError(
       "INVALID_STATE",
       'Bootstrap manifest is not initialized. Run "autoforge bootstrap scaffold" first.',
       { exitCode: EXIT_CODE.invalidState },
     );
   }
   if (!manifest.artifacts.some((artifact) => artifact.id === id)) {
-    throw new AutoForgeError(
+    throw new PriozarError(
       "INVALID_STATE",
       `Bootstrap manifest does not contain ${id}`,
       { exitCode: EXIT_CODE.invalidState },

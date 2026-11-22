@@ -9,7 +9,7 @@ import {
   agentExecutableForPlatform,
   agentProcessInvocationForPlatform,
   forwardAgentSignals,
-  launchAutoForgeAgent,
+  launchPriozarAgent,
   NativeAgentProcessHost,
   windowsAgentShimAvailable,
   type AgentLaunchEnvironment,
@@ -38,7 +38,7 @@ describe("AutoForge Agent launcher", () => {
   it("forwards arguments and the Agent exit code", async () => {
     const dependencies = harness("compatible");
     await expect(
-      launchAutoForgeAgent(["credentials", "status", "openai"], {
+      launchPriozarAgent(["credentials", "status", "openai"], {
         ...dependencies,
         environment: interactive,
       }),
@@ -59,7 +59,7 @@ describe("AutoForge Agent launcher", () => {
   ])("falls back for an ineligible bare terminal: %j", async (environment) => {
     const dependencies = harness("compatible");
     await expect(
-      launchAutoForgeAgent([], { ...dependencies, environment }),
+      launchPriozarAgent([], { ...dependencies, environment }),
     ).resolves.toBeUndefined();
     expect(dependencies.host.inspect).not.toHaveBeenCalled();
   });
@@ -69,7 +69,7 @@ describe("AutoForge Agent launcher", () => {
     async (compatibility) => {
       const dependencies = harness(compatibility);
       await expect(
-        launchAutoForgeAgent([], {
+        launchPriozarAgent([], {
           ...dependencies,
           environment: interactive,
         }),
@@ -80,7 +80,7 @@ describe("AutoForge Agent launcher", () => {
   it("gives installation guidance for an explicit missing Agent command", async () => {
     const dependencies = harness("missing");
     await expect(
-      launchAutoForgeAgent(["credentials", "status", "openai"], {
+      launchPriozarAgent(["credentials", "status", "openai"], {
         ...dependencies,
         environment: interactive,
       }),

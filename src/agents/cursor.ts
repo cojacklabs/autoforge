@@ -1,6 +1,6 @@
 import { randomUUID } from "node:crypto";
 
-import { AutoForgeError, EXIT_CODE } from "../core/errors.js";
+import { PriozarError, EXIT_CODE } from "../core/errors.js";
 import {
   agentContextDeliveryResultSchema,
   agentDetectionSchema,
@@ -115,7 +115,7 @@ export class CursorAgentAdapter implements AgentAdapter {
     const rulePath = await resolveAgentPath(context, RULE_PATH);
     const existing = await readOptionalText(rulePath);
     if (existing !== undefined && !hasAlwaysApplyFrontmatter(existing)) {
-      throw new AutoForgeError(
+      throw new PriozarError(
         "INVALID_STATE",
         `${RULE_PATH} exists without alwaysApply: true frontmatter`,
         { exitCode: EXIT_CODE.invalidState },
