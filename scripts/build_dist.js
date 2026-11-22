@@ -21,7 +21,7 @@
  * - .github/ (GitHub workflows)
  * - ref/ (internal reference materials)
  * - Build artifacts: .git, dist, node_modules
- * - Framework release docs: RELEASE_*.md, AUTOFORGE.md, CHANGES_COMPLETE.md, V030_RELEASE_INDEX.md
+ * - Framework release docs: RELEASE_*.md, PRIOZAR.md, CHANGES_COMPLETE.md, V030_RELEASE_INDEX.md
  */
 
 import { cp, mkdir, readdir, readFile, rm, stat } from "node:fs/promises";
@@ -90,7 +90,7 @@ const EXCLUDE_ROOT_FILES = new Set([
   "RELEASE_PREP_COMPLETE.md",
   "RELEASE_SUMMARY.txt",
   "V030_RELEASE_INDEX.md",
-  "AUTOFORGE.md",
+  "PRIOZAR.md",
   "CHANGES_COMPLETE.md",
   "REPO.md",
   "bun.lock",

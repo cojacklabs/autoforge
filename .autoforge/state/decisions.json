@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
-  "revision": 184,
-  "updatedAt": "2026-11-22T23:18:27.474Z",
+  "revision": 185,
+  "updatedAt": "2026-11-22T23:22:10.570Z",
   "data": {
     "decisions": [
       {
@@ -4557,6 +4557,28 @@
         "kind": "feature-note",
         "createdAt": "2026-11-22T23:18:27.440Z",
         "updatedAt": "2026-11-22T23:18:27.440Z"
+      },
+      {
+        "id": "decision.retired-the-stale-autoforge-md-snapshot-instead-of-regenerating-it-as-priozar-md",
+        "statement": "Retired the stale AUTOFORGE.md snapshot instead of regenerating it as PRIOZAR.md",
+        "reasoning": "AUTOFORGE.md was a one-off Repomix pack last touched at v0.4.1 and nothing generates or reads it; scripts/generate_snapshot.js writes REPO.md. A fresh pack is 4.9 MB against 262 KB, so committing it would bloat the repo. Git history keeps the old file.",
+        "consequences": [
+          "REPO.md stays the current snapshot. The ignore lists in .prettierignore and scripts/build_dist.js now name PRIOZAR.md in case a snapshot is generated under that name later."
+        ],
+        "scope": [
+          "docs"
+        ],
+        "keywords": [
+          "snapshot"
+        ],
+        "relatedWork": [
+          "task.regenerate-the-packed-repository-snapshot-under-the-priozar-name"
+        ],
+        "supersedes": null,
+        "status": "active",
+        "kind": "feature-note",
+        "createdAt": "2026-11-22T23:22:10.537Z",
+        "updatedAt": "2026-11-22T23:22:10.537Z"
       }
     ]
   }

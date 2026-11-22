@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
-  "revision": 522,
-  "updatedAt": "2026-11-22T23:18:28.023Z",
+  "revision": 524,
+  "updatedAt": "2026-11-22T23:22:11.125Z",
   "data": {
     "features": [
       {
@@ -2308,10 +2308,10 @@
       {
         "name": "Regenerate the packed repository snapshot under the Priozar name",
         "description": "AUTOFORGE.md is a Repomix-generated, read-only snapshot of the repository (about 260 KB) and must not be edited by hand. Point the generator output at PRIOZAR.md, regenerate it, update .prettierignore and the build script references, and retire the stale AUTOFORGE.md.",
-        "status": "planned",
+        "status": "completed",
         "pauseReason": null,
         "createdAt": "2026-11-22T20:46:06.213Z",
-        "updatedAt": "2026-11-22T20:46:06.213Z",
+        "updatedAt": "2026-11-22T23:22:11.009Z",
         "id": "task.regenerate-the-packed-repository-snapshot-under-the-priozar-name",
         "phaseId": "phase.live-docs-ci-and-urls",
         "scope": {
