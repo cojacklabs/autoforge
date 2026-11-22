@@ -48,13 +48,13 @@ export async function main(
     });
   }
   if (!process.stdin.isTTY || !process.stdout.isTTY) {
-    process.stderr.write("autoforge-agent requires an interactive terminal.\n");
+    process.stderr.write("priozar-agent requires an interactive terminal.\n");
     return 2;
   }
   const apiKey = await credentialVault.get("openai");
   if (!apiKey) {
     process.stderr.write(
-      "No OpenAI credential is configured. Run: autoforge-agent credentials set openai\n",
+      "No OpenAI credential is configured. Run: priozar-agent credentials set openai\n",
     );
     return 4;
   }

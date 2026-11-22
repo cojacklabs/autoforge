@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
-  "revision": 176,
-  "updatedAt": "2026-11-22T20:01:03.547Z",
+  "revision": 177,
+  "updatedAt": "2026-11-22T20:07:40.003Z",
   "data": {
     "decisions": [
       {
@@ -4365,6 +4365,31 @@
         "kind": "feature-note",
         "createdAt": "2026-11-22T20:01:03.514Z",
         "updatedAt": "2026-11-22T20:01:03.514Z"
+      },
+      {
+        "id": "decision.make-priozar-and-priozar-agent-the-primary-binaries-keep-the-autoforge-names-as",
+        "statement": "Make priozar and priozar-agent the primary binaries, keep the autoforge names as aliases, and let the launcher fall back to an older agent",
+        "reasoning": "The launcher and the CLI are released independently, so a new CLI must still find an agent installed before the rename, and existing scripts and hooks call autoforge. The deprecation notice goes only to an interactive stderr so automation and pipes see no extra output.",
+        "consequences": [
+          "package.json lists priozar before autoforge, the agent package ships priozar-agent plus an autoforge-agent alias, and both aliases print a one-line notice only when stderr is a terminal.",
+          "The launcher probes priozar-agent first and falls back to autoforge-agent only when the preferred one is missing, so an incompatible new agent is never masked by an old install.",
+          "The TTY notice branch is not covered by an automated test because the tests have no pseudo-terminal; the silent non-terminal path is tested."
+        ],
+        "scope": [
+          "binaries"
+        ],
+        "keywords": [
+          "priozar",
+          "aliases"
+        ],
+        "relatedWork": [
+          "task.make-priozar-the-primary-binary-and-keep-autoforge-as-alias"
+        ],
+        "supersedes": null,
+        "status": "active",
+        "kind": "feature-note",
+        "createdAt": "2026-11-22T20:07:39.965Z",
+        "updatedAt": "2026-11-22T20:07:39.965Z"
       }
     ]
   }

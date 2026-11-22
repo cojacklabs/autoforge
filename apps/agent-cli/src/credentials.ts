@@ -90,7 +90,7 @@ export async function runCredentialCommand(
 ): Promise<number> {
   const [action, provider, ...extras] = arguments_;
   if (provider !== "openai" || extras.length > 0) {
-    io.write("Usage: autoforge-agent credentials <set|status|delete> openai\n");
+    io.write("Usage: priozar-agent credentials <set|status|delete> openai\n");
     return 2;
   }
   if (action === "set") {
@@ -113,6 +113,6 @@ export async function runCredentialCommand(
     io.write(`OpenAI credential: ${deleted ? "deleted" : "not configured"}\n`);
     return 0;
   }
-  io.write("Usage: autoforge-agent credentials <set|status|delete> openai\n");
+  io.write("Usage: priozar-agent credentials <set|status|delete> openai\n");
   return 2;
 }

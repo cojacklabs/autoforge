@@ -9,6 +9,7 @@
     "node": ">=20"
   },
   "bin": {
+    "priozar-agent": "bin/priozar-agent.js",
     "autoforge-agent": "bin/autoforge-agent.js"
   },
   "files": [

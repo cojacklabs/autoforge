@@ -8,7 +8,10 @@ import { describe, expect, it, vi } from "vitest";
 import {
   agentExecutableForPlatform,
   agentChildEnvironment,
+  AGENT_EXECUTABLES,
   agentProcessInvocationForPlatform,
+  inspectAgentExecutables,
+  windowsAgentShimName,
   currentAgentLaunchEnvironment,
   forwardAgentSignals,
   launchPriozarAgent,
@@ -93,9 +96,9 @@ describe("Priozar Agent launcher", () => {
   });
 
   it.each([
-    ["linux", "autoforge-agent"],
-    ["darwin", "autoforge-agent"],
-    ["win32", "autoforge-agent.cmd"],
+    ["linux", "priozar-agent"],
+    ["darwin", "priozar-agent"],
+    ["win32", "priozar-agent.cmd"],
   ] as const)("selects the %s Agent shim", (platform, expected) => {
     expect(agentExecutableForPlatform(platform)).toBe(expected);
   });
@@ -113,7 +116,7 @@ describe("Priozar Agent launcher", () => {
         "/d",
         "/s",
         "/c",
-        "autoforge-agent.cmd",
+        "priozar-agent.cmd",
         "credentials",
         "status",
         "openai",
@@ -170,14 +173,18 @@ describe("Priozar Agent launcher", () => {
         },
       ),
     ).toBe(true);
-    expect(inspected).toHaveLength(1);
+    // The preferred name is searched everywhere before the fallback is tried.
+    expect(inspected.at(-1)).toMatch(/autoforge-agent\.cmd$/);
+    expect(inspected.some((candidate) => candidate.includes("D:\\bin"))).toBe(
+      true,
+    );
   });
 
   it("launches the Unix executable directly", () => {
     expect(
       agentProcessInvocationForPlatform("linux", ["version", "--json"]),
     ).toEqual({
-      command: "autoforge-agent",
+      command: "priozar-agent",
       args: ["version", "--json"],
     });
   });
@@ -228,5 +235,73 @@ describe("Priozar Agent launcher environment variables", () => {
       PRIOZAR_AGENT_LAUNCHED: "1",
       AUTOFORGE_AGENT_LAUNCHED: "1",
     });
+  });
+});
+
+describe("AutoForge Agent executable fallback", () => {
+  it("prefers priozar-agent and keeps autoforge-agent as the fallback", () => {
+    expect(AGENT_EXECUTABLES).toEqual(["priozar-agent", "autoforge-agent"]);
+    expect(agentExecutableForPlatform("linux", "autoforge-agent")).toBe(
+      "autoforge-agent",
+    );
+    expect(
+      agentProcessInvocationForPlatform(
+        "linux",
+        ["version"],
+        undefined,
+        "autoforge-agent",
+      ),
+    ).toEqual({ command: "autoforge-agent", args: ["version"] });
+  });
+
+  it("uses the preferred executable when it is installed", async () => {
+    const probe = vi.fn(async () => "compatible" as const);
+    await expect(
+      inspectAgentExecutables(AGENT_EXECUTABLES, probe),
+    ).resolves.toEqual({ status: "compatible", executable: "priozar-agent" });
+    expect(probe).toHaveBeenCalledTimes(1);
+  });
+
+  it("falls back to autoforge-agent only when the preferred one is missing", async () => {
+    const probe = vi.fn(async (executable: string) =>
+      executable === "priozar-agent"
+        ? ("missing" as const)
+        : ("compatible" as const),
+    );
+    await expect(
+      inspectAgentExecutables(AGENT_EXECUTABLES, probe),
+    ).resolves.toEqual({ status: "compatible", executable: "autoforge-agent" });
+  });
+
+  it("does not mask an incompatible preferred agent with an older install", async () => {
+    const probe = vi.fn(async () => "incompatible" as const);
+    await expect(
+      inspectAgentExecutables(AGENT_EXECUTABLES, probe),
+    ).resolves.toEqual({ status: "incompatible", executable: "priozar-agent" });
+    expect(probe).toHaveBeenCalledTimes(1);
+  });
+
+  it("reports missing when no executable is installed", async () => {
+    await expect(
+      inspectAgentExecutables(AGENT_EXECUTABLES, async () => "missing"),
+    ).resolves.toEqual({ status: "missing", executable: undefined });
+  });
+
+  it("finds whichever Windows shim is installed, preferring the new name", () => {
+    const only = (name: string) => (candidate: string) =>
+      candidate.endsWith(name);
+    expect(
+      windowsAgentShimName(
+        "C:\\p",
+        { Path: "C:\\bin" },
+        only("autoforge-agent.cmd"),
+      ),
+    ).toBe("autoforge-agent");
+    expect(windowsAgentShimName("C:\\p", { Path: "C:\\bin" }, () => true)).toBe(
+      "priozar-agent",
+    );
+    expect(
+      windowsAgentShimName("C:\\p", { Path: "C:\\bin" }, () => false),
+    ).toBeUndefined();
   });
 });

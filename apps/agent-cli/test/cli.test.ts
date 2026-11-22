@@ -35,7 +35,7 @@ describe("Agent CLI launcher protocol", () => {
     );
     const executable = path.join(installation, "priozar agent.js");
     await symlink(
-      path.join(packageRoot, "bin", "autoforge-agent.js"),
+      path.join(packageRoot, "bin", "priozar-agent.js"),
       executable,
     );
 
@@ -50,5 +50,24 @@ describe("Agent CLI launcher protocol", () => {
       name: "@cojacklabs/priozar-agent",
       launchProtocolVersion: PRIOZAR_AGENT_LAUNCH_PROTOCOL_VERSION,
     });
+  });
+
+  it("keeps the deprecated autoforge-agent alias working without noise", () => {
+    const result = spawnSync(
+      process.execPath,
+      [
+        path.join(packageRoot, "bin", "autoforge-agent.js"),
+        "version",
+        "--json",
+      ],
+      { encoding: "utf8" },
+    );
+
+    expect(result.status).toBe(0);
+    expect(JSON.parse(result.stdout)).toMatchObject({
+      name: "@cojacklabs/priozar-agent",
+    });
+    // Not a terminal, so no deprecation notice reaches scripts or CI.
+    expect(result.stderr).toBe("");
   });
 });

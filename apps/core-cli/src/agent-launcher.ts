@@ -13,11 +13,18 @@ import {
 import { EXIT_CODE, type ExitCode } from "../../../src/core/errors.js";
 import type { CliOutput } from "./router.js";
 
-const AGENT_EXECUTABLE = "autoforge-agent";
+/**
+ * Agent executables in order of preference. An Agent installed before the
+ * rename only provides the second name, so the launcher falls back to it.
+ */
+export const AGENT_EXECUTABLES = ["priozar-agent", "autoforge-agent"] as const;
 const WINDOWS_AGENT_ARGUMENT = /^[A-Za-z0-9._:@/+\\=-]+$/;
 
-export function agentExecutableForPlatform(platform: NodeJS.Platform): string {
-  return platform === "win32" ? `${AGENT_EXECUTABLE}.cmd` : AGENT_EXECUTABLE;
+export function agentExecutableForPlatform(
+  platform: NodeJS.Platform,
+  executable: string = AGENT_EXECUTABLES[0],
+): string {
+  return platform === "win32" ? `${executable}.cmd` : executable;
 }
 
 export interface AgentProcessInvocation {
@@ -29,8 +36,9 @@ export function agentProcessInvocationForPlatform(
   platform: NodeJS.Platform,
   args: readonly string[],
   commandShell = process.env.ComSpec?.trim() || "cmd.exe",
+  executableName: string = AGENT_EXECUTABLES[0],
 ): AgentProcessInvocation {
-  const executable = agentExecutableForPlatform(platform);
+  const executable = agentExecutableForPlatform(platform, executableName);
   if (platform !== "win32") return { command: executable, args: [...args] };
   const unsafe = args.find(
     (argument) => !WINDOWS_AGENT_ARGUMENT.test(argument),
@@ -46,7 +54,9 @@ export function agentProcessInvocationForPlatform(
   };
 }
 
-export function windowsAgentShimAvailable(
+/** True when the Windows shim for `executable` is on PATH or in `cwd`. */
+export function windowsAgentShimExists(
+  executable: string,
   cwd: string | undefined,
   environment: NodeJS.ProcessEnv = process.env,
   exists: (candidate: string) => boolean = existsSync,
@@ -57,9 +67,44 @@ export function windowsAgentShimAvailable(
   const directories = [cwd ?? process.cwd(), ...(pathValue?.split(";") ?? [])];
   return directories
     .filter(Boolean)
-    .some((directory) =>
-      exists(path.resolve(directory, `${AGENT_EXECUTABLE}.cmd`)),
-    );
+    .some((directory) => exists(path.resolve(directory, `${executable}.cmd`)));
+}
+
+/** Returns the first installed Windows Agent shim name, if any. */
+export function windowsAgentShimName(
+  cwd: string | undefined,
+  environment: NodeJS.ProcessEnv = process.env,
+  exists: (candidate: string) => boolean = existsSync,
+): string | undefined {
+  return AGENT_EXECUTABLES.find((executable) =>
+    windowsAgentShimExists(executable, cwd, environment, exists),
+  );
+}
+
+export function windowsAgentShimAvailable(
+  cwd: string | undefined,
+  environment: NodeJS.ProcessEnv = process.env,
+  exists: (candidate: string) => boolean = existsSync,
+): boolean {
+  return windowsAgentShimName(cwd, environment, exists) !== undefined;
+}
+
+export type AgentInspection = "compatible" | "missing" | "incompatible";
+
+/**
+ * Probes the preferred executable first and falls back to the next one only
+ * when it is missing, so a present-but-incompatible Agent is reported as such
+ * instead of being masked by an older install.
+ */
+export async function inspectAgentExecutables(
+  candidates: readonly string[],
+  probe: (executable: string) => Promise<AgentInspection>,
+): Promise<{ status: AgentInspection; executable: string | undefined }> {
+  for (const executable of candidates) {
+    const status = await probe(executable);
+    if (status !== "missing") return { status, executable };
+  }
+  return { status: "missing", executable: undefined };
 }
 
 export interface AgentProcessHost {
@@ -176,20 +221,35 @@ export function forwardAgentSignals(
 export class NativeAgentProcessHost implements AgentProcessHost {
   private readonly platform: NodeJS.Platform;
   private readonly cwd: string | undefined;
+  private executable: string = AGENT_EXECUTABLES[0];
 
   constructor(platform: NodeJS.Platform = process.platform, cwd?: string) {
     this.platform = platform;
     this.cwd = cwd;
   }
 
-  async inspect(): Promise<"compatible" | "missing" | "incompatible"> {
-    if (this.platform === "win32" && !windowsAgentShimAvailable(this.cwd)) {
+  async inspect(): Promise<AgentInspection> {
+    const result = await inspectAgentExecutables(
+      AGENT_EXECUTABLES,
+      (executable) => this.probe(executable),
+    );
+    if (result.executable) this.executable = result.executable;
+    return result.status;
+  }
+
+  private async probe(executable: string): Promise<AgentInspection> {
+    if (
+      this.platform === "win32" &&
+      !windowsAgentShimExists(executable, this.cwd)
+    ) {
       return "missing";
     }
-    const invocation = agentProcessInvocationForPlatform(this.platform, [
-      "version",
-      "--json",
-    ]);
+    const invocation = agentProcessInvocationForPlatform(
+      this.platform,
+      ["version", "--json"],
+      undefined,
+      executable,
+    );
     const child = spawn(invocation.command, invocation.args, {
       stdio: ["ignore", "pipe", "pipe"],
       windowsHide: true,
@@ -216,7 +276,12 @@ export class NativeAgentProcessHost implements AgentProcessHost {
   }
 
   async run(args: readonly string[]): Promise<ExitCode> {
-    const invocation = agentProcessInvocationForPlatform(this.platform, args);
+    const invocation = agentProcessInvocationForPlatform(
+      this.platform,
+      args,
+      undefined,
+      this.executable,
+    );
     const child = spawn(invocation.command, invocation.args, {
       stdio: "inherit",
       windowsHide: false,

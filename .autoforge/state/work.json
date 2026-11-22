@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
-  "revision": 502,
-  "updatedAt": "2026-11-22T20:01:05.014Z",
+  "revision": 504,
+  "updatedAt": "2026-11-22T20:07:40.980Z",
   "data": {
     "features": [
       {
@@ -2021,10 +2021,10 @@
       {
         "name": "Make priozar the primary binary and keep autoforge as alias",
         "description": "Rename bin entries, make bin/priozar.js primary, keep bin/autoforge.js as a deprecated alias that warns once, and update help text.",
-        "status": "planned",
+        "status": "completed",
         "pauseReason": null,
         "createdAt": "2026-11-20T01:50:59.336Z",
-        "updatedAt": "2026-11-20T01:50:59.336Z",
+        "updatedAt": "2026-11-22T20:07:40.856Z",
         "id": "task.make-priozar-the-primary-binary-and-keep-autoforge-as-alias",
         "phaseId": "phase.packages-and-binaries",
         "scope": {
