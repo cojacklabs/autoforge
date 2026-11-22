@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
-  "revision": 171,
-  "updatedAt": "2026-11-22T17:26:49.971Z",
+  "revision": 172,
+  "updatedAt": "2026-11-22T18:13:03.690Z",
   "data": {
     "decisions": [
       {
@@ -4240,6 +4240,31 @@
         "kind": "feature-note",
         "createdAt": "2026-11-22T17:26:49.939Z",
         "updatedAt": "2026-11-22T17:26:49.939Z"
+      },
+      {
+        "id": "decision.resolve-framework-environment-variables-through-one-protocol-helper-that-prefers",
+        "statement": "Resolve framework environment variables through one protocol helper that prefers PRIOZAR_ over AUTOFORGE_",
+        "reasoning": "Four AUTOFORGE_ variables are read in different packages. A single readFrameworkEnv helper in the protocol package, built on the existing FRAMEWORK_IDENTITY env prefixes, keeps precedence identical everywhere and is shared by the CLI and the apps.",
+        "consequences": [
+          "readFrameworkEnv(name, env) returns PRIOZAR_<name> when set, including an explicit empty string, else AUTOFORGE_<name>; frameworkEnvNames(name) names both.",
+          "PRIOZAR_HOME now overrides AUTOFORGE_HOME for the worktree directory; AUTOFORGE_HOME still works.",
+          "The launcher and agent-cli variables are handled by a sibling task because they live under apps, which this task's scope excludes."
+        ],
+        "scope": [
+          "environment"
+        ],
+        "keywords": [
+          "priozar",
+          "env"
+        ],
+        "relatedWork": [
+          "task.support-priozar-env-vars-with-autoforge-fallback"
+        ],
+        "supersedes": null,
+        "status": "active",
+        "kind": "feature-note",
+        "createdAt": "2026-11-22T18:13:03.657Z",
+        "updatedAt": "2026-11-22T18:13:03.657Z"
       }
     ]
   }

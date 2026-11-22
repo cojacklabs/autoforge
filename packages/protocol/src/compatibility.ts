@@ -61,3 +61,32 @@ export interface CompatibilityResolution {
   isSuccessor: boolean;
   requiresMigration: boolean;
 }
+
+export interface FrameworkEnvNames {
+  canonical: string;
+  deprecated: string;
+}
+
+/**
+ * Names the canonical `PRIOZAR_<name>` environment variable and the deprecated
+ * `AUTOFORGE_<name>` one that is still honoured during the compatibility window.
+ */
+export function frameworkEnvNames(name: string): FrameworkEnvNames {
+  return {
+    canonical: `${FRAMEWORK_IDENTITY.successor.envPrefix}${name}`,
+    deprecated: `${FRAMEWORK_IDENTITY.current.envPrefix}${name}`,
+  };
+}
+
+/**
+ * Reads a framework environment variable, preferring `PRIOZAR_<name>` and
+ * falling back to the deprecated `AUTOFORGE_<name>`. A variable that is set to
+ * an empty string still counts as set, so it can deliberately override.
+ */
+export function readFrameworkEnv(
+  name: string,
+  env: Readonly<Record<string, string | undefined>>,
+): string | undefined {
+  const names = frameworkEnvNames(name);
+  return env[names.canonical] ?? env[names.deprecated];
+}

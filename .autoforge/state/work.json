@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
-  "revision": 486,
-  "updatedAt": "2026-11-22T17:26:50.488Z",
+  "revision": 489,
+  "updatedAt": "2026-11-22T18:13:04.246Z",
   "data": {
     "features": [
       {
@@ -1979,10 +1979,10 @@
       {
         "name": "Support PRIOZAR_* env vars with AUTOFORGE_* fallback",
         "description": "Introduce PRIOZAR_* environment variables, honor AUTOFORGE_* as deprecated fallbacks, and update generated contract and context text.",
-        "status": "planned",
+        "status": "completed",
         "pauseReason": null,
         "createdAt": "2026-11-20T01:50:58.637Z",
-        "updatedAt": "2026-11-20T01:50:58.637Z",
+        "updatedAt": "2026-11-22T18:13:04.136Z",
         "id": "task.support-priozar-env-vars-with-autoforge-fallback",
         "phaseId": "phase.code-identifiers-and-env-vars",
         "scope": {
@@ -2190,6 +2190,24 @@
             "scripts/**",
             "autoforge.config.json",
             "priozar.config.json",
+            "test/**"
+          ],
+          "exclude": []
+        }
+      },
+      {
+        "name": "Adopt PRIOZAR_* env vars in the launcher and agent-cli",
+        "description": "Use readFrameworkEnv in apps/core-cli (PRIOZAR_NO_AGENT) and apps/agent-cli (PRIOZAR_OPENAI_MODEL), switch the recursion guard to PRIOZAR_AGENT_LAUNCHED while still setting and honouring AUTOFORGE_AGENT_LAUNCHED so older launched agents keep working, and update the agent-cli README.",
+        "status": "planned",
+        "pauseReason": null,
+        "createdAt": "2026-11-22T18:13:03.173Z",
+        "updatedAt": "2026-11-22T18:13:03.173Z",
+        "id": "task.adopt-priozar-env-vars-in-the-launcher-and-agent-cli",
+        "phaseId": "phase.code-identifiers-and-env-vars",
+        "scope": {
+          "include": [
+            "apps/**",
+            "packages/protocol/**",
             "test/**"
           ],
           "exclude": []

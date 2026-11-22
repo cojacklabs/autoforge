@@ -3,6 +3,7 @@ import { createHash } from "node:crypto";
 import { homedir } from "node:os";
 import path from "node:path";
 import { promisify } from "node:util";
+import { readFrameworkEnv } from "../core/vocabularies.js";
 import { resolveStateDirectoryPath } from "../core/state-directory.js";
 
 const execFileAsync = promisify(execFile);
@@ -32,10 +33,11 @@ export class GitWorktreeManager implements WorktreeManager {
   private readonly root: string;
 
   constructor(root?: string) {
+    const configuredHome = readFrameworkEnv("HOME", process.env);
     this.root = root
       ? path.resolve(root)
-      : process.env.AUTOFORGE_HOME
-        ? path.resolve(process.env.AUTOFORGE_HOME)
+      : configuredHome
+        ? path.resolve(configuredHome)
         : resolveStateDirectoryPath(homedir());
   }
 

@@ -4,7 +4,7 @@ import os from "node:os";
 import path from "node:path";
 import { promisify } from "node:util";
 
-import { afterEach, describe, expect, it } from "vitest";
+import { afterEach, describe, expect, it, vi } from "vitest";
 
 import { GitWorktreeManager } from "../src/orchestration/worktrees.js";
 
@@ -12,6 +12,7 @@ const execFileAsync = promisify(execFile);
 const directories: string[] = [];
 
 afterEach(async () => {
+  vi.unstubAllEnvs();
   await Promise.all(
     directories
       .splice(0)
@@ -58,5 +59,27 @@ describe("orchestration Git worktrees", () => {
     await expect(
       readFile(path.join(result.path, "README.md"), "utf8"),
     ).rejects.toThrow();
+  });
+});
+
+describe("orchestration worktree home directory", () => {
+  const homeOf = (manager: GitWorktreeManager): string =>
+    (manager as unknown as { root: string }).root;
+
+  it("prefers PRIOZAR_HOME over the deprecated AUTOFORGE_HOME", () => {
+    vi.stubEnv("PRIOZAR_HOME", "/tmp/priozar-home");
+    vi.stubEnv("AUTOFORGE_HOME", "/tmp/autoforge-home");
+    expect(homeOf(new GitWorktreeManager())).toBe(
+      path.resolve("/tmp/priozar-home"),
+    );
+  });
+
+  it("still honours AUTOFORGE_HOME when PRIOZAR_HOME is unset", () => {
+    vi.stubEnv("PRIOZAR_HOME", "");
+    delete process.env.PRIOZAR_HOME;
+    vi.stubEnv("AUTOFORGE_HOME", "/tmp/autoforge-home");
+    expect(homeOf(new GitWorktreeManager())).toBe(
+      path.resolve("/tmp/autoforge-home"),
+    );
   });
 });
