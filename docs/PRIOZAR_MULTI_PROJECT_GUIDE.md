@@ -1,6 +1,6 @@
-# AutoForge Multi‑Project Guide
+# Priozar Multi‑Project Guide
 
-Generalized, role‑aware, and planning‑first guidance for using AutoForge as a centralized multi‑agent SDLC platform across many different projects. This document distills lessons from prior reviews and refactors them so both technical and non‑technical professionals can guide an application from idea → production with clear checkpoints, observability, and approvals.
+Generalized, role‑aware, and planning‑first guidance for using Priozar as a centralized multi‑agent SDLC platform across many different projects. This document distills lessons from prior reviews and refactors them so both technical and non‑technical professionals can guide an application from idea → production with clear checkpoints, observability, and approvals.
 
 ---
 
@@ -47,15 +47,15 @@ Use this guide alongside:
 
 ---
 
-## Overview of the AutoForge Operating Model
+## Overview of the Priozar Operating Model
 
 - Two‑world model: Human realm (docs/, api/, diagrams/, devops/, security/, qa/) vs AI realm (ai/ manifests, prompts, logs, memory, reports).
 - Configuration drives behavior:
   - `autoforge.config.json` defines code targets and context overrides.
-  - `npx autoforge configure` keeps managed YAML (ai/code_targets.yaml, ai/context_targets.yaml) synchronized.
+  - `npx priozar configure` keeps managed YAML (ai/code_targets.yaml, ai/context_targets.yaml) synchronized.
 - Observability by default:
-  - Use `npx autoforge validate` to enforce quality gates.
-  - Use `npx autoforge snapshot [path]` to generate REPO.md for sharing structure with assistants.
+  - Use `npx priozar validate` to enforce quality gates.
+  - Use `npx priozar snapshot [path]` to generate REPO.md for sharing structure with assistants.
   - Maintain activity logs under `ai/logs/**` and short, durable memory in `ai/memory/**`.
 
 ---
@@ -112,7 +112,7 @@ Implementation tips:
 - Persist key decisions in `ai/memory/ACTIVE_MEMORY.yaml` and update it at major handoffs.
 - Write structured logs to `ai/logs/**` (consider a single `activity.jsonl` stream for session summaries).
 - Store concise outcomes in `ai/reports/**` (e.g., kickoff, retrospectives, UI/UX updates).
-- Keep `REPO.md` current with `npx autoforge snapshot [path]` for new collaborators/agents.
+- Keep `REPO.md` current with `npx priozar snapshot [path]` for new collaborators/agents.
 
 ---
 
@@ -225,7 +225,7 @@ providers:
 
 ## Key Automation Features for SaaS Acceleration
 
-Below are cross‑domain automation features that speed up SaaS development. Each item includes suggested AutoForge hooks and concrete actions.
+Below are cross‑domain automation features that speed up SaaS development. Each item includes suggested Priozar hooks and concrete actions.
 
 1. Multi‑Agent SDLC Orchestration
 
@@ -297,7 +297,7 @@ Below are cross‑domain automation features that speed up SaaS development. Eac
 
 10. Knowledge Base, Documentation & Training
 
-- Hooks: `npx autoforge snapshot`, `REPO.md`, `ai/reports/**`, `docs/**`
+- Hooks: `npx priozar snapshot`, `REPO.md`, `ai/reports/**`, `docs/**`
 - Actions:
   - Autogenerate API docs, architecture notes, and user guides as part of each change.
   - Maintain a living onboarding/training module for new users.
@@ -320,7 +320,7 @@ Below are cross‑domain automation features that speed up SaaS development. Eac
 
 ## Implementation Roadmap (Framework‑Level)
 
-Use this backlog to evolve AutoForge itself so every project benefits.
+Use this backlog to evolve Priozar itself so every project benefits.
 
 - Now
   - Add default recipes under `docs/blueprint/recipes/` (web_app, analytics_app, mobile_app).
@@ -362,19 +362,19 @@ Use this backlog to evolve AutoForge itself so every project benefits.
 ## Technical Path (From Scratch or Existing Codebase)
 
 1. Install and initialize
-   - `npm install --save-dev @cojacklabs/autoforge`
-   - `npx autoforge init`
+   - `npm install --save-dev @cojacklabs/priozar`
+   - `npx priozar init`
 
 2. Configure
    - Update `autoforge.config.json` (codeTargets/contextTargets) to match your repo.
-   - `npx autoforge configure`
+   - `npx priozar configure`
 
 3. Load context and validate gates
-   - `npx autoforge load` then paste the onboarding block into your AI tool.
-   - `npx autoforge validate` and address missing gates (use planning stubs if needed).
+   - `npx priozar load` then paste the onboarding block into your AI tool.
+   - `npx priozar validate` and address missing gates (use planning stubs if needed).
 
 4. Snapshot (optional but recommended)
-   - `npx autoforge snapshot` to create `REPO.md` for collaborators/agents.
+   - `npx priozar snapshot` to create `REPO.md` for collaborators/agents.
 
 5. Orchestrate via prompts
    - Kick off with `automation_bootstrap`, then follow recipe‑driven handoffs.
@@ -394,13 +394,13 @@ Use this backlog to evolve AutoForge itself so every project benefits.
 
 - Aggregate session outcomes and feedback under `ai/logs/learning/`.
 - Publish periodic summaries to `ai/reports/learning/` with action items (prompt changes, new gates, template updates).
-- Refresh agent context with `npx autoforge load|refresh` after material changes.
+- Refresh agent context with `npx priozar load|refresh` after material changes.
 
 ---
 
 ## Quick Checklist (Any Project)
 
-- [ ] Initialize AutoForge and configure targets
+- [ ] Initialize Priozar and configure targets
 - [ ] Capture idea → PRD → diagrams → API draft
 - [ ] Validate quality gates (allow planning stubs initially)
 - [ ] Choose a recipe and run orchestration

@@ -1,6 +1,6 @@
 # Governance and Memory
 
-AutoForge separates durable project truth from reproducible or machine-local
+Priozar separates durable project truth from reproducible or machine-local
 runtime state. This lets humans and different agents continue the same project
 without storing entire conversations or provider credentials in the repository.
 
@@ -9,7 +9,7 @@ without storing entire conversations or provider credentials in the repository.
 Persist information when another contributor will need it after the current
 session disappears:
 
-| Concern                             | AutoForge domain                              |
+| Concern                             | Priozar domain                                |
 | ----------------------------------- | --------------------------------------------- |
 | Objectives and scoped work          | features, phases, tasks, issues, sessions     |
 | Architectural and product rationale | `decide`, `why`                               |
@@ -41,11 +41,11 @@ for credential handling.
 Use the narrowest relevant check before implementation:
 
 ```bash
-autoforge doctrine
-autoforge constitution list
-autoforge constitution check "<objective>"
-autoforge domain check
-autoforge context --explain
+priozar doctrine
+priozar constitution list
+priozar constitution check "<objective>"
+priozar domain check
+priozar context --explain
 ```
 
 Constitution rules express project-approved requirements and prohibitions.
@@ -61,9 +61,9 @@ request direction rather than silently treating it as satisfied.
 ## Decision and Evidence Loop
 
 ```bash
-autoforge learning evidence add --kind <kind> --summary "..." --source "..." --work <work-id>
-autoforge decide --statement "..." --reasoning "..." --consequence "..." --scope <scope> --keyword <keyword> --work <work-id> --evidence <evidence-id>
-autoforge why --work <work-id>
+priozar learning evidence add --kind <kind> --summary "..." --source "..." --work <work-id>
+priozar decide --statement "..." --reasoning "..." --consequence "..." --scope <scope> --keyword <keyword> --work <work-id> --evidence <evidence-id>
+priozar why --work <work-id>
 ```
 
 Use decisions for durable rationale, not activity logs. Supersede a decision
@@ -87,12 +87,12 @@ write a structured handoff with one explicit next action.
 
 ## Global and Project Memory
 
-The global workspace knows which AutoForge projects exist on the current
+The global workspace knows which Priozar projects exist on the current
 machine and supports relocation, lifecycle, retention, and portable global
 storage operations. Project truth remains scoped to each repository; an agent
 must not import assumptions from another project merely because both appear in
-`autoforge projects list`.
+`priozar projects list`.
 
-Use `autoforge attach "$PWD"` for a persistent project. Use `autoforge init`
+Use `priozar attach "$PWD"` for a persistent project. Use `priozar init`
 only when intentionally creating local-only state that should not enter the
 global registry.

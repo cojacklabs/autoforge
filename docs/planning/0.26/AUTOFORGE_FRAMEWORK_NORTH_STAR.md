@@ -1,32 +1,35 @@
-# AutoForge Framework North-Star
+# Priozar Framework North-Star
 
 Status: Authoritative product destination
 Established: 2026-08-30
-Naming status: The proposed Forger identity failed verification because of
+Naming status: Priozar is the selected name for the framework formerly called
+AutoForge. The earlier Forger proposal failed identity verification because of
 direct product, framework, executable, state-directory, search, and legal-risk
-collisions. AutoForge remains the compatibility identity until a distinctive
-replacement passes the complete identity gate.
+collisions. The rename is being implemented with a compatibility window;
+package publication, the repository rename, and domain changes remain explicit
+human steps.
 
 ## Product Definition
 
-AutoForge is the open-source engineering control plane for AI-assisted
+Priozar is the open-source engineering control plane for AI-assisted
 software, data, and AI development.
 
-The framework still requires a distinctive successor name, but **Forger is not
-cleared for implementation**. See the
+The framework was previously named AutoForge, and **Forger is not cleared for
+implementation**. See the
 [Forger Identity Verification](FORGER_IDENTITY_VERIFICATION.md). The bounded
 [compatibility migration pattern](FORGER_BRAND_AND_COMPATIBILITY_MIGRATION.md)
-remains reusable after another identity passes verification.
+informs the Priozar migration described in the
+[Priozar Brand Migration Guide](../../PRIOZAR_BRAND_MIGRATION_GUIDE.md).
 
 It preserves project intelligence, resolves the minimum complete context for a
 task, governs technical work, coordinates replaceable agents, validates
-outcomes, and carries structured learning forward. AutoForge is a framework,
+outcomes, and carries structured learning forward. Priozar is a framework,
 not an AI agent or a general-purpose assistant.
 
-> **Humans think naturally. AutoForge organizes persistently. AI agents execute
+> **Humans think naturally. Priozar organizes persistently. AI agents execute
 > precisely.**
 
-> **AutoForge owns deterministic project intelligence and orchestration—not
+> **Priozar owns deterministic project intelligence and orchestration—not
 > model reasoning or autonomous agency.**
 
 ## Responsibility Boundary
@@ -35,7 +38,7 @@ not an AI agent or a general-purpose assistant.
 Human intent
      |
      v
-AutoForge
+Priozar
   Project knowledge + graph + context resolution
   Governance + scope + workflow + validation + evidence
      |
@@ -49,14 +52,14 @@ Vendor-neutral agent contract
 Software / data / AI work -> validated project knowledge
 ```
 
-AutoForge determines what a request means within a project, what knowledge is
+Priozar determines what a request means within a project, what knowledge is
 relevant, which constraints apply, what an agent may change, which workflow is
 required, and what must be validated. The selected external agent reasons,
 generates, and executes within that contract.
 
 ## Framework Capabilities
 
-AutoForge supports three compatible modes:
+Priozar supports three compatible modes:
 
 - **Plan:** discovery, research, requirements, specifications, alternatives,
   decisions, roadmaps, and implementation readiness;
@@ -84,7 +87,7 @@ Its enduring framework domains are:
 
 ## Canonical Project Model
 
-The repository is the project brain. AutoForge maintains one connected project
+The repository is the project brain. Priozar maintains one connected project
 model rather than separate competing graphs for governance, domain, design,
 architecture, traceability, and the digital twin.
 
@@ -100,7 +103,7 @@ provenance, scope, authority, lifecycle, and export behavior.
 
 ## Human Authority
 
-AutoForge may automate deterministic mechanics and coordinate approved agent
+Priozar may automate deterministic mechanics and coordinate approved agent
 work, but automation is not unrestricted autonomy. Humans remain responsible
 for goals, strategy, consequential permissions, accepted tradeoffs, and release
 authorization.
@@ -113,17 +116,17 @@ not claim enforcement stronger than the host agent actually supports.
 
 A separately named CoJack Labs AI may eventually own general conversation,
 personal memory, broad research, model routing, cross-application action, and a
-visual prompt-to-product workspace. It may consume AutoForge whenever technical
+visual prompt-to-product workspace. It may consume Priozar whenever technical
 project work requires governed context and validation.
 
-AutoForge must remain independently installable and usable by humans and any
+Priozar must remain independently installable and usable by humans and any
 compatible agent. The future AI must not own a competing copy of canonical
 project truth. Product ideas separated from this framework are preserved in
 [Separated Future AI Product Portfolio](./SEPARATED_FUTURE_AI_PRODUCT_PORTFOLIO.md).
 
 ## Explicit Non-Goals
 
-AutoForge is not:
+Priozar is not:
 
 - a general-purpose or personal AI assistant;
 - a proprietary model or model-routing product;
@@ -134,12 +137,12 @@ AutoForge is not:
 - the owner of general personal memory, email, messaging, or SaaS actions;
 - dependent on one model, provider, agent, cloud account, or hosted service.
 
-AutoForge may define contracts, governance, and adapters used by those systems
+Priozar may define contracts, governance, and adapters used by those systems
 without becoming those systems.
 
 ## Architectural Invariants
 
-1. AutoForge remains deterministic, provider-neutral, repository-native, and
+1. Priozar remains deterministic, provider-neutral, repository-native, and
    locally useful.
 2. Project intelligence belongs to the project.
 3. The Git repository root is the canonical project boundary.
@@ -157,7 +160,7 @@ without becoming those systems.
 
 ## Success Test
 
-AutoForge succeeds when a human can open a technical repository with any
+Priozar succeeds when a human can open a technical repository with any
 compatible agent and the project itself can explain what is being attempted,
 what is already known and decided, what is affected, which rules apply, what
 may change, what evidence is required, and how another participant can continue
@@ -169,7 +172,7 @@ and continuous across agents and time.
 
 ## Governance
 
-This document supersedes the AutoForge-as-an-AI-operator destination. The
-[Framework Roadmap](./AUTOFORGE_FRAMEWORK_ROADMAP.md) governs candidate delivery
+This document supersedes the Priozar-as-an-AI-operator destination. The
+[Framework Roadmap](./PRIOZAR_FRAMEWORK_ROADMAP.md) governs candidate delivery
 sequencing. Historical plans remain evidence, but they are not implementation
 authorization when they conflict with this boundary.

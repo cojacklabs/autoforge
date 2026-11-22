@@ -1,6 +1,6 @@
 # Local Provider Credentials
 
-AutoForge Agent stores local bring-your-own-key credentials in the operating
+Priozar Agent stores local bring-your-own-key credentials in the operating
 system's credential facility. Credentials are Agent runtime state, never Core
 project truth.
 
@@ -21,18 +21,18 @@ handoffs.
 ## Commands
 
 ```bash
-autoforge-agent credentials set openai
-autoforge-agent credentials status openai
-autoforge-agent credentials delete openai
+priozar-agent credentials set openai
+priozar-agent credentials status openai
+priozar-agent credentials delete openai
 ```
 
 When the compatible Agent is installed, the deterministic Core CLI exposes the
 same allowlisted namespace without importing provider or credential code:
 
 ```bash
-autoforge credentials set openai
-autoforge credentials status openai
-autoforge credentials delete openai
+priozar credentials set openai
+priozar credentials status openai
+priozar credentials delete openai
 ```
 
 `set` requires an interactive terminal and reads through a hidden prompt.
@@ -52,5 +52,5 @@ compatible Agent installation can be discovered.
 
 If the Agent reports that the credential store cannot be read, unlock the
 desktop keyring and retry. On headless Linux, configure a Secret Service session
-before using the local Agent. AutoForge intentionally provides no plaintext or
+before using the local Agent. Priozar intentionally provides no plaintext or
 tracked-file fallback.

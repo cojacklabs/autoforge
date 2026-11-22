@@ -1,32 +1,32 @@
-# AutoForge Agent Setup Guide
+# Priozar Agent Setup Guide
 
 Use this procedure whenever a repository-aware coding agent joins a project,
-resumes after a handoff, or continues after AutoForge is updated.
+resumes after a handoff, or continues after Priozar is updated.
 
 ## Canonical Startup Prompt
 
-> Use the globally installed AutoForge CLI for this repository. Review `README.md` and follow the current documentation walkthrough in `docs/README.md` to use AutoForge continuously throughout brainstorming, planning, documentation, design, bootstrapping, development, validation, decision-making, and handoff; follow every applicable `AGENTS.md` and summarize the project's current AutoForge state before making changes.
+> Use the globally installed Priozar CLI for this repository. Review `README.md` and follow the current documentation walkthrough in `docs/README.md` to use Priozar continuously throughout brainstorming, planning, documentation, design, bootstrapping, development, validation, decision-making, and handoff; follow every applicable `AGENTS.md` and summarize the project's current Priozar state before making changes.
 
 ## Required Procedure
 
 ### 1. Establish authority and project identity
 
-1. Resolve the Git repository root. AutoForge treats the whole repository as
+1. Resolve the Git repository root. Priozar treats the whole repository as
    one project unless the path belongs to an independent submodule.
 2. Read applicable `AGENTS.md` files from the repository root toward the files
    in scope.
 3. Read [`docs/README.md`](README.md) and use the
-   [CLI reference](AUTOFORGE_CLI_REFERENCE.md) for current syntax.
+   [CLI reference](PRIOZAR_CLI_REFERENCE.md) for current syntax.
 4. Run:
 
    ```bash
-   autoforge version
-   autoforge --project "$PWD" doctor
-   autoforge --project "$PWD" bootstrap status
-   autoforge --project "$PWD" recap
+   priozar version
+   priozar --project "$PWD" doctor
+   priozar --project "$PWD" bootstrap status
+   priozar --project "$PWD" recap
    ```
 
-If `.autoforge/` is absent, run `autoforge attach "$PWD"`. `attach` both
+If `.autoforge/` is absent, run `priozar attach "$PWD"`. `attach` both
 initializes the repository and registers it in the machine-wide workspace. Do
 not use `init` unless the human deliberately wants local-only state.
 
@@ -35,16 +35,16 @@ not use `init` unless the human deliberately wants local-only state.
 When `recap` reports active work:
 
 ```bash
-autoforge --project "$PWD" context --explain
-autoforge --project "$PWD" contract validate
+priozar --project "$PWD" context --explain
+priozar --project "$PWD" contract validate
 ```
 
 Generate a missing contract with the canonical adapter identity:
 
 ```bash
-autoforge --project "$PWD" agents list
-autoforge --project "$PWD" contract generate <agent-id>
-autoforge --project "$PWD" contract validate
+priozar --project "$PWD" agents list
+priozar --project "$PWD" contract generate <agent-id>
+priozar --project "$PWD" contract validate
 ```
 
 Before editing, summarize:
@@ -56,7 +56,7 @@ Before editing, summarize:
 - risks, unknowns, and approval requirements;
 - validation commands and completion conditions.
 
-Do not replace a bounded AutoForge packet with an unrestricted repository scan.
+Do not replace a bounded Priozar packet with an unrestricted repository scan.
 
 ### 3. Turn an unstructured request into durable work
 
@@ -64,24 +64,24 @@ If no work is active, do not silently treat a long conversation as the plan.
 Inspect the schema and assess the request:
 
 ```bash
-autoforge intent assess --schema
-autoforge intent assess intent.json --kind <implementation|research|architecture|design|planning|data|security>
+priozar intent assess --schema
+priozar intent assess intent.json --kind <implementation|research|architecture|design|planning|data|security>
 ```
 
 Use the recommended workflow, or create a feature/phase/task or issue with
 explicit include and exclude patterns. Ask the human about genuinely material
 ambiguity; persist resolved choices with `decide`.
 
-### 4. Keep AutoForge synchronized while working
+### 4. Keep Priozar synchronized while working
 
 - Refresh `context --explain` after work, governance, design, or decision state
   changes materially.
 - Run `check --path <file>` before or during scoped edits.
 - Record research, specifications, trace links, hypotheses, and evidence in the
-  corresponding AutoForge domain instead of leaving them only in chat.
+  corresponding Priozar domain instead of leaving them only in chat.
 - Apply the [Code Commenting Standard](CODE_COMMENTING_STANDARD.md): preserve
   non-obvious intent, avoid narrative noise, and link `TODO`/`FIXME` markers to
-  durable AutoForge work.
+  durable Priozar work.
 - Use `gate check` for retained validation.
 - Record a decision linked to the active work before `done`.
 - Use a structured handoff when another agent will continue.
@@ -91,9 +91,9 @@ ambiguity; persist resolved choices with `decide`.
 For completion:
 
 ```bash
-autoforge gate check
-autoforge decide --statement "..." --reasoning "..." --consequence "..." --scope <scope> --keyword <keyword> --work <work-id>
-autoforge done
+priozar gate check
+priozar decide --statement "..." --reasoning "..." --consequence "..." --scope <scope> --keyword <keyword> --work <work-id>
+priozar done
 ```
 
 For continuation, provide a recap or protocol handoff containing changed files,
@@ -111,5 +111,5 @@ Agents must not silently:
 - claim remote CI, publication, deployment, or approval that did not occur;
 - use historical documentation as current command authority.
 
-After an AutoForge update, rerun version, doctor, recap, contract validation,
+After a Priozar update, rerun version, doctor, recap, contract validation,
 and context resolution before continuing.

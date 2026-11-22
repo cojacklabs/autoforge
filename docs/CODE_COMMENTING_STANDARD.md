@@ -1,6 +1,6 @@
 # Code Commenting Standard
 
-AutoForge-guided agents preserve intent that code, types, tests, and durable
+Priozar-guided agents preserve intent that code, types, tests, and durable
 decisions cannot communicate clearly on their own. The goal is durable context,
 not more comments.
 
@@ -16,7 +16,7 @@ Use concise explain-why commentary for:
 - intentionally unusual implementation choices and rejected obvious
   alternatives.
 
-Prefer typed APIs, descriptive names, focused tests, and AutoForge decisions
+Prefer typed APIs, descriptive names, focused tests, and Priozar decisions
 when those carry the information more reliably. Link a durable decision when a
 comment depends on project-wide rationale that may evolve.
 
@@ -35,14 +35,14 @@ comment merely to satisfy a quota.
 
 ## Follow-Up Markers
 
-Every `TODO` or `FIXME` in a selected source file must include an AutoForge
+Every `TODO` or `FIXME` in a selected source file must include a Priozar
 `task.*` or `issue.*` reference on the same line. For example:
 
 ```ts
 // TODO(issue.support-node-26): Remove this compatibility branch after approval.
 ```
 
-`autoforge gate check` reports an `untracked-follow-up` finding when the marker
+`priozar gate check` reports an `untracked-follow-up` finding when the marker
 has no work reference. This is the objective automated rule. Whether commentary
 adequately explains intent remains a review responsibility because arbitrary
 semantic scoring or documentation quotas would reward noise.
@@ -55,7 +55,7 @@ Before completion, review changed code and ask:
 2. Are public contracts and invariants clear from types, tests, or concise
    commentary?
 3. Could any new comment become stale or be replaced by clearer code?
-4. Does every follow-up marker point to durable AutoForge work?
+4. Does every follow-up marker point to durable Priozar work?
 
 Generated Agent contracts and the built-in `commenting` doctrine carry this
 standard into agent execution. Project-specific `AGENTS.md` instructions may

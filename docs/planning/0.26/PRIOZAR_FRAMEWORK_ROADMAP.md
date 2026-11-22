@@ -1,11 +1,11 @@
-# AutoForge Framework Roadmap
+# Priozar Framework Roadmap
 
 Status: Authoritative framework planning baseline
 Established: 2026-08-30
 
 ## Objective
 
-Advance AutoForge as a trusted, open-source engineering control plane without
+Advance Priozar as a trusted, open-source engineering control plane without
 turning it into a first-party AI agent, personal assistant, IDE, visual
 application builder, or hosted-only platform.
 
@@ -15,7 +15,7 @@ application builder, or hosted-only platform.
    evidence so readiness remains trustworthy.
 2. Define durable, high-value code-commenting governance for agent contracts
    and review without optimizing for comment volume.
-3. Make typed AutoForge artifacts the default location for agent-produced
+3. Make typed Priozar artifacts the default location for agent-produced
    planning, research, design, architecture, and handoff outputs.
 4. Apply the documented
    [hybrid SQLite storage boundary](HYBRID_SQLITE_STORAGE_BOUNDARY.md): keep
@@ -70,7 +70,7 @@ repository-owned truth.
 
 ## Reconciled Work Classification
 
-### Remains in AutoForge
+### Remains in Priozar
 
 - validation evidence binding and release readiness;
 - agent-facing commenting governance;
@@ -91,41 +91,39 @@ repository-owned truth.
 
 ### Requires Reframing or Closure
 
-- experimental `@cojacklabs/autoforge-agent` and Providers publication work;
-- bare `autoforge` delegation to a first-party Agent;
+- experimental `@cojacklabs/priozar-agent` and Providers publication work;
+- bare `priozar` delegation to a first-party Agent;
 - hosted Agent execution, provider-secret custody, and model streaming;
-- AutoForge-branded AI domains and marketing commitments;
-- any item whose value depends on AutoForge becoming the reasoning product.
+- Priozar-branded AI domains and marketing commitments;
+- any item whose value depends on Priozar becoming the reasoning product.
 
 ## Naming Workstream
 
 Forger failed the final identity verification because existing adjacent
 products occupy the same name, AI-development category, executable, and
 state-directory convention, with additional search and legal-review risk.
-AutoForge remains the compatibility identity while the selected successor,
-**Priozar**, passes reservation, legal-review, and migration-readiness gates.
-
-The current [successor identity shortlist](SUCCESSOR_IDENTITY_SHORTLIST.md)
-records the maintainer's selection of **Priozar**. Selection does not authorize
-implementation, publication, or migration until public identifiers are checked
-and controlled and the remaining legal and compatibility gates are recorded.
+**Priozar**, formerly AutoForge, is the selected successor name. The
+[successor identity shortlist](SUCCESSOR_IDENTITY_SHORTLIST.md) records the
+maintainer's selection, and the implementation is under way behind a
+compatibility window. Publishing the renamed packages, renaming the repository,
+and changing the domain are explicit human steps that are prepared but not
+performed by the implementation. Public identifier reservation and legal review
+are still tracked as release-preparation work and are not claimed complete here.
 
 See the [Forger Identity Verification](FORGER_IDENTITY_VERIFICATION.md). The
 bounded [compatibility migration pattern](FORGER_BRAND_AND_COMPATIBILITY_MIGRATION.md)
-remains useful after replacing all provisional identifiers with a name that
-passes the complete identity gate.
-Implementation must provide an explicit dry-run, backup, atomic state migration,
-rollback, global-registry repair, compatibility aliases, and cross-platform
-installation evidence. No blind repository-wide replacement or silent forced
-upgrade is permitted. `.priozar/` is the selected successor state directory,
-subject to the same reservation and implementation gates as the other public
-identifiers.
+informs the migration, which provides an explicit dry-run, backup, atomic state
+migration, rollback, global-registry repair, compatibility aliases, and
+cross-platform installation evidence. No blind repository-wide replacement or
+silent forced upgrade is permitted. `.priozar/` is the successor state
+directory; new projects keep creating `.autoforge/` until the Priozar release
+ships, and existing projects move with `priozar migrate brand`.
 
 ## Exit Test
 
 The roadmap is reconciled when a new agent can unambiguously conclude that
-AutoForge organizes and governs technical project work while external agents
-reason and execute; no active priority requires AutoForge to become the future
+Priozar organizes and governs technical project work while external agents
+reason and execute; no active priority requires Priozar to become the future
 CoJack Labs AI.
 
 ## Recorded Work

@@ -1,6 +1,6 @@
 # Quality Policies — TypeScript, ESLint, Prettier, and Artifact Validation
 
-AutoForge v0.4 enforces non‑negotiable quality gates on every patch to prevent syntax errors and ensure standards.
+Priozar enforces non‑negotiable quality gates on every patch to prevent syntax errors and ensure standards.
 
 ## Commands and Defaults
 

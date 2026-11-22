@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
-  "revision": 505,
-  "updatedAt": "2026-11-22T20:13:24.503Z",
+  "revision": 510,
+  "updatedAt": "2026-11-22T21:16:09.010Z",
   "data": {
     "features": [
       {
@@ -2041,10 +2041,10 @@
       {
         "name": "Rename the product in README and current docs",
         "description": "Update README.md, docs/README.md, current guides and AUTOFORGE.md (to PRIOZAR.md), excluding dev/, older docs/planning versions and CHANGELOG history.",
-        "status": "planned",
+        "status": "completed",
         "pauseReason": null,
         "createdAt": "2026-11-20T01:50:59.682Z",
-        "updatedAt": "2026-11-20T01:50:59.682Z",
+        "updatedAt": "2026-11-22T21:16:08.891Z",
         "id": "task.rename-the-product-in-readme-and-current-docs",
         "phaseId": "phase.live-docs-ci-and-urls",
         "scope": {
@@ -2283,6 +2283,63 @@
             "src/commands/attach.ts",
             "src/migrations/**",
             "test/**"
+          ],
+          "exclude": []
+        }
+      },
+      {
+        "name": "Rename the product in root contributor docs",
+        "description": "CONTRIBUTING.md links to the renamed CLI reference and still names AutoForge. Update it, and check CODE_OF_CONDUCT.md and other root docs, leaving CHANGELOG.md and CHANGES_COMPLETE.md as history.",
+        "status": "planned",
+        "pauseReason": null,
+        "createdAt": "2026-11-22T20:46:05.820Z",
+        "updatedAt": "2026-11-22T20:46:05.820Z",
+        "id": "task.rename-the-product-in-root-contributor-docs",
+        "phaseId": "phase.live-docs-ci-and-urls",
+        "scope": {
+          "include": [
+            "CONTRIBUTING.md",
+            "CODE_OF_CONDUCT.md",
+            "SECURITY.md"
+          ],
+          "exclude": []
+        }
+      },
+      {
+        "name": "Regenerate the packed repository snapshot under the Priozar name",
+        "description": "AUTOFORGE.md is a Repomix-generated, read-only snapshot of the repository (about 260 KB) and must not be edited by hand. Point the generator output at PRIOZAR.md, regenerate it, update .prettierignore and the build script references, and retire the stale AUTOFORGE.md.",
+        "status": "planned",
+        "pauseReason": null,
+        "createdAt": "2026-11-22T20:46:06.213Z",
+        "updatedAt": "2026-11-22T20:46:06.213Z",
+        "id": "task.regenerate-the-packed-repository-snapshot-under-the-priozar-name",
+        "phaseId": "phase.live-docs-ci-and-urls",
+        "scope": {
+          "include": [
+            "AUTOFORGE.md",
+            "PRIOZAR.md",
+            "repomix.config.json",
+            ".prettierignore",
+            "scripts/build_dist.js"
+          ],
+          "exclude": []
+        }
+      },
+      {
+        "name": "Rename the North Star file once its artifact is approved and superseded",
+        "description": "docs/planning/0.26/AUTOFORGE_FRAMEWORK_NORTH_STAR.md is the registered draft artifact artifact.autoforge-framework-north-star. Only approved artifacts can be superseded, and approval is a human decision. After the maintainer approves it (priozar artifact approve <id> --by <actor>), supersede it with an entry pointing at PRIOZAR_FRAMEWORK_NORTH_STAR.md, git mv the file, and update the links in README.md, docs/README.md and the 0.26 planning docs.",
+        "status": "planned",
+        "pauseReason": null,
+        "createdAt": "2026-11-22T20:48:42.893Z",
+        "updatedAt": "2026-11-22T20:48:42.893Z",
+        "id": "task.rename-the-north-star-file-once-its-artifact-is-approved-and-superseded",
+        "phaseId": "phase.live-docs-ci-and-urls",
+        "scope": {
+          "include": [
+            "docs/planning/0.26/**",
+            "docs/README.md",
+            "README.md",
+            ".autoforge/artifacts/**"
           ],
           "exclude": []
         }

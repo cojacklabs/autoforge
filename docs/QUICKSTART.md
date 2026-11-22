@@ -1,17 +1,17 @@
-# AutoForge Quickstart
+# Priozar Quickstart
 
 Get from an idea to one validated, resumable work item in a few minutes. For
 the broader documentation map, start at [`docs/README.md`](README.md).
 
 ## Install
 
-Install AutoForge globally so every project on the machine shares one CLI,
+Install Priozar globally so every project on the machine shares one CLI,
 one global workspace registry, and one update path:
 
 ```bash
-npm install --global @cojacklabs/autoforge
-# or: yarn global add @cojacklabs/autoforge
-# or: pnpm add --global @cojacklabs/autoforge
+npm install --global @cojacklabs/priozar
+# or: yarn global add @cojacklabs/priozar
+# or: pnpm add --global @cojacklabs/priozar
 ```
 
 Install as a local dev dependency only for environments that cannot hold a
@@ -19,23 +19,23 @@ persistent global install — a dedicated CI runner or container with only
 Node available:
 
 ```bash
-npm install --save-dev @cojacklabs/autoforge
+npm install --save-dev @cojacklabs/priozar
 ```
 
-Every command below assumes a global install (bare `autoforge`). Prefix each
+Every command below assumes a global install (bare `priozar`). Prefix each
 one with `npx` instead if you installed locally.
 
 ## New project
 
 ```bash
-autoforge attach "$PWD"
-autoforge doctor
+priozar attach "$PWD"
+priozar doctor
 ```
 
 `attach` initializes `.autoforge/` and `autoforge.config.json` and registers
 the project in the global workspace in one step, so it appears in
-`autoforge projects list`. `doctor` verifies the installation is healthy
-before you start work. Use plain `autoforge init` instead only when you
+`priozar projects list`. `doctor` verifies the installation is healthy
+before you start work. Use plain `priozar init` instead only when you
 deliberately want a local-only install with no global registry entry (for
 example, a disposable CI container) — `init` alone does not register the
 project globally.
@@ -43,17 +43,17 @@ project globally.
 ## Existing project on a new machine or with a new agent
 
 ```bash
-autoforge version
-autoforge --project "$PWD" doctor
-autoforge --project "$PWD" bootstrap status
-autoforge --project "$PWD" recap
+priozar version
+priozar --project "$PWD" doctor
+priozar --project "$PWD" bootstrap status
+priozar --project "$PWD" recap
 ```
 
-Then read `docs/AUTOFORGE_CLI_REFERENCE.md` for the complete current command
+Then read `docs/PRIOZAR_CLI_REFERENCE.md` for the complete current command
 surface, and `AGENTS.md` when present. See README's "Give This Prompt to Any
 Coding Agent" section for the canonical onboarding prompt.
 
-If work is active, run `autoforge --project "$PWD" context --explain` before
+If work is active, run `priozar --project "$PWD" context --explain` before
 editing. If no work is active, capture the request as intent or create scoped
 work instead of relying on the current chat as the plan.
 
@@ -63,8 +63,8 @@ Inspect the runtime schema, create a project-contained JSON file, and assess
 the intent:
 
 ```bash
-autoforge intent assess --schema
-autoforge intent assess product-idea.json --kind planning
+priozar intent assess --schema
+priozar intent assess product-idea.json --kind planning
 ```
 
 The assessment recommends deterministic workflow stages. Use `research`,
@@ -75,30 +75,30 @@ an implementation task.
 ## Add and run work
 
 ```bash
-autoforge add feature --name "Payments" --description "Add payment support"
-autoforge add phase --feature <feature-id> --name "Checkout" --description "Implement checkout"
-autoforge add task --phase <phase-id> --name "Create checkout" --description "..." --include "src/**"
-autoforge start task <task-id>
-autoforge context --explain
-autoforge check --path src/checkout.ts
-autoforge gate check
-autoforge decide --statement "..." --reasoning "..." --consequence "..." --scope checkout --keyword payments --work <task-id> --kind feature-note
-autoforge done
+priozar add feature --name "Payments" --description "Add payment support"
+priozar add phase --feature <feature-id> --name "Checkout" --description "Implement checkout"
+priozar add task --phase <phase-id> --name "Create checkout" --description "..." --include "src/**"
+priozar start task <task-id>
+priozar context --explain
+priozar check --path src/checkout.ts
+priozar gate check
+priozar decide --statement "..." --reasoning "..." --consequence "..." --scope checkout --keyword payments --work <task-id> --kind feature-note
+priozar done
 ```
 
 `start` opens a session scoped to the task's declared file patterns.
 `context --explain` compiles a build packet for the active work and explains
 what was included or excluded and why. `done` requires at least one decision
-linked to the active work item — pass `autoforge done --no-decision "<reason>"`
+linked to the active work item — pass `priozar done --no-decision "<reason>"`
 to bypass for trivial work; the reason is itself recorded as an auditable
 decision.
 
 ## Query project memory
 
 ```bash
-autoforge why --query checkout
-autoforge why --history
-autoforge recap
+priozar why --query checkout
+priozar why --history
+priozar recap
 ```
 
 `why` searches recorded decision rationale. `recap` summarizes current work
@@ -114,10 +114,10 @@ the raw transcript; see [`CROSS_AGENT_HANDOFFS.md`](CROSS_AGENT_HANDOFFS.md).
 After one item completes:
 
 ```bash
-autoforge recap
-autoforge strategy list --decision next
-autoforge orchestrate ready
-autoforge trace impact <artifact>
+priozar recap
+priozar strategy list --decision next
+priozar orchestrate ready
+priozar trace impact <artifact>
 ```
 
 Not every project uses orchestration or traceability. These commands make the
@@ -126,7 +126,7 @@ next step explicit when the project grows beyond a linear task list.
 ## Keep the installation current
 
 ```bash
-autoforge update
+priozar update
 ```
 
 Resolves the version currently published on npm, installs it, and uses
@@ -134,10 +134,10 @@ Resolves the version currently published on npm, installs it, and uses
 
 ## Learn more
 
-- `docs/AUTOFORGE_CLI_REFERENCE.md` — the complete, currently maintained
+- `docs/PRIOZAR_CLI_REFERENCE.md` — the complete, currently maintained
   command surface across every domain (memory, strategy, learning, design,
   governance, orchestration, and more).
-- `docs/AUTOFORGE_AGENT_SETUP_GUIDE.md` — the complete safe setup procedure
+- `docs/PRIOZAR_AGENT_SETUP_GUIDE.md` — the complete safe setup procedure
   for assigning an agent to a project.
 - `docs/BOOTSTRAP_PIPELINE.md` — the end-to-end bootstrap-to-release flow.
 - `README.md` — project overview, multi-agent orchestration, and the

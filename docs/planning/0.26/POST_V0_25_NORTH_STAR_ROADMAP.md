@@ -6,7 +6,7 @@ Starting point: AutoForge Core CLI 0.25.2
 
 > This roadmap's first-party Agent, Provider, Service, Web, personal-memory,
 > and Visual Product Studio horizons no longer govern AutoForge. Use the
-> [AutoForge Framework Roadmap](./AUTOFORGE_FRAMEWORK_ROADMAP.md).
+> [AutoForge Framework Roadmap](./PRIOZAR_FRAMEWORK_ROADMAP.md).
 
 This document preserves the proposed development direction after the v0.25
 platform-boundary release. It is the starting point for v0.26 planning, not an

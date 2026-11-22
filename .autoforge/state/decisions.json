@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
-  "revision": 178,
-  "updatedAt": "2026-11-22T20:13:25.473Z",
+  "revision": 179,
+  "updatedAt": "2026-11-22T21:16:08.355Z",
   "data": {
     "decisions": [
       {
@@ -4412,6 +4412,31 @@
         "kind": "feature-note",
         "createdAt": "2026-11-22T20:13:25.403Z",
         "updatedAt": "2026-11-22T20:13:25.403Z"
+      },
+      {
+        "id": "decision.rename-current-docs-to-priozar-rewrite-naming-status-passages-by-hand-and-leave",
+        "statement": "Rename current docs to Priozar, rewrite naming-status passages by hand, and leave history and the registered North Star file name alone",
+        "reasoning": "Current guides should describe the product users run, but regex replacement garbles text that deliberately discusses both names, and rewrote the naming workstream as if the successor were undecided. The North Star is a registered draft artifact that only an approved artifact can supersede, and approval is a human decision, so its file name stays until the maintainer approves it.",
+        "consequences": [
+          "README, the current guides and the 0.26 North Star and Roadmap say Priozar and use priozar commands, package names and PRIOZAR_ guide file names; the four operational guides and the Roadmap file were renamed with their links updated and no broken relative links remain.",
+          "The transition notice and the Naming Workstream passages were rewritten to state that Priozar is selected and being implemented, without claiming that identifier reservation or legal review are complete.",
+          "Brand-transition docs, research, historical plans and the generated AUTOFORGE.md snapshot were not rewritten; the .autoforge/ state paths in docs stay accurate because new projects keep creating .autoforge until release."
+        ],
+        "scope": [
+          "documentation"
+        ],
+        "keywords": [
+          "priozar",
+          "docs"
+        ],
+        "relatedWork": [
+          "task.rename-the-product-in-readme-and-current-docs"
+        ],
+        "supersedes": null,
+        "status": "active",
+        "kind": "feature-note",
+        "createdAt": "2026-11-22T21:16:08.325Z",
+        "updatedAt": "2026-11-22T21:16:08.325Z"
       }
     ]
   }

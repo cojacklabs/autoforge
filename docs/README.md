@@ -1,4 +1,4 @@
-# AutoForge Documentation
+# Priozar Documentation
 
 This page is the navigation entry point for humans and coding agents. Use it to
 distinguish current operational guidance from historical design records.
@@ -6,19 +6,19 @@ distinguish current operational guidance from historical design records.
 The installed CLI is authoritative for exact syntax:
 
 ```bash
-autoforge version
-autoforge help
-autoforge schemas list
+priozar version
+priozar help
+priozar schemas list
 ```
 
 ## Start Here
 
 | Need                                                         | Read                                                              |
 | ------------------------------------------------------------ | ----------------------------------------------------------------- |
-| Install AutoForge and complete a first work item             | [Quickstart](QUICKSTART.md)                                       |
-| Assign Claude, Codex, Cursor, Gemini, Grok, or another agent | [Agent Setup Guide](AUTOFORGE_AGENT_SETUP_GUIDE.md)               |
-| Decide which capability to use for a prompt                  | [Agentic AI Guide](AUTOFORGE_AGENTIC_AI_GUIDE.md)                 |
-| Look up exact CLI syntax                                     | [CLI Reference](AUTOFORGE_CLI_REFERENCE.md)                       |
+| Install Priozar and complete a first work item               | [Quickstart](QUICKSTART.md)                                       |
+| Assign Claude, Codex, Cursor, Gemini, Grok, or another agent | [Agent Setup Guide](PRIOZAR_AGENT_SETUP_GUIDE.md)                 |
+| Decide which capability to use for a prompt                  | [Agentic AI Guide](PRIOZAR_AGENTIC_AI_GUIDE.md)                   |
+| Look up exact CLI syntax                                     | [CLI Reference](PRIOZAR_CLI_REFERENCE.md)                         |
 | Bootstrap a product idea through gated artifacts             | [Bootstrap Pipeline](BOOTSTRAP_PIPELINE.md)                       |
 | Transfer work between agents                                 | [Cross-Agent Handoffs](CROSS_AGENT_HANDOFFS.md)                   |
 | Understand durable versus operational state                  | [Governance and Memory](GOVERNANCE_AND_MEMORY.md)                 |
@@ -59,8 +59,8 @@ to its own approval gates.
 
 ## Current Framework North-Star
 
-- [AutoForge Framework North-Star](planning/0.26/AUTOFORGE_FRAMEWORK_NORTH_STAR.md)
-- [AutoForge Framework Roadmap](planning/0.26/AUTOFORGE_FRAMEWORK_ROADMAP.md)
+- [Priozar Framework North-Star](planning/0.26/AUTOFORGE_FRAMEWORK_NORTH_STAR.md)
+- [Priozar Framework Roadmap](planning/0.26/PRIOZAR_FRAMEWORK_ROADMAP.md)
 - [Forger Brand and Compatibility Migration](planning/0.26/FORGER_BRAND_AND_COMPATIBILITY_MIGRATION.md)
 - [Forger Identity Verification](planning/0.26/FORGER_IDENTITY_VERIFICATION.md)
 - [Successor Identity Shortlist](planning/0.26/SUCCESSOR_IDENTITY_SHORTLIST.md)
@@ -69,9 +69,9 @@ to its own approval gates.
 - [AutoForgeAI Orchestration Capability Adoption](planning/0.26/AUTOFORGEAI_ORCHESTRATION_CAPABILITY_ADOPTION.md)
 - [Agentic SDLC Product Track](planning/0.26/AGENTIC_SDLC_PRODUCT_TRACK.md)
 
-The framework north-star and framework roadmap are authoritative. AutoForge is
+The framework north-star and framework roadmap are authoritative. Priozar is
 not a first-party AI agent; compatible external agents reason and execute while
-AutoForge supplies persistent project intelligence, governance, context,
+Priozar supplies persistent project intelligence, governance, context,
 coordination, and validation. Earlier AI-operator, Agentic SDLC product, and
 Visual Product Studio plans are historical or transferred concepts and do not
 authorize implementation in this repository.
@@ -91,4 +91,4 @@ Documents under `docs/planning/<older-version>/`, `docs/superpowers/`, and much
 of `docs/dev/` preserve prior implementation history. They may mention commands
 or architecture that no longer exist. Treat them as historical evidence unless
 a current guide links to them explicitly; never copy command syntax from them
-without confirming it through `autoforge help` or the current CLI reference.
+without confirming it through `priozar help` or the current CLI reference.

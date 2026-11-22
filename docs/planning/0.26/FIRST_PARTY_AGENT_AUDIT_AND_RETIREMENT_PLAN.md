@@ -51,7 +51,7 @@ This document inventories all first-party agent compatibility surfaces, distingu
 ### C. Documentation & Guides
 
 1. `docs/LOCAL_PROVIDER_CREDENTIALS.md`: Documents `autoforge-agent credentials` and native keychain storage.
-2. `docs/AUTOFORGE_CLI_REFERENCE.md`: Mentions bare command delegation to `autoforge-agent`.
+2. `docs/PRIOZAR_CLI_REFERENCE.md`: Mentions bare command delegation to `autoforge-agent`.
 3. `README.md` and `CHANGELOG.md`: Reference `@cojacklabs/autoforge-agent` as a private experimental runtime.
 
 ---
@@ -89,6 +89,6 @@ This document inventories all first-party agent compatibility surfaces, distingu
 
 ### Stage 3: Documentation & Successor Alignment (`priozar`)
 
-1. Update `docs/AUTOFORGE_CLI_REFERENCE.md` and `docs/README.md` to present the framework strictly as an engineering control plane.
+1. Update `docs/PRIOZAR_CLI_REFERENCE.md` and `docs/README.md` to present the framework strictly as an engineering control plane.
 2. Remove `docs/LOCAL_PROVIDER_CREDENTIALS.md` or replace it with a brief external agent auth guide.
 3. Ensure the successor binary (`priozar`) ships with zero reference to first-party agent execution.

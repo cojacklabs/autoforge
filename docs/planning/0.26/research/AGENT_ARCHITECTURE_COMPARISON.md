@@ -17,7 +17,7 @@ separate, deliberately distinct threads:
    about how an agent itself plans, calls tools, samples a model, or
    sandboxes execution, it belongs to that separate initiative, never to
    AutoForge's own codebase. Per the reconciled framework roadmap
-   (`docs/planning/0.26/AUTOFORGE_FRAMEWORK_ROADMAP.md`) and the north-star
+   (`docs/planning/0.26/PRIOZAR_FRAMEWORK_ROADMAP.md`) and the north-star
    rule "AutoForge is not an AI agent and should not evolve into one," none
    of this document licenses AutoForge itself to grow an agent loop, sampler,
    or sandbox.
@@ -119,7 +119,7 @@ concrete lessons worth importing:
   actually touching a directory, not just once at startup) is a genuinely
   different idea from AutoForge's current context-resolution model, which
   resolves once per task/session. Worth a deliberate question for the
-  Project Graph and Context horizon (`AUTOFORGE_FRAMEWORK_ROADMAP.md`): should
+  Project Graph and Context horizon (`PRIOZAR_FRAMEWORK_ROADMAP.md`): should
   context resolution re-trigger mid-task when an agent's scope touches a new
   directory it wasn't originally scoped to?
 - **Grok Build's "markdown is the source of truth, index is disposable/
