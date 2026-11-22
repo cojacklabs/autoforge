@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
-  "revision": 179,
-  "updatedAt": "2026-11-22T21:16:08.355Z",
+  "revision": 180,
+  "updatedAt": "2026-11-22T21:19:28.912Z",
   "data": {
     "decisions": [
       {
@@ -4437,6 +4437,30 @@
         "kind": "feature-note",
         "createdAt": "2026-11-22T21:16:08.325Z",
         "updatedAt": "2026-11-22T21:16:08.325Z"
+      },
+      {
+        "id": "decision.rename-user-visible-text-and-commands-in-templates-devops-diagrams-and-legacy-sc",
+        "statement": "Rename user-visible text and commands in templates, devops, diagrams and legacy scripts but leave storage names and dev history references",
+        "reasoning": "The issue and PR templates, CI templates and script output are shown to people, so they should say Priozar and tell them to run priozar. The legacy scripts also use autoforge as on-disk names such as .autoforge/runtime/autoforge.db and the legacy autoforge/ directory, and the planning workflow reads real dev/AutoForge_* files, so renaming those would orphan data or break checks.",
+        "consequences": [
+          "Templates, devops CI, diagrams and script messages say Priozar and npx priozar; autoforge.config.json references stay until the root config rename task, and database, directory and dev file names are unchanged.",
+          "There were no autoforge.sh links in the repository, only the identity data, so no domain links needed changing."
+        ],
+        "scope": [
+          "documentation"
+        ],
+        "keywords": [
+          "priozar",
+          "scripts"
+        ],
+        "relatedWork": [
+          "task.update-ci-workflows-scripts-and-domain-links"
+        ],
+        "supersedes": null,
+        "status": "active",
+        "kind": "feature-note",
+        "createdAt": "2026-11-22T21:19:28.875Z",
+        "updatedAt": "2026-11-22T21:19:28.875Z"
       }
     ]
   }

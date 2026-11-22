@@ -5,14 +5,14 @@ import path from "node:path";
 import process from "node:process";
 import yaml from "yaml";
 
-const CODE_TARGETS_HEADER = `# AutoForge code-target configuration (managed).
+const CODE_TARGETS_HEADER = `# Priozar code-target configuration (managed).
 # Edit autoforge.config.json instead of modifying this file directly.
-# Paths are relative to the AutoForge directory unless noted otherwise.
+# Paths are relative to the Priozar directory unless noted otherwise.
 `;
 
-const CONTEXT_TARGETS_HEADER = `# AutoForge context target overrides (managed).
+const CONTEXT_TARGETS_HEADER = `# Priozar context target overrides (managed).
 # Edit autoforge.config.json instead of modifying this file directly.
-# Paths are relative to the AutoForge directory unless noted otherwise.
+# Paths are relative to the Priozar directory unless noted otherwise.
 `;
 
 function loadConfig(projectRoot) {
@@ -58,8 +58,8 @@ function writeCodeTargets(autoforgeDir, codeTargetsConfig = {}) {
     code_targets: {},
     notes: [
       "- The agents consult these paths when generating application code or tests.",
-      "- Update autoforge.config.json and rerun `npx autoforge configure` to change them.",
-      "- Keep planning artifacts inside the AutoForge directory.",
+      "- Update autoforge.config.json and rerun `npx priozar configure` to change them.",
+      "- Keep planning artifacts inside the Priozar directory.",
     ].join("\n"),
   };
 
@@ -167,7 +167,7 @@ function main() {
   mkdirSync(path.join(autoforgeDir, "ai"), { recursive: true });
   writeCodeTargets(autoforgeDir, config.codeTargets);
   writeContextTargets(autoforgeDir, config.contextTargets);
-  console.log("✔ Applied AutoForge configuration");
+  console.log("✔ Applied Priozar configuration");
 }
 
 try {

@@ -16,9 +16,9 @@ jobs:
           node-version: "18"
       - name: Install
         run: npm ci
-      - name: Validate AutoForge context (planning gates)
+      - name: Validate Priozar context (planning gates)
         run: |
           cd .autoforge || cd autoforge || true
-          npx autoforge validate || node ../.autoforge/scripts/validate_context.js || true
+          npx priozar validate || node ../.autoforge/scripts/validate_context.js || true
       - name: Test
         run: npm test --if-present

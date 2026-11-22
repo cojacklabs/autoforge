@@ -260,7 +260,7 @@ ${scanResult.assumptions.map((a) => `- [ ] ${a}`).join("\n")}
     );
 
     // 2. DATA_INVENTORY.yaml
-    const dataInventoryYaml = `# AutoForge Data Inventory & Classification Map
+    const dataInventoryYaml = `# Priozar Data Inventory & Classification Map
 generatedAt: "${scanResult.timestamp}"
 riskTier: "${scanResult.riskTier}"
 categories:

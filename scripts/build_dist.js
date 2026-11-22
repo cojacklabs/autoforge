@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 
 /**
- * Build script for packaging AutoForge.
+ * Build script for packaging Priozar.
  *
  * Uses a whitelist approach to copy only essential framework files and directories
  * into dist/ so the npm package ships only what end users need.
@@ -171,7 +171,7 @@ async function build() {
   await rm(distDir, { recursive: true, force: true });
   await mkdir(distDir, { recursive: true });
 
-  console.log("📦 Building AutoForge distribution with whitelist approach...");
+  console.log("📦 Building Priozar distribution with whitelist approach...");
 
   const entries = await readdir(repoRoot);
   let copiedCount = 0;
@@ -215,7 +215,7 @@ async function build() {
     await rm(path.join(distDir, ".gitignore"), { force: true });
   } catch {}
 
-  console.log(`✅ Built AutoForge distribution in ${distDir}`);
+  console.log(`✅ Built Priozar distribution in ${distDir}`);
   console.log(`   - Included: ${copiedCount} entries`);
   console.log(`   - Skipped: ${skippedCount} entries`);
 }

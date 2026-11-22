@@ -19,7 +19,7 @@ if (!existsSync(manifestPath)) {
 
 console.log(`Validating context against ${manifestPath}`);
 console.log(
-  "(Run this script from the AutoForge directory or pass a path to it).",
+  "(Run this script from the Priozar directory or pass a path to it).",
 );
 
 const DEFAULT_FILES = {

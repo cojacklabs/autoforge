@@ -6,7 +6,7 @@ labels: bug, help wanted
 
 ### Describe the bug
 
-### AutoForge context
+### Priozar context
 
 - Work ID (if applicable):
 - Intent/specification ID (if applicable):
@@ -24,8 +24,8 @@ labels: bug, help wanted
 - OS:
 - Node.js:
 - Package version:
-- AutoForge version (`autoforge version`):
-- `autoforge doctor` result:
-- `autoforge gate check` result:
+- Priozar version (`priozar version`):
+- `priozar doctor` result:
+- `priozar gate check` result:
 
 ### Additional context

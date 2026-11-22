@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
-  "revision": 510,
-  "updatedAt": "2026-11-22T21:16:09.010Z",
+  "revision": 512,
+  "updatedAt": "2026-11-22T21:19:29.545Z",
   "data": {
     "features": [
       {
@@ -2064,10 +2064,10 @@
       {
         "name": "Update CI workflows, scripts and domain links",
         "description": "Rename references in .github workflows, scripts, devops and diagrams, and point docs links to priozar.sh.",
-        "status": "planned",
+        "status": "completed",
         "pauseReason": null,
         "createdAt": "2026-11-20T01:51:00.018Z",
-        "updatedAt": "2026-11-20T01:51:00.018Z",
+        "updatedAt": "2026-11-22T21:19:29.424Z",
         "id": "task.update-ci-workflows-scripts-and-domain-links",
         "phaseId": "phase.live-docs-ci-and-urls",
         "scope": {

@@ -19,4 +19,4 @@ labels: enhancement, help wanted
 
 ### Additional context
 
-Include constraints, acceptance criteria, unknowns, screenshots, or research sources. For larger requests, attach the output of `autoforge context --explain`.
+Include constraints, acceptance criteria, unknowns, screenshots, or research sources. For larger requests, attach the output of `priozar context --explain`.

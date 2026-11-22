@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 
 /**
- * AutoForge updater
+ * Priozar updater
  *
  * Fetches the latest changes from the remote repository, attempts a fast-forward
  * pull on the current branch, reinstalls dependencies, and runs the standard
@@ -47,7 +47,7 @@ function runCommandCapture(command, args) {
 
 if (!existsSync(".git")) {
   fail(
-    "No .git directory found. Run this command from the root of the AutoForge repository.",
+    "No .git directory found. Run this command from the root of the Priozar repository.",
   );
 }
 
@@ -75,7 +75,7 @@ if (hasDirtyState) {
 const currentBranch =
   runCommandCapture("git", ["rev-parse", "--abbrev-ref", "HEAD"]) || "main";
 
-runCommand("Fetching latest AutoForge updates", "git", ["fetch", "origin"]);
+runCommand("Fetching latest Priozar updates", "git", ["fetch", "origin"]);
 runCommand(`Fast-forwarding ${currentBranch}`, "git", [
   "pull",
   "--ff-only",
@@ -92,12 +92,12 @@ if (stashed) {
     console.error(popResult.stdout?.toString() ?? "");
     console.error(popResult.stderr?.toString() ?? "");
     fail(
-      "AutoForge updated, but local changes could not be automatically re-applied. Resolve conflicts, then run `git stash pop` manually to reapply or recover your stash.",
+      "Priozar updated, but local changes could not be automatically re-applied. Resolve conflicts, then run `git stash pop` manually to reapply or recover your stash.",
     );
   }
   console.log("✅ Local changes successfully restored.");
 }
 
 console.log(
-  "\n✅ AutoForge update complete. Review ai/memory to capture any notable changes.",
+  "\n✅ Priozar update complete. Review ai/memory to capture any notable changes.",
 );
