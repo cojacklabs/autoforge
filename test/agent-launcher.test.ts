@@ -7,7 +7,9 @@ import { describe, expect, it, vi } from "vitest";
 
 import {
   agentExecutableForPlatform,
+  agentChildEnvironment,
   agentProcessInvocationForPlatform,
+  currentAgentLaunchEnvironment,
   forwardAgentSignals,
   launchPriozarAgent,
   NativeAgentProcessHost,
@@ -194,5 +196,37 @@ describe("AutoForge Agent launcher", () => {
     stop();
     parent.emit("SIGINT");
     expect(child.kill).toHaveBeenCalledTimes(2);
+  });
+});
+
+describe("AutoForge Agent launcher environment variables", () => {
+  const quiet = { stdinIsTTY: true, stdoutIsTTY: true } as const;
+  const read = (env: Record<string, string | undefined>) =>
+    currentAgentLaunchEnvironment(env, quiet);
+
+  it("disables delegation from PRIOZAR_NO_AGENT or the deprecated name", () => {
+    expect(read({ PRIOZAR_NO_AGENT: "1" }).disabled).toBe(true);
+    expect(read({ AUTOFORGE_NO_AGENT: "1" }).disabled).toBe(true);
+    expect(read({}).disabled).toBe(false);
+  });
+
+  it("lets PRIOZAR_NO_AGENT override the deprecated variable", () => {
+    expect(
+      read({ PRIOZAR_NO_AGENT: "0", AUTOFORGE_NO_AGENT: "1" }).disabled,
+    ).toBe(false);
+  });
+
+  it("treats either recursion marker as recursion", () => {
+    expect(read({ PRIOZAR_AGENT_LAUNCHED: "1" }).recursion).toBe(true);
+    expect(read({ AUTOFORGE_AGENT_LAUNCHED: "1" }).recursion).toBe(true);
+    expect(read({}).recursion).toBe(false);
+  });
+
+  it("marks launched children under both names so older agents see it", () => {
+    expect(agentChildEnvironment({ KEEP: "me" })).toEqual({
+      KEEP: "me",
+      PRIOZAR_AGENT_LAUNCHED: "1",
+      AUTOFORGE_AGENT_LAUNCHED: "1",
+    });
   });
 });

@@ -38,7 +38,7 @@ command argument and never prints it from `status`. macOS uses Keychain,
 Windows uses Credential Manager, and Linux uses Secret Service through the
 native keyring binding; the user's keyring must be available and unlocked.
 
-`AUTOFORGE_OPENAI_MODEL` may override the non-secret model ID. Do not write
+`PRIOZAR_OPENAI_MODEL` (or the deprecated `AUTOFORGE_OPENAI_MODEL`) may override the non-secret model ID. Do not write
 credentials to the repository, `.env`, or `.autoforge/`. This application
 requires a TTY and does not require an AutoForge account.
 

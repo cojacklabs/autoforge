@@ -1,13 +1,16 @@
 import { z } from "zod";
 
 export const PRIOZAR_AGENT_LAUNCH_PROTOCOL_VERSION = 1 as const;
-export const PRIOZAR_AGENT_RECURSION_ENV = "AUTOFORGE_AGENT_LAUNCHED";
+export const PRIOZAR_AGENT_RECURSION_ENV = "PRIOZAR_AGENT_LAUNCHED";
 
 /** @deprecated Use PRIOZAR_AGENT_LAUNCH_PROTOCOL_VERSION. */
 export const AUTOFORGE_AGENT_LAUNCH_PROTOCOL_VERSION =
   PRIOZAR_AGENT_LAUNCH_PROTOCOL_VERSION;
-/** @deprecated Use PRIOZAR_AGENT_RECURSION_ENV. */
-export const AUTOFORGE_AGENT_RECURSION_ENV = PRIOZAR_AGENT_RECURSION_ENV;
+/**
+ * @deprecated Use PRIOZAR_AGENT_RECURSION_ENV. Older launchers and agents only
+ * know this name, so it is still set and honoured during the compatibility window.
+ */
+export const AUTOFORGE_AGENT_RECURSION_ENV = "AUTOFORGE_AGENT_LAUNCHED";
 
 export const agentLauncherInfoSchema = z
   .object({

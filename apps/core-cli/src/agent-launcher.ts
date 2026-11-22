@@ -3,9 +3,11 @@ import { existsSync } from "node:fs";
 import path from "node:path";
 
 import {
+  AUTOFORGE_AGENT_RECURSION_ENV,
   agentLauncherInfoSchema,
   PRIOZAR_AGENT_LAUNCH_PROTOCOL_VERSION,
   PRIOZAR_AGENT_RECURSION_ENV,
+  readFrameworkEnv,
 } from "@cojacklabs/autoforge-protocol";
 
 import { EXIT_CODE, type ExitCode } from "../../../src/core/errors.js";
@@ -80,13 +82,38 @@ export interface AgentLauncherOptions {
   cwd?: string;
 }
 
-function currentEnvironment(): AgentLaunchEnvironment {
-  return {
+type EnvironmentVariables = Readonly<Record<string, string | undefined>>;
+
+/**
+ * Reads the launch environment. PRIOZAR_NO_AGENT wins over the deprecated
+ * AUTOFORGE_NO_AGENT. Recursion is detected from either marker so that a
+ * launcher or agent from before the rename still blocks a nested launch.
+ */
+export function currentAgentLaunchEnvironment(
+  env: EnvironmentVariables = process.env,
+  terminal: Pick<AgentLaunchEnvironment, "stdinIsTTY" | "stdoutIsTTY"> = {
     stdinIsTTY: process.stdin.isTTY === true,
     stdoutIsTTY: process.stdout.isTTY === true,
-    ci: Boolean(process.env.CI),
-    recursion: process.env[PRIOZAR_AGENT_RECURSION_ENV] === "1",
-    disabled: process.env.AUTOFORGE_NO_AGENT === "1",
+  },
+): AgentLaunchEnvironment {
+  return {
+    ...terminal,
+    ci: Boolean(env.CI),
+    recursion:
+      env[PRIOZAR_AGENT_RECURSION_ENV] === "1" ||
+      env[AUTOFORGE_AGENT_RECURSION_ENV] === "1",
+    disabled: readFrameworkEnv("NO_AGENT", env) === "1",
+  };
+}
+
+/** Environment for the launched agent, marked under both names. */
+export function agentChildEnvironment(
+  env: EnvironmentVariables,
+): Record<string, string | undefined> {
+  return {
+    ...env,
+    [PRIOZAR_AGENT_RECURSION_ENV]: "1",
+    [AUTOFORGE_AGENT_RECURSION_ENV]: "1",
   };
 }
 
@@ -95,7 +122,7 @@ export async function launchPriozarAgent(
   options: AgentLauncherOptions,
 ): Promise<ExitCode | undefined> {
   const explicit = args.length > 0;
-  const environment = options.environment ?? currentEnvironment();
+  const environment = options.environment ?? currentAgentLaunchEnvironment();
   if (environment.recursion || environment.disabled) {
     if (!explicit) return undefined;
     options.output.stderr(
@@ -195,10 +222,7 @@ export class NativeAgentProcessHost implements AgentProcessHost {
     const child = spawn(invocation.command, invocation.args, {
       stdio: "inherit",
       windowsHide: false,
-      env: {
-        ...process.env,
-        [PRIOZAR_AGENT_RECURSION_ENV]: "1",
-      },
+      env: agentChildEnvironment(process.env),
       cwd: this.cwd,
     });
     const stopForwarding = forwardAgentSignals(process, child);

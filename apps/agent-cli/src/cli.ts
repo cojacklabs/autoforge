@@ -2,7 +2,10 @@ import process from "node:process";
 import { createInterface } from "node:readline/promises";
 
 import { createOpenAIAgentModel } from "@cojacklabs/autoforge-providers";
-import { PRIOZAR_AGENT_LAUNCH_PROTOCOL_VERSION } from "@cojacklabs/autoforge-protocol";
+import {
+  PRIOZAR_AGENT_LAUNCH_PROTOCOL_VERSION,
+  readFrameworkEnv,
+} from "@cojacklabs/autoforge-protocol";
 import agentPackage from "../package.json" with { type: "json" };
 
 import { NativeCredentialVault, runCredentialCommand } from "./credentials.js";
@@ -71,11 +74,10 @@ export async function main(
     const prompt =
       arguments_.join(" ").trim() ||
       (await io.ask("What would you like AutoForge to build?"));
+    const modelId = readFrameworkEnv("OPENAI_MODEL", process.env);
     const model = createOpenAIAgentModel({
       apiKey,
-      ...(process.env.AUTOFORGE_OPENAI_MODEL
-        ? { modelId: process.env.AUTOFORGE_OPENAI_MODEL }
-        : {}),
+      ...(modelId ? { modelId } : {}),
     });
     const projectRoot = process.cwd();
     const result = await runAgentSession({

@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
-  "revision": 172,
-  "updatedAt": "2026-11-22T18:13:03.690Z",
+  "revision": 173,
+  "updatedAt": "2026-11-22T18:17:01.041Z",
   "data": {
     "decisions": [
       {
@@ -4265,6 +4265,32 @@
         "kind": "feature-note",
         "createdAt": "2026-11-22T18:13:03.657Z",
         "updatedAt": "2026-11-22T18:13:03.657Z"
+      },
+      {
+        "id": "decision.switch-the-agent-recursion-guard-to-priozar-agent-launched-while-still-setting-a",
+        "statement": "Switch the agent recursion guard to PRIOZAR_AGENT_LAUNCHED while still setting and honouring AUTOFORGE_AGENT_LAUNCHED",
+        "reasoning": "The launcher marks the child process so a launched agent cannot launch another. A launcher and agent from different releases may be mixed during the compatibility window, so each side must recognise the other's marker or recursion protection silently fails.",
+        "consequences": [
+          "PRIOZAR_AGENT_RECURSION_ENV is now PRIOZAR_AGENT_LAUNCHED and the deprecated AUTOFORGE_AGENT_RECURSION_ENV keeps its legacy value.",
+          "Recursion is detected from either marker, and launched children receive both.",
+          "PRIOZAR_NO_AGENT overrides AUTOFORGE_NO_AGENT, and the agent-cli reads PRIOZAR_OPENAI_MODEL before AUTOFORGE_OPENAI_MODEL."
+        ],
+        "scope": [
+          "environment"
+        ],
+        "keywords": [
+          "priozar",
+          "env",
+          "agent"
+        ],
+        "relatedWork": [
+          "task.adopt-priozar-env-vars-in-the-launcher-and-agent-cli"
+        ],
+        "supersedes": null,
+        "status": "active",
+        "kind": "feature-note",
+        "createdAt": "2026-11-22T18:17:00.999Z",
+        "updatedAt": "2026-11-22T18:17:00.999Z"
       }
     ]
   }
