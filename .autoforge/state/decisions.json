@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
-  "revision": 177,
-  "updatedAt": "2026-11-22T20:07:40.003Z",
+  "revision": 178,
+  "updatedAt": "2026-11-22T20:13:25.473Z",
   "data": {
     "decisions": [
       {
@@ -4390,6 +4390,28 @@
         "kind": "feature-note",
         "createdAt": "2026-11-22T20:07:39.965Z",
         "updatedAt": "2026-11-22T20:07:39.965Z"
+      },
+      {
+        "id": "decision.new-projects-keep-creating-autoforge-until-the-priozar-release-ships",
+        "statement": "New projects keep creating .autoforge until the Priozar release ships",
+        "reasoning": "A project created as .priozar cannot be read by any already-installed autoforge CLI, including teammates, CI and the global install. Existing projects can move with migrate brand when each team is ready, so there is no need to strand anyone for new projects.",
+        "consequences": [
+          "init and attach are unchanged for now; the dual-read resolver already works with either directory.",
+          "A task in the external release preparation phase flips the default to .priozar at release."
+        ],
+        "scope": [
+          "state"
+        ],
+        "keywords": [
+          "priozar",
+          "init"
+        ],
+        "relatedWork": [],
+        "supersedes": null,
+        "status": "active",
+        "kind": "feature-note",
+        "createdAt": "2026-11-22T20:13:25.403Z",
+        "updatedAt": "2026-11-22T20:13:25.403Z"
       }
     ]
   }
