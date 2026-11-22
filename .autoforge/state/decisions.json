@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
-  "revision": 183,
-  "updatedAt": "2026-11-22T21:33:02.451Z",
+  "revision": 184,
+  "updatedAt": "2026-11-22T23:18:27.474Z",
   "data": {
     "decisions": [
       {
@@ -4535,6 +4535,28 @@
         "kind": "feature-note",
         "createdAt": "2026-11-22T21:33:02.413Z",
         "updatedAt": "2026-11-22T21:33:02.413Z"
+      },
+      {
+        "id": "decision.contributing-md-now-names-priozar-the-cojacklabs-priozar-package-bin-priozar-js",
+        "statement": "CONTRIBUTING.md now names Priozar, the @cojacklabs/priozar package, bin/priozar.js and the PRIOZAR_CLI_REFERENCE link",
+        "reasoning": "The CLI reference was renamed in phase 4, so the link was broken. CODE_OF_CONDUCT.md has no product name and SECURITY.md does not exist. GitHub clone URLs stay on the autoforge repo name until the human renames the repository.",
+        "consequences": [
+          "Contributor docs match the current CLI. Clone URLs need updating after the repo rename in phase 6."
+        ],
+        "scope": [
+          "docs"
+        ],
+        "keywords": [
+          "contributing"
+        ],
+        "relatedWork": [
+          "task.rename-the-product-in-root-contributor-docs"
+        ],
+        "supersedes": null,
+        "status": "active",
+        "kind": "feature-note",
+        "createdAt": "2026-11-22T23:18:27.440Z",
+        "updatedAt": "2026-11-22T23:18:27.440Z"
       }
     ]
   }

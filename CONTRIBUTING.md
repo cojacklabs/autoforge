@@ -1,6 +1,6 @@
-# Contributing to @cojacklabs/autoforge
+# Contributing to @cojacklabs/priozar
 
-Thanks for your interest in contributing! AutoForge is an embedded, multi‑agent SDLC framework. This guide helps you get set up, make changes confidently, and submit high‑quality pull requests.
+Thanks for your interest in contributing! Priozar (formerly AutoForge) is an embedded, multi‑agent SDLC framework. This guide helps you get set up, make changes confidently, and submit high‑quality pull requests.
 
 ## Quick start
 
@@ -25,13 +25,13 @@ npm install
 npm run build
 ```
 
-Install the CLI globally to exercise it the way an end user would (`npm install --global @cojacklabs/autoforge`), or run it from this checkout via `node bin/autoforge.js <command>` while iterating. Most changes here are documentation, prompts, or CLI code in this repo.
+Install the CLI globally to exercise it the way an end user would (`npm install --global @cojacklabs/priozar`), or run it from this checkout via `node bin/priozar.js <command>` while iterating. Most changes here are documentation, prompts, or CLI code in this repo.
 
 ## Working philosophy
 
 - Planning‑first: Quality gates accept canonical docs under `docs/`, `api/`, `diagrams/` or planning stubs under `.autoforge/ai/reports/**`.
 - Shared progress: Keep `ai/AGENTS.md` updated (Progress & Next Steps, Lessons Learned, Rules) so work transfers across IDEs/CLIs.
-- Documentation currency: every implementation change must update the relevant documentation before completion — see `docs/AUTOFORGE_CLI_REFERENCE.md` for the canonical, currently-maintained command surface, and treat `autoforge help`'s own output as the source of truth for what commands actually exist today.
+- Documentation currency: every implementation change must update the relevant documentation before completion — see `docs/PRIOZAR_CLI_REFERENCE.md` for the canonical, currently-maintained command surface, and treat `priozar help`'s own output as the source of truth for what commands actually exist today.
 
 ## Local checks
 
@@ -42,7 +42,7 @@ npm run build              # refresh dist/
 npm run typecheck          # tsc --noEmit
 npm run format:check       # ensure code style
 npm test                   # full test suite
-autoforge gate check       # run this repo's own retained quality gates, dogfooding the CLI
+priozar gate check       # run this repo's own retained quality gates, dogfooding the CLI
 ```
 
 ## Commit guidelines
@@ -54,9 +54,9 @@ autoforge gate check       # run this repo's own retained quality gates, dogfood
 ## Pull request checklist
 
 - [ ] Change is scoped and focused
-- [ ] Docs updated (README, `docs/AUTOFORGE_CLI_REFERENCE.md`, guides) when behavior changes
+- [ ] Docs updated (README, `docs/PRIOZAR_CLI_REFERENCE.md`, guides) when behavior changes
 - [ ] `npm run build` passes; dist contains expected updates
-- [ ] `npm test` and `autoforge gate check` pass
+- [ ] `npm test` and `priozar gate check` pass
 - [ ] Linked to any related issue(s) or discussion
 
 ## Finding issues

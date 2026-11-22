@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
-  "revision": 520,
-  "updatedAt": "2026-11-22T21:33:03.070Z",
+  "revision": 522,
+  "updatedAt": "2026-11-22T23:18:28.023Z",
   "data": {
     "features": [
       {
@@ -2290,10 +2290,10 @@
       {
         "name": "Rename the product in root contributor docs",
         "description": "CONTRIBUTING.md links to the renamed CLI reference and still names AutoForge. Update it, and check CODE_OF_CONDUCT.md and other root docs, leaving CHANGELOG.md and CHANGES_COMPLETE.md as history.",
-        "status": "planned",
+        "status": "completed",
         "pauseReason": null,
         "createdAt": "2026-11-22T20:46:05.820Z",
-        "updatedAt": "2026-11-22T20:46:05.820Z",
+        "updatedAt": "2026-11-22T23:18:27.907Z",
         "id": "task.rename-the-product-in-root-contributor-docs",
         "phaseId": "phase.live-docs-ci-and-urls",
         "scope": {
