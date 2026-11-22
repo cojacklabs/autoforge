@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
-  "revision": 180,
-  "updatedAt": "2026-11-22T21:19:28.912Z",
+  "revision": 181,
+  "updatedAt": "2026-11-22T21:25:49.499Z",
   "data": {
     "decisions": [
       {
@@ -4461,6 +4461,30 @@
         "kind": "feature-note",
         "createdAt": "2026-11-22T21:19:28.875Z",
         "updatedAt": "2026-11-22T21:19:28.875Z"
+      },
+      {
+        "id": "decision.teach-the-script-readers-both-config-file-names-before-renaming-the-root-file",
+        "statement": "Teach the script readers both config file names before renaming the root file",
+        "reasoning": "The root autoforge.config.json is read by the legacy scripts and the ai runtime coordinator, and the coordinator treats a missing file as passing tests, so renaming first would silently skip a project's configured tests. The scripts also only knew .autoforge and the legacy autoforge directory, so they would have failed on a migrated .priozar project.",
+        "consequences": [
+          "apply_config.js and run_quality_gates.js read priozar.config.json first and fall back to autoforge.config.json, apply_config also finds a .priozar directory, and build_dist ships both names.",
+          "The coordinator and the file rename follow as separate tasks in that order; this task does not rename the file."
+        ],
+        "scope": [
+          "configuration"
+        ],
+        "keywords": [
+          "priozar",
+          "config"
+        ],
+        "relatedWork": [
+          "task.rename-the-root-autoforge-config-json-and-its-legacy-script-readers"
+        ],
+        "supersedes": null,
+        "status": "active",
+        "kind": "feature-note",
+        "createdAt": "2026-11-22T21:25:49.463Z",
+        "updatedAt": "2026-11-22T21:25:49.463Z"
       }
     ]
   }

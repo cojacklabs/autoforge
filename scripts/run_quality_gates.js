@@ -25,8 +25,11 @@ function run(cmd, args, options = {}) {
 }
 
 function loadConfig(projectRoot) {
-  const cfgPath = path.join(projectRoot, "autoforge.config.json");
-  if (!fs.existsSync(cfgPath)) return {};
+  // priozar.config.json is canonical; the legacy name is still honoured.
+  const cfgPath = ["priozar.config.json", "autoforge.config.json"]
+    .map((name) => path.join(projectRoot, name))
+    .find((candidate) => fs.existsSync(candidate));
+  if (!cfgPath) return {};
   try {
     return JSON.parse(fs.readFileSync(cfgPath, "utf8"));
   } catch {

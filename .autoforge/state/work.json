@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
-  "revision": 512,
-  "updatedAt": "2026-11-22T21:19:29.545Z",
+  "revision": 516,
+  "updatedAt": "2026-11-22T21:25:50.141Z",
   "data": {
     "features": [
       {
@@ -2179,10 +2179,10 @@
       {
         "name": "Rename the root autoforge.config.json and its legacy script readers",
         "description": "autoforge.config.json at the repo root is read only by the legacy scripts (apply_config.js, run_quality_gates.js, build_dist.js) and the v0.24 migration, never by the v0.25 CLI. Rename it to priozar.config.json with scripts reading priozar.config.json first and falling back to autoforge.config.json, and update the config references in script output text.",
-        "status": "planned",
+        "status": "completed",
         "pauseReason": null,
         "createdAt": "2026-11-20T22:09:41.537Z",
-        "updatedAt": "2026-11-20T22:09:41.537Z",
+        "updatedAt": "2026-11-22T21:25:50.020Z",
         "id": "task.rename-the-root-autoforge-config-json-and-its-legacy-script-readers",
         "phaseId": "phase.live-docs-ci-and-urls",
         "scope": {
@@ -2340,6 +2340,48 @@
             "docs/README.md",
             "README.md",
             ".autoforge/artifacts/**"
+          ],
+          "exclude": []
+        }
+      },
+      {
+        "name": "Dual-read priozar.config.json in the ai runtime coordinator",
+        "description": "ai/runtime/coordinator.js reads autoforge.config.json for the configured test command and silently treats a missing file as passing. Teach it to read priozar.config.json first with the legacy name as a fallback, before the root file is renamed, so a project's configured tests are never skipped.",
+        "status": "planned",
+        "pauseReason": null,
+        "createdAt": "2026-11-22T21:25:48.412Z",
+        "updatedAt": "2026-11-22T21:25:48.412Z",
+        "id": "task.dual-read-priozar-config-json-in-the-ai-runtime-coordinator",
+        "phaseId": "phase.live-docs-ci-and-urls",
+        "scope": {
+          "include": [
+            "ai/runtime/**",
+            "test/**"
+          ],
+          "exclude": []
+        }
+      },
+      {
+        "name": "Rename the root config file and its references",
+        "description": "After every reader accepts both names, git mv autoforge.config.json to priozar.config.json, update the descriptions inside it, and replace the file name in ai prompts and generated ai target files, docs, qa, change request templates and diagrams. Historical docs stay unchanged.",
+        "status": "planned",
+        "pauseReason": null,
+        "createdAt": "2026-11-22T21:25:48.938Z",
+        "updatedAt": "2026-11-22T21:25:48.938Z",
+        "id": "task.rename-the-root-config-file-and-its-references",
+        "phaseId": "phase.live-docs-ci-and-urls",
+        "scope": {
+          "include": [
+            "autoforge.config.json",
+            "priozar.config.json",
+            "ai/**",
+            "docs/*.md",
+            "docs/ai/**",
+            "docs/uiux/**",
+            "qa/**",
+            "change_requests/**",
+            "diagrams/**",
+            "scripts/**"
           ],
           "exclude": []
         }

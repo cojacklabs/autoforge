@@ -71,6 +71,7 @@ const EXCLUDE_DIRS = new Set([
  * Root-level files to include
  */
 const INCLUDE_ROOT_FILES = new Set([
+  "priozar.config.json",
   "autoforge.config.json",
   "repomix.config.json",
   "package.json",
