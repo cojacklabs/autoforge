@@ -1,7 +1,7 @@
 import {
   projectArtifactSchema,
   type ProjectArtifact,
-} from "@cojacklabs/autoforge-protocol";
+} from "@cojacklabs/priozar-protocol";
 import type { Clock } from "./ports.js";
 
 export interface ProjectArtifactRepository {

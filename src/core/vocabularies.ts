@@ -17,4 +17,4 @@ export {
   type StateDirectory,
   type ReadinessWorkKindVocabulary,
   type WorkflowKindVocabulary,
-} from "@cojacklabs/autoforge-protocol";
+} from "@cojacklabs/priozar-protocol";

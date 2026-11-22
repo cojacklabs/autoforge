@@ -19,4 +19,4 @@ export {
   type OrchestrationPlanInput,
   type OrchestrationRole,
   type OrchestrationState,
-} from "@cojacklabs/autoforge-core/orchestration";
+} from "@cojacklabs/priozar-core/orchestration";

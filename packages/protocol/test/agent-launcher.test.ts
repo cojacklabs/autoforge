@@ -8,7 +8,7 @@ import {
 describe("Agent launcher protocol", () => {
   it("accepts only the supported Agent identity and protocol", () => {
     const compatible = {
-      name: "@cojacklabs/autoforge-agent",
+      name: "@cojacklabs/priozar-agent",
       version: "0.1.0",
       launchProtocolVersion: PRIOZAR_AGENT_LAUNCH_PROTOCOL_VERSION,
     };
@@ -23,5 +23,15 @@ describe("Agent launcher protocol", () => {
       agentLauncherInfoSchema.safeParse({ ...compatible, name: "other" })
         .success,
     ).toBe(false);
+  });
+
+  it("still accepts an agent that reports its pre-rename package name", () => {
+    expect(
+      agentLauncherInfoSchema.safeParse({
+        name: "@cojacklabs/autoforge-agent",
+        version: "0.1.0",
+        launchProtocolVersion: PRIOZAR_AGENT_LAUNCH_PROTOCOL_VERSION,
+      }).success,
+    ).toBe(true);
   });
 });

@@ -3,4 +3,4 @@ export {
   workflowRecommendationSchema,
   workflowStageSchema,
   type WorkflowRecommendation,
-} from "@cojacklabs/autoforge-core/intent";
+} from "@cojacklabs/priozar-core/intent";

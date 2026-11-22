@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
-  "revision": 496,
-  "updatedAt": "2026-11-22T18:58:38.207Z",
+  "revision": 499,
+  "updatedAt": "2026-11-22T19:56:40.259Z",
   "data": {
     "features": [
       {
@@ -1997,10 +1997,10 @@
       {
         "name": "Rename npm packages and workspace imports",
         "description": "Rename @cojacklabs/autoforge, -protocol, -core, -sdk, -agent, -providers to @cojacklabs/priozar*, updating package.json files, imports, tsup and turbo config and the lockfile.",
-        "status": "planned",
+        "status": "completed",
         "pauseReason": null,
         "createdAt": "2026-11-20T01:50:58.988Z",
-        "updatedAt": "2026-11-20T01:50:58.988Z",
+        "updatedAt": "2026-11-22T19:56:40.133Z",
         "id": "task.rename-npm-packages-and-workspace-imports",
         "phaseId": "phase.packages-and-binaries",
         "scope": {
@@ -2228,6 +2228,24 @@
             "apps/**",
             "packages/**",
             "test/**"
+          ],
+          "exclude": []
+        }
+      },
+      {
+        "name": "Update CI, deploy and changeset config for renamed packages",
+        "description": "The package rename leaves .github/workflows/ci.yml, .github/workflows/deploy.yml and .changeset/config.json pointing at @cojacklabs/autoforge* names, filters, tarball patterns and the deploy name assertions. Update them so CI and release status keep working. Do not trigger a publish.",
+        "status": "planned",
+        "pauseReason": null,
+        "createdAt": "2026-11-22T19:56:38.247Z",
+        "updatedAt": "2026-11-22T19:56:38.247Z",
+        "id": "task.update-ci-deploy-and-changeset-config-for-renamed-packages",
+        "phaseId": "phase.packages-and-binaries",
+        "scope": {
+          "include": [
+            ".github/workflows/**",
+            ".changeset/config.json",
+            "turbo.json"
           ],
           "exclude": []
         }

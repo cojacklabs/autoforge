@@ -1,6 +1,6 @@
 # AutoForge Protocol
 
-`@cojacklabs/autoforge-protocol` contains the versioned, model-independent
+`@cojacklabs/priozar-protocol` contains the versioned, model-independent
 contracts exchanged between AutoForge Core, agents, SDKs, and hosted clients.
 It performs no filesystem, Git, network, credential, or provider I/O.
 

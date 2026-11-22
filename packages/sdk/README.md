@@ -1,6 +1,6 @@
 # AutoForge SDK
 
-`@cojacklabs/autoforge-sdk` is the supported programmatic facade between
+`@cojacklabs/priozar-sdk` is the supported programmatic facade between
 AutoForge consumers and the deterministic Core and Protocol packages.
 
 The SDK returns protocol-versioned structured values. Project state effects are
@@ -38,7 +38,7 @@ third-party agents, and the first-party AutoForge Agent to use the same API
 without giving the SDK ownership of project storage or terminal output.
 
 ```ts
-import { createAutoForgeSdk } from "@cojacklabs/autoforge-sdk";
+import { createAutoForgeSdk } from "@cojacklabs/priozar-sdk";
 
 const sdk = createAutoForgeSdk({ operations });
 const status = await sdk.status();
@@ -51,9 +51,9 @@ preserved so callers can handle the structured Core error contract.
 
 ## Compatibility
 
-- SDK package: `@cojacklabs/autoforge-sdk` `0.1.x`
-- Core package: `@cojacklabs/autoforge-core` `^0.1.1`
-- Protocol package: `@cojacklabs/autoforge-protocol` `^0.1.0`
+- SDK package: `@cojacklabs/priozar-sdk` `0.1.x`
+- Core package: `@cojacklabs/priozar-core` `^0.1.1`
+- Protocol package: `@cojacklabs/priozar-protocol` `^0.1.0`
 - Wire protocol: `1`, negotiated independently from npm package versions
 - Node.js: 20 or newer
 

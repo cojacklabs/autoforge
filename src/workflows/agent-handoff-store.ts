@@ -4,8 +4,8 @@ import path from "node:path";
 import {
   agentHandoffSchema,
   type AgentHandoff,
-} from "@cojacklabs/autoforge-protocol";
-import type { AgentHandoffRepository } from "@cojacklabs/autoforge-core";
+} from "@cojacklabs/priozar-protocol";
+import type { AgentHandoffRepository } from "@cojacklabs/priozar-core";
 import { registerArtifactReference } from "../artifacts/bridge.js";
 
 export const DEFAULT_AGENT_HANDOFF_DIRECTORY = ".autoforge/handoffs";

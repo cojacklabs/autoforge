@@ -1,4 +1,4 @@
-import { READINESS_WORK_KINDS } from "@cojacklabs/autoforge-protocol";
+import { READINESS_WORK_KINDS } from "@cojacklabs/priozar-protocol";
 import { z } from "zod";
 
 export const TRIAGE_LABELS = [

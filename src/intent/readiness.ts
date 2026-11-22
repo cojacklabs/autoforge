@@ -5,4 +5,4 @@ export {
   readinessWorkKindSchema,
   type ReadinessResult,
   type ReadinessWorkKind,
-} from "@cojacklabs/autoforge-core/intent";
+} from "@cojacklabs/priozar-core/intent";

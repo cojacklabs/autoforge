@@ -1,6 +1,6 @@
 import { readFile } from "node:fs/promises";
 
-import { assessIntent } from "@cojacklabs/autoforge-sdk";
+import { assessIntent } from "@cojacklabs/priozar-sdk";
 
 import { EXIT_CODE, type ExitCode } from "../core/errors.js";
 import type { LogWriter } from "../core/logger.js";

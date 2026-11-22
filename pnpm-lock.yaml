@@ -8,13 +8,13 @@ importers:
 
   .:
     dependencies:
-      '@cojacklabs/autoforge-core':
+      '@cojacklabs/priozar-core':
         specifier: ^0.1.1
         version: link:packages/core
-      '@cojacklabs/autoforge-protocol':
+      '@cojacklabs/priozar-protocol':
         specifier: ^0.1.0
         version: link:packages/protocol
-      '@cojacklabs/autoforge-sdk':
+      '@cojacklabs/priozar-sdk':
         specifier: ^0.1.1
         version: link:packages/sdk
       yaml:
@@ -57,13 +57,13 @@ importers:
 
   apps/agent-cli:
     dependencies:
-      '@cojacklabs/autoforge-protocol':
+      '@cojacklabs/priozar-protocol':
         specifier: workspace:^
         version: link:../../packages/protocol
-      '@cojacklabs/autoforge-providers':
+      '@cojacklabs/priozar-providers':
         specifier: workspace:^
         version: link:../../packages/providers
-      '@cojacklabs/autoforge-sdk':
+      '@cojacklabs/priozar-sdk':
         specifier: workspace:^
         version: link:../../packages/sdk
       '@napi-rs/keyring':
@@ -94,7 +94,7 @@ importers:
 
   packages/core:
     dependencies:
-      '@cojacklabs/autoforge-protocol':
+      '@cojacklabs/priozar-protocol':
         specifier: ^0.1.0
         version: link:../protocol
       zod:
@@ -138,7 +138,7 @@ importers:
       '@ai-sdk/openai':
         specifier: ^3.0.0
         version: 3.0.99(zod@4.4.3)
-      '@cojacklabs/autoforge-protocol':
+      '@cojacklabs/priozar-protocol':
         specifier: workspace:^
         version: link:../protocol
     devDependencies:
@@ -157,10 +157,10 @@ importers:
 
   packages/sdk:
     dependencies:
-      '@cojacklabs/autoforge-core':
+      '@cojacklabs/priozar-core':
         specifier: ^0.1.1
         version: link:../core
-      '@cojacklabs/autoforge-protocol':
+      '@cojacklabs/priozar-protocol':
         specifier: ^0.1.0
         version: link:../protocol
     devDependencies:
@@ -850,6 +850,7 @@ packages:
   '@secretlint/secretlint-rule-preset-recommend@13.0.4':
     resolution: {integrity: sha512-Nbcr7tvyKuRF4BKh7RQSCEOaif4gFPH/qjK2ajcoUDGL7HAY/C6PzcsmVR1Y0qQCRqrBuMuXn1onXE+wxNNNsw==}
     engines: {node: '>=22.0.0'}
+    deprecated: Built into secretlint v14 and later. Remove this package; the rule id still works. https://github.com/secretlint/secretlint/blob/HEAD/docs/rules/preset-recommend.md
 
   '@secretlint/types@13.0.4':
     resolution: {integrity: sha512-on/DivRDZEFzRD2pZJO0wkIL+AvEY+KOoZLPCWcz4pjZnJ4NzMuHQjvTJc9KY0yht+ugcYg9AmtOUzpEk31IWA==}

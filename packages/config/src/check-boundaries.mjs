@@ -4,7 +4,7 @@ import path from "node:path";
 import process from "node:process";
 
 const root = path.resolve(import.meta.dirname, "../../..");
-const INTERNAL_PREFIX = "@cojacklabs/autoforge";
+const INTERNAL_PREFIX = "@cojacklabs/priozar";
 const BUILTIN_MODULES = new Set(
   builtinModules.flatMap((name) => [name, `node:${name}`]),
 );

@@ -4,7 +4,7 @@ import {
   intentAssessmentSchema,
   type IntentAssessment,
   type IntentAssessmentInput,
-} from "@cojacklabs/autoforge-core";
+} from "@cojacklabs/priozar-core";
 
 export {
   intentAssessmentInputSchema,

@@ -1,8 +1,8 @@
 # AutoForge Agent CLI
 
-`@cojacklabs/autoforge-agent` is the experimental, local-first interactive
+`@cojacklabs/priozar-agent` is the experimental, local-first interactive
 Agent for AutoForge. It is a separate application from deterministic AutoForge
-Core and consumes project operations through `@cojacklabs/autoforge-sdk`.
+Core and consumes project operations through `@cojacklabs/priozar-sdk`.
 
 ## Experimental workflow
 
@@ -50,9 +50,9 @@ own or create a parallel project-state store.
 ## Validation
 
 ```bash
-pnpm --filter @cojacklabs/autoforge-agent typecheck
-pnpm --filter @cojacklabs/autoforge-agent test
-pnpm --filter @cojacklabs/autoforge-agent boundaries
+pnpm --filter @cojacklabs/priozar-agent typecheck
+pnpm --filter @cojacklabs/priozar-agent test
+pnpm --filter @cojacklabs/priozar-agent boundaries
 ```
 
 Tests use the AI SDK mock model and never call a paid provider.

@@ -2,7 +2,7 @@ import {
   createAgentHandoff,
   type AgentHandoff,
   type CreateAgentHandoffInput,
-} from "@cojacklabs/autoforge-protocol";
+} from "@cojacklabs/priozar-protocol";
 
 import type { Clock } from "./ports.js";
 

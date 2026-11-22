@@ -3,11 +3,11 @@ import {
   type Clock,
   type IntentAssessment,
   type IntentAssessmentInput,
-} from "@cojacklabs/autoforge-core";
+} from "@cojacklabs/priozar-core";
 import {
   PRIOZAR_PROTOCOL_VERSION,
   type ProtocolVersion,
-} from "@cojacklabs/autoforge-protocol";
+} from "@cojacklabs/priozar-protocol";
 import type {
   AssignmentInput,
   ArtifactInput,

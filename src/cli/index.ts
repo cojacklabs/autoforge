@@ -4,6 +4,7 @@ import { pathToFileURL } from "node:url";
 import { fileURLToPath } from "node:url";
 
 import { PriozarError, EXIT_CODE, toPriozarError } from "../core/errors.js";
+import { FRAMEWORK_IDENTITY } from "../core/vocabularies.js";
 import { runAddCommand } from "../commands/add.js";
 import { runArtifactCommand } from "../commands/artifact.js";
 import { runCheckCommand } from "../commands/check.js";
@@ -66,7 +67,8 @@ export function findPackageVersion(startUrl: string = import.meta.url): string {
         readFileSync(packagePath, "utf8"),
       ) as PackageMetadata;
       if (
-        metadata.name === "@cojacklabs/autoforge" &&
+        (metadata.name === FRAMEWORK_IDENTITY.successor.cliPackage ||
+          metadata.name === FRAMEWORK_IDENTITY.current.cliPackage) &&
         typeof metadata.version === "string"
       ) {
         return metadata.version;

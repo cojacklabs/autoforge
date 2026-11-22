@@ -7,8 +7,8 @@ import path from "node:path";
 import {
   createAgentHandoff,
   type CreateAgentHandoffInput,
-} from "@cojacklabs/autoforge-protocol";
-import { createPriozarSdk } from "@cojacklabs/autoforge-sdk";
+} from "@cojacklabs/priozar-protocol";
+import { createPriozarSdk } from "@cojacklabs/priozar-sdk";
 
 import type { AgentProjectGateway, AgentStatus } from "./session.js";
 

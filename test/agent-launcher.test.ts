@@ -133,7 +133,7 @@ describe("Priozar Agent launcher", () => {
           [
             "@echo off",
             'if "%1"=="version" (',
-            '  echo {"name":"@cojacklabs/autoforge-agent","version":"0.1.0","launchProtocolVersion":1}',
+            '  echo {"name":"@cojacklabs/priozar-agent","version":"0.1.0","launchProtocolVersion":1}',
             "  exit /b 0",
             ")",
             "exit /b 5",

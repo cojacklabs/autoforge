@@ -4,7 +4,7 @@ import { EXIT_CODE, type ExitCode } from "../core/errors.js";
 import type { LogWriter } from "../core/logger.js";
 
 const execFileAsync = promisify(execFile);
-const packageName = "@cojacklabs/autoforge";
+const packageName = "@cojacklabs/priozar";
 
 export interface UpdateCommandOptions {
   args: readonly string[];

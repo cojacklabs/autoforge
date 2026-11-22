@@ -1,5 +1,5 @@
 {
-  "name": "@cojacklabs/autoforge-sdk",
+  "name": "@cojacklabs/priozar-sdk",
   "version": "0.1.1",
   "type": "module",
   "license": "MIT",
@@ -29,8 +29,8 @@
     "boundaries": "node ../config/src/check-boundaries.mjs"
   },
   "dependencies": {
-    "@cojacklabs/autoforge-core": "^0.1.1",
-    "@cojacklabs/autoforge-protocol": "^0.1.0"
+    "@cojacklabs/priozar-core": "^0.1.1",
+    "@cojacklabs/priozar-protocol": "^0.1.0"
   },
   "devDependencies": {
     "prettier": "^3.3.3",

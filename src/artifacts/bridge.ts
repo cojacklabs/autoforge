@@ -1,5 +1,5 @@
-import { ProjectArtifactService } from "@cojacklabs/autoforge-core";
-import type { ProjectArtifact } from "@cojacklabs/autoforge-protocol";
+import { ProjectArtifactService } from "@cojacklabs/priozar-core";
+import type { ProjectArtifact } from "@cojacklabs/priozar-protocol";
 import { computeCurrentRevision } from "../quality/scope.js";
 import { createWorkStateStore } from "../state/kernel.js";
 import { FileProjectArtifactRepository } from "./store.js";

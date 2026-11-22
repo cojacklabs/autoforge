@@ -14,7 +14,8 @@ export const AUTOFORGE_AGENT_RECURSION_ENV = "AUTOFORGE_AGENT_LAUNCHED";
 
 export const agentLauncherInfoSchema = z
   .object({
-    name: z.literal("@cojacklabs/autoforge-agent"),
+    // An agent from before the rename still reports its original package name.
+    name: z.enum(["@cojacklabs/priozar-agent", "@cojacklabs/autoforge-agent"]),
     version: z.string().regex(/^\d+\.\d+\.\d+(?:-[0-9A-Za-z.-]+)?$/),
     launchProtocolVersion: z.literal(PRIOZAR_AGENT_LAUNCH_PROTOCOL_VERSION),
   })

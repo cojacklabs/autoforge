@@ -102,7 +102,7 @@ export async function runCli(
       ]);
       if (launched !== undefined) return launched;
       dependencies.output.stderr(
-        "Priozar Agent is unavailable. Install @cojacklabs/autoforge-agent to use credentials.",
+        "Priozar Agent is unavailable. Install @cojacklabs/priozar-agent to use credentials.",
       );
       return EXIT_CODE.invalidState;
     }

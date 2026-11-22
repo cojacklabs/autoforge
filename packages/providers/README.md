@@ -1,6 +1,6 @@
 # AutoForge Providers
 
-`@cojacklabs/autoforge-providers` contains model-provider adapters for
+`@cojacklabs/priozar-providers` contains model-provider adapters for
 AutoForge Agent applications. It never reads or writes Core project state,
 credentials, decisions, work, or handoffs.
 

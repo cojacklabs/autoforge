@@ -5,4 +5,4 @@ export {
   getAgentCapability,
   normalizeAgentId,
   type AgentCapability,
-} from "@cojacklabs/autoforge-protocol";
+} from "@cojacklabs/priozar-protocol";

@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
-  "revision": 174,
-  "updatedAt": "2026-11-22T18:58:37.636Z",
+  "revision": 175,
+  "updatedAt": "2026-11-22T19:56:39.204Z",
   "data": {
     "decisions": [
       {
@@ -4316,6 +4316,31 @@
         "kind": "feature-note",
         "createdAt": "2026-11-22T18:58:37.586Z",
         "updatedAt": "2026-11-22T18:58:37.586Z"
+      },
+      {
+        "id": "decision.rename-the-workspace-packages-to-cojacklabs-priozar-and-let-the-cli-accept-both",
+        "statement": "Rename the workspace packages to @cojacklabs/priozar* and let the CLI accept both package names",
+        "reasoning": "FRAMEWORK_IDENTITY.successor already defines the target package names, so the rename follows it exactly, and a new test pins package.json names to it. Runtime checks that read a package name must tolerate an install from before the rename.",
+        "consequences": [
+          "The root, core, protocol, sdk, providers and agent packages are now @cojacklabs/priozar, -core, -protocol, -sdk, -providers and -agent; workspace imports, dependency keys, turbo filters and the lockfile follow.",
+          "findPackageVersion accepts either CLI package name, and the Agent launcher protocol accepts an agent reporting either its new or its pre-rename package name.",
+          "Legacy-install detection, FRAMEWORK_IDENTITY.current and the legacy fixtures keep the old name. CI, deploy and changeset config are handled by a sibling task, and nothing is published."
+        ],
+        "scope": [
+          "packages"
+        ],
+        "keywords": [
+          "priozar",
+          "rename"
+        ],
+        "relatedWork": [
+          "task.rename-npm-packages-and-workspace-imports"
+        ],
+        "supersedes": null,
+        "status": "active",
+        "kind": "feature-note",
+        "createdAt": "2026-11-22T19:56:39.173Z",
+        "updatedAt": "2026-11-22T19:56:39.173Z"
       }
     ]
   }

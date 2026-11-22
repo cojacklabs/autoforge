@@ -5,8 +5,8 @@ import {
   AgentHandoffService,
   type AgentHandoffRepository,
 } from "../src/handoff.js";
-import type { AgentHandoff } from "@cojacklabs/autoforge-protocol";
-import type { ProjectArtifact } from "@cojacklabs/autoforge-protocol";
+import type { AgentHandoff } from "@cojacklabs/priozar-protocol";
+import type { ProjectArtifact } from "@cojacklabs/priozar-protocol";
 import {
   ProjectArtifactService,
   type ProjectArtifactRepository,

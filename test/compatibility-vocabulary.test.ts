@@ -4,7 +4,7 @@ import {
   FRAMEWORK_IDENTITY,
   frameworkExecutableSchema,
   stateDirectorySchema,
-} from "@cojacklabs/autoforge-protocol";
+} from "@cojacklabs/priozar-protocol";
 
 describe("framework compatibility vocabulary", () => {
   it("exports centralized framework identity for AutoForge and successor Priozar", () => {

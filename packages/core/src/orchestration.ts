@@ -7,7 +7,7 @@ import {
   leaseIdSchema,
   repositoryRelativeScopePatternSchema,
   workIdSchema,
-} from "@cojacklabs/autoforge-protocol";
+} from "@cojacklabs/priozar-protocol";
 
 export const workScopeSchema = z
   .object({

@@ -2,7 +2,7 @@ import { mkdtemp, readFile, rm } from "node:fs/promises";
 import os from "node:os";
 import path from "node:path";
 
-import { agentHandoffSchema } from "@cojacklabs/autoforge-protocol";
+import { agentHandoffSchema } from "@cojacklabs/priozar-protocol";
 import { afterEach, describe, expect, it } from "vitest";
 
 import { FileAgentHandoffRepository } from "../src/workflows/agent-handoff-store.js";

@@ -4,7 +4,7 @@ import {
   planFromWorkState,
   scopesOverlap,
   type OrchestrationRepository,
-} from "@cojacklabs/autoforge-core/orchestration";
+} from "@cojacklabs/priozar-core/orchestration";
 import { PriozarError, EXIT_CODE } from "../core/errors.js";
 import {
   assertAgentContractCompatibility,

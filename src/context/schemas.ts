@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { projectArtifactSchema } from "@cojacklabs/autoforge-protocol";
+import { projectArtifactSchema } from "@cojacklabs/priozar-protocol";
 
 import { decisionSchema } from "../decisions/schemas.js";
 import { doctrineSchema } from "../doctrine/schemas.js";

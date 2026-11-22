@@ -1,6 +1,6 @@
 import path from "node:path";
 
-import type { CreateAgentHandoffInput } from "@cojacklabs/autoforge-protocol";
+import type { CreateAgentHandoffInput } from "@cojacklabs/priozar-protocol";
 
 import type { AgentPlan } from "./schemas.js";
 import type { AgentRuntime } from "./runtime.js";

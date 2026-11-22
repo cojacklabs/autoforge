@@ -5,4 +5,4 @@ export {
   planningArtifactSchema,
   type PlanningArtifact,
   type PlanningArtifactKind,
-} from "@cojacklabs/autoforge-core/planning";
+} from "@cojacklabs/priozar-core/planning";

@@ -1,6 +1,6 @@
 import path from "node:path";
 
-import { inspectProjectAttachment } from "@cojacklabs/autoforge-sdk";
+import { inspectProjectAttachment } from "@cojacklabs/priozar-sdk";
 
 import { initializeProject } from "./init.js";
 import { EXIT_CODE, type ExitCode } from "../core/errors.js";

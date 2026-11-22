@@ -6,7 +6,7 @@ import {
   phaseIdSchema,
   sessionIdSchema,
   taskIdSchema,
-} from "@cojacklabs/autoforge-protocol";
+} from "@cojacklabs/priozar-protocol";
 
 const timestampSchema = z.string().datetime({ offset: true });
 const entityNameSchema = z.string().trim().min(1).max(200);

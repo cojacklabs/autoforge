@@ -1,12 +1,12 @@
 import { mkdir, readFile, rename, writeFile } from "node:fs/promises";
 import path from "node:path";
 
-import type { ProjectArtifactRepository } from "@cojacklabs/autoforge-core";
+import type { ProjectArtifactRepository } from "@cojacklabs/priozar-core";
 import {
   projectArtifactIdSchema,
   projectArtifactSchema,
   type ProjectArtifact,
-} from "@cojacklabs/autoforge-protocol";
+} from "@cojacklabs/priozar-protocol";
 import { z } from "zod";
 
 export const DEFAULT_PROJECT_ARTIFACT_REGISTRY =

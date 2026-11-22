@@ -1,1 +1,1 @@
-export * from "@cojacklabs/autoforge-protocol";
+export * from "@cojacklabs/priozar-protocol";

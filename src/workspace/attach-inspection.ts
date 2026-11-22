@@ -3,7 +3,7 @@ import { realpath, stat } from "node:fs/promises";
 import path from "node:path";
 import { promisify } from "node:util";
 
-import type { AttachmentInspection } from "@cojacklabs/autoforge-sdk";
+import type { AttachmentInspection } from "@cojacklabs/priozar-sdk";
 
 import { inspectInstallation } from "../commands/init.js";
 import { GlobalWorkspaceStore } from "./global-store.js";

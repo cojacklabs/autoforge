@@ -1,5 +1,5 @@
 {
-  "name": "@cojacklabs/autoforge-providers",
+  "name": "@cojacklabs/priozar-providers",
   "version": "0.1.0",
   "type": "module",
   "license": "MIT",
@@ -23,7 +23,7 @@
   },
   "dependencies": {
     "@ai-sdk/openai": "^3.0.0",
-    "@cojacklabs/autoforge-protocol": "workspace:^"
+    "@cojacklabs/priozar-protocol": "workspace:^"
   },
   "devDependencies": {
     "prettier": "^3.3.3",

@@ -1,7 +1,7 @@
 import type {
   CreateAgentHandoffInput,
   ProjectArtifact,
-} from "@cojacklabs/autoforge-protocol";
+} from "@cojacklabs/priozar-protocol";
 
 export type ProtocolPrimitive = string | number | boolean | null;
 

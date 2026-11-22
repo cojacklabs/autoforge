@@ -7,4 +7,4 @@ export {
   type TriageIntent,
   type TriageLabel,
   type TriageResult,
-} from "@cojacklabs/autoforge-core/intent";
+} from "@cojacklabs/priozar-core/intent";

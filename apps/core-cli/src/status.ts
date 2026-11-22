@@ -1,10 +1,7 @@
 import { access } from "node:fs/promises";
 import path from "node:path";
 
-import {
-  readProjectStatus,
-  type ProjectStatus,
-} from "@cojacklabs/autoforge-sdk";
+import { readProjectStatus, type ProjectStatus } from "@cojacklabs/priozar-sdk";
 
 import { EXIT_CODE, type ExitCode } from "../../../src/core/errors.js";
 import type { LogWriter } from "../../../src/core/logger.js";

@@ -8,7 +8,7 @@ import {
   PRIOZAR_AGENT_LAUNCH_PROTOCOL_VERSION,
   PRIOZAR_AGENT_RECURSION_ENV,
   readFrameworkEnv,
-} from "@cojacklabs/autoforge-protocol";
+} from "@cojacklabs/priozar-protocol";
 
 import { EXIT_CODE, type ExitCode } from "../../../src/core/errors.js";
 import type { CliOutput } from "./router.js";
@@ -142,8 +142,8 @@ export async function launchPriozarAgent(
     if (!explicit) return undefined;
     options.output.stderr(
       compatibility === "missing"
-        ? "Priozar Agent is not installed. Install @cojacklabs/autoforge-agent to use this command."
-        : `Priozar Agent is incompatible with launcher protocol ${PRIOZAR_AGENT_LAUNCH_PROTOCOL_VERSION}. Update @cojacklabs/autoforge-agent.`,
+        ? "Priozar Agent is not installed. Install @cojacklabs/priozar-agent to use this command."
+        : `Priozar Agent is incompatible with launcher protocol ${PRIOZAR_AGENT_LAUNCH_PROTOCOL_VERSION}. Update @cojacklabs/priozar-agent.`,
     );
     return EXIT_CODE.invalidState;
   }

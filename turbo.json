@@ -48,9 +48,9 @@
     },
     "//#core:build": {
       "dependsOn": [
-        "@cojacklabs/autoforge-protocol#build",
-        "@cojacklabs/autoforge-core#build",
-        "@cojacklabs/autoforge-sdk#build"
+        "@cojacklabs/priozar-protocol#build",
+        "@cojacklabs/priozar-core#build",
+        "@cojacklabs/priozar-sdk#build"
       ],
       "outputs": ["dist/**", "build/**"]
     },

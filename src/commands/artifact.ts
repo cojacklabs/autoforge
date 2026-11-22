@@ -1,6 +1,6 @@
 import { readFile } from "node:fs/promises";
-import { ProjectArtifactService } from "@cojacklabs/autoforge-core";
-import { projectArtifactIdSchema } from "@cojacklabs/autoforge-protocol";
+import { ProjectArtifactService } from "@cojacklabs/priozar-core";
+import { projectArtifactIdSchema } from "@cojacklabs/priozar-protocol";
 import { reportCommandError } from "../cli/command-error.js";
 import { EXIT_CODE, type ExitCode } from "../core/errors.js";
 import type { LogWriter } from "../core/logger.js";
