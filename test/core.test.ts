@@ -71,7 +71,7 @@ describe("logger", () => {
 });
 
 describe("project discovery", () => {
-  it("prefers an initialized AutoForge project", async () => {
+  it("prefers an initialized Priozar project", async () => {
     const root = await createTemporaryDirectory();
     const nested = path.join(root, "packages", "app", "src");
     await mkdir(path.join(root, ".autoforge"));

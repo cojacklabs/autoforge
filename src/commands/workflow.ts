@@ -20,7 +20,7 @@ export interface WorkflowCommandOptions {
 }
 function usage(output: LogWriter): ExitCode {
   output.stderr(
-    "Usage: autoforge workflow list | workflow start <id> <kind> | workflow show <id> | workflow advance <id> [--skip-optional] | workflow handoff <json-file>",
+    "Usage: priozar workflow list | workflow start <id> <kind> | workflow show <id> | workflow advance <id> [--skip-optional] | workflow handoff <json-file>",
   );
   output.stderr(workflowKindHelp());
   return EXIT_CODE.usage;

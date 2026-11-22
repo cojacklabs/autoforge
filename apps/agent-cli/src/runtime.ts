@@ -3,10 +3,10 @@ import { Output, ToolLoopAgent, stepCountIs } from "ai";
 
 import { agentPlanSchema, type AgentPlan } from "./schemas.js";
 
-const INSTRUCTIONS = `You are the experimental AutoForge coding agent.
+const INSTRUCTIONS = `You are the experimental Priozar coding agent.
 Use the supplied canonical project context as project truth.
 Return a bounded implementation plan. Every edit must use a project-relative path.
-Do not propose edits outside the active AutoForge scope.
+Do not propose edits outside the active Priozar scope.
 Ask clarification questions only when a missing answer materially changes the implementation.
 Never include credentials, raw transcripts, or machine-specific absolute paths.`;
 
@@ -36,7 +36,7 @@ function createResponseAgent(model: LanguageModel) {
   return new ToolLoopAgent({
     model,
     instructions:
-      "Summarize completed AutoForge work concisely. Report validation and the next action.",
+      "Summarize completed Priozar work concisely. Report validation and the next action.",
     stopWhen: stepCountIs(2),
   });
 }

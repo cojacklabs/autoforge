@@ -34,7 +34,7 @@ export async function runStartCommand(
 ): Promise<ExitCode> {
   const [kind, id, ...extra] = options.args;
   if (!kind || !isStartableKind(kind) || !id || extra.length > 0) {
-    options.output.stderr("Usage: autoforge start <task|issue> <id>");
+    options.output.stderr("Usage: priozar start <task|issue> <id>");
     return EXIT_CODE.usage;
   }
 

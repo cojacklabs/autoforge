@@ -12,7 +12,7 @@ export interface LearningCommandOptions {
 
 function usage(output: LogWriter): ExitCode {
   output.stderr(
-    "Usage: autoforge learning hypothesis|experiment|evidence <subcommand> ...",
+    "Usage: priozar learning hypothesis|experiment|evidence <subcommand> ...",
   );
   return EXIT_CODE.usage;
 }

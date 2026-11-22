@@ -102,7 +102,7 @@ export async function runCli(
       ]);
       if (launched !== undefined) return launched;
       dependencies.output.stderr(
-        "AutoForge Agent is unavailable. Install @cojacklabs/autoforge-agent to use credentials.",
+        "Priozar Agent is unavailable. Install @cojacklabs/autoforge-agent to use credentials.",
       );
       return EXIT_CODE.invalidState;
     }
@@ -119,7 +119,7 @@ export async function runCli(
         return rejected;
       }
 
-      dependencies.output.stdout(`AutoForge ${dependencies.version}`);
+      dependencies.output.stdout(`Priozar ${dependencies.version}`);
       return EXIT_CODE.success;
     }
 
@@ -303,7 +303,7 @@ export async function runCli(
 
     default:
       dependencies.output.stderr(`Unknown command: ${command}`);
-      dependencies.output.stderr('Run "autoforge help" for usage.');
+      dependencies.output.stderr('Run "priozar help" for usage.');
       return EXIT_CODE.usage;
   }
 }

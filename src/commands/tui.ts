@@ -29,9 +29,7 @@ const LEGACY_VIEW_MAP: Readonly<Record<string, StatusView>> = {
 };
 
 function usage(output: LogWriter): ExitCode {
-  output.stderr(
-    "Usage: autoforge tui [--snapshot] [--view <view>] [--no-color]",
-  );
+  output.stderr("Usage: priozar tui [--snapshot] [--view <view>] [--no-color]");
   return EXIT_CODE.usage;
 }
 
@@ -76,14 +74,14 @@ export async function runTuiCommand(
     ? {
         stdout: (message: string) =>
           options.output.stdout(
-            message.replace(/^AutoForge —/, "AutoForge TUI (deprecated) —"),
+            message.replace(/^Priozar —/, "Priozar TUI (deprecated) —"),
           ),
         stderr: options.output.stderr,
       }
     : options.output;
   if (!parsed.snapshot) {
     options.output.stderr(
-      'Deprecated: "autoforge tui" now aliases "autoforge status". Interactive experiences are moving to the separate AutoForge Agent.',
+      'Deprecated: "priozar tui" now aliases "priozar status". Interactive experiences are moving to the separate Priozar Agent.',
     );
   }
   return runStatusCommand({

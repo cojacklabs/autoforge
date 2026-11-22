@@ -71,7 +71,7 @@ export class ProjectNotFoundError extends PriozarError {
   constructor(startDirectory: string) {
     super(
       "PROJECT_NOT_FOUND",
-      `Could not find an AutoForge, Git, or package project from ${startDirectory}`,
+      `Could not find a Priozar, Git, or package project from ${startDirectory}`,
       { details: { startDirectory }, exitCode: EXIT_CODE.notFound },
     );
     this.name = "ProjectNotFoundError";

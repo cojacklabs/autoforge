@@ -92,7 +92,7 @@ export function parseConfig(value: unknown): PriozarConfig {
     return result.data;
   }
 
-  throw new PriozarError("INVALID_CONFIG", "Invalid AutoForge config", {
+  throw new PriozarError("INVALID_CONFIG", "Invalid Priozar config", {
     details: {
       issues: result.error.issues,
     },

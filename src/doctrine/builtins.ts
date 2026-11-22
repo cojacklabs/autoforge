@@ -131,7 +131,7 @@ const BUILTIN_DOCTRINES: readonly BuiltinDoctrineDefinition[] = [
     summary:
       "Preserve non-obvious intent with durable comments without creating noise.",
     content:
-      "# Code Commentary\n\n- Explain why at public contracts, architectural boundaries, invariants, security or compatibility constraints, non-obvious algorithms, and intentional tradeoffs when types and tests are insufficient.\n- Do not restate syntax, preserve prompt transcripts, or leave stale narrative comments; prefer clear names, typed APIs, tests, and linked decisions.\n- Link TODO/FIXME follow-ups to an AutoForge task or issue when practical, and reject unactionable markers during review.",
+      "# Code Commentary\n\n- Explain why at public contracts, architectural boundaries, invariants, security or compatibility constraints, non-obvious algorithms, and intentional tradeoffs when types and tests are insufficient.\n- Do not restate syntax, preserve prompt transcripts, or leave stale narrative comments; prefer clear names, typed APIs, tests, and linked decisions.\n- Link TODO/FIXME follow-ups to a Priozar task or issue when practical, and reject unactionable markers during review.",
     routing: {
       keywords: ["comment", "commentary", "documentation", "todo"],
       workKinds: ["task", "issue"],

@@ -28,7 +28,7 @@ export async function assertInitializedAgentProject(
   } catch (error) {
     throw new PriozarError(
       "INVALID_STATE",
-      "Context delivery requires an initialized AutoForge project",
+      "Context delivery requires an initialized Priozar project",
       { cause: error, exitCode: EXIT_CODE.invalidState },
     );
   }

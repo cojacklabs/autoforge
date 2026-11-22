@@ -29,7 +29,7 @@ export interface TwinCommandOptions {
 
 function usage(output: LogWriter): ExitCode {
   output.stderr(
-    "Usage: autoforge twin generate [--json] | twin show [--json] | twin query [--type <type>] [--relationship <name>] [--depth <n>] [--limit <n>] [--json]",
+    "Usage: priozar twin generate [--json] | twin show [--json] | twin query [--type <type>] [--relationship <name>] [--depth <n>] [--limit <n>] [--json]",
   );
   return EXIT_CODE.usage;
 }

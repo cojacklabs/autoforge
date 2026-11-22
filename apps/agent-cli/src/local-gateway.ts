@@ -95,7 +95,7 @@ export class LocalSdkGateway implements AgentProjectGateway {
             throw new Error(
               statusResult.stderr ||
                 contextResult.stderr ||
-                "Unable to load AutoForge context",
+                "Unable to load Priozar context",
             );
           }
           const envelope = JSON.parse(statusResult.stdout) as {
@@ -112,7 +112,7 @@ export class LocalSdkGateway implements AgentProjectGateway {
             };
           };
           const active = envelope.data.work.active;
-          if (!active) throw new Error("AutoForge Agent requires active work");
+          if (!active) throw new Error("Priozar Agent requires active work");
           return {
             project: {
               id: `project.${envelope.data.project.name.toLowerCase().replace(/[^a-z0-9]+/g, "-")}`,
@@ -150,7 +150,11 @@ export class LocalSdkGateway implements AgentProjectGateway {
             ...(input.path ? ["--path", input.path] : []),
           ]);
           return {
-            allowed: result.stdout.includes("AutoForge guardrail: PASS"),
+            // Accept the pre-rename prefix so a newer agent still works against an
+            // older installed CLI during the compatibility window.
+            allowed:
+              result.stdout.includes("Priozar guardrail: PASS") ||
+              result.stdout.includes("AutoForge guardrail: PASS"),
             summary: (result.stdout || result.stderr).trim(),
           };
         },

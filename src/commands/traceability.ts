@@ -13,7 +13,7 @@ export interface TraceabilityCommandOptions {
 
 function usage(output: LogWriter): ExitCode {
   output.stderr(
-    "Usage: autoforge trace add <source> <relationship> <target> | trace list | trace impact <artifact> [--depth <n>] [--direction <forward|reverse|both>]",
+    "Usage: priozar trace add <source> <relationship> <target> | trace list | trace impact <artifact> [--depth <n>] [--direction <forward|reverse|both>]",
   );
   return EXIT_CODE.usage;
 }

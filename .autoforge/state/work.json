@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
-  "revision": 491,
-  "updatedAt": "2026-11-22T18:17:01.541Z",
+  "revision": 496,
+  "updatedAt": "2026-11-22T18:58:38.207Z",
   "data": {
     "features": [
       {
@@ -2212,6 +2212,25 @@
           ],
           "exclude": []
         }
+      },
+      {
+        "name": "Rename user-visible AutoForge text to Priozar",
+        "description": "Update the product name in help output, command messages, generated context packets, agent contract and adapter instruction text, and the command the contract tells agents to run (autoforge -> priozar), without changing wire or storage values, package names, state directory names or deprecated aliases.",
+        "status": "completed",
+        "pauseReason": null,
+        "createdAt": "2026-11-22T18:30:55.312Z",
+        "updatedAt": "2026-11-22T18:58:38.092Z",
+        "id": "task.rename-user-visible-autoforge-text-to-priozar",
+        "phaseId": "phase.code-identifiers-and-env-vars",
+        "scope": {
+          "include": [
+            "src/**",
+            "apps/**",
+            "packages/**",
+            "test/**"
+          ],
+          "exclude": []
+        }
       }
     ],
     "issues": [
@@ -3366,6 +3385,38 @@
           "include": [
             "src/quality/**",
             "test/quality-gate.test.ts"
+          ],
+          "exclude": []
+        }
+      },
+      {
+        "name": "Migrate installed agent hooks and managed-block markers to priozar",
+        "description": "The Claude hook command (autoforge check --hook claude) and the managed-block markers (autoforge:gemini:start/end, autoforge:antigravity:*) were deliberately left unchanged because existing user files are matched by exact string. Teach the adapters to recognise both forms and rewrite them to the priozar form on the next setup.",
+        "status": "planned",
+        "pauseReason": null,
+        "createdAt": "2026-11-22T18:58:36.732Z",
+        "updatedAt": "2026-11-22T18:58:36.732Z",
+        "id": "issue.migrate-installed-agent-hooks-and-managed-block-markers-to-priozar",
+        "scope": {
+          "include": [
+            "src/agents/**",
+            "test/**"
+          ],
+          "exclude": []
+        }
+      },
+      {
+        "name": "cli-integration tests exceed the 15s timeout when the machine is loaded",
+        "description": "The bundled-CLI integration tests spawn dist/cli.js many times and take 10-18s each under load, so the 15s default timeout makes the gate fail intermittently. Raise the timeout for test/cli-integration.test.ts or its slowest cases.",
+        "status": "planned",
+        "pauseReason": null,
+        "createdAt": "2026-11-22T18:58:37.138Z",
+        "updatedAt": "2026-11-22T18:58:37.138Z",
+        "id": "issue.cli-integration-tests-exceed-the-15s-timeout-when-the-machine-is-loaded",
+        "scope": {
+          "include": [
+            "test/cli-integration.test.ts",
+            "vitest.config.ts"
           ],
           "exclude": []
         }

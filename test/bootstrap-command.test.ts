@@ -76,7 +76,7 @@ describe("bootstrap command", () => {
       expect.stringContaining('"status": "not-scaffolded"'),
     );
     expect(output.stdout).toHaveBeenCalledWith(
-      expect.stringContaining('"nextAction": "autoforge bootstrap scaffold"'),
+      expect.stringContaining('"nextAction": "priozar bootstrap scaffold"'),
     );
     expect(output.stderr).not.toHaveBeenCalled();
   });
@@ -97,7 +97,7 @@ describe("bootstrap command", () => {
       }),
     ).resolves.toBe(4);
     expect(output.stderr).toHaveBeenCalledWith(
-      'Error: Bootstrap manifest is not initialized. Run "autoforge bootstrap scaffold" first.',
+      'Error: Bootstrap manifest is not initialized. Run "priozar bootstrap scaffold" first.',
     );
   });
 

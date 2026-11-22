@@ -6,7 +6,7 @@ describe("assets command", () => {
     const output = { stdout: vi.fn(), stderr: vi.fn() };
     await expect(runAssetsCommand({ args: ["list"], output })).resolves.toBe(2);
     expect(output.stderr).toHaveBeenCalledWith(
-      "Usage: autoforge assets list templates|doctrines",
+      "Usage: priozar assets list templates|doctrines",
     );
   });
 });

@@ -46,7 +46,7 @@ const claudeHookInputSchema = z
 
 function usageError(output: LogWriter, message: string): undefined {
   output.stderr(message);
-  output.stderr('Run "autoforge help" for usage.');
+  output.stderr('Run "priozar help" for usage.');
   return undefined;
 }
 
@@ -146,7 +146,7 @@ function formatGuardrailReport(
   events: readonly string[],
 ): string {
   return [
-    `AutoForge guardrail: ${report.allowed ? "PASS" : "FAIL"} (${report.enforcement})`,
+    `Priozar guardrail: ${report.allowed ? "PASS" : "FAIL"} (${report.enforcement})`,
     ...(report.agentId ? [`Agent: ${report.agentId}`] : []),
     ...(report.workId ? [`Work: ${report.workId}`] : []),
     ...(report.targetPath ? [`Path: ${report.targetPath}`] : []),
@@ -168,7 +168,7 @@ function requiredInstallationState(
   ) {
     throw new PriozarError(
       "INVALID_STATE",
-      "Guardrail checks require readable AutoForge state",
+      "Guardrail checks require readable Priozar state",
       {
         details: { installationStatus: installation.status },
         exitCode: EXIT_CODE.invalidState,
@@ -204,7 +204,7 @@ export async function runCheckCommand(
       startDirectory = hook.cwd;
     } catch (error) {
       const message = error instanceof Error ? error.message : String(error);
-      options.output.stderr(`AutoForge guardrail denied edit: ${message}`);
+      options.output.stderr(`Priozar guardrail denied edit: ${message}`);
       return EXIT_CODE.usage;
     }
   }
@@ -282,7 +282,7 @@ export async function runCheckCommand(
   } catch (error) {
     if (parsed.hook === "claude") {
       const message = error instanceof Error ? error.message : String(error);
-      options.output.stderr(`AutoForge guardrail denied edit: ${message}`);
+      options.output.stderr(`Priozar guardrail denied edit: ${message}`);
       return EXIT_CODE.usage;
     }
     throw error;

@@ -82,7 +82,7 @@ export function findPackageVersion(startUrl: string = import.meta.url): string {
 
   throw new PriozarError(
     "FILESYSTEM_ERROR",
-    "Unable to locate AutoForge package metadata",
+    "Unable to locate Priozar package metadata",
     { exitCode: EXIT_CODE.filesystem },
   );
 }
@@ -135,7 +135,7 @@ export async function main(
       : undefined;
     if (projectMutationBlocked(cliArgs[0], projectMetadata)) {
       output.stderr(
-        `Project lifecycle is ${projectMetadata?.lifecycle}; mutating command "${cliArgs[0]}" is blocked. Run 'autoforge projects update ${startDirectory} --lifecycle active' to allow mutations.`,
+        `Project lifecycle is ${projectMetadata?.lifecycle}; mutating command "${cliArgs[0]}" is blocked. Run 'priozar projects update ${startDirectory} --lifecycle active' to allow mutations.`,
       );
       return EXIT_CODE.invalidState;
     }

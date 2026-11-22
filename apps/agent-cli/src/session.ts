@@ -115,9 +115,7 @@ export async function runAgentSession(
     const relativePath = edit.path;
     const guardrail = await options.gateway.check(relativePath);
     if (!guardrail.allowed) {
-      throw new Error(
-        `AutoForge blocked ${relativePath}: ${guardrail.summary}`,
-      );
+      throw new Error(`Priozar blocked ${relativePath}: ${guardrail.summary}`);
     }
   }
 

@@ -250,7 +250,7 @@ export class GlobalWorkspaceStore {
     const projectId = await readProjectId(target);
     if (!projectId)
       throw new Error(
-        `Destination is not an initialized AutoForge project: ${target}`,
+        `Destination is not an initialized Priozar project: ${target}`,
       );
     const existing = current.projectMetadata?.[source] ?? {
       name: path.basename(source),
@@ -258,7 +258,7 @@ export class GlobalWorkspaceStore {
     };
     if (existing.projectId && existing.projectId !== projectId) {
       throw new Error(
-        "Destination AutoForge project identity does not match the registered project",
+        "Destination Priozar project identity does not match the registered project",
       );
     }
     const completedAt = new Date().toISOString();

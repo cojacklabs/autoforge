@@ -13,7 +13,7 @@ export async function runAssetsCommand(options: {
     !["templates", "doctrines"].includes(kind) ||
     options.args.length !== 2
   ) {
-    options.output.stderr("Usage: autoforge assets list templates|doctrines");
+    options.output.stderr("Usage: priozar assets list templates|doctrines");
     return EXIT_CODE.usage;
   }
   const assets = await new GlobalWorkspaceStore().listAssets(

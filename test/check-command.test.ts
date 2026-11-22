@@ -92,7 +92,7 @@ describe("check command", () => {
     ).resolves.toBe(EXIT_CODE.success);
     expect(writer.stderr).not.toHaveBeenCalled();
     expect(writer.stdout).toHaveBeenCalledWith(
-      expect.stringContaining("AutoForge guardrail: PASS (advisory)"),
+      expect.stringContaining("Priozar guardrail: PASS (advisory)"),
     );
     expect(writer.stdout).toHaveBeenCalledWith(
       expect.stringContaining("Context: refreshed"),

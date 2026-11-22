@@ -118,7 +118,7 @@ describe("runAgentSession", () => {
     const harness = createHarness({ allowed: false });
     await expect(
       runAgentSession({ ...harness, prompt: "Build it" }),
-    ).rejects.toThrow("AutoForge blocked");
+    ).rejects.toThrow("Priozar blocked");
     expect(harness.workspace.write).not.toHaveBeenCalled();
   });
 

@@ -77,7 +77,7 @@ export class MigrationRegistry {
 
     if (currentVersion > targetVersion) {
       throw invalidMigration(
-        "State schema is newer than this AutoForge version",
+        "State schema is newer than this Priozar version",
         {
           currentVersion,
           targetVersion,

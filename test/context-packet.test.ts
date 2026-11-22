@@ -182,7 +182,7 @@ describe("context packet compiler", () => {
       maxSourceTokens: 1_000,
       sourceBudgetExceeded: false,
     });
-    expect(packet.content).toContain("# AutoForge Build Packet");
+    expect(packet.content).toContain("# Priozar Build Packet");
     expect(packet.content.indexOf("## Objective")).toBeLessThan(
       packet.content.indexOf("## Applicable Doctrines"),
     );
@@ -388,7 +388,7 @@ describe("context command", () => {
       }),
     ).resolves.toBe(EXIT_CODE.usage);
     expect(output.stderr).toHaveBeenCalledWith(
-      "Usage: autoforge context [--explain]",
+      "Usage: priozar context [--explain]",
     );
     expect(output.stdout).not.toHaveBeenCalled();
   });

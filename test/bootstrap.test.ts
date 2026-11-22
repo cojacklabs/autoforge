@@ -66,7 +66,7 @@ describe("bootstrap inspection", () => {
     });
   });
 
-  it("identifies a legacy AutoForge installation", async () => {
+  it("identifies a legacy Priozar installation", async () => {
     const project = await mkdtemp(
       path.join(os.tmpdir(), "autoforge-bootstrap-"),
     );

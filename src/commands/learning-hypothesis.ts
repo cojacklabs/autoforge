@@ -16,7 +16,7 @@ export interface LearningHypothesisCommandOptions {
 
 function usage(output: LogWriter): ExitCode {
   output.stderr(
-    "Usage: autoforge learning hypothesis add --statement <text> --expected-outcome <text> --metric <text> --target <text> [--work <id>] | hypothesis list [--status <status>] | hypothesis show <id> | hypothesis status <id> --status <proposed|testing|confirmed|refuted>",
+    "Usage: priozar learning hypothesis add --statement <text> --expected-outcome <text> --metric <text> --target <text> [--work <id>] | hypothesis list [--status <status>] | hypothesis show <id> | hypothesis status <id> --status <proposed|testing|confirmed|refuted>",
   );
   return EXIT_CODE.usage;
 }

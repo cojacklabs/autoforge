@@ -318,11 +318,11 @@ const cycle = findCycle(graph);
 if (cycle) errors.push(`workspace dependency cycle: ${cycle.join(" -> ")}`);
 
 if (errors.length > 0) {
-  console.error("AutoForge package boundary violations:");
+  console.error("Priozar package boundary violations:");
   for (const error of errors.sort()) console.error(`- ${error}`);
   process.exitCode = 1;
 } else {
   console.log(
-    `AutoForge source and package boundaries pass (${manifests.length} workspaces).`,
+    `Priozar source and package boundaries pass (${manifests.length} workspaces).`,
   );
 }

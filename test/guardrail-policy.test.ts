@@ -196,7 +196,7 @@ describe("guardrail policy", () => {
       scattered.checks.find(({ id }) => id === "artifact-destination"),
     ).toMatchObject({
       status: "warn",
-      message: expect.stringContaining("autoforge artifact import"),
+      message: expect.stringContaining("priozar artifact import"),
     });
     const documented = evaluateGuardrails({
       ...fixture(),

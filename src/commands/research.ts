@@ -8,7 +8,7 @@ import { reportCommandError } from "../cli/command-error.js";
 export type ResearchCommandOptions = IntentCommandOptions;
 
 function usage(output: ResearchCommandOptions["output"]): ExitCode {
-  output.stderr("Usage: autoforge research register <json-file>");
+  output.stderr("Usage: priozar research register <json-file>");
   return EXIT_CODE.usage;
 }
 

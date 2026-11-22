@@ -36,7 +36,7 @@ function harness(compatibility: "compatible" | "missing" | "incompatible") {
   return { output, host };
 }
 
-describe("AutoForge Agent launcher", () => {
+describe("Priozar Agent launcher", () => {
   it("forwards arguments and the Agent exit code", async () => {
     const dependencies = harness("compatible");
     await expect(
@@ -199,7 +199,7 @@ describe("AutoForge Agent launcher", () => {
   });
 });
 
-describe("AutoForge Agent launcher environment variables", () => {
+describe("Priozar Agent launcher environment variables", () => {
   const quiet = { stdinIsTTY: true, stdoutIsTTY: true } as const;
   const read = (env: Record<string, string | undefined>) =>
     currentAgentLaunchEnvironment(env, quiet);

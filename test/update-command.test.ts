@@ -7,6 +7,6 @@ describe("update command", () => {
     await expect(runUpdateCommand({ args: ["--check"], output })).resolves.toBe(
       2,
     );
-    expect(output.stderr).toHaveBeenCalledWith("Usage: autoforge update");
+    expect(output.stderr).toHaveBeenCalledWith("Usage: priozar update");
   });
 });

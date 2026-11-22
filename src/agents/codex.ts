@@ -29,9 +29,9 @@ const START_MARKER = "<!-- autoforge:codex:start -->";
 const END_MARKER = "<!-- autoforge:codex:end -->";
 const INSTRUCTIONS_PATH = "AGENTS.md";
 const MANAGED_BLOCK = `${START_MARKER}
-## AutoForge Context
+## Priozar Context
 
-Before starting implementation, read \`${CANONICAL_AGENT_CONTEXT_PATH}\` when it exists and follow its active work, doctrine, decision, scope, and validation guidance. Run \`autoforge check --agent codex\` before implementation and \`autoforge check --path <file> --agent codex\` before edits.
+Before starting implementation, read \`${CANONICAL_AGENT_CONTEXT_PATH}\` when it exists and follow its active work, doctrine, decision, scope, and validation guidance. Run \`priozar check --agent codex\` before implementation and \`priozar check --path <file> --agent codex\` before edits.
 ${END_MARKER}`;
 const INSTRUCTION_BLOCK: ManagedInstructionBlock = {
   fileName: INSTRUCTIONS_PATH,
@@ -73,7 +73,7 @@ export class CodexAgentAdapter implements AgentAdapter {
       detected,
       confidence: managed ? "high" : detected ? "low" : "none",
       evidence: [
-        ...(managed ? ["AutoForge Codex AGENTS.md block is installed"] : []),
+        ...(managed ? ["Priozar Codex AGENTS.md block is installed"] : []),
         ...(codexConfig ? ["Project Codex configuration is present"] : []),
       ],
     });

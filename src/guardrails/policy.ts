@@ -56,7 +56,7 @@ function artifactDestinationCheck(
   return {
     id: "artifact-destination",
     status: "warn",
-    message: `${targetPath} looks like an unregistered planning artifact. Store it under .autoforge/artifacts/ or run "autoforge artifact import ${targetPath} --id <artifact-id> --kind <kind> --title <title> --agent <agent-id> --work <work-id>".`,
+    message: `${targetPath} looks like an unregistered planning artifact. Store it under .autoforge/artifacts/ or run "priozar artifact import ${targetPath} --id <artifact-id> --kind <kind> --title <title> --agent <agent-id> --work <work-id>".`,
   };
 }
 
@@ -70,7 +70,7 @@ function activeWorkCheck(work: WorkState): GuardrailCheck {
     : {
         id: "active-work",
         status: "fail",
-        message: 'No work is active. Run "autoforge start" before editing.',
+        message: 'No work is active. Run "priozar start" before editing.',
       };
 }
 
@@ -96,7 +96,7 @@ function sessionCheck(work: WorkState, sessions: SessionState): GuardrailCheck {
         id: "session-consistency",
         status: "fail",
         message:
-          'Active work and session state do not agree. Run "autoforge check --repair".',
+          'Active work and session state do not agree. Run "priozar check --repair".',
       };
 }
 
@@ -136,7 +136,7 @@ function doctrineCheck(
         id: "doctrine-requirements",
         status: "fail",
         message:
-          'Required doctrine is missing or inactive. Run "autoforge check --repair".',
+          'Required doctrine is missing or inactive. Run "priozar check --repair".',
       };
 }
 
@@ -153,8 +153,8 @@ function contextCheck(freshness: ContextFreshness): GuardrailCheck {
     status: "fail",
     message:
       freshness === "missing"
-        ? 'Canonical context is missing. Run "autoforge check --refresh".'
-        : 'Canonical context is stale. Run "autoforge check --refresh".',
+        ? 'Canonical context is missing. Run "priozar check --refresh".'
+        : 'Canonical context is stale. Run "priozar check --refresh".',
   };
 }
 

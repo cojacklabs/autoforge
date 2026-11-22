@@ -16,7 +16,7 @@ export async function runAgentsCommand(
     options.args.length > 1 ||
     (options.args[0] && options.args[0] !== "list")
   ) {
-    options.output.stderr("Usage: autoforge agents list");
+    options.output.stderr("Usage: priozar agents list");
     return EXIT_CODE.usage;
   }
   const adapters = createDefaultAgentRegistry().list();

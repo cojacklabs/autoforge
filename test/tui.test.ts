@@ -37,10 +37,10 @@ describe("deprecated TUI compatibility alias", () => {
       runTuiCommand({ args: [], output, startDirectory: projectRoot }),
     ).resolves.toBe(EXIT_CODE.success);
     expect(output.stdout).toHaveBeenCalledWith(
-      expect.stringContaining("AutoForge —"),
+      expect.stringContaining("Priozar —"),
     );
     expect(output.stderr).toHaveBeenCalledWith(
-      expect.stringContaining("AutoForge Agent"),
+      expect.stringContaining("Priozar Agent"),
     );
     await expect(createWorkStateStore(projectRoot).read()).resolves.toEqual(
       before,
@@ -48,10 +48,10 @@ describe("deprecated TUI compatibility alias", () => {
   });
 
   it.each([
-    { legacy: "dashboard", heading: "AutoForge TUI (deprecated) —" },
-    { legacy: "active-work", heading: "AutoForge work —" },
-    { legacy: "health", heading: "AutoForge TUI (deprecated) —" },
-    { legacy: "next", heading: "AutoForge next —" },
+    { legacy: "dashboard", heading: "Priozar TUI (deprecated) —" },
+    { legacy: "active-work", heading: "Priozar work —" },
+    { legacy: "health", heading: "Priozar TUI (deprecated) —" },
+    { legacy: "next", heading: "Priozar next —" },
   ])("maps legacy $legacy snapshots to status", async ({ legacy, heading }) => {
     const projectRoot = await createProject();
     const output = { stdout: vi.fn(), stderr: vi.fn() };

@@ -28,7 +28,7 @@ const KINDS = [
 
 function usage(output: LogWriter): ExitCode {
   output.stderr(
-    "Usage: autoforge planning list [--source <intent.json>] | autoforge planning show <kind> [--source <intent.json>] | autoforge planning handoff <kind> --phase <phase-id> --include <pattern>",
+    "Usage: priozar planning list [--source <intent.json>] | priozar planning show <kind> [--source <intent.json>] | priozar planning handoff <kind> --phase <phase-id> --include <pattern>",
   );
   return EXIT_CODE.usage;
 }

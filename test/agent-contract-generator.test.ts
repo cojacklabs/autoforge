@@ -42,13 +42,13 @@ describe("agent contract generator", () => {
       "Document non-obvious intent, public contracts, invariants, security or compatibility constraints, and unusual tradeoffs with concise explain-why comments.",
     );
     expect(contract.requiredActions).toContainEqual(
-      expect.stringContaining("AutoForge artifact registry by default"),
+      expect.stringContaining("Priozar artifact registry by default"),
     );
     expect(contract.prohibitedActions).toContainEqual(
       expect.stringContaining("overwrite an approved artifact"),
     );
     expect(contract.prohibitedActions).toContain(
-      "Add comments that restate syntax, preserve prompt transcripts, become stale narratives, or leave TODO/FIXME markers without an AutoForge task or issue reference.",
+      "Add comments that restate syntax, preserve prompt transcripts, become stale narratives, or leave TODO/FIXME markers without a Priozar task or issue reference.",
     );
     expect(contract.completionRequirements).toContain(
       "Review changed code for required high-value commentary and work-linked TODO/FIXME markers.",
@@ -63,7 +63,7 @@ describe("agent contract generator", () => {
     });
     expect(contract.agentId).toBe("gemini");
     expect(contract.contextCommand).toBe(
-      'autoforge --project "$PWD" context --explain',
+      'priozar --project "$PWD" context --explain',
     );
   });
 

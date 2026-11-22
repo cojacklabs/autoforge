@@ -55,7 +55,7 @@ afterEach(async () => {
 });
 
 describe("project initialization", () => {
-  it("publishes only the minimal validated AutoForge tree", async () => {
+  it("publishes only the minimal validated Priozar tree", async () => {
     const projectRoot = await createProject();
 
     await expect(initializeFixture(projectRoot)).resolves.toMatchObject({
@@ -228,7 +228,7 @@ describe("init command", () => {
       }),
     ).resolves.toBe(EXIT_CODE.success);
     expect(output.stdout).toHaveBeenCalledWith(
-      `Initialized AutoForge in ${path.join(projectRoot, ".autoforge")}`,
+      `Initialized Priozar in ${path.join(projectRoot, ".autoforge")}`,
     );
     await expect(inspectInstallation(projectRoot)).resolves.toMatchObject({
       status: "current",

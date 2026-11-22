@@ -24,7 +24,7 @@ export interface OrchestrateCommandOptions {
 
 function usage(output: LogWriter): ExitCode {
   output.stderr(
-    "Usage: autoforge orchestrate plan [json-file] | orchestrate status | orchestrate ready | orchestrate claim <work-id> --agent <id> [--role <role>] [--read-only] [--ttl <minutes>] | orchestrate handoff <assignment-id> <json-file> | orchestrate release <assignment-id> | orchestrate approve <gate-id> [--by <actor>] | orchestrate prioritize <work-id> <0-100> | orchestrate explain <work-id>",
+    "Usage: priozar orchestrate plan [json-file] | orchestrate status | orchestrate ready | orchestrate claim <work-id> --agent <id> [--role <role>] [--read-only] [--ttl <minutes>] | orchestrate handoff <assignment-id> <json-file> | orchestrate release <assignment-id> | orchestrate approve <gate-id> [--by <actor>] | orchestrate prioritize <work-id> <0-100> | orchestrate explain <work-id>",
   );
   return EXIT_CODE.usage;
 }

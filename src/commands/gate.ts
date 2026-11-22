@@ -34,7 +34,7 @@ interface ParsedGateArguments {
 function usage(message: string, output: LogWriter): ExitCode {
   output.stderr(message);
   output.stderr(
-    "Usage: autoforge gate check [--path <file>] [--files <file,file>] [--json]",
+    "Usage: priozar gate check [--path <file>] [--files <file,file>] [--json]",
   );
   return EXIT_CODE.usage;
 }

@@ -57,7 +57,7 @@ describe("recap command", () => {
     await expect(
       runRecapCommand({ args: [], output, startDirectory: projectRoot }),
     ).resolves.toBe(EXIT_CODE.success);
-    expect(output.stdout).toHaveBeenCalledWith(`AutoForge recap
+    expect(output.stdout).toHaveBeenCalledWith(`Priozar recap
 Status: idle
 Inventory: features=0 phases=0 tasks=0 issues=1
 Actionable: planned=1 ready=0 active=0 blocked=0 paused=0 completed=0 canceled=0

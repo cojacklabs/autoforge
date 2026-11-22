@@ -78,7 +78,7 @@ export function mergeManagedInstructionBlock(
   if (status === "malformed") {
     throw new PriozarError(
       "INVALID_STATE",
-      `${block.fileName} contains an incomplete AutoForge managed block`,
+      `${block.fileName} contains an incomplete Priozar managed block`,
       { exitCode: EXIT_CODE.invalidState },
     );
   }

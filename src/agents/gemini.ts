@@ -33,11 +33,11 @@ const GEMINI_BLOCK: ManagedInstructionBlock = {
   startMarker: "<!-- autoforge:gemini:start -->",
   endMarker: "<!-- autoforge:gemini:end -->",
   content: `<!-- autoforge:gemini:start -->
-## AutoForge Context
+## Priozar Context
 
 @./${CANONICAL_AGENT_CONTEXT_PATH}
 
-Before edits, run \`autoforge check --path <file> --agent gemini\` and follow advisory diagnostics.
+Before edits, run \`priozar check --path <file> --agent gemini\` and follow advisory diagnostics.
 <!-- autoforge:gemini:end -->`,
 };
 const ANTIGRAVITY_BLOCK: ManagedInstructionBlock = {
@@ -45,9 +45,9 @@ const ANTIGRAVITY_BLOCK: ManagedInstructionBlock = {
   startMarker: "<!-- autoforge:antigravity:start -->",
   endMarker: "<!-- autoforge:antigravity:end -->",
   content: `<!-- autoforge:antigravity:start -->
-## AutoForge Context
+## Priozar Context
 
-Before starting implementation, read \`${CANONICAL_AGENT_CONTEXT_PATH}\` when it exists and follow its active work, doctrine, decision, scope, and validation guidance. Run \`autoforge check --agent gemini\` before implementation and \`autoforge check --path <file> --agent gemini\` before edits.
+Before starting implementation, read \`${CANONICAL_AGENT_CONTEXT_PATH}\` when it exists and follow its active work, doctrine, decision, scope, and validation guidance. Run \`priozar check --agent gemini\` before implementation and \`priozar check --path <file> --agent gemini\` before edits.
 <!-- autoforge:antigravity:end -->`,
 };
 
@@ -115,12 +115,12 @@ export class GeminiAgentAdapter implements AgentAdapter {
             : "none",
       evidence: [
         ...(configured.some((state) => state.block === GEMINI_BLOCK)
-          ? ["AutoForge Gemini GEMINI.md block is installed"]
+          ? ["Priozar Gemini GEMINI.md block is installed"]
           : states[0]?.existing !== undefined
             ? ["Project GEMINI.md is present"]
             : []),
         ...(configured.some((state) => state.block === ANTIGRAVITY_BLOCK)
-          ? ["AutoForge Antigravity workspace rule is installed"]
+          ? ["Priozar Antigravity workspace rule is installed"]
           : states[1]?.existing !== undefined
             ? ["Project Antigravity workspace rule is present"]
             : []),
@@ -200,8 +200,8 @@ export class GeminiAgentAdapter implements AgentAdapter {
         id: "context-delivery",
         status: contextAvailable ? ("pass" as const) : ("warn" as const),
         message: contextAvailable
-          ? "Shared AutoForge context is available."
-          : "Shared AutoForge context has not been delivered yet.",
+          ? "Shared Priozar context is available."
+          : "Shared Priozar context has not been delivered yet.",
       },
     ];
     const status = checks.some((check) => check.status === "fail")

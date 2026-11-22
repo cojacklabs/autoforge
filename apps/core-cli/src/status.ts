@@ -84,9 +84,7 @@ function selectNextWork(
 }
 
 function usage(output: LogWriter): undefined {
-  output.stderr(
-    "Usage: autoforge status [--json] [--view <summary|work|next>]",
-  );
+  output.stderr("Usage: priozar status [--json] [--view <summary|work|next>]");
   return undefined;
 }
 
@@ -133,19 +131,19 @@ export async function loadProjectStatus(
   const nextCommands =
     recap.status === "active"
       ? [
-          "autoforge context --explain",
-          "autoforge check",
-          "autoforge done",
-          "autoforge help",
+          "priozar context --explain",
+          "priozar check",
+          "priozar done",
+          "priozar help",
         ]
       : [
           ...(nextWork
             ? [
-                `autoforge start ${nextWork.id.startsWith("issue.") ? "issue" : "task"} ${nextWork.id}`,
+                `priozar start ${nextWork.id.startsWith("issue.") ? "issue" : "task"} ${nextWork.id}`,
               ]
             : []),
-          "autoforge recap",
-          "autoforge help",
+          "priozar recap",
+          "priozar help",
         ];
   return {
     project: { name: path.basename(projectRoot), root: projectRoot },
@@ -170,7 +168,7 @@ export async function loadProjectStatus(
 function renderSummary(status: ProjectStatus): string {
   const active = status.work.active;
   return [
-    `AutoForge — ${status.project.name}`,
+    `Priozar — ${status.project.name}`,
     `Status: ${status.work.state}`,
     active
       ? `Active: ${active.kind} ${active.id} — ${active.name}`
@@ -184,7 +182,7 @@ function renderSummary(status: ProjectStatus): string {
 function renderWork(status: ProjectStatus): string {
   const counts = status.work.counts;
   const lines = [
-    `AutoForge work — ${status.project.name}`,
+    `Priozar work — ${status.project.name}`,
     `Status: ${status.work.state}`,
     `Counts: planned=${counts.planned} ready=${counts.ready} active=${counts.active} blocked=${counts.blocked} paused=${counts.paused} completed=${counts.completed} canceled=${counts.canceled}`,
   ];
@@ -200,7 +198,7 @@ function renderWork(status: ProjectStatus): string {
 
 function renderNext(status: ProjectStatus): string {
   return [
-    `AutoForge next — ${status.project.name}`,
+    `Priozar next — ${status.project.name}`,
     ...status.nextCommands.map((command) => `  ${command}`),
   ].join("\n");
 }

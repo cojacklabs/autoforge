@@ -127,7 +127,7 @@ describe("resume command", () => {
       runResumeCommand({ args, output, startDirectory: process.cwd() }),
     ).resolves.toBe(EXIT_CODE.usage);
     expect(output.stderr).toHaveBeenCalledWith(
-      "Usage: autoforge resume <task|issue> <id>",
+      "Usage: priozar resume <task|issue> <id>",
     );
   });
 

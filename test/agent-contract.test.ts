@@ -13,7 +13,7 @@ describe("agent contract", () => {
       workflowStage: "implementation",
       requiredActions: ["Read the active context packet."],
       prohibitedActions: ["Modify files outside the declared scope."],
-      contextCommand: "npx --no-install autoforge context --explain",
+      contextCommand: "npx --no-install priozar context --explain",
       validationCommands: ["npm test"],
       completionRequirements: ["Persist decisions before completion."],
     });

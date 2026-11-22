@@ -47,7 +47,7 @@ const REPEATABLE_FLAGS = new Set(["--evidence"]);
 
 function usageError(output: LogWriter, message: string): undefined {
   output.stderr(message);
-  output.stderr('Run "autoforge help" for usage.');
+  output.stderr('Run "priozar help" for usage.');
   return undefined;
 }
 
@@ -186,7 +186,7 @@ function parseAssessArguments(
 
 function usage(output: LogWriter): ExitCode {
   output.stderr(
-    "Usage: autoforge strategy assess <work-id> --alignment <low|medium|high|uncertain> --value <..> --risk <..> --cost <..> --evidence-strength <..> --dependency-pressure <..> --complexity <..> --release-constraint <..> --decision <now|next|later|backlog> --rationale <text> [--evidence <evidence-id>] [--supersedes <strategy-id>] | strategy list [--decision <label>] [--work <work-id>] | strategy show <id> | strategy history <work-id>",
+    "Usage: priozar strategy assess <work-id> --alignment <low|medium|high|uncertain> --value <..> --risk <..> --cost <..> --evidence-strength <..> --dependency-pressure <..> --complexity <..> --release-constraint <..> --decision <now|next|later|backlog> --rationale <text> [--evidence <evidence-id>] [--supersedes <strategy-id>] | strategy list [--decision <label>] [--work <work-id>] | strategy show <id> | strategy history <work-id>",
   );
   return EXIT_CODE.usage;
 }

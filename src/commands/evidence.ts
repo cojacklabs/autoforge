@@ -19,7 +19,7 @@ export interface EvidenceCommandOptions {
 
 function usage(output: LogWriter): ExitCode {
   output.stderr(
-    "Usage: autoforge evidence list [--json] | evidence summary [--json]",
+    "Usage: priozar evidence list [--json] | evidence summary [--json]",
   );
   return EXIT_CODE.usage;
 }

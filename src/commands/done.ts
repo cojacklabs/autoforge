@@ -88,7 +88,7 @@ export async function runDoneCommand(
         });
       } else {
         options.output.stderr(
-          `No decision is linked to ${activeWork.id}. Run 'autoforge decide ... --work ${activeWork.id}' before closing this ${activeWork.kind}, or pass --no-decision "<reason>" to bypass.`,
+          `No decision is linked to ${activeWork.id}. Run 'priozar decide ... --work ${activeWork.id}' before closing this ${activeWork.kind}, or pass --no-decision "<reason>" to bypass.`,
         );
         return EXIT_CODE.invalidState;
       }

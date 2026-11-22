@@ -55,7 +55,7 @@ export class GenericAgentAdapter implements AgentAdapter {
     return agentDetectionSchema.parse({
       detected,
       confidence: detected ? "low" : "none",
-      evidence: detected ? ["AutoForge project configuration is present"] : [],
+      evidence: detected ? ["Priozar project configuration is present"] : [],
     });
   }
 
@@ -101,8 +101,8 @@ export class GenericAgentAdapter implements AgentAdapter {
         id: "autoforge-config",
         status: configExists ? "pass" : "fail",
         message: configExists
-          ? "AutoForge project configuration is available."
-          : "AutoForge project configuration is unavailable.",
+          ? "Priozar project configuration is available."
+          : "Priozar project configuration is unavailable.",
       },
     ];
     return agentHealthSchema.parse({

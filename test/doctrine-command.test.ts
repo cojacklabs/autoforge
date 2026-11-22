@@ -41,7 +41,7 @@ describe("doctrine command formatting", () => {
   it("renders compact registry and detailed doctrine views", () => {
     const registry = createInitialDoctrineRegistry(TIMESTAMP);
 
-    expect(formatDoctrineList(registry)).toContain("AutoForge doctrines: 11");
+    expect(formatDoctrineList(registry)).toContain("Priozar doctrines: 11");
     expect(formatDoctrineList(registry)).toContain(
       "testing [active, builtin] — Verify observable behavior",
     );
@@ -59,9 +59,7 @@ describe("doctrine command", () => {
     await expect(
       runDoctrineCommand({ args: [], output, startDirectory: projectRoot }),
     ).resolves.toBe(EXIT_CODE.success);
-    expect(output.stdout.mock.calls[0]?.[0]).toContain(
-      "AutoForge doctrines: 11",
-    );
+    expect(output.stdout.mock.calls[0]?.[0]).toContain("Priozar doctrines: 11");
     expect(output.stdout.mock.calls[0]?.[0]).toContain(
       "router [active, builtin]",
     );
@@ -107,8 +105,6 @@ describe("doctrine command", () => {
         startDirectory: projectRoot,
       }),
     ).resolves.toBe(EXIT_CODE.usage);
-    expect(extra.stderr).toHaveBeenCalledWith(
-      "Usage: autoforge doctrine [name]",
-    );
+    expect(extra.stderr).toHaveBeenCalledWith("Usage: priozar doctrine [name]");
   });
 });

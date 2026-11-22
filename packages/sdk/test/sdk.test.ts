@@ -52,7 +52,7 @@ function handoffInput() {
   };
 }
 
-describe("internal AutoForge SDK foundation", () => {
+describe("internal Priozar SDK foundation", () => {
   it("advertises the supported protocol operation surface", () => {
     expect(getSdkCapabilities()).toEqual({
       protocolVersion: "1",
@@ -113,7 +113,7 @@ describe("internal AutoForge SDK foundation", () => {
             canceled: 0,
           },
         },
-        nextCommands: ["autoforge start task task.next", "autoforge help"],
+        nextCommands: ["priozar start task task.next", "priozar help"],
       })),
     ).resolves.toEqual({
       protocolVersion: "1",
@@ -132,7 +132,7 @@ describe("internal AutoForge SDK foundation", () => {
             canceled: 0,
           },
         },
-        nextCommands: ["autoforge start task task.next", "autoforge help"],
+        nextCommands: ["priozar start task task.next", "priozar help"],
       },
     });
   });

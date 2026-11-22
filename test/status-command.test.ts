@@ -59,10 +59,10 @@ describe("project status command", () => {
       runStatusCommand({ args: [], output, startDirectory: projectRoot }),
     ).resolves.toBe(EXIT_CODE.success);
     expect(output.stdout).toHaveBeenCalledWith(
-      expect.stringContaining(`autoforge start task ${task.id}`),
+      expect.stringContaining(`priozar start task ${task.id}`),
     );
     expect(output.stdout).toHaveBeenCalledWith(
-      expect.stringContaining("autoforge help"),
+      expect.stringContaining("priozar help"),
     );
   });
 
@@ -137,7 +137,7 @@ describe("project status command", () => {
     const status = await loadProjectStatus(projectRoot);
 
     expect(status.nextCommands[0]).toBe(
-      `autoforge start issue ${evidence.entity.id}`,
+      `priozar start issue ${evidence.entity.id}`,
     );
   });
 
@@ -158,7 +158,7 @@ describe("project status command", () => {
     const status = await loadProjectStatus(projectRoot);
 
     expect(status.nextCommands[0]).toBe(
-      `autoforge start issue ${first.entity.id}`,
+      `priozar start issue ${first.entity.id}`,
     );
   });
 
@@ -228,7 +228,7 @@ describe("project status command", () => {
       id: task.id,
       sessionId: "session.status-test",
     });
-    expect(status.nextCommands).toContain("autoforge done");
+    expect(status.nextCommands).toContain("priozar done");
   });
 
   it("counts a paused item correctly instead of producing NaN", async () => {

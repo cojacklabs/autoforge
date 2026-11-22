@@ -398,7 +398,7 @@ function renderStrategy(selection: ContextSelection): string[] {
 function renderPacket(selection: ContextSelection): string {
   const packetId = `packet.${selection.work.item.id}`;
   return [
-    "# AutoForge Build Packet",
+    "# Priozar Build Packet",
     "",
     `- **Packet:** ${code(packetId)}`,
     `- **Selected source budget:** ${selection.budget.usedTokens}/${selection.budget.maxTokens} estimated tokens${selection.budget.exceeded ? " (mandatory work exceeds budget)" : ""}`,

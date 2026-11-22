@@ -23,7 +23,7 @@ export interface ProjectsCommandOptions {
 }
 function usage(output: LogWriter): ExitCode {
   output.stderr(
-    "Usage: autoforge projects [list [--json] | show <path|project_name> [--json] | relocate <path|project_name> <new-path> [--planned] | move <path|project_name> <new-path> [--planned] | storage <path> [--json] | global-storage <path> [--json] | global-export <path> [--json] | global-import <path> <bundle> [--json] | update <path> [--name <name>] [--alias <alias>] [--lifecycle <state>] [--retention-days <n>] | archive <path> | restore <path> | register <path> | prune [--dry-run]]",
+    "Usage: priozar projects [list [--json] | show <path|project_name> [--json] | relocate <path|project_name> <new-path> [--planned] | move <path|project_name> <new-path> [--planned] | storage <path> [--json] | global-storage <path> [--json] | global-export <path> [--json] | global-import <path> <bundle> [--json] | update <path> [--name <name>] [--alias <alias>] [--lifecycle <state>] [--retention-days <n>] | archive <path> | restore <path> | register <path> | prune [--dry-run]]",
   );
   return EXIT_CODE.usage;
 }
@@ -131,7 +131,7 @@ export async function runProjectsCommand(
           );
           if (contractRepair === "invalid")
             options.output.stderr(
-              "Warning: the relocated Agent contract is malformed and could not be repaired; regenerate it with autoforge contract generate <agent-id>.",
+              "Warning: the relocated Agent contract is malformed and could not be repaired; regenerate it with priozar contract generate <agent-id>.",
             );
         } catch (error) {
           if (storageMoved) {

@@ -146,7 +146,7 @@ async function assertSourceIsCurrent(projectRoot: string): Promise<void> {
   if (inspection.status !== "current") {
     throw new PriozarError(
       "INVALID_STATE",
-      `Cannot migrate: the ${SOURCE_NAME} installation is ${inspection.status}, not current. Run "autoforge doctor" and repair it first.`,
+      `Cannot migrate: the ${SOURCE_NAME} installation is ${inspection.status}, not current. Run "priozar doctor" and repair it first.`,
       {
         details: { projectRoot, status: inspection.status },
         exitCode: EXIT_CODE.invalidState,

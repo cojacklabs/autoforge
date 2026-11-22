@@ -125,7 +125,7 @@ describe("pause command", () => {
       runPauseCommand({ args: [], output, startDirectory: process.cwd() }),
     ).resolves.toBe(EXIT_CODE.usage);
     expect(output.stderr).toHaveBeenCalledWith(
-      'Usage: autoforge pause "<reason>"',
+      'Usage: priozar pause "<reason>"',
     );
 
     await expect(

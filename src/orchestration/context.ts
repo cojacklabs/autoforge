@@ -99,7 +99,7 @@ export class ProjectOrchestrationContextProvider implements OrchestrationContext
     ) {
       throw new PriozarError(
         "INVALID_STATE",
-        "Orchestration context requires a current AutoForge installation",
+        "Orchestration context requires a current Priozar installation",
         { exitCode: EXIT_CODE.invalidState },
       );
     }

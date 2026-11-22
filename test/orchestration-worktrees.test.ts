@@ -33,7 +33,7 @@ describe("orchestration Git worktrees", () => {
       "-C",
       projectRoot,
       "-c",
-      "user.name=AutoForge Tests",
+      "user.name=Priozar Tests",
       "-c",
       "user.email=tests@autoforge.local",
       "commit",

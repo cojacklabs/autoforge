@@ -15,7 +15,7 @@ export interface LearningExperimentCommandOptions {
 
 function usage(output: LogWriter): ExitCode {
   output.stderr(
-    "Usage: autoforge learning experiment add --hypothesis <id> [--hypothesis <id> ...] --method <text> | experiment list [--status <status>] | experiment show <id> | experiment complete <id>",
+    "Usage: priozar learning experiment add --hypothesis <id> [--hypothesis <id> ...] --method <text> | experiment list [--status <status>] | experiment show <id> | experiment complete <id>",
   );
   return EXIT_CODE.usage;
 }

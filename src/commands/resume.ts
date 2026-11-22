@@ -34,7 +34,7 @@ export async function runResumeCommand(
 ): Promise<ExitCode> {
   const [kind, id, ...extra] = options.args;
   if (!kind || !isResumableKind(kind) || !id || extra.length > 0) {
-    options.output.stderr("Usage: autoforge resume <task|issue> <id>");
+    options.output.stderr("Usage: priozar resume <task|issue> <id>");
     return EXIT_CODE.usage;
   }
 

@@ -28,17 +28,17 @@ import {
 
 const RULE_PATH = ".cursor/rules/autoforge-context.mdc";
 const RULE_FRONTMATTER = `---
-description: "Loads the current AutoForge orchestration context."
+description: "Loads the current Priozar orchestration context."
 alwaysApply: true
 ---`;
 const START_MARKER = "<!-- autoforge:cursor:start -->";
 const END_MARKER = "<!-- autoforge:cursor:end -->";
 const MANAGED_BLOCK = `${START_MARKER}
-# AutoForge Context
+# Priozar Context
 
 @${CANONICAL_AGENT_CONTEXT_PATH}
 
-Follow the active work, doctrine, decision, scope, and validation guidance in the referenced context. Run \`autoforge check --agent cursor\` before implementation and \`autoforge check --path <file> --agent cursor\` before edits.
+Follow the active work, doctrine, decision, scope, and validation guidance in the referenced context. Run \`priozar check --agent cursor\` before implementation and \`priozar check --path <file> --agent cursor\` before edits.
 ${END_MARKER}`;
 const INSTRUCTION_BLOCK: ManagedInstructionBlock = {
   fileName: RULE_PATH,
@@ -99,9 +99,9 @@ export class CursorAgentAdapter implements AgentAdapter {
       confidence: configured ? "high" : detected ? "low" : "none",
       evidence: [
         ...(configured
-          ? ["AutoForge Cursor project rule is installed"]
+          ? ["Priozar Cursor project rule is installed"]
           : rule !== undefined
-            ? ["AutoForge Cursor rule path is present"]
+            ? ["Priozar Cursor rule path is present"]
             : cursorRules
               ? ["Project Cursor rules directory is present"]
               : []),
@@ -187,8 +187,8 @@ export class CursorAgentAdapter implements AgentAdapter {
         id: "context-delivery",
         status: contextAvailable ? "pass" : "warn",
         message: contextAvailable
-          ? "Shared AutoForge context is available."
-          : "Shared AutoForge context has not been delivered yet.",
+          ? "Shared Priozar context is available."
+          : "Shared Priozar context has not been delivered yet.",
       },
     ] as const;
     const status = checks.some((check) => check.status === "fail")

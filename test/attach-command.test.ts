@@ -147,7 +147,7 @@ describe("attach command", () => {
       project,
       "config",
       "user.name",
-      "AutoForge Test",
+      "Priozar Test",
     ]);
     await execFileAsync("git", [
       "-C",
@@ -200,7 +200,7 @@ describe("attach command", () => {
         repository,
         "config",
         "user.name",
-        "AutoForge Test",
+        "Priozar Test",
       ]);
       await execFileAsync("git", [
         "-C",
@@ -230,7 +230,7 @@ describe("attach command", () => {
     });
   });
 
-  it("reports nested AutoForge state as a dry-run conflict", async () => {
+  it("reports nested Priozar state as a dry-run conflict", async () => {
     const home = await mkdtemp(
       path.join(os.tmpdir(), "autoforge-attach-home-"),
     );
@@ -252,7 +252,7 @@ describe("attach command", () => {
       }),
     ).resolves.toBe(5);
     expect(output.stdout).toHaveBeenCalledWith(
-      expect.stringContaining("Nested AutoForge state exists"),
+      expect.stringContaining("Nested Priozar state exists"),
     );
   });
 });

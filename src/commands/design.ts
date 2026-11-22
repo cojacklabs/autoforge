@@ -31,14 +31,14 @@ export interface DesignCommandOptions {
 function usage(message: string, output: LogWriter): ExitCode {
   output.stderr(message);
   output.stderr(
-    "Usage: autoforge design <validate|import> <file> [--intent <intent-id>] | autoforge design list [--type <type>] | autoforge design search <query> | autoforge design check | autoforge design show <id>",
+    "Usage: priozar design <validate|import> <file> [--intent <intent-id>] | priozar design list [--type <type>] | priozar design search <query> | priozar design check | priozar design show <id>",
   );
   return EXIT_CODE.usage;
 }
 
 function formatList(specifications: readonly DesignSpecification[]): string {
   return [
-    `AutoForge design specifications: ${specifications.length}`,
+    `Priozar design specifications: ${specifications.length}`,
     ...specifications.map(
       (specification) =>
         `${specification.id} [${specification.type}] — ${specification.description}`,

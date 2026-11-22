@@ -110,7 +110,7 @@ describe("start command", () => {
       }),
     ).resolves.toBe(EXIT_CODE.usage);
     expect(output.stderr).toHaveBeenCalledWith(
-      "Usage: autoforge start <task|issue> <id>",
+      "Usage: priozar start <task|issue> <id>",
     );
   });
 });

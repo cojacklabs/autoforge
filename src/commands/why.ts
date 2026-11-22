@@ -24,7 +24,7 @@ interface ParsedWhyArguments {
 
 function usageError(output: LogWriter, message: string): undefined {
   output.stderr(message);
-  output.stderr('Run "autoforge help" for usage.');
+  output.stderr('Run "priozar help" for usage.');
   return undefined;
 }
 

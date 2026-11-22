@@ -31,9 +31,9 @@ describe("Agent CLI launcher protocol", () => {
 
   it("runs through the package bin when its installation path contains spaces", async () => {
     const installation = await mkdtemp(
-      path.join(tmpdir(), "autoforge agent installation "),
+      path.join(tmpdir(), "priozar agent installation "),
     );
-    const executable = path.join(installation, "autoforge agent.js");
+    const executable = path.join(installation, "priozar agent.js");
     await symlink(
       path.join(packageRoot, "bin", "autoforge-agent.js"),
       executable,

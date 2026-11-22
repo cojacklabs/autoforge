@@ -17,7 +17,7 @@ import {
   stateDirectorySchema,
 } from "../src/index.js";
 
-describe("AutoForge protocol v1", () => {
+describe("Priozar protocol v1", () => {
   it("publishes a wire version independent from the package version", () => {
     expect(PRIOZAR_PROTOCOL_VERSION).toBe("1");
     expect(() => assertSupportedProtocolVersion("1")).not.toThrow();
@@ -161,7 +161,7 @@ describe("AutoForge protocol v1", () => {
         projectRoot: "/workspace/project",
         requiredActions: [],
         prohibitedActions: [],
-        contextCommand: "autoforge context",
+        contextCommand: "priozar context",
         validationCommands: [],
         completionRequirements: [],
       }).version,

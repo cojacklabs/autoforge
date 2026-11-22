@@ -20,7 +20,7 @@ export interface PauseCommandOptions {
 }
 
 function usage(output: LogWriter): ExitCode {
-  output.stderr('Usage: autoforge pause "<reason>"');
+  output.stderr('Usage: priozar pause "<reason>"');
   return EXIT_CODE.usage;
 }
 

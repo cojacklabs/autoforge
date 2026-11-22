@@ -21,7 +21,7 @@ export interface ChangelogCommandOptions {
 }
 
 function usage(output: LogWriter): ExitCode {
-  output.stderr("Usage: autoforge changelog compile [--since <git-tag>]");
+  output.stderr("Usage: priozar changelog compile [--since <git-tag>]");
   return EXIT_CODE.usage;
 }
 

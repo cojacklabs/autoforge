@@ -13,7 +13,7 @@ export interface UpdateCommandOptions {
 }
 
 function usage(output: LogWriter): ExitCode {
-  output.stderr("Usage: autoforge update");
+  output.stderr("Usage: priozar update");
   return EXIT_CODE.usage;
 }
 
@@ -33,7 +33,7 @@ export async function runUpdateCommand(
     version = await latestVersion();
   } catch {
     options.output.stderr(
-      "Unable to resolve the latest AutoForge version from npm.",
+      "Unable to resolve the latest Priozar version from npm.",
     );
     return EXIT_CODE.unexpected;
   }
@@ -50,12 +50,12 @@ export async function runUpdateCommand(
       },
     );
     options.output.stdout(
-      `AutoForge updated to ${version}. Run \`autoforge version\` to verify.`,
+      `Priozar updated to ${version}. Run \`priozar version\` to verify.`,
     );
     return EXIT_CODE.success;
   } catch {
     options.output.stderr(
-      "Unable to install the latest AutoForge version with npm.",
+      "Unable to install the latest Priozar version with npm.",
     );
     return EXIT_CODE.unexpected;
   }

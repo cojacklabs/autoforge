@@ -313,7 +313,7 @@ function commentGovernanceCheck(
     : {
         id: "comment-governance",
         status: "fail",
-        message: `${findings.length} TODO/FIXME marker(s) require an AutoForge task or issue reference.`,
+        message: `${findings.length} TODO/FIXME marker(s) require a Priozar task or issue reference.`,
         findings,
       };
 }
@@ -361,13 +361,13 @@ export async function runQualityGate(
           id: "installation",
           status: "pass",
           message:
-            "AutoForge installation state is current and internally consistent.",
+            "Priozar installation state is current and internally consistent.",
           findings: [],
         }
       : {
           id: "installation",
           status: "fail",
-          message: `AutoForge installation is ${inspection.status}; quality commands were not executed.`,
+          message: `Priozar installation is ${inspection.status}; quality commands were not executed.`,
           findings: [],
         },
   ];
@@ -446,7 +446,7 @@ export async function runQualityGate(
       id: "configured-commands",
       status: "skipped",
       message:
-        "Project quality commands require a current AutoForge installation.",
+        "Project quality commands require a current Priozar installation.",
       findings: [],
     });
   }

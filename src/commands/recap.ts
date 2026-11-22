@@ -27,7 +27,7 @@ function formatElapsed(totalSeconds: number): string {
 
 export function formatWorkRecap(recap: WorkRecap): string {
   const lines = [
-    "AutoForge recap",
+    "Priozar recap",
     `Status: ${recap.status}`,
     `Inventory: features=${recap.inventory.features} phases=${recap.inventory.phases} tasks=${recap.inventory.tasks} issues=${recap.inventory.issues}`,
     `Actionable: planned=${recap.actionableByStatus.planned} ready=${recap.actionableByStatus.ready} active=${recap.actionableByStatus.active} blocked=${recap.actionableByStatus.blocked} paused=${recap.actionableByStatus.paused} completed=${recap.actionableByStatus.completed} canceled=${recap.actionableByStatus.canceled}`,

@@ -60,7 +60,7 @@ export function parseStateEnvelope<DataSchema extends z.ZodType>(
     return result.data;
   }
 
-  throw new PriozarError("INVALID_STATE", "Invalid AutoForge state", {
+  throw new PriozarError("INVALID_STATE", "Invalid Priozar state", {
     details: {
       issues: result.error.issues,
     },

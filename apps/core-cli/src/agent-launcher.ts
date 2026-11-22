@@ -37,7 +37,7 @@ export function agentProcessInvocationForPlatform(
   );
   if (unsafe !== undefined) {
     throw new Error(
-      "AutoForge refused an unsafe Windows Agent command argument.",
+      "Priozar refused an unsafe Windows Agent command argument.",
     );
   }
   return {
@@ -125,9 +125,7 @@ export async function launchPriozarAgent(
   const environment = options.environment ?? currentAgentLaunchEnvironment();
   if (environment.recursion || environment.disabled) {
     if (!explicit) return undefined;
-    options.output.stderr(
-      "AutoForge Agent delegation is disabled or recursive.",
-    );
+    options.output.stderr("Priozar Agent delegation is disabled or recursive.");
     return EXIT_CODE.invalidState;
   }
   if (
@@ -144,8 +142,8 @@ export async function launchPriozarAgent(
     if (!explicit) return undefined;
     options.output.stderr(
       compatibility === "missing"
-        ? "AutoForge Agent is not installed. Install @cojacklabs/autoforge-agent to use this command."
-        : `AutoForge Agent is incompatible with launcher protocol ${PRIOZAR_AGENT_LAUNCH_PROTOCOL_VERSION}. Update @cojacklabs/autoforge-agent.`,
+        ? "Priozar Agent is not installed. Install @cojacklabs/autoforge-agent to use this command."
+        : `Priozar Agent is incompatible with launcher protocol ${PRIOZAR_AGENT_LAUNCH_PROTOCOL_VERSION}. Update @cojacklabs/autoforge-agent.`,
     );
     return EXIT_CODE.invalidState;
   }

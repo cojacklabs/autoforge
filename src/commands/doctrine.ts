@@ -12,7 +12,7 @@ export interface DoctrineCommandOptions {
 
 export function formatDoctrineList(registry: DoctrineRegistry): string {
   return [
-    `AutoForge doctrines: ${registry.doctrines.length}`,
+    `Priozar doctrines: ${registry.doctrines.length}`,
     ...registry.doctrines.map(
       (doctrine) =>
         `${doctrine.name} [${doctrine.status}, ${doctrine.source}] — ${doctrine.summary}`,
@@ -40,7 +40,7 @@ export async function runDoctrineCommand(
   options: DoctrineCommandOptions,
 ): Promise<ExitCode> {
   if (options.args.length > 1) {
-    options.output.stderr("Usage: autoforge doctrine [name]");
+    options.output.stderr("Usage: priozar doctrine [name]");
     return EXIT_CODE.usage;
   }
 

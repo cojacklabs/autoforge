@@ -296,7 +296,7 @@ export class SpecificationFileStore {
     if (!(await pathExists(configPath))) {
       throw specificationError(
         "INVALID_STATE",
-        "Specification storage requires an initialized AutoForge project",
+        "Specification storage requires an initialized Priozar project",
         { path: ".autoforge/config.json" },
       );
     }

@@ -99,7 +99,7 @@ export async function inspectAttachment(
     requestedInstallation.directory !== installation.directory
   ) {
     conflicts.push(
-      `Nested AutoForge state exists at ${requestedInstallation.directory}; move or remove it before attaching the repository root.`,
+      `Nested Priozar state exists at ${requestedInstallation.directory}; move or remove it before attaching the repository root.`,
     );
   }
   if (
@@ -112,7 +112,7 @@ export async function inspectAttachment(
   }
   if (installation.status === "partial") {
     conflicts.push(
-      `AutoForge state at ${installation.directory} is partial and requires repair.`,
+      `Priozar state at ${installation.directory} is partial and requires repair.`,
     );
   }
   return {

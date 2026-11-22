@@ -144,7 +144,7 @@ export async function approveBootstrapArtifact(
   if (!manifest) {
     throw new PriozarError(
       "INVALID_STATE",
-      'Bootstrap manifest is not initialized. Run "autoforge bootstrap scaffold" first.',
+      'Bootstrap manifest is not initialized. Run "priozar bootstrap scaffold" first.',
       { exitCode: EXIT_CODE.invalidState },
     );
   }

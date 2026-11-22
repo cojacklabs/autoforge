@@ -15,7 +15,7 @@ export class UnsupportedProtocolVersionError extends Error {
 
   constructor(receivedVersion: string) {
     super(
-      `Unsupported AutoForge protocol version ${receivedVersion}; supported versions: ${SUPPORTED_PROTOCOL_VERSIONS.join(", ")}`,
+      `Unsupported Priozar protocol version ${receivedVersion}; supported versions: ${SUPPORTED_PROTOCOL_VERSIONS.join(", ")}`,
     );
     this.name = "UnsupportedProtocolVersionError";
     this.receivedVersion = receivedVersion;

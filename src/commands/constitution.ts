@@ -13,7 +13,7 @@ export interface ConstitutionCommandOptions {
 
 function usage(output: LogWriter): ExitCode {
   output.stderr(
-    "Usage: autoforge constitution init | constitution list | constitution show <id> | constitution check <objective>",
+    "Usage: priozar constitution init | constitution list | constitution show <id> | constitution check <objective>",
   );
   return EXIT_CODE.usage;
 }

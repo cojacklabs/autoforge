@@ -29,9 +29,9 @@ const START_MARKER = "<!-- autoforge:grok:start -->";
 const END_MARKER = "<!-- autoforge:grok:end -->";
 const INSTRUCTIONS_PATH = "AGENTS.md";
 const MANAGED_BLOCK = `${START_MARKER}
-## AutoForge Context for Grok Build
+## Priozar Context for Grok Build
 
-Before starting implementation, read \`${CANONICAL_AGENT_CONTEXT_PATH}\` when it exists and follow its active work, doctrine, decision, scope, and validation guidance. Run \`autoforge check --agent grok\` before implementation and \`autoforge check --path <file> --agent grok\` before edits.
+Before starting implementation, read \`${CANONICAL_AGENT_CONTEXT_PATH}\` when it exists and follow its active work, doctrine, decision, scope, and validation guidance. Run \`priozar check --agent grok\` before implementation and \`priozar check --path <file> --agent grok\` before edits.
 ${END_MARKER}`;
 const INSTRUCTION_BLOCK: ManagedInstructionBlock = {
   fileName: INSTRUCTIONS_PATH,
@@ -78,7 +78,7 @@ export class GrokAgentAdapter implements AgentAdapter {
         instructionStatus === "configured" ? "high" : detected ? "low" : "none",
       evidence: [
         ...(instructionStatus === "configured"
-          ? ["AutoForge Grok Build AGENTS.md block is installed"]
+          ? ["Priozar Grok Build AGENTS.md block is installed"]
           : projectInstructions
             ? ["Project AGENTS.md is present"]
             : []),
@@ -154,8 +154,8 @@ export class GrokAgentAdapter implements AgentAdapter {
         id: "context-delivery",
         status: contextAvailable ? "pass" : "warn",
         message: contextAvailable
-          ? "Shared AutoForge context is available."
-          : "Shared AutoForge context has not been delivered yet.",
+          ? "Shared Priozar context is available."
+          : "Shared Priozar context has not been delivered yet.",
       },
     ] as const;
     const status = checks.some((check) => check.status === "fail")

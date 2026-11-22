@@ -34,9 +34,9 @@ const START_MARKER = "<!-- autoforge:claude:start -->";
 const END_MARKER = "<!-- autoforge:claude:end -->";
 const INSTRUCTIONS_PATH = "CLAUDE.md";
 const MANAGED_BLOCK = `${START_MARKER}
-## AutoForge Context
+## Priozar Context
 
-Before starting implementation, read \`${CANONICAL_AGENT_CONTEXT_PATH}\` when it exists and follow its active work, doctrine, decision, scope, and validation guidance. AutoForge's managed Claude hook blocks native file edits without active, in-scope, current context.
+Before starting implementation, read \`${CANONICAL_AGENT_CONTEXT_PATH}\` when it exists and follow its active work, doctrine, decision, scope, and validation guidance. Priozar's managed Claude hook blocks native file edits without active, in-scope, current context.
 ${END_MARKER}`;
 const INSTRUCTION_BLOCK: ManagedInstructionBlock = {
   fileName: INSTRUCTIONS_PATH,
@@ -87,13 +87,13 @@ export class ClaudeAgentAdapter implements AgentAdapter {
             : "none",
       evidence: [
         ...(instructionStatus === "configured"
-          ? ["AutoForge Claude CLAUDE.md block is installed"]
+          ? ["Priozar Claude CLAUDE.md block is installed"]
           : projectInstructions
             ? ["Project CLAUDE.md is present"]
             : []),
         ...(claudeSettings ? ["Project Claude settings are present"] : []),
         ...(hookStatus === "configured"
-          ? ["AutoForge Claude edit guardrail hook is installed"]
+          ? ["Priozar Claude edit guardrail hook is installed"]
           : []),
       ],
     });
@@ -184,7 +184,7 @@ export class ClaudeAgentAdapter implements AgentAdapter {
               : "warn",
         message:
           hookStatus === "configured"
-            ? "Claude native file edits use the AutoForge hard guardrail."
+            ? "Claude native file edits use the Priozar hard guardrail."
             : hookStatus === "malformed"
               ? "Claude settings are malformed; the edit guardrail cannot be verified."
               : "Claude edit guardrail is not configured.",
@@ -193,8 +193,8 @@ export class ClaudeAgentAdapter implements AgentAdapter {
         id: "context-delivery",
         status: contextAvailable ? "pass" : "warn",
         message: contextAvailable
-          ? "Shared AutoForge context is available."
-          : "Shared AutoForge context has not been delivered yet.",
+          ? "Shared Priozar context is available."
+          : "Shared Priozar context has not been delivered yet.",
       },
     ] as const;
     const status = checks.some((check) => check.status === "fail")

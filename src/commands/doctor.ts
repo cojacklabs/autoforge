@@ -70,7 +70,7 @@ export async function runDoctor(options: DoctorOptions): Promise<DoctorReport> {
     checks.push({
       id: "node-version",
       status: "fail",
-      message: `Node.js ${version} is unsupported; AutoForge requires Node.js ${MINIMUM_NODE_MAJOR} or newer.`,
+      message: `Node.js ${version} is unsupported; Priozar requires Node.js ${MINIMUM_NODE_MAJOR} or newer.`,
     });
   }
 
@@ -88,7 +88,7 @@ export async function runDoctor(options: DoctorOptions): Promise<DoctorReport> {
       id: "global-registry",
       status: "warning",
       message:
-        'Global project registry is not initialized. It will be created by "autoforge attach" or "autoforge projects register".',
+        'Global project registry is not initialized. It will be created by "priozar attach" or "priozar projects register".',
     });
   }
 
@@ -154,7 +154,7 @@ export async function runDoctor(options: DoctorOptions): Promise<DoctorReport> {
         checks.push({
           id: "installation",
           status: "fail",
-          message: 'AutoForge is not initialized. Run "autoforge init".',
+          message: 'Priozar is not initialized. Run "priozar init".',
         });
         break;
       case "legacy":
@@ -162,7 +162,7 @@ export async function runDoctor(options: DoctorOptions): Promise<DoctorReport> {
           id: "installation",
           status: "fail",
           message:
-            'A legacy AutoForge installation was detected. Run "autoforge migrate --dry-run" to inspect migration.',
+            'A legacy Priozar installation was detected. Run "priozar migrate --dry-run" to inspect migration.',
         });
         break;
       case "partial":
@@ -170,14 +170,14 @@ export async function runDoctor(options: DoctorOptions): Promise<DoctorReport> {
           id: "installation",
           status: "fail",
           message:
-            "The AutoForge installation is partial or has mismatched project identity.",
+            "The Priozar installation is partial or has mismatched project identity.",
         });
         break;
       case "current":
         checks.push({
           id: "installation",
           status: "pass",
-          message: "AutoForge installation is current.",
+          message: "Priozar installation is current.",
         });
         checks.push({
           id: "state-directory",
@@ -236,7 +236,7 @@ export async function runDoctor(options: DoctorOptions): Promise<DoctorReport> {
       message:
         error instanceof Error
           ? error.message
-          : "Unable to validate the AutoForge installation.",
+          : "Unable to validate the Priozar installation.",
     });
   }
 

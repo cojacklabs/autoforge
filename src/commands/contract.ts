@@ -29,7 +29,7 @@ export interface ContractCommandOptions {
 }
 function usage(output: LogWriter): ExitCode {
   output.stderr(
-    "Usage: autoforge contract generate <agent-id> | contract show | contract validate",
+    "Usage: priozar contract generate <agent-id> | contract show | contract validate",
   );
   return EXIT_CODE.usage;
 }

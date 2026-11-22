@@ -84,7 +84,7 @@ describe("bundled foundation CLI", () => {
       exitCode: 0,
       stderr: "",
       stdout: expect.stringContaining(
-        "AutoForge — AI development context and control plane",
+        "Priozar — AI development context and control plane",
       ),
     });
     await expect(
@@ -92,7 +92,7 @@ describe("bundled foundation CLI", () => {
     ).resolves.toMatchObject({
       exitCode: 0,
       stderr: "",
-      stdout: `AutoForge ${version}\n`,
+      stdout: `Priozar ${version}\n`,
     });
   });
 
@@ -120,7 +120,7 @@ describe("bundled foundation CLI", () => {
     ).resolves.toMatchObject({
       exitCode: 0,
       stderr: "",
-      stdout: `AutoForge ${version}\n`,
+      stdout: `Priozar ${version}\n`,
     });
   });
 
@@ -137,7 +137,7 @@ describe("bundled foundation CLI", () => {
     ).resolves.toMatchObject({
       exitCode: 0,
       stderr: "",
-      stdout: `AutoForge ${version}\n`,
+      stdout: `Priozar ${version}\n`,
     });
   });
 
@@ -169,7 +169,7 @@ describe("bundled foundation CLI", () => {
     await expect(runBundledCli(projectRoot, ["init"])).resolves.toMatchObject({
       exitCode: 0,
       stderr: "",
-      stdout: expect.stringContaining("Initialized AutoForge"),
+      stdout: expect.stringContaining("Initialized Priozar"),
     });
     const config = JSON.parse(
       await readFile(
@@ -192,9 +192,7 @@ describe("bundled foundation CLI", () => {
 
     const doctor = await runBundledCli(projectRoot, ["doctor"]);
     expect(doctor).toMatchObject({ exitCode: 0, stderr: "" });
-    expect(doctor.stdout).toContain(
-      "[PASS] AutoForge installation is current.",
-    );
+    expect(doctor.stdout).toContain("[PASS] Priozar installation is current.");
   });
 
   it("coordinates a read-only assignment through the bundled CLI", async () => {
@@ -357,7 +355,7 @@ describe("bundled foundation CLI", () => {
     ).resolves.toMatchObject({
       exitCode: 0,
       stderr: "",
-      stdout: expect.stringContaining("AutoForge TUI"),
+      stdout: expect.stringContaining("Priozar TUI"),
     });
   });
 
@@ -522,7 +520,7 @@ describe("bundled foundation CLI", () => {
 
     expect(repeated.exitCode).toBe(5);
     expect(repeated.stdout).toBe("");
-    expect(repeated.stderr).toContain("AutoForge is already initialized");
+    expect(repeated.stderr).toContain("Priozar is already initialized");
     expect(await readFile(configPath, "utf8")).toBe(originalConfig);
   });
 
@@ -661,7 +659,7 @@ describe("bundled foundation CLI", () => {
     const generated = await runBundledCli(projectRoot, ["context"]);
 
     expect(generated).toMatchObject({ exitCode: 0, stderr: "" });
-    expect(generated.stdout).toContain("# AutoForge Build Packet");
+    expect(generated.stdout).toContain("# Priozar Build Packet");
     expect(generated.stdout).toContain("issue.generate-context");
     expect(generated.stdout).toContain("## Allowed Files and Scope");
     expect(generated.stdout).toContain("`src/context/**`");
@@ -716,7 +714,7 @@ describe("bundled foundation CLI", () => {
       "codex",
     ]);
     expect(allowed).toMatchObject({ exitCode: 0, stderr: "" });
-    expect(allowed.stdout).toContain("AutoForge guardrail: PASS (advisory)");
+    expect(allowed.stdout).toContain("Priozar guardrail: PASS (advisory)");
     expect(allowed.stdout).toContain("Context: refreshed");
 
     const denied = await runBundledCli(projectRoot, [
@@ -930,7 +928,7 @@ describe("bundled foundation CLI", () => {
     const initialization = await runBundledCli(projectRoot, ["init"]);
 
     expect(initialization.exitCode).toBe(5);
-    expect(initialization.stderr).toContain("legacy AutoForge installation");
+    expect(initialization.stderr).toContain("legacy Priozar installation");
     expect(await readFile(legacyFile, "utf8")).toBe("legacy\n");
   });
 });

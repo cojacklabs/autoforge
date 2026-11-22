@@ -14,7 +14,7 @@ export async function runDetachCommand(
   options: DetachCommandOptions,
 ): Promise<ExitCode> {
   if (options.args.length !== 1) {
-    options.output.stderr("Usage: autoforge detach <path>");
+    options.output.stderr("Usage: priozar detach <path>");
     return EXIT_CODE.usage;
   }
   try {

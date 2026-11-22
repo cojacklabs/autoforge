@@ -73,7 +73,7 @@ export async function main(
   try {
     const prompt =
       arguments_.join(" ").trim() ||
-      (await io.ask("What would you like AutoForge to build?"));
+      (await io.ask("What would you like Priozar to build?"));
     const modelId = readFrameworkEnv("OPENAI_MODEL", process.env);
     const model = createOpenAIAgentModel({
       apiKey,

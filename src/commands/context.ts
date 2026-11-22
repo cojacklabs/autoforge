@@ -39,7 +39,7 @@ function parseContextArguments(
   if (args.length === 1 && args[0] === "--explain") {
     return { explain: true };
   }
-  output.stderr("Usage: autoforge context [--explain]");
+  output.stderr("Usage: priozar context [--explain]");
   return undefined;
 }
 
@@ -57,7 +57,7 @@ export async function compileProjectContext(
   ) {
     throw new PriozarError(
       "INVALID_STATE",
-      'Context generation requires a current AutoForge installation. Run "autoforge doctor" for details.',
+      'Context generation requires a current Priozar installation. Run "priozar doctor" for details.',
       {
         details: { installationStatus: installation.status },
         exitCode: EXIT_CODE.invalidState,

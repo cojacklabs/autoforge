@@ -45,7 +45,7 @@ export function assertAgentContractCompatibility(
 ): AgentCapability {
   const capability = getAgentCapability(agentId);
   if (!capability?.contractValidation || !capability.contextPackets) {
-    throw new Error(`Agent ${agentId} cannot satisfy the AutoForge contract`);
+    throw new Error(`Agent ${agentId} cannot satisfy the Priozar contract`);
   }
   return capability;
 }

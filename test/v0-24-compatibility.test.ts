@@ -58,7 +58,7 @@ describe("v0.24 project compatibility", () => {
     expect(sessions.data.previous[0]?.id).toBe("session.v0-24-fixture");
     expect(status.work.counts.ready).toBe(1);
     expect(status.nextCommands[0]).toBe(
-      "autoforge start task task.resume-v0-24-project",
+      "priozar start task task.resume-v0-24-project",
     );
     await expect(
       Promise.all([readFile(workPath, "utf8"), readFile(sessionPath, "utf8")]),
@@ -77,7 +77,7 @@ describe("v0.24 project compatibility", () => {
       }),
     ).resolves.toBe(EXIT_CODE.success);
     expect(output.stdout).toHaveBeenCalledWith(
-      expect.stringContaining("autoforge start task task.resume-v0-24-project"),
+      expect.stringContaining("priozar start task task.resume-v0-24-project"),
     );
     expect(output.stderr).not.toHaveBeenCalled();
   });

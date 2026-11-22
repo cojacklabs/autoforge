@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
-  "revision": 173,
-  "updatedAt": "2026-11-22T18:17:01.041Z",
+  "revision": 174,
+  "updatedAt": "2026-11-22T18:58:37.636Z",
   "data": {
     "decisions": [
       {
@@ -4291,6 +4291,31 @@
         "kind": "feature-note",
         "createdAt": "2026-11-22T18:17:00.999Z",
         "updatedAt": "2026-11-22T18:17:00.999Z"
+      },
+      {
+        "id": "decision.rename-user-visible-autoforge-text-to-priozar-but-keep-legacy-describing-text-an",
+        "statement": "Rename user-visible AutoForge text to Priozar but keep legacy-describing text and exact-match integration strings unchanged",
+        "reasoning": "The product name and CLI command shown to users, and the command agents are told to run, should be Priozar. Text about the legacy product, agent ids, installed hook commands, managed-block markers, package names and file or state paths are matched by existing files or other releases, so they change only with their own migrations.",
+        "consequences": [
+          "Help, status, messages and generated agent, context and contract text now say Priozar and tell users to run priozar commands.",
+          "The guardrail output prefix is now Priozar guardrail; the agent-cli accepts both prefixes so a newer agent works against an older installed CLI.",
+          "Legacy migration wording, FRAMEWORK_IDENTITY.current, agent ids, the Claude hook command and the managed-block markers are unchanged and tracked by an issue."
+        ],
+        "scope": [
+          "text"
+        ],
+        "keywords": [
+          "priozar",
+          "branding"
+        ],
+        "relatedWork": [
+          "task.rename-user-visible-autoforge-text-to-priozar"
+        ],
+        "supersedes": null,
+        "status": "active",
+        "kind": "feature-note",
+        "createdAt": "2026-11-22T18:58:37.586Z",
+        "updatedAt": "2026-11-22T18:58:37.586Z"
       }
     ]
   }

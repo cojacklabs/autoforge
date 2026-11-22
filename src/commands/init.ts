@@ -231,7 +231,7 @@ function installationConflict(
   if (inspection.status === "legacy") {
     return new PriozarError(
       "STATE_CONFLICT",
-      'A legacy AutoForge installation was detected. Run "autoforge migrate --dry-run" to inspect the migration; no files were changed.',
+      'A legacy Priozar installation was detected. Run "priozar migrate --dry-run" to inspect the migration; no files were changed.',
       {
         details: { path: inspection.directory, status: inspection.status },
         exitCode: EXIT_CODE.conflict,
@@ -242,7 +242,7 @@ function installationConflict(
   if (inspection.status === "partial") {
     return new PriozarError(
       "INVALID_STATE",
-      "A partial AutoForge installation was detected. Repair or migrate it before initialization; no files were changed.",
+      "A partial Priozar installation was detected. Repair or migrate it before initialization; no files were changed.",
       {
         details: { path: inspection.directory, status: inspection.status },
         exitCode: EXIT_CODE.invalidState,
@@ -252,7 +252,7 @@ function installationConflict(
 
   return new PriozarError(
     "STATE_CONFLICT",
-    "AutoForge is already initialized; no files were changed.",
+    "Priozar is already initialized; no files were changed.",
     {
       details: { path: inspection.directory, status: inspection.status },
       exitCode: EXIT_CODE.conflict,
@@ -291,7 +291,7 @@ export async function initializeProject(
     if (error instanceof Error && "code" in error && error.code === "EEXIST") {
       throw new PriozarError(
         "STATE_CONFLICT",
-        "Another AutoForge initialization is in progress.",
+        "Another Priozar initialization is in progress.",
         {
           details: { lockPath },
           exitCode: EXIT_CODE.conflict,
@@ -407,6 +407,6 @@ export async function runInitCommand(
     startDirectory: options.startDirectory,
   });
   const installation = await initializeProject({ projectRoot: project.path });
-  options.output.stdout(`Initialized AutoForge in ${installation.directory}`);
+  options.output.stdout(`Initialized Priozar in ${installation.directory}`);
   return EXIT_CODE.success;
 }

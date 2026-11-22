@@ -26,9 +26,7 @@ export async function runAttachCommand(
     new Set(flags).size !== flags.length ||
     (json && !dryRun)
   ) {
-    options.output.stderr(
-      "Usage: autoforge attach <path> [--dry-run [--json]]",
-    );
+    options.output.stderr("Usage: priozar attach <path> [--dry-run [--json]]");
     return EXIT_CODE.usage;
   }
 
@@ -54,13 +52,13 @@ export async function runAttachCommand(
     await new GlobalWorkspaceStore(options.homeDirectory).registerProject(
       projectRoot,
     );
-    options.output.stdout(`Attached AutoForge to ${installation.directory}`);
+    options.output.stdout(`Attached Priozar to ${installation.directory}`);
     return EXIT_CODE.success;
   } catch (error) {
     options.output.stderr(
       error instanceof Error
-        ? `Unable to attach AutoForge: ${error.message}`
-        : "Unable to attach AutoForge to the requested project.",
+        ? `Unable to attach Priozar: ${error.message}`
+        : "Unable to attach Priozar to the requested project.",
     );
     return EXIT_CODE.conflict;
   }
@@ -70,7 +68,7 @@ function formatInspection(
   inspection: Awaited<ReturnType<typeof inspectAttachment>>,
 ): string {
   return [
-    "AutoForge attach dry run",
+    "Priozar attach dry run",
     `Requested: ${inspection.requestedPath}`,
     `Resolved root: ${inspection.resolvedRoot}`,
     `Repository: ${inspection.repositoryKind}`,

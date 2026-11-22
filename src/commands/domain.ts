@@ -13,7 +13,7 @@ export interface DomainCommandOptions {
 
 function usage(output: LogWriter): ExitCode {
   output.stderr(
-    "Usage: autoforge domain init | domain list | domain show <id> | domain check",
+    "Usage: priozar domain init | domain list | domain show <id> | domain check",
   );
   return EXIT_CODE.usage;
 }

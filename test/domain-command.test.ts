@@ -16,7 +16,7 @@ describe("domain command", () => {
       },
     });
     expect(result).toBe(2);
-    expect(errors[0]).toContain("Usage: autoforge domain");
+    expect(errors[0]).toContain("Usage: priozar domain");
   });
 
   it("reports a friendly not-initialized message instead of throwing", async () => {

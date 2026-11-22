@@ -24,7 +24,7 @@ import type {
   StateRepository,
 } from "../src/ports.js";
 
-describe("model-independent AutoForge Core", () => {
+describe("model-independent Priozar Core", () => {
   it("assesses intent deterministically with an injected clock", () => {
     const clock: Clock = { now: () => new Date("2026-08-25T00:00:00.000Z") };
     const service = new ProjectIntelligenceService(clock);

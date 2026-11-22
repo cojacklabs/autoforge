@@ -77,7 +77,7 @@ describe("foundation CLI router", () => {
       main(["--project", "/tmp/example", "version"], output),
     ).resolves.toBe(EXIT_CODE.success);
     expect(output.stdout).toHaveBeenCalledWith(
-      expect.stringMatching(/^AutoForge \d+\.\d+\.\d+$/),
+      expect.stringMatching(/^Priozar \d+\.\d+\.\d+$/),
     );
     expect(output.stderr).not.toHaveBeenCalled();
   });
@@ -148,7 +148,7 @@ describe("foundation CLI router", () => {
 
       await expect(runCli(args, dependencies)).resolves.toBe(EXIT_CODE.success);
       expect(dependencies.output.stdout).toHaveBeenCalledWith(
-        "AutoForge 0.6.0-test",
+        "Priozar 0.6.0-test",
       );
       expect(dependencies.output.stderr).not.toHaveBeenCalled();
     },

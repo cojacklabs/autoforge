@@ -59,7 +59,7 @@ export async function registerKnowledgeSpecification(
 
 function usage(output: LogWriter): ExitCode {
   output.stderr(
-    "Usage: autoforge knowledge list [--type <intent|research>] | autoforge knowledge show <id> | autoforge knowledge extract <file> | autoforge knowledge context <id>",
+    "Usage: priozar knowledge list [--type <intent|research>] | priozar knowledge show <id> | priozar knowledge extract <file> | priozar knowledge context <id>",
   );
   return EXIT_CODE.usage;
 }
@@ -124,7 +124,7 @@ export async function runKnowledgeCommand(
     const specifications = await registry.list(type ? { types: [type] } : {});
     options.output.stdout(
       [
-        `AutoForge knowledge specifications: ${specifications.length}`,
+        `Priozar knowledge specifications: ${specifications.length}`,
         ...specifications
           .filter(
             (specification) =>

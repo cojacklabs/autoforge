@@ -20,6 +20,6 @@ export async function runSchemasCommand(options: {
       return reportCommandError(error, options.output);
     }
   }
-  options.output.stderr("Usage: autoforge schemas list | schemas show <id>");
+  options.output.stderr("Usage: priozar schemas list | schemas show <id>");
   return EXIT_CODE.usage;
 }

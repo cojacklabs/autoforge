@@ -17,7 +17,7 @@ export interface ArtifactCommandOptions {
 }
 function usage(output: LogWriter): ExitCode {
   output.stderr(
-    "Usage: autoforge artifact register <json-file> | import <file> --id <artifact-id> --kind <kind> --title <title> --agent <agent-id> --work <work-id> | list | show <id> | approve <id> --by <actor> | supersede <id> <json-file>",
+    "Usage: priozar artifact register <json-file> | import <file> --id <artifact-id> --kind <kind> --title <title> --agent <agent-id> --work <work-id> | list | show <id> | approve <id> --by <actor> | supersede <id> <json-file>",
   );
   return EXIT_CODE.usage;
 }

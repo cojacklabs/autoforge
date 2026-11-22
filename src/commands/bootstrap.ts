@@ -83,7 +83,7 @@ export async function runBootstrapCommand(options: {
       options.args.length !== 1)
   ) {
     options.output.stderr(
-      "Usage: autoforge bootstrap inspect|scaffold|status|gates|vision|vision-amend|vision-check <idea>|vision-approve <idea>|discovery-questions <json-file>|discover <json-file>|approve <artifact-id> [--evidence <path|workflow-id>]",
+      "Usage: priozar bootstrap inspect|scaffold|status|gates|vision|vision-amend|vision-check <idea>|vision-approve <idea>|discovery-questions <json-file>|discover <json-file>|approve <artifact-id> [--evidence <path|workflow-id>]",
     );
     return EXIT_CODE.usage;
   }
@@ -155,7 +155,7 @@ export async function runBootstrapCommand(options: {
           manifest ?? {
             status: "not-scaffolded",
             manifest: null,
-            nextAction: "autoforge bootstrap scaffold",
+            nextAction: "priozar bootstrap scaffold",
           },
           null,
           2,

@@ -18,7 +18,7 @@ export interface LearningEvidenceCommandOptions {
 
 function usage(output: LogWriter): ExitCode {
   output.stderr(
-    "Usage: autoforge learning evidence add --kind <kind> --summary <text> --source <text> [--experiment <id>] [--hypothesis <id>] [--work <id>] | evidence list [--kind <kind>] | evidence show <id>",
+    "Usage: priozar learning evidence add --kind <kind> --summary <text> --source <text> [--experiment <id>] [--hypothesis <id>] [--work <id>] | evidence list [--kind <kind>] | evidence show <id>",
   );
   return EXIT_CODE.usage;
 }
