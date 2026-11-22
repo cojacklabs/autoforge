@@ -15,7 +15,7 @@ inputs:
   - "docs/ai/COMMIT_PLAYBOOK.md"
 constraints:
   - STOP for human approval when an approval_gates condition is met.
-  - Consult the managed ai/code_targets.yaml (generated from autoforge.config.json) to determine where application code and tests belong (defaults point to ../src/backend, ../src/frontend, and ../tests).
+  - Consult the managed ai/code_targets.yaml (generated from priozar.config.json) to determine where application code and tests belong (defaults point to ../src/backend, ../src/frontend, and ../tests).
   - Commit backend application code under code_targets.backend.path and frontend code under code_targets.frontend.path.
   - "STRICT: All commits must follow Conventional Commits format (e.g. feat(scope): message) and reference a change request or ticket ID."
   - "STRICT: Zero hardcoded secrets, API keys, or tokens permitted. Pass all credentials via environment variables."
@@ -35,4 +35,4 @@ deliverables:
 handoff_to: "qa_engineer"
 notes: |
   Prefer incremental commits that align with change requests. When generating new modules or migrations, list them in the changelog section of docs/blueprint/spec.md.
-  If code should live elsewhere, ask the human to update codeTargets in autoforge.config.json and rerun `npx autoforge configure` so the managed ai/code_targets.yaml reflects the change.
+  If code should live elsewhere, ask the human to update codeTargets in priozar.config.json and rerun `npx priozar configure` so the managed ai/code_targets.yaml reflects the change.

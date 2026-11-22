@@ -51,7 +51,7 @@ Use this guide alongside:
 
 - Two‑world model: Human realm (docs/, api/, diagrams/, devops/, security/, qa/) vs AI realm (ai/ manifests, prompts, logs, memory, reports).
 - Configuration drives behavior:
-  - `autoforge.config.json` defines code targets and context overrides.
+  - `priozar.config.json` defines code targets and context overrides.
   - `npx priozar configure` keeps managed YAML (ai/code_targets.yaml, ai/context_targets.yaml) synchronized.
 - Observability by default:
   - Use `npx priozar validate` to enforce quality gates.
@@ -366,7 +366,7 @@ Use this backlog to evolve Priozar itself so every project benefits.
    - `npx priozar init`
 
 2. Configure
-   - Update `autoforge.config.json` (codeTargets/contextTargets) to match your repo.
+   - Update `priozar.config.json` (codeTargets/contextTargets) to match your repo.
    - `npx priozar configure`
 
 3. Load context and validate gates

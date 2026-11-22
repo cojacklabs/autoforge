@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
-  "revision": 182,
-  "updatedAt": "2026-11-22T21:29:30.656Z",
+  "revision": 183,
+  "updatedAt": "2026-11-22T21:33:02.451Z",
   "data": {
     "decisions": [
       {
@@ -4510,6 +4510,31 @@
         "kind": "feature-note",
         "createdAt": "2026-11-22T21:29:30.621Z",
         "updatedAt": "2026-11-22T21:29:30.621Z"
+      },
+      {
+        "id": "decision.rename-the-root-config-file-to-priozar-config-json-now-that-every-reader-accepts",
+        "statement": "Rename the root config file to priozar.config.json now that every reader accepts both names",
+        "reasoning": "The scripts and the ai runtime coordinator both read priozar.config.json first and fall back to autoforge.config.json, and tests prove it, so the root file can move without silently skipping a project's configured tests. The v0.24 legacy migration keeps reading the old name because it migrates old projects.",
+        "consequences": [
+          "autoforge.config.json is now priozar.config.json, and the ai prompts, managed target files, docs, qa, change request templates and diagram name the new file.",
+          "scripts, the coordinator, build_dist and the legacy migration still mention the old name deliberately as the fallback or legacy source.",
+          "The historical expansion doc that proposes an enhanced autoforge.config.json is unchanged."
+        ],
+        "scope": [
+          "configuration"
+        ],
+        "keywords": [
+          "priozar",
+          "config"
+        ],
+        "relatedWork": [
+          "task.rename-the-root-config-file-and-its-references"
+        ],
+        "supersedes": null,
+        "status": "active",
+        "kind": "feature-note",
+        "createdAt": "2026-11-22T21:33:02.413Z",
+        "updatedAt": "2026-11-22T21:33:02.413Z"
       }
     ]
   }

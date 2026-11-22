@@ -54,7 +54,7 @@ Ensure an idea exists before running kickoff (fill ideas/IDEA\_\*.yaml or run th
 
 > When AutoForge is embedded in another project, these paths reside under `./.autoforge/` (legacy: `./autoforge/`).
 
-Also review the managed `ai/context_targets.yaml` (or `.autoforge/ai/context_targets.yaml`); if documentation lives outside the defaults, ask the human to update `contextTargets` in autoforge.config.json and rerun `npx autoforge configure`.
+Also review the managed `ai/context_targets.yaml` (or `.autoforge/ai/context_targets.yaml`); if documentation lives outside the defaults, ask the human to update `contextTargets` in priozar.config.json and rerun `npx priozar configure`.
 Also review the managed `ai/code_targets.yaml` (or `.autoforge/ai/code_targets.yaml`) so the
 engineering prompts know where to place application code and tests in your project.
 

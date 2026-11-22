@@ -16,7 +16,7 @@ inputs:
 constraints:
   - Confirm there is an up-to-date idea file or run idea_conversation if one is missing.
   - Offer full automation by default once the human approves the plan; otherwise outline collaborative checkpoints.
-  - Respect workspace boundaries derived from autoforge.config.json (mirrored to ai/code_targets.yaml) and docs/ai/COMMIT_PLAYBOOK.md.
+  - Respect workspace boundaries derived from priozar.config.json (mirrored to ai/code_targets.yaml) and docs/ai/COMMIT_PLAYBOOK.md.
   - Record chosen workflow, approvals, and scheduling notes under ai/logs/mastermind/.
 deliverables:
   - "ai/reports/automation_plan_{{timestamp}}.md"

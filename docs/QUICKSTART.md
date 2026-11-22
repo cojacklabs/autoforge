@@ -32,7 +32,7 @@ priozar attach "$PWD"
 priozar doctor
 ```
 
-`attach` initializes `.autoforge/` and `autoforge.config.json` and registers
+`attach` initializes `.autoforge/` (including its `config.json`) and registers
 the project in the global workspace in one step, so it appears in
 `priozar projects list`. `doctor` verifies the installation is healthy
 before you start work. Use plain `priozar init` instead only when you

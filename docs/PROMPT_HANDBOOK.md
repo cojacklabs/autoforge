@@ -6,7 +6,7 @@ Use these patterns when working with coding assistants (Codex, Claude Code, Gemi
 
 ```
 The AutoForge folder is located at ./autoforge. Treat that directory as your working root.
-Code should be written to the paths defined in autoforge.config.json (mirrored to .autoforge/ai/code_targets.yaml). Legacy installs may use `autoforge/`; the CLI supports both.
+Code should be written to the paths defined in priozar.config.json (mirrored to .autoforge/ai/code_targets.yaml). Legacy installs may use `autoforge/`; the CLI supports both.
 ```
 
 ## 2. Load mandatory context

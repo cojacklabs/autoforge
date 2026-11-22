@@ -1,5 +1,5 @@
 # AutoForge context target overrides (managed).
-# Edit autoforge.config.json instead of modifying this file directly.
+# Edit priozar.config.json instead of modifying this file directly.
 # Paths are relative to the AutoForge directory unless noted otherwise.
 
 context_targets:

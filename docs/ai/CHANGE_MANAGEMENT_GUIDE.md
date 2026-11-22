@@ -36,14 +36,14 @@ Review the generated request, make edits if needed, then continue the workflow:
 Remind the assistant to keep all modifications inside the AutoForge directory (set working directory to `./autoforge` for embedded usage).
 
 If your project stores code/tests outside `../src` or `../tests`, update `codeTargets`
-in `autoforge.config.json` and rerun `npx autoforge configure` before running the engineering prompts so they write to the correct locations.
+in `priozar.config.json` and rerun `npx priozar configure` before running the engineering prompts so they write to the correct locations.
 
 ## Option B — File Mode
 
 1. (Optional) Manually copy `change_requests/CR-0000_example.yaml` if you prefer editing without Chat Mode.
 2. Fill in metadata, affected areas, and desired outcomes (or let the change_intake agent generate the file, then review/edit).
 3. Commit and push. `.github/workflows/agent-change-processor.yml` validates context and summarizes next steps.
-   Ensure `contextTargets` in `autoforge.config.json` reflects any custom documentation paths (then run `npx autoforge configure`) before running prompts.
+   Ensure `contextTargets` in `priozar.config.json` reflects any custom documentation paths (then run `npx priozar configure`) before running prompts.
 
 If the change introduces or modifies UI, include the UI/UX designer step:
 

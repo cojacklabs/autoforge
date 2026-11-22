@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
-  "revision": 518,
-  "updatedAt": "2026-11-22T21:29:31.244Z",
+  "revision": 520,
+  "updatedAt": "2026-11-22T21:33:03.070Z",
   "data": {
     "features": [
       {
@@ -2364,10 +2364,10 @@
       {
         "name": "Rename the root config file and its references",
         "description": "After every reader accepts both names, git mv autoforge.config.json to priozar.config.json, update the descriptions inside it, and replace the file name in ai prompts and generated ai target files, docs, qa, change request templates and diagrams. Historical docs stay unchanged.",
-        "status": "planned",
+        "status": "completed",
         "pauseReason": null,
         "createdAt": "2026-11-22T21:25:48.938Z",
-        "updatedAt": "2026-11-22T21:25:48.938Z",
+        "updatedAt": "2026-11-22T21:33:02.943Z",
         "id": "task.rename-the-root-config-file-and-its-references",
         "phaseId": "phase.live-docs-ci-and-urls",
         "scope": {
