@@ -74,15 +74,15 @@ jobs:
 
       - name: Build public packages in dependency order
         run: |
-          pnpm --filter @cojacklabs/autoforge-protocol build
-          pnpm --filter @cojacklabs/autoforge-core build
-          pnpm --filter @cojacklabs/autoforge-sdk build
+          pnpm --filter @cojacklabs/priozar-protocol build
+          pnpm --filter @cojacklabs/priozar-core build
+          pnpm --filter @cojacklabs/priozar-sdk build
           pnpm build
 
       - name: Smoke test packed public package set
         run: |
-          ARTIFACT_DIR="$RUNNER_TEMP/autoforge-package-artifacts"
-          SMOKE_DIR="$RUNNER_TEMP/autoforge-package-smoke"
+          ARTIFACT_DIR="$RUNNER_TEMP/priozar-package-artifacts"
+          SMOKE_DIR="$RUNNER_TEMP/priozar-package-smoke"
           mkdir -p "$ARTIFACT_DIR" "$SMOKE_DIR"
           pnpm --dir packages/protocol pack --pack-destination "$ARTIFACT_DIR"
           pnpm --dir packages/core pack --pack-destination "$ARTIFACT_DIR"
@@ -91,13 +91,15 @@ jobs:
           cd "$SMOKE_DIR"
           npm init -y >/dev/null
           npm install --ignore-scripts --no-audit --no-fund \
-            "$ARTIFACT_DIR"/cojacklabs-autoforge-protocol-*.tgz \
-            "$ARTIFACT_DIR"/cojacklabs-autoforge-core-*.tgz \
-            "$ARTIFACT_DIR"/cojacklabs-autoforge-sdk-*.tgz \
-            "$ARTIFACT_DIR"/cojacklabs-autoforge-[0-9]*.tgz
-          node --input-type=module -e "await import('@cojacklabs/autoforge-protocol'); await import('@cojacklabs/autoforge-core'); await import('@cojacklabs/autoforge-sdk')"
+            "$ARTIFACT_DIR"/cojacklabs-priozar-protocol-*.tgz \
+            "$ARTIFACT_DIR"/cojacklabs-priozar-core-*.tgz \
+            "$ARTIFACT_DIR"/cojacklabs-priozar-sdk-*.tgz \
+            "$ARTIFACT_DIR"/cojacklabs-priozar-[0-9]*.tgz
+          node --input-type=module -e "await import('@cojacklabs/priozar-protocol'); await import('@cojacklabs/priozar-core'); await import('@cojacklabs/priozar-sdk')"
+          npx --no-install priozar version
+          npx --no-install priozar help >/dev/null
+          # The deprecated alias must keep working through the compatibility window.
           npx --no-install autoforge version
-          npx --no-install autoforge help >/dev/null
 
   windows-agent-launcher:
     runs-on: windows-latest

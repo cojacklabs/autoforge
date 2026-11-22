@@ -5,7 +5,7 @@
   "format": "prettier",
   "changelog": "@changesets/cli/changelog",
   "commit": false,
-  "ignore": ["@cojacklabs/autoforge-agent", "@cojacklabs/autoforge-providers"],
+  "ignore": ["@cojacklabs/priozar-agent", "@cojacklabs/priozar-providers"],
   "fixed": [],
   "linked": [],
   "updateInternalDependencies": "patch",

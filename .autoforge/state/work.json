@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
-  "revision": 499,
-  "updatedAt": "2026-11-22T19:56:40.259Z",
+  "revision": 502,
+  "updatedAt": "2026-11-22T20:01:05.014Z",
   "data": {
     "features": [
       {
@@ -2235,10 +2235,10 @@
       {
         "name": "Update CI, deploy and changeset config for renamed packages",
         "description": "The package rename leaves .github/workflows/ci.yml, .github/workflows/deploy.yml and .changeset/config.json pointing at @cojacklabs/autoforge* names, filters, tarball patterns and the deploy name assertions. Update them so CI and release status keep working. Do not trigger a publish.",
-        "status": "planned",
+        "status": "completed",
         "pauseReason": null,
         "createdAt": "2026-11-22T19:56:38.247Z",
-        "updatedAt": "2026-11-22T19:56:38.247Z",
+        "updatedAt": "2026-11-22T20:01:04.837Z",
         "id": "task.update-ci-deploy-and-changeset-config-for-renamed-packages",
         "phaseId": "phase.packages-and-binaries",
         "scope": {
@@ -2246,6 +2246,24 @@
             ".github/workflows/**",
             ".changeset/config.json",
             "turbo.json"
+          ],
+          "exclude": []
+        }
+      },
+      {
+        "name": "Add the release changeset and versions for the Priozar package rename",
+        "description": "pnpm release:status exits 1 on dev because public packages changed since main without a changeset. Decide the version bump for the renamed @cojacklabs/priozar* packages, write the changeset, and document the publish order and deprecation of the @cojacklabs/autoforge* names. Do not publish.",
+        "status": "planned",
+        "pauseReason": null,
+        "createdAt": "2026-11-22T20:01:02.529Z",
+        "updatedAt": "2026-11-22T20:01:02.529Z",
+        "id": "task.add-the-release-changeset-and-versions-for-the-priozar-package-rename",
+        "phaseId": "phase.external-release-preparation",
+        "scope": {
+          "include": [
+            ".changeset/**",
+            "docs/**",
+            "package.json"
           ],
           "exclude": []
         }

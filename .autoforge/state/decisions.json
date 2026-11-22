@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
-  "revision": 175,
-  "updatedAt": "2026-11-22T19:56:39.204Z",
+  "revision": 176,
+  "updatedAt": "2026-11-22T20:01:03.547Z",
   "data": {
     "decisions": [
       {
@@ -4341,6 +4341,30 @@
         "kind": "feature-note",
         "createdAt": "2026-11-22T19:56:39.173Z",
         "updatedAt": "2026-11-22T19:56:39.173Z"
+      },
+      {
+        "id": "decision.update-ci-deploy-verification-and-changeset-config-to-the-renamed-packages-and-k",
+        "statement": "Update CI, deploy verification and changeset config to the renamed packages and keep an alias smoke test",
+        "reasoning": "The workflows filter, pack and import packages by name, and the deploy workflow asserts the expected names, so leaving the old names would fail CI and release verification the moment the packages were renamed. The deprecated autoforge binary should be proven to still work during the compatibility window.",
+        "consequences": [
+          "ci.yml and deploy.yml build, pack and smoke test @cojacklabs/priozar* and run priozar as the primary command, plus an autoforge version check for the alias; the changeset ignore list names the renamed agent and providers packages.",
+          "pnpm release:status still exits 1 because public packages changed without a changeset; that is a version decision tracked in the external release preparation phase, and nothing here publishes."
+        ],
+        "scope": [
+          "release"
+        ],
+        "keywords": [
+          "priozar",
+          "ci"
+        ],
+        "relatedWork": [
+          "task.update-ci-deploy-and-changeset-config-for-renamed-packages"
+        ],
+        "supersedes": null,
+        "status": "active",
+        "kind": "feature-note",
+        "createdAt": "2026-11-22T20:01:03.514Z",
+        "updatedAt": "2026-11-22T20:01:03.514Z"
       }
     ]
   }
