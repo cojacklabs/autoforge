@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
-  "revision": 533,
-  "updatedAt": "2026-11-23T00:26:56.776Z",
+  "revision": 535,
+  "updatedAt": "2026-11-23T00:46:48.119Z",
   "data": {
     "features": [
       {
@@ -2104,10 +2104,10 @@
       {
         "name": "Prepare npm, GitHub and domain rename steps for human execution",
         "description": "Write a checklist and dry-run artifacts for publishing @cojacklabs/priozar*, renaming the GitHub repository, and updating the domain. Do not publish or rename anything.",
-        "status": "planned",
+        "status": "completed",
         "pauseReason": null,
         "createdAt": "2026-11-20T01:51:00.838Z",
-        "updatedAt": "2026-11-20T01:51:00.838Z",
+        "updatedAt": "2026-11-23T00:46:47.994Z",
         "id": "task.prepare-npm-github-and-domain-rename-steps-for-human-execution",
         "phaseId": "phase.external-release-preparation",
         "scope": {

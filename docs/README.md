@@ -23,6 +23,7 @@ priozar schemas list
 | Transfer work between agents                                 | [Cross-Agent Handoffs](CROSS_AGENT_HANDOFFS.md)                   |
 | Understand durable versus operational state                  | [Governance and Memory](GOVERNANCE_AND_MEMORY.md)                 |
 | Migrate an existing repository to Priozar                    | [Priozar Brand Migration Guide](PRIOZAR_BRAND_MIGRATION_GUIDE.md) |
+| Release the rename (npm, GitHub, domain)                     | [Priozar Release Checklist](PRIOZAR_RELEASE_CHECKLIST.md)         |
 | Configure local model credentials                            | [Local Provider Credentials](LOCAL_PROVIDER_CREDENTIALS.md)       |
 | Apply durable code-commenting governance                     | [Code Commenting Standard](CODE_COMMENTING_STANDARD.md)           |
 

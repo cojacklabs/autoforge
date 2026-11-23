@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
-  "revision": 187,
-  "updatedAt": "2026-11-23T00:26:51.673Z",
+  "revision": 188,
+  "updatedAt": "2026-11-23T00:46:47.501Z",
   "data": {
     "decisions": [
       {
@@ -4623,6 +4623,28 @@
         "kind": "feature-note",
         "createdAt": "2026-11-23T00:26:51.645Z",
         "updatedAt": "2026-11-23T00:26:51.645Z"
+      },
+      {
+        "id": "decision.added-docs-priozar-release-checklist-md-with-the-human-steps-for-the-npm-github",
+        "statement": "Added docs/PRIOZAR_RELEASE_CHECKLIST.md with the human steps for the npm, GitHub and domain rename",
+        "reasoning": "Publishing, repo rename and DNS are outward-facing and need credentials, so agents only prepare them. A local pack and install smoke test mirroring deploy.yml passed, the four @cojacklabs/priozar* names returned 404 on npm, and no URLs outside CONTRIBUTING.md and .changeset/README.md name the old repo.",
+        "consequences": [
+          "A maintainer can run the release in order with verification and rollback steps. Nothing was published, renamed or changed in DNS."
+        ],
+        "scope": [
+          "release"
+        ],
+        "keywords": [
+          "checklist"
+        ],
+        "relatedWork": [
+          "task.prepare-npm-github-and-domain-rename-steps-for-human-execution"
+        ],
+        "supersedes": null,
+        "status": "active",
+        "kind": "feature-note",
+        "createdAt": "2026-11-23T00:46:47.470Z",
+        "updatedAt": "2026-11-23T00:46:47.470Z"
       }
     ]
   }
