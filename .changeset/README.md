@@ -1,7 +1,7 @@
-# AutoForge Changesets
+# Priozar Changesets
 
 Changesets owns independent version planning and package changelog generation
-for AutoForge's public workspace packages.
+for Priozar's public workspace packages.
 
 The v0.25 release set is the imported baseline because its candidate versions
 were assigned before Changesets was introduced. Its package-level metadata is
@@ -20,7 +20,8 @@ Release preparation applies reviewed changesets with `pnpm release:version`.
 Publication remains a separate, explicitly approved operation invoked with
 `pnpm release:publish` only after all release gates pass.
 
-`@cojacklabs/autoforge-agent` and `@cojacklabs/autoforge-providers` remain
+`@cojacklabs/priozar-agent` and `@cojacklabs/priozar-providers` remain
 private experimental packages and are ignored until separately approved for
-public release. The root-hosted `@cojacklabs/autoforge` compatibility package is
-included in Changesets package discovery for v0.25.
+public release. The root-hosted `@cojacklabs/priozar` Core CLI is not a pnpm workspace
+member, so Changesets cannot version it; bump its `package.json` by hand at
+release time.

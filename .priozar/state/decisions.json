@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
-  "revision": 188,
-  "updatedAt": "2026-11-23T00:46:47.501Z",
+  "revision": 189,
+  "updatedAt": "2026-11-23T01:19:35.411Z",
   "data": {
     "decisions": [
       {
@@ -4645,6 +4645,28 @@
         "kind": "feature-note",
         "createdAt": "2026-11-23T00:46:47.470Z",
         "updatedAt": "2026-11-23T00:46:47.470Z"
+      },
+      {
+        "id": "decision.release-versions-are-a-minor-bump-protocol-core-and-sdk-to-0-2-0-via-a-changeset",
+        "statement": "Release versions are a minor bump: protocol, core and sdk to 0.2.0 via a changeset, and the Core CLI to 0.26.0 by hand",
+        "reasoning": "You chose the minor bump. The root @cojacklabs/priozar package is not a pnpm workspace member, so Changesets cannot version it and rejected a changeset naming it. release:status now passes with a changeset for the three workspace packages.",
+        "consequences": [
+          "pnpm release:version applies the changeset at release time and the root package.json is bumped to 0.26.0 then; the checklist records both and the tag-must-match rule in deploy.yml. Nothing was published or versioned yet."
+        ],
+        "scope": [
+          "release"
+        ],
+        "keywords": [
+          "changeset"
+        ],
+        "relatedWork": [
+          "task.add-the-release-changeset-and-versions-for-the-priozar-package-rename"
+        ],
+        "supersedes": null,
+        "status": "active",
+        "kind": "feature-note",
+        "createdAt": "2026-11-23T01:19:35.368Z",
+        "updatedAt": "2026-11-23T01:19:35.368Z"
       }
     ]
   }

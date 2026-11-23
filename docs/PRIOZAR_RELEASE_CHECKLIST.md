@@ -40,6 +40,26 @@ both `priozar version` and the deprecated `autoforge version` printed
 The npm names were free at the time of the check. Another publisher could claim
 one at any time, so claim them early in the sequence.
 
+## Versions (decided: minor bump)
+
+The first Priozar packages publish as a minor bump. The new npm names have no
+history, so this signals the visible rename without a 1.0 promise.
+
+| Package                        | Now    | Release |
+| ------------------------------ | ------ | ------- |
+| `@cojacklabs/priozar-protocol` | 0.1.0  | 0.2.0   |
+| `@cojacklabs/priozar-core`     | 0.1.1  | 0.2.0   |
+| `@cojacklabs/priozar-sdk`      | 0.1.1  | 0.2.0   |
+| `@cojacklabs/priozar`          | 0.25.3 | 0.26.0  |
+
+- [ ] Run `pnpm release:version`. The reviewed changeset
+      (`.changeset/rename-autoforge-to-priozar.md`) bumps Protocol, Core and SDK.
+- [ ] Bump the root `@cojacklabs/priozar` package to `0.26.0` by hand in
+      `package.json`. It is not a pnpm workspace member, so Changesets cannot
+      version it. Then re-run the full gate.
+- [ ] Tag the release with the same version as the root `package.json`;
+      `deploy.yml` fails when they differ.
+
 ## 1. npm
 
 1. Sign in as a member of the `@cojacklabs` scope with publish rights and 2FA.

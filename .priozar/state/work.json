@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
-  "revision": 535,
-  "updatedAt": "2026-11-23T00:46:48.119Z",
+  "revision": 537,
+  "updatedAt": "2026-11-23T01:19:36.801Z",
   "data": {
     "features": [
       {
@@ -2253,10 +2253,10 @@
       {
         "name": "Add the release changeset and versions for the Priozar package rename",
         "description": "pnpm release:status exits 1 on dev because public packages changed since main without a changeset. Decide the version bump for the renamed @cojacklabs/priozar* packages, write the changeset, and document the publish order and deprecation of the @cojacklabs/autoforge* names. Do not publish.",
-        "status": "planned",
+        "status": "completed",
         "pauseReason": null,
         "createdAt": "2026-11-22T20:01:02.529Z",
-        "updatedAt": "2026-11-22T20:01:02.529Z",
+        "updatedAt": "2026-11-23T01:19:36.642Z",
         "id": "task.add-the-release-changeset-and-versions-for-the-priozar-package-rename",
         "phaseId": "phase.external-release-preparation",
         "scope": {
