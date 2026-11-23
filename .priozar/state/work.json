@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
-  "revision": 537,
-  "updatedAt": "2026-11-23T01:19:36.801Z",
+  "revision": 539,
+  "updatedAt": "2026-11-23T01:19:46.317Z",
   "data": {
     "features": [
       {
@@ -2271,10 +2271,10 @@
       {
         "name": "Switch init and attach to create .priozar at release",
         "description": "Until the Priozar release is what users run, init and attach keep creating .autoforge so projects stay readable by already-installed CLIs. At release, change the default to .priozar (and the legacy migration target and gitignore rules) once the compatibility window plan is final.",
-        "status": "planned",
-        "pauseReason": null,
+        "status": "paused",
+        "pauseReason": "Release-time switch; flipping now would make new projects unreadable by the installed autoforge 0.25.3",
         "createdAt": "2026-11-22T20:13:24.465Z",
-        "updatedAt": "2026-11-22T20:13:24.465Z",
+        "updatedAt": "2026-11-23T01:19:46.126Z",
         "id": "task.switch-init-and-attach-to-create-priozar-at-release",
         "phaseId": "phase.external-release-preparation",
         "scope": {
