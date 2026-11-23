@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
-  "revision": 185,
-  "updatedAt": "2026-11-22T23:22:10.570Z",
+  "revision": 187,
+  "updatedAt": "2026-11-23T00:26:51.673Z",
   "data": {
     "decisions": [
       {
@@ -4579,6 +4579,50 @@
         "kind": "feature-note",
         "createdAt": "2026-11-22T23:22:10.537Z",
         "updatedAt": "2026-11-22T23:22:10.537Z"
+      },
+      {
+        "id": "decision.prettier-now-ignores-priozar-and-priozar-backup",
+        "statement": "Prettier now ignores .priozar/ and .priozar.backup-*/",
+        "reasoning": "The migrated state directory is machine-written JSON; .prettierignore only covered .autoforge/, so format:check failed after the migration.",
+        "consequences": [
+          "format:check passes with state under .priozar/."
+        ],
+        "scope": [
+          "tooling"
+        ],
+        "keywords": [
+          "prettier"
+        ],
+        "relatedWork": [
+          "task.ignore-priozar-state-in-prettier"
+        ],
+        "supersedes": null,
+        "status": "active",
+        "kind": "feature-note",
+        "createdAt": "2026-11-23T00:24:24.411Z",
+        "updatedAt": "2026-11-23T00:24:24.411Z"
+      },
+      {
+        "id": "decision.applied-migrate-brand-to-this-repository-state-now-lives-in-priozar",
+        "statement": "Applied migrate brand to this repository: state now lives in .priozar/",
+        "reasoning": "Dry run listed 12 actions; the migration backed up, copied, verified and validated before removing .autoforge. doctor, recap, context and gate all pass on the local priozar CLI. The agent contract was regenerated with the priozar context command. work.json and decisions.json were gitignored by the mirrored rules but were tracked before, so I force-added them to keep them tracked.",
+        "consequences": [
+          "The global autoforge 0.25.3 can no longer read this repo; use node bin/priozar.js until Priozar is installed globally. Registered projects are not migrated. Eight gitignored .autoforge.backup-* directories remain."
+        ],
+        "scope": [
+          "state"
+        ],
+        "keywords": [
+          "migration"
+        ],
+        "relatedWork": [
+          "task.migrate-this-repo-and-registered-projects-to-priozar"
+        ],
+        "supersedes": null,
+        "status": "active",
+        "kind": "feature-note",
+        "createdAt": "2026-11-23T00:26:51.645Z",
+        "updatedAt": "2026-11-23T00:26:51.645Z"
       }
     ]
   }

@@ -9,3 +9,5 @@ shared/types/orchestration.ts
 .autoforge/
 .autoforge.backup-*/
 .claude/settings.local.json
+.priozar/
+.priozar.backup-*/

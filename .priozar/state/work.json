@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
-  "revision": 524,
-  "updatedAt": "2026-11-22T23:22:11.125Z",
+  "revision": 533,
+  "updatedAt": "2026-11-23T00:26:56.776Z",
   "data": {
     "features": [
       {
@@ -2085,10 +2085,10 @@
       {
         "name": "Migrate this repo and registered projects to .priozar",
         "description": "Once the priozar CLI reads .priozar, apply migrate brand here and to registered projects, regenerate agent contracts, and verify doctor, recap and context.",
-        "status": "planned",
+        "status": "completed",
         "pauseReason": null,
         "createdAt": "2026-11-20T01:51:00.435Z",
-        "updatedAt": "2026-11-20T01:51:00.435Z",
+        "updatedAt": "2026-11-23T00:26:56.670Z",
         "id": "task.migrate-this-repo-and-registered-projects-to-priozar",
         "phaseId": "phase.repository-state-migration",
         "scope": {
@@ -2382,6 +2382,38 @@
             "change_requests/**",
             "diagrams/**",
             "scripts/**"
+          ],
+          "exclude": []
+        }
+      },
+      {
+        "name": "Ignore .priozar state in Prettier",
+        "description": "The migrated .priozar/ state files fail format:check because .prettierignore only lists .autoforge/. Mirror the ignore rules for .priozar/ and .priozar.backup-*/.",
+        "status": "completed",
+        "pauseReason": null,
+        "createdAt": "2026-11-23T00:21:15.563Z",
+        "updatedAt": "2026-11-23T00:24:24.860Z",
+        "id": "task.ignore-priozar-state-in-prettier",
+        "phaseId": "phase.repository-state-migration",
+        "scope": {
+          "include": [
+            ".prettierignore"
+          ],
+          "exclude": []
+        }
+      },
+      {
+        "name": "Migrate registered projects to .priozar",
+        "description": "Apply migrate brand to the other registered projects only after Priozar is installed globally, because the installed autoforge 0.25.3 cannot read .priozar. Needs the owner's go-ahead per project.",
+        "status": "planned",
+        "pauseReason": null,
+        "createdAt": "2026-11-23T00:26:56.275Z",
+        "updatedAt": "2026-11-23T00:26:56.275Z",
+        "id": "task.migrate-registered-projects-to-priozar",
+        "phaseId": "phase.repository-state-migration",
+        "scope": {
+          "include": [
+            ".priozar/**"
           ],
           "exclude": []
         }
@@ -3571,6 +3603,23 @@
           "include": [
             "test/cli-integration.test.ts",
             "vitest.config.ts"
+          ],
+          "exclude": []
+        }
+      },
+      {
+        "name": "Fix stale autoforge wording in migrate and contract output",
+        "description": "src/commands/migrate.ts (usage and apply hint) says 'autoforge migrate', and src/commands/contract.ts prints 'Generated .autoforge/agent-contract.json' even when the file is written under .priozar.",
+        "status": "planned",
+        "pauseReason": null,
+        "createdAt": "2026-11-23T00:21:15.973Z",
+        "updatedAt": "2026-11-23T00:21:15.973Z",
+        "id": "issue.fix-stale-autoforge-wording-in-migrate-and-contract-output",
+        "scope": {
+          "include": [
+            "src/commands/migrate.ts",
+            "src/commands/contract.ts",
+            "test/**"
           ],
           "exclude": []
         }

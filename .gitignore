@@ -44,3 +44,18 @@ REPO*.md
 .autoforge/twin/
 .autoforge/quality/
 .claude/worktrees/
+# Priozar state directory (mirrors the .autoforge rules)
+.priozar/context/
+.priozar/state/session.json
+.priozar/state/doctrine-session.json
+.priozar/state/work.json
+.priozar/state/decisions.json
+.priozar/agent-contract.json
+.priozar/state/*.json.bak
+.priozar/orchestration/
+.priozar/transcripts/
+.priozar/provider-cache/
+.priozar/provider-logs/
+.priozar/credentials/
+.priozar/twin/
+.priozar/quality/
